@@ -10,8 +10,8 @@
  */
 
 namespace app\admin\controller;
-
-use app\admin\logic\OrderLogic;
+use app\admin\logic\GoodsLogic;//商品逻辑
+use app\admin\logic\OrderLogic;//订单逻辑
 use think\AjaxPage;
 use think\Page;
 use think\Db;
@@ -75,7 +75,7 @@ class Machine extends Base
 			$machine_where['m.district'] = $district_id;
 		}
 		if (!empty($key_word)) {
-			$machine_where['m.machine_name'] = array('lick', "%key_word");
+			$machine_where['m.machine_name'] = array('like', "%key_word");
 		}
 		$machine_where['m.status'] = 1;
 
@@ -85,7 +85,7 @@ class Machine extends Base
 				->where($machine_where)
 				->count();
 		// halt($count);
-		$Page = new AjaxPage($COUNT,10);
+		$Page = new AjaxPage($count,10);
 		$show = $Page->show();
 
 		// $list = DB::name('machine')
@@ -559,14 +559,14 @@ class Machine extends Base
 		//显示机器名称,当前游戏版本,赔率	
 		$id = I("get.id");
 
-		$type_id = DB::name('machine')->where(['machine_id'=>$id])->getField('type_id');
-		$r = M('Goods')
-			->alias('g')
-			->join('__MACHINE_TYPE_CONF__ m',"g.goods_id = m.goods_id",'LEFT')
-			->where(['m.type_id'=>$type_id])
-			->select();
+		// $type_id = DB::name('machine')->where(['machine_id'=>$id])->getField('type_id');
+		// $r = M('Goods')
+		// 	->alias('g')
+		// 	->join('__MACHINE_TYPE_CONF__ m',"g.goods_id = m.goods_id",'LEFT')
+		// 	->where(['m.type_id'=>$type_id])
+		// 	->select();
 
-		halt($r);
+		// halt($r);
 		$data = DB::name('machine')
 				->alias('m')
 				->where(['machine_id'=>$id])
@@ -580,6 +580,14 @@ class Machine extends Base
 				->find();
 				// halt($data);
 		
+		//查询这个贩卖机下的商品分类
+	    $GoodsLogic = new GoodsLogic();        
+        $brandList = $GoodsLogic->getSortBrands();
+        $categoryList = $GoodsLogic->getSortCategory();
+        $this->assign('categoryList',$categoryList);
+        $this->assign('brandList',$brandList);
+
+
 
 		$this->assign('version',$version);
 		$this->assign('data',$data);
@@ -589,6 +597,95 @@ class Machine extends Base
 
 	}
 
+	// public function ajaxGoodsList()
+	// {
 
+	// 	$key_word = I('post.key_word');
+	// 	$goods_where = array();
+	// 	$machine_id = I('post.machine_id');
+	// 	$type_id = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('type_id');
+
+	// 	if (!empty($key_word)) {
+	// 		$goods_where['g.goods_name'] = array('lick' , "%key_word");
+	// 	}
+	// 	$count = DB::name('goods')
+	// 			->alias('g')
+	// 			->join('__MACHINE_TYPE_CONF__ m','g.goods_id = m.goods_id','LEFT')
+	// 			->where($goods_where)
+	// 			->where(['m.type_id'=>$type_id])
+	// 			->count();
+	// 	$Page = new AjaxPage($count,10);
+	// 	$show = $Page->show();
+
+	// 	$goodsList = DB::name('goods')
+	// 			->alias('g')
+	// 			// ->field("g.goods_name,g.goods_sn,goods_remark,g.original_img,g.shop_price")
+	// 			->field("g.*")
+	// 			->join("__MACHINE_TYPE_CONF__ m",'g.goods_id = m.goods_id','LEFT')
+	// 			->where(['m.type_id'=>$type_id])
+	// 			->where($where)
+	// 			->limit($Page->firstRow.','.$Page->listRows)
+	// 			->select();
+	// 			// halt($goodsList);
+	// 	$catList = D('goods_catrgory')->select();
+	// 	$catList = convert_arr_key($catList, 'id');
+		
+	// 	$this->assign('catList',$catList);
+ //        $this->assign('goodsList',$goodsList);
+ //        $this->assign('page',$show);// 赋值分页输出
+	// 	return $this->fetch();
+
+
+	// }
+	 public function ajaxGoodsList(){            
+        $machine_id = I('post.machine_id');
+        $type_id = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('type_id');
+
+        // halt($type_id);
+        $where = ' 1 = 1 '; // 搜索条件                
+        I('intro')    && $where = "$where and ".I('intro')." = 1" ;        
+        I('brand_id') && $where = "$where and brand_id = ".I('brand_id') ;
+        (I('is_on_sale') !== '') && $where = "$where and is_on_sale = ".I('is_on_sale') ;                
+        $cat_id = I('cat_id');
+        // 关键词搜索               
+        $key_word = I('key_word') ? trim(I('key_word')) : '';
+        if($key_word)
+        {
+            $where = "$where and (goods_name like '%$key_word%' or goods_sn like '%$key_word%')" ;
+        }
+        
+        if($cat_id > 0)
+        {
+            $grandson_ids = getCatGrandson($cat_id); 
+            $where .= " and cat_id in(".  implode(',', $grandson_ids).") "; // 初始化搜索条件
+        }
+        
+        $count = M('Goods')->where($where)->count();
+        $Page  = new AjaxPage($count,10);
+        /**  搜索条件下 分页赋值
+        foreach($condition as $key=>$val) {
+            $Page->parameter[$key]   =   urlencode($val);
+        }
+        */
+        $show = $Page->show();
+        $order_str = "`{$_POST['orderby1']}` {$_POST['orderby2']}";
+        
+        $goodsList = M('Goods')
+        		->alias('g')
+        		->join('__MACHINE_TYPE_CONF__ m','g.goods_id = m.goods_id','LEFT')
+                ->where($where)
+                ->where(['m.type_id'=>$type_id])
+                // ->order($order_str)
+                ->limit($Page->firstRow.','.$Page->listRows)
+                ->select();
+         // halt($goodsList);
+        $catList = D('goods_category')->select();
+        $catList = convert_arr_key($catList, 'id');
+        // halt($goodsList);
+        $this->assign('catList',$catList);
+        $this->assign('goodsList',$goodsList);
+        $this->assign('page',$show);// 赋值分页输出
+        return $this->fetch();
+    }
 
 }
