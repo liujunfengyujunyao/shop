@@ -1,0 +1,94 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>贩卖机管理 - 配置贩卖机</h3>
+                <h5>贩卖机管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="machine" method="post">
+        <!-- <input type="hidden" name="act" value="{$act}"> -->
+        <input type="hidden" name="machine_id" value="{$data.machine_id}">
+        <input type="hidden" name="user_id" value="{$data.user_id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="machine_name"><em>*</em>贩卖机名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="machine_name" value="{$data.machine_name}" id="machine_name" class="input-txt">
+                    <span class="err" id="err_machine_name"></span>
+                    <p class="notic">设置贩卖机名称</p>
+                </dd>
+            </dl>
+            
+            <dl class="row">
+                <dt class="tit">
+                    <label for="version">游戏版本</label>
+                </dt>
+                <dd class="opt">
+                    <select name="version" id="version"  class="class-select valid">
+                    <foreach name="version" item="vo">
+                        <option value="{$vo.id}" <if condition="$vo['id'] eq $data['version_id']">selected</if>>{$vo.version}</option>
+                    </foreach>
+                   </select>
+                    <span class="err" id="err_type"></span>
+                    <p class="notic">设置次机器的游戏版本</p>
+                </dd>
+            </dl>
+             <dl class="row">
+                <dt class="tit">
+                    <label for="machine_name"><em>*</em>贩卖机赔率</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="odds" value="{$data.odds}" id="odds" class="input-txt">
+                    <span class="err" id="err_machine_name"></span>
+                    <p class="notic">填入整数</p>
+                </dd>
+            </dl>
+             <!--  <dl class="row">
+                <dt class="tit">
+                    <label for="machine_admin">机台管理员</label>
+                </dt>
+                <dd class="opt">
+                    <select name="machine_admin" id="machine_admin"  class="class-select valid">
+                    <foreach name="machine_admin" item="vo">
+                        <option value="{$vo.user_id}" <if condition="$vo['user_id'] eq $info['machine_admin']">selected</if>>{$vo.nickname}</option>
+                    </foreach>
+                   </select>
+                    <span class="err" id="err_type"></span>
+                    <p class="notic">负责此机台的管理员</p>
+                </dd>
+            </dl> -->
+            <div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+
+<!--编辑商品-->
+  <div class="flexigrid">
+    <div class="mDiv">
+      <div class="ftitle">
+        <h3>商品列表</h3>
+        <h5></h5>
+      </div>
+        <a href=""><div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div></a>
+    <form action="" id="search-form2" class="navbar-form form-inline" method="post" onSubmit="return false">
+      <div class="sDiv">
+        <div class="sDiv2">           
+          <select name="cat_id" id="cat_id" class="select">
+            <option value="">所有分类</option>
+            <foreach name="categoryList" item="v" key="k" >
+                <option value="{$v['id']}"> {$v['name']}</option>
+            </foreach>
+          </select>
+          <select name="brand_id" id="brand_id" class="select">
+            <option value="">所有品牌</option>
+                <foreach name="brandList" item="v" key="k" >
+                   <option value="{$v['id']}">{$v['nam
