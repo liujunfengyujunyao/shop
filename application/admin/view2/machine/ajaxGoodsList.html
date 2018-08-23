@@ -74,7 +74,10 @@
                 <div style="text-align: center; width: 50px; <if condition="$list.store_count elt tpCache('basic.warning_storage')">color:#D91222;</if> ">
                   {$list.goods_num}<!--当前贩卖机库存-->
                 </div>
-                </td>           
+                </td> 
+                   <td align="center" axis="col0">
+                  <div style="text-align: center; width: 50px;">{$list.location}</div>
+                </td>            
               <!--   <td align="center" axis="col0">                  
                 <div style="text-align: center; width: 50px;">
                   <input type="text" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onblur="changeTableVal('goods','goods_id','{$list.goods_id}','sort',this)" size="4" value="{$list.sort}" />

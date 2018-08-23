@@ -18,10 +18,10 @@
 								<div style="width: 50px;"></div>
 							</th>
 							<th align="center" axis="col4" class="">
-								<div style="text-align: center; width: 420px;" class="">存放位置</div>
+								<div style="text-align: center; width: 150px;" class="">存放位置</div>
 							</th>
 							<th align="center" axis="col4" class="">
-								<div style="text-align: center; width: 420px;" class="">商品名称</div>
+								<div style="text-align: center; width: 300px;" class="">商品名称</div>
 							</th>
 							<th align="center" axis="col4" class="">
 								<div style="text-align: center; width: 200px;" class="">本店单价</div>
@@ -51,17 +51,14 @@
 										<a title="删除行" onclick="delLine(this)" class="minus"><span class="fa fa-minus"></span></a>
 									</div>
 								</td> -->
-								
+
 								<td align="left" class="">
-									<div style="text-align: center; width: 200px;">
-										<input type="text" class="price" readonly="readonly" value="{$lo}" />
-									{$lo}
+									<div style="text-align: center; width: 150px;">
+										<input type="text" class="location" readonly="readonly" value="{$lo}" />
 									</div>
 								</td>
-							
-				<!-- 				</foreach>	 -->
 								<td align="left" class="">
-									<div style="text-align: center; width: 420px;">
+									<div style="text-align: center; width: 300px;">
 										<select onchange="getId(this)">
 											<option value="">请选择</option>
 											<volist name='list' id='v'>
@@ -156,8 +153,10 @@ function getId(opt) {
 	var id = $(opt).val();
 	var name1 = "goods['" + id + "'][goods_id]";
 	var name2 = "goods['" + id + "'][number]";
+	var name3 = "goods['" + id + "'][location]";
 	$(opt).attr('name', name1);
 	$(opt).parents('tr').find('.number').attr('name', name2);
+	$(opt).parents('tr').find('.location').attr('name', name3);
 	var machine_price = $(opt).find('option:selected').attr('price');
 	$(opt).parents('tr').find('.price').val("￥"+machine_price);
 	count_price();

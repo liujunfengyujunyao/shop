@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:52:"./application/admin/view2/machine\optionMachine.html";i:1534924516;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:52:"./application/admin/view2/machine\optionMachine.html";i:1535005290;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -269,6 +269,9 @@
               </th> -->
               <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 50px;" class="" onClick="sort('store_count');">本机库存</div>
+              </th>
+              <th align="center" abbr="article_time" axis="col6" class="">
+                <div style="text-align: center; width: 50px;" class="" onClick="sort('store_count');">存放位置</div>
               </th>
               <!-- <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 50px;" class="" onClick="sort('sort');">排序</div>

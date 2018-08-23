@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535003753;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535007073;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -132,10 +132,10 @@
 								<div style="width: 50px;"></div>
 							</th>
 							<th align="center" axis="col4" class="">
-								<div style="text-align: center; width: 420px;" class="">存放位置</div>
+								<div style="text-align: center; width: 150px;" class="">存放位置</div>
 							</th>
 							<th align="center" axis="col4" class="">
-								<div style="text-align: center; width: 420px;" class="">商品名称</div>
+								<div style="text-align: center; width: 300px;" class="">商品名称</div>
 							</th>
 							<th align="center" axis="col4" class="">
 								<div style="text-align: center; width: 200px;" class="">本店单价</div>
@@ -164,17 +164,14 @@
 										<a title="删除行" onclick="delLine(this)" class="minus"><span class="fa fa-minus"></span></a>
 									</div>
 								</td> -->
-								
+
 								<td align="left" class="">
-									<div style="text-align: center; width: 200px;">
-										<input type="text" class="price" readonly="readonly" value="<?php echo $lo; ?>" />
-									<?php echo $lo; ?>
+									<div style="text-align: center; width: 150px;">
+										<input type="text" class="location" readonly="readonly" value="<?php echo $lo; ?>" />
 									</div>
 								</td>
-							
-				<!-- 				<?php endforeach; endif; else: echo "" ;endif; ?>	 -->
 								<td align="left" class="">
-									<div style="text-align: center; width: 420px;">
+									<div style="text-align: center; width: 300px;">
 										<select onchange="getId(this)">
 											<option value="">请选择</option>
 											<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
@@ -199,8 +196,7 @@
 									<div>&nbsp;</div>
 								</td>
 							</tr>
-							</foreach>
-						<?php else: if(is_array($info) || $info instanceof \think\Collection || $info instanceof \think\Paginator): if( count($info)==0 ) : echo "" ;else: foreach($info as $key=>$vo): ?>
+							<?php endforeach; endif; else: echo "" ;endif; else: if(is_array($info) || $info instanceof \think\Collection || $info instanceof \think\Paginator): if( count($info)==0 ) : echo "" ;else: foreach($info as $key=>$vo): ?>
 								<tr>
 									<td class="f-sign" axis="col0">
 										<div style="text-align: center; width: 50px;">
@@ -267,8 +263,10 @@ function getId(opt) {
 	var id = $(opt).val();
 	var name1 = "goods['" + id + "'][goods_id]";
 	var name2 = "goods['" + id + "'][number]";
+	var name3 = "goods['" + id + "'][location]";
 	$(opt).attr('name', name1);
 	$(opt).parents('tr').find('.number').attr('name', name2);
+	$(opt).parents('tr').find('.location').attr('name', name3);
 	var machine_price = $(opt).find('option:selected').attr('price');
 	$(opt).parents('tr').find('.price').val("￥"+machine_price);
 	count_price();

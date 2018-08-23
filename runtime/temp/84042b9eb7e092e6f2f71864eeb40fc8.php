@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:52:"./application/admin/view2/machine\ajaxGoodsList.html";i:1534929572;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:52:"./application/admin/view2/machine\ajaxGoodsList.html";i:1535005313;}*/ ?>
 <table>
        <tbody>
             <?php if(is_array($goodsList) || $goodsList instanceof \think\Collection || $goodsList instanceof \think\Paginator): $i = 0; $__LIST__ = $goodsList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$list): $mod = ($i % 2 );++$i;?>
@@ -73,9 +73,12 @@
                 </td>     -->
                 <td align="center" axis="col0">                  
                 <div style="text-align: center; width: 50px; <?php if($list['store_count'] <= tpCache('basic.warning_storage')): ?>color:#D91222;<?php endif; ?> ">
-                  <?php echo $list['goods_num']; ?>
+                  <?php echo $list['goods_num']; ?><!--当前贩卖机库存-->
                 </div>
-                </td>           
+                </td> 
+                   <td align="center" axis="col0">
+                  <div style="text-align: center; width: 50px;"><?php echo $list['location']; ?></div>
+                </td>            
               <!--   <td align="center" axis="col0">                  
                 <div style="text-align: center; width: 50px;">
                   <input type="text" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onblur="changeTableVal('goods','goods_id','<?php echo $list['goods_id']; ?>','sort',this)" size="4" value="<?php echo $list['sort']; ?>" />

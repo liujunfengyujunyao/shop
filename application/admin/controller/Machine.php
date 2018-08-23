@@ -410,6 +410,7 @@ class Machine extends Base
 					$goods['price'] = DB::name('goods')->where(array('goods_id' => $value['goods_id']))->getField('shop_price');
 					$goods['type_id'] = $type_id;
 					$goods['admin_id'] = $_SESSION['admin_id'];
+					$goods['location'] = $value['location'];
 					$goods['addtime'] = time();
 					$goods['enittime'] = time();
 
@@ -440,12 +441,12 @@ class Machine extends Base
 				//对应位置
 				$location = DB::name('machine_type')
 					->where(['id'=>$type_id])
-					->find();
-				// $location2['location'] = explode(',',$location['location']);
-				$location = explode(',',$location['location']);
+					->getField('location');
+				// $location['location'] = explode(',',$location['location']);
+				$location = explode(',',$location);
 
-				// halt($location);
-				$this->assign('location2',$location2);
+	
+				$this->assign('location',$location);
 				$this->assign('list',$list);
 				$this->assign('info',$info);
 				$this->assign('count_value',$count_value);
@@ -689,7 +690,7 @@ class Machine extends Base
         
         $goodsList = M('Goods')
         		->alias('g')
-        		->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num")
+        		->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,m.location")
         		->join('__MACHINE_TYPE_CONF__ m','g.goods_id = m.goods_id','LEFT')
         		->join('__MACHINE_STOCK__ s',"s.goods_id = m.goods_id",'LEFT')
                 ->where($where)
