@@ -237,6 +237,9 @@ class Machine extends Base
 			$r = DB::name('machine')->add($info);
 			//根据类型将初始配置写入贩卖机库存
 			$machine_conf = M('machine_type_conf')->field('goods_id,goods_num')->where('type_id',$info['type_id'])->select();
+			if (is_null($machine_conf)) {	
+				$this->error("此类型尚未配置");
+			}
 			
 			$sql = "INSERT IGNORE INTO __PREFIX__machine_stock (`machine_id`,`goods_id`,`stock_num`) VALUES ";
 			//将记录存入库存表中
@@ -352,7 +355,7 @@ class Machine extends Base
 			// halt($data);
 			$r = $machine_type_db->add($data);
 			if ($r !== false) {
-				$this->success("操作成功",U('Admin/Machine/typeList'));
+				$this->success("添加成功,请前往配置分类",U('Admin/Machine/typeList'));
 			} else {
 				$this->error("连接服务器失败");
 			}
@@ -427,7 +430,7 @@ class Machine extends Base
 				//读取商品配置清单
 				$info = DB::name('machine_type_conf')
 						->alias('mtc')
-						->field('mtc.goods_id, mtc.goods_num, g.shop_price')
+						->field('mtc.goods_id, mtc.goods_num, g.shop_price,mtc.location')
 						->join('__GOODS__ g', 'g.goods_id = mtc.goods_id')
 						->where(array('type_id'=>$type_id))
 						->select();

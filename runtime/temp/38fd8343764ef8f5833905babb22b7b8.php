@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535007073;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535011798;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -198,14 +198,21 @@
 							</tr>
 							<?php endforeach; endif; else: echo "" ;endif; else: if(is_array($info) || $info instanceof \think\Collection || $info instanceof \think\Paginator): if( count($info)==0 ) : echo "" ;else: foreach($info as $key=>$vo): ?>
 								<tr>
-									<td class="f-sign" axis="col0">
+							<!-- 		<td class="f-sign" axis="col0">
 										<div style="text-align: center; width: 50px;">
 											<a title="添加行" onclick="addLine()" class="plus"><span class="fa fa-plus"></span></a>
 											<a title="删除行" onclick="delLine(this)" class="minus"><span class="fa fa-minus"></span></a>
 										</div>
-									</td>
+									</td> -->
+
 									<td align="left" class="">
-										<div style="text-align: center; width: 420px;">
+										<div style="text-align: center; width: 150px;">
+											<input type="text" class="location" readonly="readonly" value="<?php echo $vo['location']; ?>" />
+										</div>
+									</td>
+
+									<td align="left" class="">
+										<div style="text-align: center; width: 300px;">
 											<select onchange="getId(this)" name="goods['<?php echo $vo['goods_id']; ?>'][goods_id]">
 												<option value="">请选择</option>
 												<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>

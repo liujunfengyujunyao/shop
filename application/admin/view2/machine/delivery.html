@@ -87,14 +87,21 @@
 						<else />
 							<foreach name="info" item="vo">
 								<tr>
-									<td class="f-sign" axis="col0">
+							<!-- 		<td class="f-sign" axis="col0">
 										<div style="text-align: center; width: 50px;">
 											<a title="添加行" onclick="addLine()" class="plus"><span class="fa fa-plus"></span></a>
 											<a title="删除行" onclick="delLine(this)" class="minus"><span class="fa fa-minus"></span></a>
 										</div>
-									</td>
+									</td> -->
+
 									<td align="left" class="">
-										<div style="text-align: center; width: 420px;">
+										<div style="text-align: center; width: 150px;">
+											<input type="text" class="location" readonly="readonly" value="{$vo.location}" />
+										</div>
+									</td>
+
+									<td align="left" class="">
+										<div style="text-align: center; width: 300px;">
 											<select onchange="getId(this)" name="goods['{$vo.goods_id}'][goods_id]">
 												<option value="">请选择</option>
 												<volist name='list' id='v'>
