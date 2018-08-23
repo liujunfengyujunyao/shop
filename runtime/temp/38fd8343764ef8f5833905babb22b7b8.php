@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1534493123;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535003753;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -132,6 +132,9 @@
 								<div style="width: 50px;"></div>
 							</th>
 							<th align="center" axis="col4" class="">
+								<div style="text-align: center; width: 420px;" class="">存放位置</div>
+							</th>
+							<th align="center" axis="col4" class="">
 								<div style="text-align: center; width: 420px;" class="">商品名称</div>
 							</th>
 							<th align="center" axis="col4" class="">
@@ -153,14 +156,23 @@
 			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
 				<table>
 					<tbody>
-						<?php if(count($info) == 0): ?>
+						<?php if(count($info) == 0): if(is_array($location) || $location instanceof \think\Collection || $location instanceof \think\Paginator): if( count($location)==0 ) : echo "" ;else: foreach($location as $key=>$lo): ?>
 							<tr>
-								<td class="f-sign" axis="col0">
+								<!-- <td class="f-sign" axis="col0">
 									<div style="text-align: center; width: 50px;">
 										<a title="添加行" onclick="addLine()" class="plus"><span class="fa fa-plus"></span></a>
 										<a title="删除行" onclick="delLine(this)" class="minus"><span class="fa fa-minus"></span></a>
 									</div>
+								</td> -->
+								
+								<td align="left" class="">
+									<div style="text-align: center; width: 200px;">
+										<input type="text" class="price" readonly="readonly" value="<?php echo $lo; ?>" />
+									<?php echo $lo; ?>
+									</div>
 								</td>
+							
+				<!-- 				<?php endforeach; endif; else: echo "" ;endif; ?>	 -->
 								<td align="left" class="">
 									<div style="text-align: center; width: 420px;">
 										<select onchange="getId(this)">
@@ -187,6 +199,7 @@
 									<div>&nbsp;</div>
 								</td>
 							</tr>
+							</foreach>
 						<?php else: if(is_array($info) || $info instanceof \think\Collection || $info instanceof \think\Paginator): if( count($info)==0 ) : echo "" ;else: foreach($info as $key=>$vo): ?>
 								<tr>
 									<td class="f-sign" axis="col0">

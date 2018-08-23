@@ -18,6 +18,9 @@
 								<div style="width: 50px;"></div>
 							</th>
 							<th align="center" axis="col4" class="">
+								<div style="text-align: center; width: 420px;" class="">存放位置</div>
+							</th>
+							<th align="center" axis="col4" class="">
 								<div style="text-align: center; width: 420px;" class="">商品名称</div>
 							</th>
 							<th align="center" axis="col4" class="">
@@ -40,13 +43,23 @@
 				<table>
 					<tbody>
 						<if condition="count($info) eq 0">
+						<foreach name="location" item="lo">
 							<tr>
-								<td class="f-sign" axis="col0">
+								<!-- <td class="f-sign" axis="col0">
 									<div style="text-align: center; width: 50px;">
 										<a title="添加行" onclick="addLine()" class="plus"><span class="fa fa-plus"></span></a>
 										<a title="删除行" onclick="delLine(this)" class="minus"><span class="fa fa-minus"></span></a>
 									</div>
+								</td> -->
+								
+								<td align="left" class="">
+									<div style="text-align: center; width: 200px;">
+										<input type="text" class="price" readonly="readonly" value="{$lo}" />
+									{$lo}
+									</div>
 								</td>
+							
+				<!-- 				</foreach>	 -->
 								<td align="left" class="">
 									<div style="text-align: center; width: 420px;">
 										<select onchange="getId(this)">
@@ -73,6 +86,7 @@
 									<div>&nbsp;</div>
 								</td>
 							</tr>
+							</foreach>
 						<else />
 							<foreach name="info" item="vo">
 								<tr>

@@ -324,6 +324,7 @@ class Machine extends Base
 			if ($act == '_EDIT_') {
 				$id = I("get.id");
 				$info = $machine_type_db->where("id = $id")->find();
+				halt($info);
 				$this->assign('info',$info);
 				$this->assign('act','_EDIT_');
 			}
@@ -437,7 +438,14 @@ class Machine extends Base
 				$count_value = DB::name('machine_type')->where(array('id' => $type_id))->getField('count_value');//查询设置的最大限额
 
 				//对应位置
-				
+				$location = DB::name('machine_type')
+					->where(['id'=>$type_id])
+					->find();
+				// $location2['location'] = explode(',',$location['location']);
+				$location = explode(',',$location['location']);
+
+				// halt($location);
+				$this->assign('location2',$location2);
 				$this->assign('list',$list);
 				$this->assign('info',$info);
 				$this->assign('count_value',$count_value);
