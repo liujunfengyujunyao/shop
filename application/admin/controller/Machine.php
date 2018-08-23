@@ -234,13 +234,14 @@ class Machine extends Base
 				'partner_id' => $data['partner_id'],//机台配货人员
 				'addtime' => time(),
 				);//贩卖机信息
-			$r = DB::name('machine')->add($info);
+			
 			//根据类型将初始配置写入贩卖机库存
 			$machine_conf = M('machine_type_conf')->field('goods_id,goods_num')->where('type_id',$info['type_id'])->select();
-			if (is_null($machine_conf)) {	
-				$this->error("此类型尚未配置");
-			}
+			if (empty($machine_conf)) {
 			
+				$this->error('尚未配置此类型');
+			}
+			$r = DB::name('machine')->add($info);
 			$sql = "INSERT IGNORE INTO __PREFIX__machine_stock (`machine_id`,`goods_id`,`stock_num`) VALUES ";
 			//将记录存入库存表中
 			foreach ($machine_conf as $conf) {
@@ -398,7 +399,7 @@ class Machine extends Base
 
 	public function delivery()
 	{
-		$type_id = I('get.id');
+		$type_id = I('get.id/d');
 		if (IS_POST) {
 			if ($type_id) {
 				$data = I('post.');
@@ -415,7 +416,7 @@ class Machine extends Base
 					$goods['admin_id'] = $_SESSION['admin_id'];
 					$goods['location'] = $value['location'];
 					$goods['addtime'] = time();
-					$goods['enittime'] = time();
+					$goods['edittime'] = time();
 
 					DB::name('machine_type_conf')->add($goods);
 				}

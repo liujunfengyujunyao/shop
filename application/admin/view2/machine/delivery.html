@@ -96,7 +96,7 @@
 
 									<td align="left" class="">
 										<div style="text-align: center; width: 150px;">
-											<input type="text" class="location" readonly="readonly" value="{$vo.location}" />
+											<input type="text" class="location" readonly="readonly" name="goods['{$vo.goods_id}'][location]" value="{$vo.location}" />
 										</div>
 									</td>
 
@@ -249,4 +249,6 @@ function checkForm(){
 		});
 	}
 }
+
+
 </script>

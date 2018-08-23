@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535011798;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535019127;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -207,7 +207,7 @@
 
 									<td align="left" class="">
 										<div style="text-align: center; width: 150px;">
-											<input type="text" class="location" readonly="readonly" value="<?php echo $vo['location']; ?>" />
+											<input type="text" class="location" readonly="readonly" name="goods['<?php echo $vo['goods_id']; ?>'][location]" value="<?php echo $vo['location']; ?>" />
 										</div>
 									</td>
 
@@ -359,4 +359,6 @@ function checkForm(){
 		});
 	}
 }
+
+
 </script>
