@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:48:"./application/admin/view2/partner\storeList.html";i:1534760516;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:48:"./application/admin/view2/partner\storeList.html";i:1534934849;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -133,6 +133,9 @@
 						<th align="center" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 150px;" class="">贩卖机名称</div>
 						</th>
+						<th align="center" abbr="ac_id" axis="col4" class="">
+							<div style="text-align: center; width: 150px;" class="">贩卖机种类</div>
+						</th>
 						<!-- <th align="center" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 120px;" class="">负责人</div>
 						</th>
@@ -154,16 +157,19 @@
 		<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
 			<table>
 				<tbody>
-				<?php if(is_array($storeList) || $storeList instanceof \think\Collection || $storeList instanceof \think\Paginator): $i = 0; $__LIST__ = $storeList;if( count($__LIST__)==0 ) : echo "$empty" ;else: foreach($__LIST__ as $key=>$list): $mod = ($i % 2 );++$i;?>
+				<?php if(is_array($machineList) || $machineList instanceof \think\Collection || $machineList instanceof \think\Paginator): $i = 0; $__LIST__ = $machineList;if( count($__LIST__)==0 ) : echo "$empty" ;else: foreach($__LIST__ as $key=>$list): $mod = ($i % 2 );++$i;?>
 					<tr>
 						<td class="sign">
 							<div style="width: 50px;"><i class="ico-check"></i></div>
 						</td>
 						<td align="left" class="">
-							<div style="text-align: center; width: 50px;"><?php echo $list['store_id']; ?></div>
+							<div style="text-align: center; width: 50px;"><?php echo $list['machine_id']; ?></div>
 						</td>
 						<td align="left" class="">
-							<div style="text-align: center; width: 150px;"><?php echo getSubstr($list['store_name'],0,33); ?></div>
+							<div style="text-align: center; width: 150px;"><?php echo getSubstr($list['machine_name'],0,33); ?></div>
+						</td>
+						<td align="left" class="">
+							<div style="text-align: center; width: 150px;"><?php echo getSubstr($list['type_name'],0,33); ?></div>
 						</td>
 						<!-- <td align="left" class="">
 							<div style="text-align: center; width: 120px;"><?php echo $list['nickname']; ?></div>

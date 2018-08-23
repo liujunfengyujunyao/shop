@@ -1,4 +1,30 @@
 <include file="public/layout" />
+    <style> 
+        /*最外层容器*/
+        #tableContainer{
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            list-style: none;
+        }
+        .li {
+            width: 11.1%;
+            height: 11.1%;
+            box-sizing: border-box;
+            float:left;
+            text-align: center;
+            margin: 0 ;
+            padding: 0;
+        }
+        .static {
+            border: 1px solid green;
+            /*background: red;*/
+        }
+        /*.active {
+            border: 1px solid red;
+            background: red;
+        }*/
+    </style>
 <body style="background-color: #FFF; overflow: auto;">
 <div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
 <div id="append_parent"></div>
@@ -36,7 +62,7 @@
                     <p class="notic">设置贩卖机价值</p>
                 </dd>
             </dl>
-            <dl class="row">
+        <!--     <dl class="row">
                 <dt class="tit">
                     <label for="count_value"><em>*</em>规定种类数量</label>
                 </dt>
@@ -45,8 +71,21 @@
                     <span class="err" id="err_count_value"></span>
                     <p class="notic">设置贩卖机固定容纳种类数量</p>
                 </dd>
-            </dl>
+            </dl> -->
                <dl class="row">
+                <dt class="tit">
+                    <label for="allSelect"><em>*</em>规定规格</label>
+                </dt>
+                <dd class="opt" id="tableContainer">
+                   
+                </dd>
+            </dl>
+
+<!--             <div id="tableContainer">   
+        
+
+    </div> -->
+        <dl class="row">
                 <dt class="tit">
                     <label for="brief">备注</label>
                 </dt>
@@ -56,9 +95,11 @@
                     <p class="notic">可填写规格、售卖种类等</p>
                 </dd>
             </dl>
+
         <div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
         </div>
     </form>
+
 </div>
 <script type="text/javascript">
     function verifyForm(){
@@ -77,6 +118,57 @@
         }
         $('#storetype').submit();
     }
+
+        //规定规格
+        $(function(){
+        // 接口相对路径
+        // var serverUrl = '/ok';
+
+        // $('#tableContainer').attr('action',serverUrl);
+
+        var row = 9;
+        var column = 9;
+        var titleColumn = ['Z','A','B','C','D','E','F','G','H'];
+        var titleRow = [0,1,2,3,4,5,6,7,8];
+        for(var i = 0; i < row; i++){
+            for(var k = 0; k < column;k++){
+                var $li = $('<input  type="text" name="allSelect[]" disabled class="li static">');
+                
+                if(i == 0 && k != 0){
+                    
+                    $li.val(titleRow[k])
+                }
+                if(k == 0 && i !=0){
+                    
+                    $li.val(titleColumn[i]);
+                }
+                if(i != 0 && k!=0)
+                {
+                    var $li = $('<input  type="checkbox" name="allSelect[]" class="li static">');
+
+                }
+                if(i != 0 && k != 0 )
+                {
+                    (function(i,k){
+                        var location = titleColumn[i] + titleRow[k];
+                        $li.click(function(){
+                        // console.log($(this).attr('location'));
+                        $(this).val(location)
+                        console.log($(this).val())
+                        })
+                    })(i,k)
+
+                }
+                
+                // console.log(location);
+                $li.attr('location',location)
+                // console.log(123)
+                $('#tableContainer').append($li);
+            }
+        }
+        // var $submit = $('<input type="submit" value="send">')
+        //     $('#tableContainer').append($submit);
+        })
 </script>
 </body>
 </html>

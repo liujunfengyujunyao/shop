@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:52:"./application/admin/view2/machine\optionMachine.html";i:1534917571;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:52:"./application/admin/view2/machine\optionMachine.html";i:1534924516;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -255,7 +255,7 @@
               <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 50px;" class="" onClick="sort('shop_price');">价格</div>
               </th>                  
-              <th align="center" abbr="article_time" axis="col6" class="">
+            <!--   <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 30px;" class="" onClick="sort('is_recommend');">推荐</div>
               </th>                       
               <th align="center" abbr="article_time" axis="col6" class="">
@@ -266,13 +266,13 @@
               </th>  
               <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 50px;" class="" onClick="sort('is_on_sale');">上/下架</div>
-              </th>
+              </th> -->
               <th align="center" abbr="article_time" axis="col6" class="">
-                <div style="text-align: center; width: 50px;" class="" onClick="sort('store_count');">库存</div>
+                <div style="text-align: center; width: 50px;" class="" onClick="sort('store_count');">本机库存</div>
               </th>
-              <th align="center" abbr="article_time" axis="col6" class="">
+              <!-- <th align="center" abbr="article_time" axis="col6" class="">
                 <div style="text-align: center; width: 50px;" class="" onClick="sort('sort');">排序</div>
-              </th>                      
+              </th>  -->                     
               <th style="width:100%" axis="col7">
                 <div></div>
               </th>
@@ -282,7 +282,7 @@
       </div>
     </div>    
     <div class="tDiv">
-      <div class="tDiv2">
+     <!--  <div class="tDiv2">
         <div class="fbutton">       
           <a href="<?php echo U('Admin/goods/addEditGoods'); ?>">
           <div class="add" title="添加商品">
@@ -290,7 +290,7 @@
           </div>
           </a>          
           </div> 
-      </div>
+      </div> -->
       <div style="clear:both"></div>
     </div>
     <div class="bDiv" style="height: auto;">

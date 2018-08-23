@@ -55,7 +55,7 @@ class Partner extends Model {
 	 * @return array 工厂店列表
 	 */
 	public function getPartnerStore($partner_id, $pagesize=10) {
-		$count = DB::name('store')->where(array('partner_id'=>$partner_id, 'status'=>1))->count();
+		$count = DB::name('machine')->where(array('partner_id'=>$partner_id, 'status'=>1))->count();
 		$Page = new Page($count, $pagesize);
 		$show = $Page->show();
 

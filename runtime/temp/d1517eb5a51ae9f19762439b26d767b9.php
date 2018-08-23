@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/partner\index.html";i:1533876247;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/partner\index.html";i:1534934906;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -121,8 +121,8 @@
 	<div class="fixed-bar">
 		<div class="item-title">
 			<div class="subject">
-				<h3>合伙人管理</h3>
-				<h5>合伙人的索引与管理</h5>
+				<h3>配货员管理</h3>
+				<h5>配货员的索引与管理</h5>
 			</div>
 		</div>
 	</div>
@@ -134,15 +134,15 @@
 			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
 		</div>
 		<ul>
-			<li>合伙人操作, 在此管理.</li>
+			<li>配货员操作, 在此管理.</li>
 		</ul>
 	</div>
 
-	<!-- 合伙人列表 -->
+	<!-- 配货员列表 -->
 	<div class="flexigrid">
 		<div class="mDiv">
 			<div class="ftitle">
-				<h3>合伙人列表</h3>
+				<h3>配货员列表</h3>
 				<h5>(共<span id="count"></span>条记录)</h5>
 			</div>
 			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
@@ -173,7 +173,7 @@
 						</select>
 					</div>
 					<div class="sDiv2">
-						<input size="30" name="key_word" value="<?php echo \think\Request::instance()->param('key_word'); ?>" placeholder="合伙人手机号" class="qsbox" type="text">
+						<input size="30" name="key_word" value="<?php echo \think\Request::instance()->param('key_word'); ?>" placeholder="配货员手机号" class="qsbox" type="text">
 						<input class="btn" value="搜索" onclick="ajax_get_table('search-form2',1)" type="submit">
 					</div>
 				</div>
@@ -191,7 +191,7 @@
 								<div style="text-align: center; width: 50px;" class="">ID</div>
 							</th>
 							<th align="center" axis="col4" class="">
-								<div style="text-align: center; width: 100px;" class="">合伙人名称</div>
+								<div style="text-align: center; width: 100px;" class="">配货员名称</div>
 							</th>
 							<th align="center" axis="col5" class="">
 								<div style="text-align: center; width: 120px;" class="">手机号</div>
@@ -220,8 +220,8 @@
 			<div class="tDiv2">
 				<div class="fbutton">
 					<a href="<?php echo U('Admin/Partner/add'); ?>">
-						<div class="add" title="添加合伙人">
-							<span><i class="fa fa-plus"></i>添加合伙人</span>
+						<div class="add" title="添加配货员">
+							<span><i class="fa fa-plus"></i>添加配货员</span>
 						</div>
 					</a>
 				</div>

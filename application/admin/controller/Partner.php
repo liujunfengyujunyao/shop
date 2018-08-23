@@ -186,11 +186,12 @@ class Partner extends Base {
 	public function view() {
 		$id = I('get.partner_id/d');
 		$content = $this->partner_model->getPartnerStore($id);
-		// halt($content);
+
+		halt($content);
 		$this->assign('partner_id', $id);
 		$this->assign('page', $content['page']);
 		$this->assign('pager', $content['pager']);
-		$this->assign('storeList', $content['list']);
+		$this->assign('machineList', $content['list']);
 		$this->assign('empty', "<div class='empty'>暂无贩卖机</div>");//查询结果为空
 		return $this->fetch('storeList');
 	}
@@ -533,9 +534,9 @@ class Partner extends Base {
 
 		$order = DB::name('relation')
 				->alias('r')
-				->field('o.order_id, s.store_name, r.order_sn, o.consignee, o.mobile, o.total_amount, o.order_status, o.add_time')
+				->field('o.order_id, s.machine_name, r.order_sn, o.consignee, o.mobile, o.total_amount, o.order_status, o.add_time')
 				->join('__ORDER__ o', 'r.order_sn = o.order_sn', 'LEFT')
-				->join('__STORE__ s', 's.store_id = o.store_id', 'LEFT')
+				->join('__MACHINE__ s', 's.machine_id = o.store_id', 'LEFT')
 				->where(array('r.partner_id'=>$id, 'o.order_status'=>2))
 				->limit($Page->firstRow . ',' . $Page->listRows)
 				->select();

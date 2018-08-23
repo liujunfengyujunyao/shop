@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:48:"./application/admin/view2/partner\stock_log.html";i:1534934210;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:50:"./application/admin/view2/partner\withdrawals.html";i:1533876247;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -114,37 +114,41 @@
 
 </head>
 <script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
-<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<body>
 <div id="append_parent"></div>
 <div id="ajaxwaitid"></div>
 <div class="page">
 	<div class="fixed-bar">
 		<div class="item-title">
 			<div class="subject">
-				<h3>配货员库存日志</h3>
-				<h5>网站系统配货员库存日志</h5>
-			</div>
+				<h3>合伙人提现申请记录</h3>
+				<h5>网站系统合伙人提现申请记录索引与管理</h5>
+			</div> 
 		</div>
 	</div>
 	<!-- 操作说明 -->
-	<div class="explanation">
+	<div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
 		<div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
 			<h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
 			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
 		</div>
 		<ul>
-			<li>配货员库存日志</li>
+			<li>提现申请流程：</li>
+			<li>1、合伙人前台申请提现；</li>
+			<li>2、管理员审核生成转账记录（生成时自动扣除合伙人平台余额）；</li>
+			<li>3、财务转账给合伙人。</li>
+			<li>或2、3步可以调换，先转账后生成记录</li>
 		</ul>
 	</div>
 	<div class="flexigrid">
 		<div class="mDiv">
 			<div class="ftitle">
-				<h3>库存日志</h3>
+				<h3>提现申请记录列表</h3>
 				<h5>(共<?php echo $pager->totalRows; ?>条记录)</h5>
 			</div>
 			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
-			<form class="navbar-form form-inline" id="search-form" method="post" action="<?php echo U('Partner/stockLog'); ?>" onsubmit="return check_form();">
-				<input type="hidden" name="ctime" id="ctime" value="<?php echo $ctime; ?>">
+			<form class="navbar-form form-inline" id="search-form" method="post" action="<?php echo U('withdrawals'); ?>" onsubmit="return check_form();">
+				<input type="hidden" name="create_time" id="create_time" value="<?php echo $create_time; ?>">
 				<div class="sDiv">
 					起始时间：
 					<div class="sDiv2" style="margin-right: 5px;">
@@ -154,15 +158,22 @@
 					<div class="sDiv2" style="margin-right: 5px;">
 						<input type="text" size="30" id="end_time" value="<?php echo $end_time; ?>" placeholder="截止时间" class="qsbox">
 					</div>
-					<!-- <div class="sDiv2" style="margin-right: 10px;">
-						<select class="form-control" id="status" name="mtype" style="border: none;">
-							<option value="">全部</option>
-							<option value="1" <?php if($_REQUEST['mtype'] == 1): ?>selected<?php endif; ?>>入库</option>
-							<option value="-1" <?php if($_REQUEST['mtype'] == -1): ?>selected<?php endif; ?>>出库</option>
+					<div class="sDiv2" style="margin-right: 5px;border: none;">
+						<select id="status" name="status" class="form-control">
+							<option value="-1">状态</option>
+							<option value="0" <?php if($_REQUEST['status'] === 0): ?>selected<?php endif; ?>>审核中</option>
+							<option value="1" <?php if($_REQUEST['status'] == 1): ?>selected<?php endif; ?>>已办结</option>
+							<option value="2" <?php if($_REQUEST['status'] == 2): ?>selected<?php endif; ?>>审核失败</option>
 						</select>
+					</div>
+					<div class="sDiv2" style="margin-right: 5px;">
+						<input size="30" name="mobile" value="<?php echo \think\Request::instance()->request('mobile'); ?>" placeholder="合伙人手机号" class="qsbox" type="text">
+					</div>
+					<!-- <div class="sDiv2" style="margin-right: 5px;">
+						<input size="30" placeholder="收款账户名" value="<?php echo \think\Request::instance()->request('account_name'); ?>" name="account_name" class="qsbox" type="text">
 					</div> -->
 					<div class="sDiv2">
-						<input size="30" placeholder="配货员手机号" value="<?php echo \think\Request::instance()->request('mobile'); ?>" name="mobile" class="qsbox" type="text">
+						<input size="30" value="<?php echo \think\Request::instance()->request('account_bank'); ?>" name="account_bank" placeholder="收款账号" class="qsbox" type="text">
 						<input class="btn" value="搜索" type="submit">
 					</div>
 				</div>
@@ -170,26 +181,38 @@
 		</div>
 		<div class="hDiv">
 			<div class="hDivBox">
-				<table cellspacing="0" cellpadding="0" style="width: 100%">
+				<table cellspacing="0" cellpadding="0" width="100%">
 					<thead>
 					<tr>
 						<th class="sign" axis="col0">
 							<div style="width: 24px;"><i class="ico-check"></i></div>
 						</th>
 						<th align="center" abbr="article_title" axis="col3" class="">
-							<div style="text-align: center; width: 50px;" class="">编号</div>
-						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 100px;" class="">配货员</div>
+							<div style="text-align: center; width: 50px;" class="">ID</div>
 						</th>
 						<th align="center" abbr="ac_id" axis="col4" class="">
-							<div style="text-align: center; width: 400px;" class="">商品名称</div>
-						</th>
-						<th align="center" abbr="article_show" axis="col5" class="">
-							<div style="text-align: center; width: 100px;" class="">库存</div>
+							<div style="text-align: center; width: 100px;" class="">合伙人姓名</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 150px;" class="">变动时间</div>
+							<div style="text-align: center; width: 80px;" class="">申请时间</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class="">申请金额</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class="">银行名称</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 150px;" class="">银行账号</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class="">银行账户</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 80px;" class="">状态</div>
+						</th>
+						<th align="center" axis="col1" class="handle">
+							<div style="text-align: center; width: 100px;">操作</div>
 						</th>
 					</tr>
 					</thead>
@@ -218,23 +241,41 @@
 								<div style="text-align: center; width: 100px;"><?php echo $v['nickname']; ?></div>
 							</td>
 							<td align="center" class="">
-								<div style="text-align: center; width: 400px;"><?php echo getSubstr($v['goods_name'],0,40); ?></div>
+								<div style="text-align: center; width: 80px;"><?php echo date("Y-m-d",$v['create_time']); ?></div>
 							</td>
 							<td align="center" class="">
-								<div style="text-align: center; width: 100px;"><?php echo $v['stock']; ?></div>
+								<div style="text-align: center; width: 100px;"><?php echo $v['money']; ?></div>
 							</td>
 							<td align="center" class="">
-								<div style="text-align: center; width: 150px;"><?php echo date("Y-m-d H:i:s",$v['ctime']); ?></div>
+								<div style="text-align: center; width: 100px;"><?php echo $v['bank_name']; ?></div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 150px;"><?php echo $v['account_bank']; ?></div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 100px;"><?php echo $v['account_name']; ?></div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 80px;">
+									<?php if($v[status] == 0): ?>审核中<?php endif; if($v[status] == 1): ?>已办结<?php endif; if($v[status] == 2): ?>审核失败<?php endif; ?>
+								</div>
+							</td>
+							<td align="center" class="handle">
+								<div style="text-align: center; width: 100px; max-width: 100px;">
+									<a href="<?php echo U('Partner/editWithdrawals',array('id'=>$v['id'], 'p'=>$_GET[p])); ?>" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+									<?php if(in_array($v[status],array(0,2))): ?>
+										<a class="btn red"  href="javascript:void(0)" onclick="del('<?php echo $v[id]; ?>')"><i class="fa fa-trash-o"></i>删除</a>
+									<?php endif; ?>
+								</div>
 							</td>
 						</tr>
 					<?php endforeach; endif; else: echo "" ;endif; endif; ?>
 					</tbody>
 				</table>
 			</div>
-			<div class="iDiv" style="display: none;"></div>
+			<!--分页位置-->
+			<?php echo $page; ?>
 		</div>
-		<!--分页位置-->
-		<?php echo $page; ?>
 	</div>
 </div>
 <script>
@@ -273,6 +314,27 @@
 		laydate(end);
 	});
 
+
+	// 删除操作
+	function del(id) {
+		layer.confirm('确定要删除吗？', {btn: ['确定','取消']}, function(index){
+			// 确定
+			$.ajax({
+				url:"/index.php?m=Admin&c=partner&a=delWithdrawals&id="+id,
+				success: function(v){
+					layer.closeAll();
+					var v =  eval('('+v+')');
+					if(v.hasOwnProperty('status') && (v.status == 1)) {
+						layer.msg(v.msg, {icon: 1});
+						location.href="<?php echo U('Admin/partner/withdrawals'); ?>";
+					}else {
+						layer.msg(v.msg, {icon: 2,time: 1000});
+					}
+				}
+			});
+		});
+	}
+
 	function check_form(){
 		var start_time = $.trim($('#start_time').val());
 		var end_time =  $.trim($('#end_time').val());
@@ -281,11 +343,12 @@
 			return false;
 		}
 		if(start_time !== '' && end_time !== ''){
-			$('#ctime').val(start_time + "," + end_time);
+			$('#create_time').val(start_time + "," + end_time);
 		}
 		if(start_time == '' && end_time == ''){
-			$('#ctime').val('');
+			$('#create_time').val('');
 		}
+
 		return true;
 	}
 </script>

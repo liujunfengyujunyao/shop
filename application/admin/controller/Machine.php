@@ -343,6 +343,12 @@ class Machine extends Base
 		$act = I('post.act');
 
 		if ($act == '_ADD_') {
+				// halt(I('post.'));
+			$post = I('post.');
+			$allSelect = implode(',',$post['allSelect']);
+			$data['goods_count'] = count($post['allSelect']);
+			$data['location'] = $allSelect;
+			// halt($data);
 			$r = $machine_type_db->add($data);
 			if ($r !== false) {
 				$this->success("操作成功",U('Admin/Machine/typeList'));
@@ -429,6 +435,9 @@ class Machine extends Base
 					->where(array('is_on_sale' => 1))//是否上架
 					->select();
 				$count_value = DB::name('machine_type')->where(array('id' => $type_id))->getField('count_value');//查询设置的最大限额
+
+				//对应位置
+				
 				$this->assign('list',$list);
 				$this->assign('info',$info);
 				$this->assign('count_value',$count_value);
@@ -627,7 +636,7 @@ class Machine extends Base
 	// 			->limit($Page->firstRow.','.$Page->listRows)
 	// 			->select();
 	// 			// halt($goodsList);
-	// 	$catList = D('goods_catrgory')->select();
+	// 	$catList = D('goods_category')->select();
 	// 	$catList = convert_arr_key($catList, 'id');
 		
 	// 	$this->assign('catList',$catList);
@@ -672,16 +681,25 @@ class Machine extends Base
         
         $goodsList = M('Goods')
         		->alias('g')
+        		->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num")
         		->join('__MACHINE_TYPE_CONF__ m','g.goods_id = m.goods_id','LEFT')
+        		->join('__MACHINE_STOCK__ s',"s.goods_id = m.goods_id",'LEFT')
                 ->where($where)
                 ->where(['m.type_id'=>$type_id])
+                ->where(['s.machine_id'=>$machine_id])
                 // ->order($order_str)
                 ->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
-         // halt($goodsList);
+                // halt($goodsList);
         $catList = D('goods_category')->select();
         $catList = convert_arr_key($catList, 'id');
-        // halt($goodsList);
+
+        //本机库存
+       	// $store = DB::name('machine_stock')
+       	// 		->where(['machine_id'=>$machine_id])
+       	// 		->select();
+       	// 		halt($store);
+
         $this->assign('catList',$catList);
         $this->assign('goodsList',$goodsList);
         $this->assign('page',$show);// 赋值分页输出

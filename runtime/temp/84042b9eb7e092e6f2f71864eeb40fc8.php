@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:52:"./application/admin/view2/machine\ajaxGoodsList.html";i:1534918165;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:52:"./application/admin/view2/machine\ajaxGoodsList.html";i:1534929572;}*/ ?>
 <table>
        <tbody>
             <?php if(is_array($goodsList) || $goodsList instanceof \think\Collection || $goodsList instanceof \think\Paginator): $i = 0; $__LIST__ = $goodsList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$list): $mod = ($i % 2 );++$i;?>
@@ -11,11 +11,11 @@
                   <span class="btn"><em><i class="fa fa-cog"></i>设置<i class="arrow"></i></em>
                   <ul>
                     <li><a target="_blank" href="<?php echo U('Home/Goods/goodsInfo',array('id'=>$list['goods_id'])); ?>">预览商品</a></li>
-                    <li><a href="<?php echo U('Admin/Goods/addEditGoods',array('id'=>$list['goods_id'])); ?>">编辑商品</a></li>
-                    <li><a href="<?php echo U('Admin/Goods/delGoods',array('id'=>$list['goods_id'])); ?>">删除商品</a></li>
+                  <!--   <li><a href="<?php echo U('Admin/Goods/addEditGoods',array('id'=>$list['goods_id'])); ?>">编辑商品</a></li>
+                    <li><a href="<?php echo U('Admin/Goods/delGoods',array('id'=>$list['goods_id'])); ?>">删除商品</a></li> -->
                     <!-- <li><a href="javascript:void(0);" onclick="publicHandle('<?php echo $list[goods_id]; ?>','del')">删除商品</a></li> -->
                     <!-- <li><a href="javascript:void(0);" onclick="ClearGoodsHtml('<?php echo $list[goods_id]; ?>')">清除静态缓存</a></li> -->
-                    <li><a href="javascript:void(0);" onclick="ClearGoodsThumb('<?php echo $list[goods_id]; ?>')">清除缩略图缓存</a></li>                    
+                    <!-- <li><a href="javascript:void(0);" onclick="ClearGoodsThumb('<?php echo $list[goods_id]; ?>')">清除缩略图缓存</a></li>         -->            
                   </ul>
                   </span>
                 </div>
@@ -35,7 +35,7 @@
                 <td align="center" axis="col0">
                   <div style="text-align: center; width: 50px;"><?php echo $list['shop_price']; ?></div>
                 </td>               
-                <td align="center" axis="col0">
+               <!--  <td align="center" axis="col0">
                   <div style="text-align: center; width: 30px;">
                     <?php if($list[is_recommend] == 1): ?>
                       <span class="yes" onClick="changeTableVal('goods','goods_id','<?php echo $list['goods_id']; ?>','is_recommend',this)" ><i class="fa fa-check-circle"></i>是</span>
@@ -70,17 +70,17 @@
                       <span class="no" onClick="changeTableVal('goods','goods_id','<?php echo $list['goods_id']; ?>','is_on_sale',this)" ><i class="fa fa-ban"></i>否</span>
                     <?php endif; ?>
                   </div>
-                </td>    
+                </td>     -->
                 <td align="center" axis="col0">                  
                 <div style="text-align: center; width: 50px; <?php if($list['store_count'] <= tpCache('basic.warning_storage')): ?>color:#D91222;<?php endif; ?> ">
-                  <?php echo $list['store_count']; ?>
+                  <?php echo $list['goods_num']; ?>
                 </div>
                 </td>           
-                <td align="center" axis="col0">                  
+              <!--   <td align="center" axis="col0">                  
                 <div style="text-align: center; width: 50px;">
                   <input type="text" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onblur="changeTableVal('goods','goods_id','<?php echo $list['goods_id']; ?>','sort',this)" size="4" value="<?php echo $list['sort']; ?>" />
                 </div>                  
-                </td>                     
+                </td>   -->                   
                 <td align="" class="" style="width: 100%;">
                   <div>&nbsp;</div>
                 </td>

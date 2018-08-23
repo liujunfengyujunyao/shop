@@ -19,6 +19,9 @@
 						<th align="center" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 150px;" class="">贩卖机名称</div>
 						</th>
+						<th align="center" abbr="ac_id" axis="col4" class="">
+							<div style="text-align: center; width: 150px;" class="">贩卖机种类</div>
+						</th>
 						<!-- <th align="center" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 120px;" class="">负责人</div>
 						</th>
@@ -40,16 +43,19 @@
 		<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
 			<table>
 				<tbody>
-				<volist name="storeList" id="list" empty="$empty">
+				<volist name="machineList" id="list" empty="$empty">
 					<tr>
 						<td class="sign">
 							<div style="width: 50px;"><i class="ico-check"></i></div>
 						</td>
 						<td align="left" class="">
-							<div style="text-align: center; width: 50px;">{$list.store_id}</div>
+							<div style="text-align: center; width: 50px;">{$list.machine_id}</div>
 						</td>
 						<td align="left" class="">
-							<div style="text-align: center; width: 150px;">{$list.store_name|getSubstr=0,33}</div>
+							<div style="text-align: center; width: 150px;">{$list.machine_name|getSubstr=0,33}</div>
+						</td>
+						<td align="left" class="">
+							<div style="text-align: center; width: 150px;">{$list.type_name|getSubstr=0,33}</div>
 						</td>
 						<!-- <td align="left" class="">
 							<div style="text-align: center; width: 120px;">{$list.nickname}</div>
