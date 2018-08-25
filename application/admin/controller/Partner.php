@@ -458,12 +458,13 @@ class Partner extends Base {
 				$this->ajaxReturn(array('status'=>0, 'msg'=>'操作失败！'));
 			}
 		}else {
-			$list = DB::name('goods')->field('goods_id, goods_name, store_count')->select();
+
+			$list = DB::name('goods')->field('goods_id, goods_name, store_count')->select();			
 			foreach ($list as $key => &$value) {
 				$max = $this->partner_model->max_stock($id, $value['goods_id']);
 				$value['max_num'] = empty($max) ? $value['store_count'] : $max;
 			}
-			// halt($list);
+			halt($list);
 			$this->assign('list', $list);
 			$this->assign('id', $id);
 			return $this->fetch();

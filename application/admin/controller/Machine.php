@@ -340,7 +340,7 @@ class Machine extends Base
 		}
 
 		$data['type_name'] = I('get.type_name','','htmlspecialchars');//种类名称
-		$data['count_value'] = I('get.count_value','','htmlspecialchars');//总价值
+		// $data['count_value'] = I('get.count_value','','htmlspecialchars');//总价值
 		$data['brief'] = I('get.brief','','htmlspecialchars');//备注
 		$data['goods_count'] = I('get.goods_count','','htmlspecialchars');//固定存储种类数量
 		$data['addtime'] = time();
@@ -356,7 +356,7 @@ class Machine extends Base
 			// halt($data);
 			$r = $machine_type_db->add($data);
 			if ($r !== false) {
-				$this->success("添加成功,请前往配置分类",U('Admin/Machine/typeList'));
+				$this->success("添加成功",U('Admin/Machine/typeList'));
 			} else {
 				$this->error("连接服务器失败");
 			}

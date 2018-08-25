@@ -228,7 +228,7 @@ function getAllMenu(){
                     array('name' => '体验品统计', 'act'=>'exp_good', 'control'=>'Report'),
                     array('name' => '赠品统计', 'act'=>'send_good', 'control'=>'Report'),
                     array('name' => '合伙人概况', 'act'=>'partner_info', 'control'=>'Report'),
-                    array('name' => '工厂店概况', 'act'=>'store_info', 'control'=>'Report'),
+                    array('name' => '配货员概况', 'act'=>'store_info', 'control'=>'Report'),
 
 					array('name' => '财务统计', 'act'=>'finance', 'control'=>'Report'),
 
@@ -257,11 +257,11 @@ function getAllMenu(){
 					array('name' => '库存配置', 'act' => 'stockConfig', 'controller' => 'Partner')
 			)),
 
-            //添加工厂店管理相关菜单 @author:Ly    @date:2017-10-11
-            'store' => array('name' => '工厂店管理', 'icon'=> 'fa-anchor', 'sub_menu' =>array(
-                array('name' => '工厂店列表', 'act' => 'index', 'controller'=> 'Store'),
-                array('name' => '添加工厂店', 'act' => 'addEditStore', 'controller' => 'Store'),
-                array('name' => '工厂店分类', 'act' => 'typeList', 'controller' => 'Store'),
+            //添加配货员管理相关菜单 @author:Ly    @date:2017-10-11
+            'store' => array('name' => '配货员管理', 'icon'=> 'fa-anchor', 'sub_menu' =>array(
+                array('name' => '配货员列表', 'act' => 'index', 'controller'=> 'Store'),
+                array('name' => '添加配货员', 'act' => 'addEditStore', 'controller' => 'Store'),
+                array('name' => '配货员分类', 'act' => 'typeList', 'controller' => 'Store'),
                 array('name' => '提现管理', 'act' => 'withdrawals', 'controller' => 'Store'),
                 array('name' => '汇款记录', 'act' => 'remittance', 'controller' => 'Store'),
                 array('name' => '库存管理', 'act' => 'stockList', 'controller' => 'Store'),

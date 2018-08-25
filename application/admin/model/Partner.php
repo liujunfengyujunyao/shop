@@ -1,6 +1,6 @@
 <?php
 /**
- * 后台合伙人模块
+ * 后台配送员模块
  * Author: Dh
  * Date: 2017-07-28
  */
@@ -15,10 +15,10 @@ use think\AjaxPage;
 class Partner extends Model {
 
 	/**
-	 * 合伙人列表（包含分页）
+	 * 配送员列表（包含分页）
 	 * @param  array  $where    where条件
 	 * @param  int $pagesize 每页条数（默认为20）
-	 * @return array 合伙人列表
+	 * @return array 配送员列表
 	 */
 	public function partnerList($where, $pagesize=10) {
 		$where['p.status'] = 1;
@@ -49,8 +49,8 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 获取合伙人下的工厂店列表（包含分页）
-	 * @param int $partner_id 合伙人ID
+	 * 获取配送员下的工厂店列表（包含分页）
+	 * @param int $partner_id 配送员ID
 	 * @param int $pagesize 每页条数（默认为10）
 	 * @return array 工厂店列表
 	 */
@@ -75,8 +75,8 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 获取合伙人库存列表
-	 * @param int $partner_id 合伙人ID
+	 * 获取配送员库存列表
+	 * @param int $partner_id 配送员ID
 	 * @param object $page 分页对象
 	 * @return array 库存列表
 	 */
@@ -124,7 +124,7 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 获取合伙人库存日志
+	 * 获取配送员库存日志
 	 * @param  array $where where条件
 	 * @param  int $pagesize 每页条数（默认为20）
 	 * @return array 库存日志列表
@@ -155,8 +155,8 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 计算合伙人下工厂店的商品最大库存量
-	 * @param  int $partner_id 合伙人ID
+	 * 计算配送员下工厂店的商品最大库存量
+	 * @param  int $partner_id 配送员ID
 	 * @param  int $goods_id   商品ID
 	 * @return int 商品最大库存
 	 */
@@ -170,7 +170,7 @@ class Partner extends Model {
 				$num = Db::name('machine_type_conf')
 						->alias('c')
 						->join('__MACHINE__ s', 's.type_id = c.type_id', 'LEFT')
-						->where(array('c.goods_id'=>$goods_id, 's.store_id'=>$value))
+						->where(array('c.goods_id'=>$goods_id, 's.machine_id'=>$value))
 						->getField('goods_num');
 			}
 			$max += $num;
@@ -206,7 +206,7 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 配货单列表（合伙人配货给工厂店）
+	 * 配货单列表（配送员配货给工厂店）
 	 * @param  array $where where条件
 	 * @param  int $pagesize 每页条数（默认为20）
 	 * @return array 配货单列表
@@ -242,7 +242,7 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 配货单详情（合伙人配货给工厂店）
+	 * 配货单详情（配送员配货给工厂店）
 	 * @param  int $id 配货单ID
 	 * @return array 详情
 	 */
@@ -271,7 +271,7 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 合伙人补货申请记录
+	 * 配送员补货申请记录
 	 * @param  array  $where where条件
 	 * @param  int $pagesize 每页条数（默认为20）
 	 * @return array 补货申请列表
@@ -305,7 +305,7 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 合伙人补货申请明细
+	 * 配送员补货申请明细
 	 * @param int $id 补货申请id
 	 */
 	public function apply_info($id) {
@@ -334,7 +334,7 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 合伙人出入库货物统计
+	 * 配送员出入库货物统计
 	 * @param  array   $where   where条件
 	 * @param  integer $pagesize 每页条数（默认为20）
 	 * @return array 出入库货物统计列表
