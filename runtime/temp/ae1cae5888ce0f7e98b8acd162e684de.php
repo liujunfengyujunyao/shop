@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\typeList.html";i:1535184406;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\typeList.html";i:1535349392;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -164,6 +164,9 @@
               <div style="text-align: left; width: 150px;" class="">存放种类</div>
             </th>
             <th align="center" abbr="article_show" axis="col5" class="">
+              <div style="text-align: left; width: 150px;" class="">仓位容量</div>
+            </th>
+            <th align="center" abbr="article_show" axis="col5" class="">
               <div style="text-align: left; width: 150px;" class="">描述</div>
             </th>
             <th align="center" axis="col1" class="handle">
@@ -204,6 +207,9 @@
               </td>
               <td align="left" class="">
                 <div style="text-align: left; width: 150px;"><?php echo $vo['goods_count']; ?></div>
+              </td>
+              <td align="left" class="">
+                <div style="text-align: left; width: 150px;"><?php echo $vo['goods_num']; ?></div>
               </td>
               <td align="left" class="">
                 <div style="text-align: left; width: 150px;"><?php echo $vo['brief']; ?></div>

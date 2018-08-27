@@ -358,6 +358,7 @@ class Machine extends Base
 			$post = I('post.');
 			$allSelect = implode(',',$post['allSelect']);
 			$data['goods_count'] = count($post['allSelect']);
+			$data['count_value'] = $post['count_value'];
 			$data['location'] = $allSelect;
 			$data['goods_num'] = $post['goods_num'];
 			// halt($data);
@@ -749,7 +750,7 @@ class Machine extends Base
     			
     			$r = DB::name('machine_conf')->where(['machine_id' => $machine_id])->find();
     			if ($r !== NULL) {
-    				DB::name(" ")->where(['machine_id' => $machine_id])->delete();
+    				DB::name("machine_conf")->where(['machine_id' => $machine_id])->delete();
     			}
 
     			foreach ($data['goods'] as $key => $value) {
