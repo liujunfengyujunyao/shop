@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:52:"./application/admin/view2/machine\optionMachine.html";i:1535099298;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:52:"./application/admin/view2/machine\optionMachine.html";i:1535185847;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -195,7 +195,9 @@
         <a href=""><div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div></a>
     <form action="" id="search-form2" class="navbar-form form-inline" method="post" onSubmit="return false">
       <div class="sDiv">
-        <div class="sDiv2">           
+        <a href="javascript:void(0)" onclick="delivery(<?php echo $data['machine_id']; ?>)" class="btn red"><i class="fa fa-truck"></i>配置</a>  
+        <div class="sDiv2"> 
+
           <select name="cat_id" id="cat_id" class="select">
             <option value="">所有分类</option>
             <?php if(is_array($categoryList) || $categoryList instanceof \think\Collection || $categoryList instanceof \think\Paginator): if( count($categoryList)==0 ) : echo "" ;else: foreach($categoryList as $k=>$v): ?>
@@ -373,6 +375,18 @@
            $("input[name='orderby2']").val(v);
            ajax_get_table('search-form2',cur_page);
         }
+
+
+        //配货操作
+function delivery(id) {
+  layer.open({
+    type: 2,
+    skin: 'layui-layer-rim',
+    title: '贩卖机类型总价值',
+    area: ['900px', '550px'],
+    content: "/index.php?m=Admin&c=Machine&a=delivery&id="+id
+  })
+}
 </script>
 </body>
 </html>

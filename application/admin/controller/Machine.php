@@ -237,23 +237,29 @@ class Machine extends Base
 			
 			//根据类型将初始配置写入贩卖机库存
 			$machine_conf = M('machine_type_conf')->field('goods_id,goods_num')->where('type_id',$info['type_id'])->select();
-			if (empty($machine_conf)) {
+			// if (empty($machine_conf)) {
 			
-				$this->error('尚未配置此类型');
-			}
+			// 	$this->error('尚未配置此类型');
+			// }
 			$r = DB::name('machine')->add($info);
-			$sql = "INSERT IGNORE INTO __PREFIX__machine_stock (`machine_id`,`goods_id`,`stock_num`) VALUES ";
-			//将记录存入库存表中
-			foreach ($machine_conf as $conf) {
-				$values[] = "(" . $r . ',' . $conf['goods_id'] . "," . $conf['goods_num'] . ")";
-			}
+			// $sql = "INSERT IGNORE INTO __PREFIX__machine_stock (`machine_id`,`goods_id`,`stock_num`) VALUES ";
+			// //将记录存入库存表中
+			// foreach ($machine_conf as $conf) {
+			// 	$values[] = "(" . $r . ',' . $conf['goods_id'] . "," . $conf['goods_num'] . ")";
+			// }
 
-			$value = implode(',', $values);
-			$sql_query = $sql . $value;
+			// $value = implode(',', $values);
+			// $sql_query = $sql . $value;
 			
-			$res = DB::query($sql_query);
+			// $res = DB::query($sql_query);
 			
-			if ($res!==fasle) {
+			// if ($res!==fasle) {
+			// 	$this->success("操作成功", U('Admin/Machine/index'));
+			// }else{
+			// 	$this->error("链接服务器失败");
+			// }
+			// 
+			if ($r) {
 				$this->success("操作成功", U('Admin/Machine/index'));
 			}else{
 				$this->error("链接服务器失败");
@@ -397,69 +403,69 @@ class Machine extends Base
 	Date 2018-8-15
 	*/
 
-	public function delivery()
-	{
-		$type_id = I('get.id/d');
-		if (IS_POST) {
-			if ($type_id) {
-				$data = I('post.');
-				$r = DB::name("machine_type_conf")->where(array('type_id' => $type_id))->find();
+	// public function delivery()
+	// {
+	// 	$type_id = I('get.id/d');
+	// 	if (IS_POST) {
+	// 		if ($type_id) {
+	// 			$data = I('post.');
+	// 			$r = DB::name("machine_type_conf")->where(array('type_id' => $type_id))->find();
 
-				if ($r !== NULL) {
-					DB::name("machine_type_conf")->where(array('type_id' => $type_id))->delete();
-				}
-				foreach ($data['goods'] as $key => $value) {
-					$goods['goods_id'] = $value['goods_id'];
-					$goods['goods_num'] = $value['number'];
-					$goods['price'] = DB::name('goods')->where(array('goods_id' => $value['goods_id']))->getField('shop_price');
-					$goods['type_id'] = $type_id;
-					$goods['admin_id'] = $_SESSION['admin_id'];
-					$goods['location'] = $value['location'];
-					$goods['addtime'] = time();
-					$goods['edittime'] = time();
+	// 			if ($r !== NULL) {
+	// 				DB::name("machine_type_conf")->where(array('type_id' => $type_id))->delete();
+	// 			}
+	// 			foreach ($data['goods'] as $key => $value) {
+	// 				$goods['goods_id'] = $value['goods_id'];
+	// 				$goods['goods_num'] = $value['number'];
+	// 				$goods['price'] = DB::name('goods')->where(array('goods_id' => $value['goods_id']))->getField('shop_price');
+	// 				$goods['type_id'] = $type_id;
+	// 				$goods['admin_id'] = $_SESSION['admin_id'];
+	// 				$goods['location'] = $value['location'];
+	// 				$goods['addtime'] = time();
+	// 				$goods['edittime'] = time();
 
-					DB::name('machine_type_conf')->add($goods);
-				}
+	// 				DB::name('machine_type_conf')->add($goods);
+	// 			}
 
-				DB::name('machine_type')->where(array('id' => $type_id))->save(array('goods_value' => $data['goods_value']));
-				$this->ajaxReturn(array('status' => 1, 'msg' => '操作成功'));
+	// 			DB::name('machine_type')->where(array('id' => $type_id))->save(array('goods_value' => $data['goods_value']));
+	// 			$this->ajaxReturn(array('status' => 1, 'msg' => '操作成功'));
 
-			} else {
-				$this->ajaxReturn(array('status' => 0, 'msg' => '操作失败'));
-			}
-		} else {
-				//读取商品配置清单
-				$info = DB::name('machine_type_conf')
-						->alias('mtc')
-						->field('mtc.goods_id, mtc.goods_num, g.shop_price,mtc.location')
-						->join('__GOODS__ g', 'g.goods_id = mtc.goods_id')
-						->where(array('type_id'=>$type_id))
-						->select();
+	// 		} else {
+	// 			$this->ajaxReturn(array('status' => 0, 'msg' => '操作失败'));
+	// 		}
+	// 	} else {
+	// 			//读取商品配置清单
+	// 			$info = DB::name('machine_type_conf')
+	// 					->alias('mtc')
+	// 					->field('mtc.goods_id, mtc.goods_num, g.shop_price,mtc.location')
+	// 					->join('__GOODS__ g', 'g.goods_id = mtc.goods_id')
+	// 					->where(array('type_id'=>$type_id))
+	// 					->select();
 
-				$list = DB::name('goods')
-					->field('goods_id,goods_name,shop_price')
-					->where(array('is_on_sale' => 1))//是否上架
-					->select();
-				$count_value = DB::name('machine_type')->where(array('id' => $type_id))->getField('count_value');//查询设置的最大限额
+	// 			$list = DB::name('goods')
+	// 				->field('goods_id,goods_name,shop_price')
+	// 				->where(array('is_on_sale' => 1))//是否上架
+	// 				->select();
+	// 			$count_value = DB::name('machine_type')->where(array('id' => $type_id))->getField('count_value');//查询设置的最大限额
 
-				//对应位置
-				$location = DB::name('machine_type')
-					->where(['id'=>$type_id])
-					->getField('location');
-				// $location['location'] = explode(',',$location['location']);
-				$location = explode(',',$location);
+	// 			//对应位置
+	// 			$location = DB::name('machine_type')
+	// 				->where(['id'=>$type_id])
+	// 				->getField('location');
+	// 			// $location['location'] = explode(',',$location['location']);
+	// 			$location = explode(',',$location);
 
 	
-				$this->assign('location',$location);
-				$this->assign('list',$list);
-				$this->assign('info',$info);
-				$this->assign('count_value',$count_value);
-				$this->assign('type_id',$type_id);
-				$this->assign('count',count($list));
-				return $this->fetch();
+	// 			$this->assign('location',$location);
+	// 			$this->assign('list',$list);
+	// 			$this->assign('info',$info);
+	// 			$this->assign('count_value',$count_value);
+	// 			$this->assign('type_id',$type_id);
+	// 			$this->assign('count',count($list));
+	// 			return $this->fetch();
 
-		}
-	}
+	// 	}
+	// }
 
 	/*
 	库存管理
@@ -692,16 +698,26 @@ class Machine extends Base
         $show = $Page->show();
         $order_str = "`{$_POST['orderby1']}` {$_POST['orderby2']}";
         
-        $goodsList = M('Goods')
-        		->alias('g')
-        		->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,m.location")
-        		->join('__MACHINE_TYPE_CONF__ m','g.goods_id = m.goods_id','LEFT')
-        		->join('__MACHINE_STOCK__ s',"s.goods_id = m.goods_id",'LEFT')
-                ->where($where)
-                ->where(['m.type_id'=>$type_id])
-                ->where(['s.machine_id'=>$machine_id])
-                // ->order($order_str)
-                ->limit($Page->firstRow.','.$Page->listRows)
+        // $goodsList = M('Goods')
+        // 		->alias('g')
+        // 		->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,m.location")
+        // 		->join('__MACHINE_TYPE_CONF__ m','g.goods_id = m.goods_id','LEFT')
+        // 		->join('__MACHINE_STOCK__ s',"s.goods_id = m.goods_id",'LEFT')
+        //         ->where($where)
+        //         ->where(['m.type_id'=>$type_id])
+        //         ->where(['s.machine_id'=>$machine_id])
+        //         // ->order($order_str)
+        //         ->limit($Page->firstRow.','.$Page->listRows)
+        //         ->select();
+ 		$goodsList = M('Goods')
+ 				->alias('g')
+ 				->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,m.location")
+ 				->join('__MACHINE_CONF__ m','g.goods_id = m.goods_id','LEFT')
+ 				->join('__MACHINE_STOCK__ s','s.goods_id = m.goods_id','LEFT')
+ 				->where($where)
+ 				->where(['m.machine_id'=>$machine_id])
+ 				// ->where(['s.machine_id'=>$machine_id])
+ 				->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
                 // halt($goodsList);
         $catList = D('goods_category')->select();
@@ -719,4 +735,85 @@ class Machine extends Base
         return $this->fetch();
     }
 
+
+
+    public function delivery()
+    {
+    	$machine_id = I('get.id/d');
+
+    	if (IS_POST) {
+    		if ($machine_id) {
+
+    			$data = I('post.');
+    			
+    			$r = DB::name('machine_conf')->where(['machine_id' => $machine_id])->find();
+    			if ($r !== NULL) {
+    				DB::name("machine_conf")->where(['machine_id' => $machine_id])->delete();
+    			}
+
+    			foreach ($data['goods'] as $key => $value) {
+    				$goods['goods_id'] = $value['goods_id'];
+    				$goods['goods_num'] = $value['number'];
+    				$goods['price'] = DB::name('goods')->where(['goods_id'=>$value['goods_id']])->getField('shop_price');
+    				$goods['machine_id'] = $machine_id;
+    				$goods['admin_id'] = $_SESSION['admin_id'];
+    				$goods['location'] = $value['location'];
+    				$goods['addtime'] = time();
+    				$goods['edittime'] = time();
+
+    				DB::name('machine_conf')->add($goods);
+    			}
+
+    		$machine_conf = M('machine_conf')->field('goods_id,goods_num')->where('machine_id',$machine_id)->select();
+    		$sql = "INSERT IGNORE INTO __PREFIX__machine_stock (`machine_id`,`goods_id`,`stock_num`) VALUES ";
+			//将记录存入库存表中
+			foreach ($machine_conf as $conf) {
+				$values[] = "(" . $machine_id . ',' . $conf['goods_id'] . "," . $conf['goods_num'] . ")";
+			}
+
+			$value = implode(',', $values);
+			$sql_query = $sql . $value;
+			
+			$res = DB::query($sql_query);
+
+    		
+    			$this->ajaxReturn(array('status' => 1,'msg' => '操作成功'));
+    		} else {
+    			$this->ajaxReturn(array('status' => 0,'msg' => '操作失败'));
+    		}
+
+    	} else {
+    		//读取商品配置清单
+    		$info = DB::name('machine_conf')
+    			->alias('mc')
+    			->field('mc.goods_id, mc.goods_num, g.shop_price, mc.location')
+    			->join('__GOODS__ g', 'g.goods_id = mc.goods_id')
+    			->where(['mc.machine_id'=>$machine_id])
+    			->select();
+
+    		$type_id = DB::name('machine')
+    			->where(['machine_id' => $machine_id])
+    			->getField('type_id');
+    			// halt($type_id);
+    		$list = DB::name('goods')
+    			->field('goods_id,goods_name,shop_price')
+    			->where(['is_on_sale' => 1])//是否上架
+    			->select();
+
+    		$location = DB::name('machine_type')
+    			->where(['id' => $type_id])
+    			->getField('location');
+    		$location = explode(',',$location);
+    		
+    		$count_value = DB::name('machine_type')->where(['id' => $type_id])->getField('count_value');
+
+    		$this->assign('info',$info);
+    		$this->assign('machine_id',$machine_id);
+    		$this->assign('count_value',$count_value);
+    		$this->assign('location',$location);
+    		$this->assign('list',$list);
+    		$this->assign('count',count($list));
+    		return $this->fetch();
+    	}
+    }
 }

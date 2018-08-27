@@ -225,7 +225,7 @@ function checkForm(){
 	}else if (res == 2) {
 		layer.alert('补货数量超过最大库存量！');
 	}else {
-		var id = "{$type_id}";
+		var id = "{$machine_id}";
 		$.ajax({
 			type: "POST",
 			url: "/index.php?m=Admin&c=Machine&a=delivery&id="+id,

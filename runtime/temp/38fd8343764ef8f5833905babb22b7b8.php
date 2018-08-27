@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535019127;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535188037;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -335,7 +335,7 @@ function checkForm(){
 	}else if (res == 2) {
 		layer.alert('补货数量超过最大库存量！');
 	}else {
-		var id = "<?php echo $type_id; ?>";
+		var id = "<?php echo $machine_id; ?>";
 		$.ajax({
 			type: "POST",
 			url: "/index.php?m=Admin&c=Machine&a=delivery&id="+id,

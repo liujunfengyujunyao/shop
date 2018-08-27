@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:51:"./application/admin/view2/machine\_addEditType.html";i:1534996559;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:51:"./application/admin/view2/machine\_addEditType.html";i:1535184094;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -176,29 +176,26 @@
                     <p class="notic">设置贩卖机价值</p>
                 </dd>
             </dl>
-        <!--     <dl class="row">
-                <dt class="tit">
-                    <label for="count_value"><em>*</em>规定种类数量</label>
-                </dt>
-                <dd class="opt">
-                    <input type="text" name="goods_count" value="<?php echo $info['goods_count']; ?>" id="goods_count" class="input-txt">
-                    <span class="err" id="err_count_value"></span>
-                    <p class="notic">设置贩卖机固定容纳种类数量</p>
-                </dd>
-            </dl> -->
+         
                <dl class="row">
                 <dt class="tit">
-                    <label for="allSelect"><em>*</em>规定规格</label>
+                    <label for="allSelect"><em>*</em>选择使用仓位</label>
                 </dt>
                 <dd class="opt" id="tableContainer">
                    
                 </dd>
-            </dl>
-
-<!--             <div id="tableContainer">   
-        
-
-    </div> -->
+      <!--       </dl>
+               <dl class="row">
+                <dt class="tit">
+                    <label for="count_value"><em>*</em>规定仓位容量</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="goods_count" value="<?php echo $info['goods_count']; ?>" id="goods_count" class="input-txt">
+                    <span class="err" id="err_count_value"></span>
+                    <p class="notic">设置每个格子(螺杆)存放商品数量</p>
+                </dd>
+            </dl> -->
+            
         <dl class="row">
                 <dt class="tit">
                     <label for="brief">备注</label>

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\typeList.html";i:1534761342;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\typeList.html";i:1535184406;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -210,7 +210,7 @@
               </td>
               <td align="center" class="handle">
                 <div style="text-align: center; width: 300px; max-width:170px;">
-                  <a href="javascript:void(0)" onclick="delivery(<?php echo $vo['id']; ?>)" class="btn red"><i class="fa fa-truck"></i>配置</a>
+               <!--    <a href="javascript:void(0)" onclick="delivery(<?php echo $vo['id']; ?>)" class="btn red"><i class="fa fa-truck"></i>配置</a> -->
                   <a href="<?php echo U('Machine/addEditType',array('act'=>'_EDIT_','id'=>$vo['id'])); ?>" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
                   <a class="btn red"  href="javascript:void(0)" data-url="<?php echo U('Machine/addEditType'); ?>" data-id="<?php echo $vo['id']; ?>" onClick="delfunc(this)"><i class="fa fa-trash-o"></i>删除</a>
                 </div>

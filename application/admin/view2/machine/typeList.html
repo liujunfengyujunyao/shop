@@ -96,7 +96,7 @@
               </td>
               <td align="center" class="handle">
                 <div style="text-align: center; width: 300px; max-width:170px;">
-                  <a href="javascript:void(0)" onclick="delivery({$vo['id']})" class="btn red"><i class="fa fa-truck"></i>配置</a>
+               <!--    <a href="javascript:void(0)" onclick="delivery({$vo['id']})" class="btn red"><i class="fa fa-truck"></i>配置</a> -->
                   <a href="{:U('Machine/addEditType',array('act'=>'_EDIT_','id'=>$vo['id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
                   <a class="btn red"  href="javascript:void(0)" data-url="{:U('Machine/addEditType')}" data-id="{$vo.id}" onClick="delfunc(this)"><i class="fa fa-trash-o"></i>删除</a>
                 </div>
