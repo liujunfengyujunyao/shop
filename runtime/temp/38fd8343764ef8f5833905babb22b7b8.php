@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535348336;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535352230;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -350,7 +350,7 @@ function checkForm(){
 						//关闭iframe页面
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
-						parent.location.href = "<?php echo U('Admin/Machine/typeList'); ?>";
+						parent.location.href = "<?php echo U('Admin/Machine/index'); ?>";
 					});
 				} else {
 					layer.msg(data.msg, {icon: 2});

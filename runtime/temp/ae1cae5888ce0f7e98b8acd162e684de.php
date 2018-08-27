@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\typeList.html";i:1535349392;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\typeList.html";i:1535352167;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -155,7 +155,7 @@
               <div style="text-align: left; width: 50px;" class="">分类ID</div>
             </th>
             <th align="left" abbr="ac_id" axis="col4" class="">
-              <div style="text-align: left; width: 400px;" class="">分类名称</div>
+              <div style="text-align: left; width: 300px;" class="">分类名称</div>
             </th>
              <th align="center" abbr="article_show" axis="col5" class="">
               <div style="text-align: left; width: 150px;" class="">最大总价值</div>
@@ -200,7 +200,7 @@
                 <div style="text-align: left; width: 50px;"><?php echo $vo['id']; ?></div>
               </td>
               <td align="left" class="">
-                <div style="text-align: left; width: 400px;"><?php echo $vo['type_name']; ?></div>
+                <div style="text-align: left; width: 300px;"><?php echo $vo['type_name']; ?></div>
               </td>
               <td align="left" class="">
                 <div style="text-align: left; width: 150px;"><?php echo $vo['count_value']; ?></div>

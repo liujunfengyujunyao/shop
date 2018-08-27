@@ -372,10 +372,14 @@ class Machine extends Base
 
 		if ($act == '_EDIT_') {
 			$id = I('post.id');
+			$post = I("post.");
 			$data['type_name'] = I('post.type_name');//种类名称
 			$data['count_value'] = I('post.count_value');//总价值
-			$data['goods_count'] = I('post.goods_count');//固定存储种类数量
+			// $data['goods_count'] = I('post.goods_count');//固定存储种类数量
+			$allSelect = implode(',',$post['allSelect']);
+			$data['goods_count'] = count($post['allSelect']);//固定存储种类数量
 			$data['goods_value'] = I('post.goods_value');
+			$data['location'] = $allSelect;
 			$r = $machine_type_db->where("id = $id")->save($data);
 			if ($r !== false) {
 				$this->success("操作成功",U('Admin/Machine/typeList'));
