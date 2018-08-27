@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:51:"./application/admin/view2/machine\_addEditType.html";i:1535184094;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:51:"./application/admin/view2/machine\_addEditType.html";i:1535340891;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -184,17 +184,17 @@
                 <dd class="opt" id="tableContainer">
                    
                 </dd>
-      <!--       </dl>
+            </dl>
                <dl class="row">
                 <dt class="tit">
                     <label for="count_value"><em>*</em>规定仓位容量</label>
                 </dt>
                 <dd class="opt">
-                    <input type="text" name="goods_count" value="<?php echo $info['goods_count']; ?>" id="goods_count" class="input-txt">
+                    <input type="text" name="goods_num" value="<?php echo $info['goods_num']; ?>" id="goods_num" class="input-txt">
                     <span class="err" id="err_count_value"></span>
                     <p class="notic">设置每个格子(螺杆)存放商品数量</p>
                 </dd>
-            </dl> -->
+            </dl>
             
         <dl class="row">
                 <dt class="tit">

@@ -334,7 +334,7 @@ class Machine extends Base
 			if ($act == '_EDIT_') {
 				$id = I("get.id");
 				$info = $machine_type_db->where("id = $id")->find();
-				halt($info);
+				
 				$this->assign('info',$info);
 				$this->assign('act','_EDIT_');
 			}
@@ -359,6 +359,7 @@ class Machine extends Base
 			$allSelect = implode(',',$post['allSelect']);
 			$data['goods_count'] = count($post['allSelect']);
 			$data['location'] = $allSelect;
+			$data['goods_num'] = $post['goods_num'];
 			// halt($data);
 			$r = $machine_type_db->add($data);
 			if ($r !== false) {
