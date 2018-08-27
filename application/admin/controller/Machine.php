@@ -749,7 +749,7 @@ class Machine extends Base
     			
     			$r = DB::name('machine_conf')->where(['machine_id' => $machine_id])->find();
     			if ($r !== NULL) {
-    				DB::name("machine_conf")->where(['machine_id' => $machine_id])->delete();
+    				DB::name(" ")->where(['machine_id' => $machine_id])->delete();
     			}
 
     			foreach ($data['goods'] as $key => $value) {
@@ -785,6 +785,13 @@ class Machine extends Base
 
     	} else {
     		//读取商品配置清单
+    	
+
+    		$type_id = DB::name('machine')
+    			->where(['machine_id' => $machine_id])
+    			->getField('type_id');
+    		
+
     		$info = DB::name('machine_conf')
     			->alias('mc')
     			->field('mc.goods_id, mc.goods_num, g.shop_price, mc.location')
@@ -792,10 +799,7 @@ class Machine extends Base
     			->where(['mc.machine_id'=>$machine_id])
     			->select();
 
-    		$type_id = DB::name('machine')
-    			->where(['machine_id' => $machine_id])
-    			->getField('type_id');
-    			// halt($type_id);
+
     		$list = DB::name('goods')
     			->field('goods_id,goods_name,shop_price')
     			->where(['is_on_sale' => 1])//是否上架
@@ -804,10 +808,14 @@ class Machine extends Base
     		$location = DB::name('machine_type')
     			->where(['id' => $type_id])
     			->getField('location');
+    		
     		$location = explode(',',$location);
     		
     		$count_value = DB::name('machine_type')->where(['id' => $type_id])->getField('count_value');
 
+    		$goods_num = DB::name('machine_type')->where(['id'=>$type_id])->getField("goods_num");
+    		
+    		$this->assign('goods_num',$goods_num);
     		$this->assign('info',$info);
     		$this->assign('machine_id',$machine_id);
     		$this->assign('count_value',$count_value);

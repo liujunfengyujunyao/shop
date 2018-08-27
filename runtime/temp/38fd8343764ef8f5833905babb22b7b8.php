@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535188037;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535347258;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -189,7 +189,7 @@
 
 								<td align="left" class="">
 									<div style="text-align: center; width: 155px;">
-										<input type="text" class="number" value="1" onchange="count_price()" onkeyup='this.value=this.value.replace(/\D/gi,"")' />
+										<input type="text" class="number" value="<?php echo $goods_num; ?>" readonly="readonly" onchange="count_price()" onkeyup='this.value=this.value.replace(/\D/gi,"")' />
 									</div>
 								</td>
 								<td align="" class="" style="width: 100%;">
