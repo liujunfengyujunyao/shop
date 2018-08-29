@@ -496,11 +496,18 @@ class Machine extends Base
 			$where['m.machine_name'] = array('like', '%' . $data['machine_name'] . '%');
 		}
 		$where['m.status'] = 1;//未被删除
+		// $count = DB::name('machine')
+		// 		->alias('m')
+		// 		->where($where)
+		// 		->join('__USERS__ u', 'u.user_id = m.machine_admin', 'LEFT')//user_id为负责人
+		// 		->count();
+
 		$count = DB::name('machine')
 				->alias('m')
 				->where($where)
-				->join('__USERS__ u', 'u.user_id = m.machine_admin', 'LEFT')//user_id为负责人
+				->join('__PARTNER__ p','p.partner_id = m.partner_id','LEFT')
 				->count();
+
 
 		$Page = new Page($count, 10);
 		$show = $Page->show();
@@ -715,18 +722,29 @@ class Machine extends Base
         //         // ->order($order_str)
         //         ->limit($Page->firstRow.','.$Page->listRows)
         //         ->select();
- 		$goodsList = M('Goods')
- 				->alias('g')
- 				->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,m.location")
- 				->join('__MACHINE_CONF__ m','g.goods_id = m.goods_id','LEFT')
- 				->join('__MACHINE_STOCK__ s','s.goods_id = m.goods_id','LEFT')
+
+ 		// $goodsList = M('Goods')
+ 		// 		->alias('g')
+ 		// 		->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,m.location")
+ 		// 		->join('__MACHINE_CONF__ m','g.goods_id = m.goods_id','LEFT')
+ 		// 		->join('__MACHINE_STOCK__ s','s.goods_id = m.goods_id','LEFT')
+ 		// 		->where($where)
+ 		// 		->where(['m.machine_id'=>$machine_id])
+ 		// 		// ->where(['s.machine_id'=>$machine_id])
+ 		// 		->limit($Page->firstRow.','.$Page->listRows)
+   //              ->select();
+        $goodsList = M('Machine_stock')
+ 				->alias('s')
+ 				->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,s.machine_id,m.location")
+ 				->join('__GOODS__ g','s.goods_id = g.goods_id','LEFT')
+ 				->join('__MACHINE_CONF__ m','s.goods_id = m.goods_id','LEFT')
  				->where($where)
- 				->where(['m.machine_id'=>$machine_id])
+ 				->where(['s.machine_id'=>$machine_id,'m.machine_id'=>$machine_id])
  				// ->where(['s.machine_id'=>$machine_id])
  				->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
-                // halt($goodsList);
-        $catList = D('goods_category')->select();
+
+        $catList = DB::name('goods_category')->select();
         $catList = convert_arr_key($catList, 'id');
 
         //本机库存
