@@ -374,8 +374,10 @@ class Machine extends Base
 			$id = I('post.id');
 			$data['type_name'] = I('post.type_name');//种类名称
 			$data['count_value'] = I('post.count_value');//总价值
-			$data['goods_count'] = I('post.goods_count');//固定存储种类数量
+			$allSelect = implode(',',$_POST['allSelect']);
+			$data['goods_count'] = count($_POST['allSelect']);//固定存储种类数量
 			$data['goods_value'] = I('post.goods_value');
+			$data['location'] = $allSelect;
 			$r = $machine_type_db->where("id = $id")->save($data);
 			if ($r !== false) {
 				$this->success("操作成功",U('Admin/Machine/typeList'));
@@ -711,17 +713,26 @@ class Machine extends Base
         //         // ->order($order_str)
         //         ->limit($Page->firstRow.','.$Page->listRows)
         //         ->select();
- 		$goodsList = M('Goods')
- 				->alias('g')
- 				->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,m.location")
- 				->join('__MACHINE_CONF__ m','g.goods_id = m.goods_id','LEFT')
- 				->join('__MACHINE_STOCK__ s','s.goods_id = m.goods_id','LEFT')
+ 		// $goodsList = M('Goods')
+ 		// 		->alias('g')
+ 		// 		->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,m.location")
+ 		// 		->join('__MACHINE_CONF__ m','g.goods_id = m.goods_id','LEFT')
+ 		// 		->join('__MACHINE_STOCK__ s','s.goods_id = m.goods_id','LEFT')
+ 		// 		->where($where)
+ 		// 		->where(['m.machine_id'=>$machine_id])
+ 		// 		// ->where(['s.machine_id'=>$machine_id])
+ 		// 		->limit($Page->firstRow.','.$Page->listRows)
+   //              ->select();
+        $goodsList = M('Machine_stock')
+ 				->alias('s')
+ 				->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,s.machine_id,m.location")
+ 				->join('__GOODS__ g','s.goods_id = g.goods_id','LEFT')
+ 				->join('__MACHINE_CONF__ m','s.goods_id = m.goods_id','LEFT')
  				->where($where)
- 				->where(['m.machine_id'=>$machine_id])
+ 				->where(['s.machine_id'=>$machine_id,'m.machine_id'=>$machine_id])
  				// ->where(['s.machine_id'=>$machine_id])
  				->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
-                // halt($goodsList);
         $catList = D('goods_category')->select();
         $catList = convert_arr_key($catList, 'id');
 
