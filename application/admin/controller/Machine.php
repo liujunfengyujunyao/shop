@@ -372,10 +372,17 @@ class Machine extends Base
 
 		if ($act == '_EDIT_') {
 			$id = I('post.id');
+			$post = I("post.");
 			$data['type_name'] = I('post.type_name');//种类名称
 			$data['count_value'] = I('post.count_value');//总价值
+<<<<<<< HEAD
 			$allSelect = implode(',',$_POST['allSelect']);
 			$data['goods_count'] = count($_POST['allSelect']);//固定存储种类数量
+=======
+			// $data['goods_count'] = I('post.goods_count');//固定存储种类数量
+			$allSelect = implode(',',$post['allSelect']);
+			$data['goods_count'] = count($post['allSelect']);//固定存储种类数量
+>>>>>>> 00373d9e0c055f11dbccd01656219be4286809c4
 			$data['goods_value'] = I('post.goods_value');
 			$data['location'] = $allSelect;
 			$r = $machine_type_db->where("id = $id")->save($data);
@@ -494,11 +501,18 @@ class Machine extends Base
 			$where['m.machine_name'] = array('like', '%' . $data['machine_name'] . '%');
 		}
 		$where['m.status'] = 1;//未被删除
+		// $count = DB::name('machine')
+		// 		->alias('m')
+		// 		->where($where)
+		// 		->join('__USERS__ u', 'u.user_id = m.machine_admin', 'LEFT')//user_id为负责人
+		// 		->count();
+
 		$count = DB::name('machine')
 				->alias('m')
 				->where($where)
-				->join('__USERS__ u', 'u.user_id = m.machine_admin', 'LEFT')//user_id为负责人
+				->join('__PARTNER__ p','p.partner_id = m.partner_id','LEFT')
 				->count();
+
 
 		$Page = new Page($count, 10);
 		$show = $Page->show();
@@ -713,6 +727,10 @@ class Machine extends Base
         //         // ->order($order_str)
         //         ->limit($Page->firstRow.','.$Page->listRows)
         //         ->select();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 00373d9e0c055f11dbccd01656219be4286809c4
  		// $goodsList = M('Goods')
  		// 		->alias('g')
  		// 		->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,m.location")
@@ -733,7 +751,12 @@ class Machine extends Base
  				// ->where(['s.machine_id'=>$machine_id])
  				->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
+<<<<<<< HEAD
         $catList = D('goods_category')->select();
+=======
+
+        $catList = DB::name('goods_category')->select();
+>>>>>>> 00373d9e0c055f11dbccd01656219be4286809c4
         $catList = convert_arr_key($catList, 'id');
 
         //本机库存

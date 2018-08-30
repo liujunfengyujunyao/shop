@@ -1,4 +1,118 @@
-<include file="public/layout" />
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535352230;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- Apple devices fullscreen -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!-- Apple devices fullscreen -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link href="__PUBLIC__/static/css/main.css" rel="stylesheet" type="text/css">
+<link href="__PUBLIC__/static/css/page.css" rel="stylesheet" type="text/css">
+<link href="__PUBLIC__/static/font/css/font-awesome.min.css" rel="stylesheet" />
+<!--[if IE 7]>
+  <link rel="stylesheet" href="__PUBLIC__/static/font/css/font-awesome-ie7.min.css">
+<![endif]-->
+<link href="__PUBLIC__/static/js/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
+<link href="__PUBLIC__/static/js/perfect-scrollbar.min.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">html, body { overflow: visible;}</style>
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/js/layer/layer.js"></script><!-- 弹窗js 参考文档 http://layer.layui.com/-->
+<script type="text/javascript" src="__PUBLIC__/static/js/admin.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery.validation.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery.mousewheel.js"></script>
+<script src="__PUBLIC__/js/myFormValidate.js"></script>
+<script src="__PUBLIC__/js/myAjax2.js"></script>
+<script src="__PUBLIC__/js/global.js"></script>
+    <script type="text/javascript">
+    function delfunc(obj){
+    	layer.confirm('确认删除？', {
+    		  btn: ['确定','取消'] //按钮
+    		}, function(){
+    		    // 确定
+   				$.ajax({
+   					type : 'post',
+   					url : $(obj).attr('data-url'),
+   					data : {act:'del',del_id:$(obj).attr('data-id')},
+   					dataType : 'json',
+   					success : function(data){
+						layer.closeAll();
+   						if(data==1){
+   							layer.msg('操作成功', {icon: 1});
+   							$(obj).parent().parent().parent().remove();
+   						}else{
+   							layer.msg(data, {icon: 2,time: 2000});
+   						}
+   					}
+   				})
+    		}, function(index){
+    			layer.close(index);
+    			return false;// 取消
+    		}
+    	);
+    }
+    
+    function selectAll(name,obj){
+    	$('input[name*='+name+']').prop('checked', $(obj).checked);
+    }   
+    
+    function get_help(obj){
+        layer.open({
+            type: 2,
+            title: '帮助手册',
+            shadeClose: true,
+            shade: 0.3,
+            area: ['70%', '80%'],
+            content: $(obj).attr('data-url'), 
+        });
+    }
+    
+    function delAll(obj,name){
+    	var a = [];
+    	$('input[name*='+name+']').each(function(i,o){
+    		if($(o).is(':checked')){
+    			a.push($(o).val());
+    		}
+    	})
+    	if(a.length == 0){
+    		layer.alert('请选择删除项', {icon: 2});
+    		return;
+    	}
+    	layer.confirm('确认删除？', {btn: ['确定','取消'] }, function(){
+    			$.ajax({
+    				type : 'get',
+    				url : $(obj).attr('data-url'),
+    				data : {act:'del',del_id:a},
+    				dataType : 'json',
+    				success : function(data){
+						layer.closeAll();
+    					if(data == 1){
+    						layer.msg('操作成功', {icon: 1});
+    						$('input[name*='+name+']').each(function(i,o){
+    							if($(o).is(':checked')){
+    								$(o).parent().parent().remove();
+    							}
+    						})
+    					}else{
+    						layer.msg(data, {icon: 2,time: 2000});
+    					}
+    				}
+    			})
+    		}, function(index){
+    			layer.close(index);
+    			return false;// 取消
+    		}
+    	);	
+    }
+</script>  
+
+</head>
 <style>
 	body {overflow-x: hidden;}
 	.express {padding: 0 0 10px 10px}
@@ -7,7 +121,7 @@
 	input[type='number'] {-moz-appearance:textfield;}
 </style>
 <form class="form-horizontal" id="handleForm" method="post">
-	<input type="hidden" value="{$count_value}" id="count_value">
+	<input type="hidden" value="<?php echo $count_value; ?>" id="count_value">
 	<div class="flexigrid">
 		<div class="hDiv">
 			<div class="hDivBox">
@@ -42,8 +156,7 @@
 			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
 				<table>
 					<tbody>
-						<if condition="count($info) eq 0">
-						<foreach name="location" item="lo">
+						<?php if(count($info) == 0): if(is_array($location) || $location instanceof \think\Collection || $location instanceof \think\Paginator): if( count($location)==0 ) : echo "" ;else: foreach($location as $key=>$lo): ?>
 							<tr>
 								<!-- <td class="f-sign" axis="col0">
 									<div style="text-align: center; width: 50px;">
@@ -54,16 +167,16 @@
 
 								<td align="left" class="">
 									<div style="text-align: center; width: 150px;">
-										<input type="text" class="location" readonly="readonly" value="{$lo}" />
+										<input type="text" class="location" readonly="readonly" value="<?php echo $lo; ?>" />
 									</div>
 								</td>
 								<td align="left" class="">
 									<div style="text-align: center; width: 300px;">
 										<select onchange="getId(this)">
 											<option value="">请选择</option>
-											<volist name='list' id='v'>
-											<option value="{$v.goods_id}" price="{$v.shop_price}">{$v.goods_name}</option>
-											</volist>
+											<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
+											<option value="<?php echo $v['goods_id']; ?>" price="<?php echo $v['shop_price']; ?>"><?php echo $v['goods_name']; ?></option>
+											<?php endforeach; endif; else: echo "" ;endif; ?>
 										</select>
 									</div>
 								</td>
@@ -76,16 +189,14 @@
 
 								<td align="left" class="">
 									<div style="text-align: center; width: 155px;">
-										<input type="text" class="number" value="{$goods_num}" readonly="readonly" onchange="count_price()" onkeyup='this.value=this.value.replace(/\D/gi,"")' />
+										<input type="text" class="number" value="<?php echo $goods_num; ?>" readonly="readonly" onchange="count_price()" onkeyup='this.value=this.value.replace(/\D/gi,"")' />
 									</div>
 								</td>
 								<td align="" class="" style="width: 100%;">
 									<div>&nbsp;</div>
 								</td>
 							</tr>
-							</foreach>
-						<else />
-							<foreach name="info" item="vo">
+							<?php endforeach; endif; else: echo "" ;endif; else: if(is_array($info) || $info instanceof \think\Collection || $info instanceof \think\Paginator): if( count($info)==0 ) : echo "" ;else: foreach($info as $key=>$vo): ?>
 								<tr>
 							<!-- 		<td class="f-sign" axis="col0">
 										<div style="text-align: center; width: 50px;">
@@ -96,38 +207,37 @@
 
 									<td align="left" class="">
 										<div style="text-align: center; width: 150px;">
-											<input type="text" class="location" readonly="readonly" name="goods['{$vo.goods_id}'][location]" value="{$vo.location}" />
+											<input type="text" class="location" readonly="readonly" name="goods['<?php echo $vo['goods_id']; ?>'][location]" value="<?php echo $vo['location']; ?>" />
 										</div>
 									</td>
 
 									<td align="left" class="">
 										<div style="text-align: center; width: 300px;">
-											<select onchange="getId(this)" name="goods['{$vo.goods_id}'][goods_id]">
+											<select onchange="getId(this)" name="goods['<?php echo $vo['goods_id']; ?>'][goods_id]">
 												<option value="">请选择</option>
-												<volist name='list' id='v'>
-												<option value="{$v.goods_id}" price="{$v.shop_price}" <if condition="$v['goods_id'] eq $vo['goods_id']">selected</if>>{$v.goods_name}</option>
-												</volist>
+												<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
+												<option value="<?php echo $v['goods_id']; ?>" price="<?php echo $v['shop_price']; ?>" <?php if($v['goods_id'] == $vo['goods_id']): ?>selected<?php endif; ?>><?php echo $v['goods_name']; ?></option>
+												<?php endforeach; endif; else: echo "" ;endif; ?>
 											</select>
 										</div>
 									</td>
 
 									<td align="left" class="">
 										<div style="text-align: center; width: 200px;">
-											<input type="text" class="price" readonly="readonly" value="￥{$vo.shop_price}" />
+											<input type="text" class="price" readonly="readonly" value="￥<?php echo $vo['shop_price']; ?>" />
 										</div>
 									</td>
 
 									<td align="left" class="">
 										<div style="text-align: center; width: 155px;">
-											<input type="text" class="number" name="goods['{$vo.goods_id}'][number]" value="{$vo.goods_num}" onchange="count_price()" readonly="readonly" onkeyup='this.value=this.value.replace(/\D/gi,"")' />
+											<input type="text" class="number" name="goods['<?php echo $vo['goods_id']; ?>'][number]" value="<?php echo $vo['goods_num']; ?>" onchange="count_price()" readonly="readonly" onkeyup='this.value=this.value.replace(/\D/gi,"")' />
 										</div>
 									</td>
 									<td align="" class="" style="width: 100%;">
 										<div>&nbsp;</div>
 									</td>
 								</tr>
-							</foreach>
-						</if>
+							<?php endforeach; endif; else: echo "" ;endif; endif; ?>
 					</tbody>
 				</table>
 			</div>
@@ -194,7 +304,7 @@ function checkForm(){
 
 	var arr = [];
 	var res = 0;
-	//var storeage = "{$storeage}";
+	//var storeage = "<?php echo $storeage; ?>";
 	$("#flexigrid tr").each(function(index, el) {
 		var goods = $(el).find('select').val();
 		var max = $(el).find("option:selected").attr("max");
@@ -225,7 +335,7 @@ function checkForm(){
 	}else if (res == 2) {
 		layer.alert('补货数量超过最大库存量！');
 	}else {
-		var id = "{$machine_id}";
+		var id = "<?php echo $machine_id; ?>";
 		$.ajax({
 			type: "POST",
 			url: "/index.php?m=Admin&c=Machine&a=delivery&id="+id,
@@ -240,7 +350,7 @@ function checkForm(){
 						//关闭iframe页面
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
-						parent.location.href = "{:U('Admin/Machine/index')}";
+						parent.location.href = "<?php echo U('Admin/Machine/index'); ?>";
 					});
 				} else {
 					layer.msg(data.msg, {icon: 2});
