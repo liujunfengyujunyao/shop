@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535615483;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535619921;s:44:"./application/admin/view2/public\layout.html";i:1534924564;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -129,23 +129,21 @@
 				<table cellspacing="0" cellpadding="0">
 					<thead>
 						<tr>
-							<th axis="col0">
-								<div style="width: 5px;"></div>
+							
+							<th align="left" axis="col4" class="">
+								<div style="text-align: center; width: 150px;" class="">存放位置</div>
 							</th>
-							<th align="center" axis="col4" class="">
-								<div style="text-align: center; width: 75px;" class="">存放位置</div>
+							<th align="left" axis="col4" class="">
+								<div style="text-align: center; width: 200px;" class="">商品名称</div>
 							</th>
-							<th align="center" axis="col4" class="">
-								<div style="text-align: center; width: 100px;" class="">商品名称</div>
+							<th align="left" axis="col4" class="">
+								<div style="text-align: center; width: 150px;" class="">本店单价</div>
 							</th>
-							<th align="center" axis="col4" class="">
-								<div style="text-align: center; width: 200px;" class="">本店单价</div>
-							</th>
-							<th align="center" axis="col4" class="">
+							<th align="left" axis="col4" class="">
 								<div style="text-align: center; width: 150px;" class="">本机库存</div>
 							</th>
-							<th align="center" axis="col5" class="">
-								<div style="text-align: center; width: 155px;" class="">商品数量</div>
+							<th align="left" axis="col4" class="">
+								<div style="text-align: center; width: 150px;" class="">最大库存量</div>
 							</th>
 							<th style="width:100%" axis="col7">
 								<div></div>
@@ -170,12 +168,12 @@
 								</td> -->
 
 								<td align="left" class="">
-									<div style="text-align: center; width: 75px;">
+									<div style="text-align: center; width: 150px;">
 										<input type="text" class="location" readonly="readonly" value="<?php echo $lo; ?>" />
 									</div>
 								</td>
 								<td align="left" class="">
-									<div style="text-align: center; width: 100px;">
+									<div style="text-align: center; width: 200px;">
 										<select onchange="getId(this)">
 											<option value="">请选择</option>
 											<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
@@ -186,13 +184,17 @@
 								</td>
 
 								<td align="left" class="">
-									<div style="text-align: center; width: 200px;">
+									<div style="text-align: center; width: 150px;">
 										<input type="text" class="price" readonly="readonly" value="" />
 									</div>
 								</td>
-
 								<td align="left" class="">
-									<div style="text-align: center; width: 155px;">
+									<div style="text-align: center; width:150px;">
+										<input type="text" class="real_num" readonly="readonly" value="0" />
+									</div>
+								</td>
+								<td align="left" class="">
+									<div style="text-align: center; width: 150px;">
 										<input type="text" class="number" value="<?php echo $goods_num; ?>" readonly="readonly" onchange="count_price()" onkeyup='this.value=this.value.replace(/\D/gi,"")' />
 									</div>
 								</td>
@@ -208,7 +210,7 @@
 											<a title="删除行" onclick="delLine(this)" class="minus"><span class="fa fa-minus"></span></a>
 										</div>
 									</td> -->
-									<input type="hidden" value="<?php echo $vo['stock_id']; ?>" name="goods['<?php echo $vo['goods_id']; ?>'][stock_id]">
+									<input type="hidden" class="stock_id" value="<?php echo $vo['stock_id']; ?>" name="goods['<?php echo $vo['goods_id']; ?>'][stock_id]">
 
 									<td align="left" class="">
 										<div style="text-align: center; width: 150px;">
@@ -217,8 +219,8 @@
 									</td>
 
 									<td align="left" class="">
-										<div style="text-align: center; width: 300px;">
-											<select onchange="getId(this)" name="goods['<?php echo $vo['goods_id']; ?>'][goods_id]">
+										<div style="text-align: center; width: 200px;">
+											<select onchange="getId(this)" name="goods['<?php echo $vo['goods_id']; ?>'][goods_id]" <?php if($vo['real_num'] != 0): ?>disabled='true'<?php endif; ?>>
 												<option value="">请选择</option>
 												<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
 												<option value="<?php echo $v['goods_id']; ?>" price="<?php echo $v['shop_price']; ?>" <?php if($v['goods_id'] == $vo['goods_id']): ?>selected<?php endif; ?>><?php echo $v['goods_name']; ?></option>
@@ -228,17 +230,17 @@
 									</td>
 									
 									<td align="left" class="">
-										<div style="text-align: center; width: 200px;">
+										<div style="text-align: center; width: 150px;">
 											<input type="text" class="price" readonly="readonly" value="￥<?php echo $vo['shop_price']; ?>" />
 										</div>
 									</td>
 									<td align="left" class="">
-										<div style="text-align: center; width: 200px;">
-											<input type="text" class="goods_num" readonly="readonly" value="<?php echo $vo['goods_num']; ?>" />
+										<div style="text-align: center; width: 150px;">
+											<input type="text" class="real_num" readonly="readonly" value="<?php echo $vo['real_num']; ?>" />
 										</div>
 									</td>
 									<td align="left" class="">
-										<div style="text-align: center; width: 155px;">
+										<div style="text-align: center; width: 150px;">
 											<input type="text" class="number" name="goods['<?php echo $vo['goods_id']; ?>'][number]" value="<?php echo $vo['goods_num']; ?>" onchange="count_price()" readonly="readonly" onkeyup='this.value=this.value.replace(/\D/gi,"")' />
 										</div>
 									</td>
@@ -280,9 +282,11 @@ function getId(opt) {
 	var name1 = "goods['" + id + "'][goods_id]";
 	var name2 = "goods['" + id + "'][number]";
 	var name3 = "goods['" + id + "'][location]";
+	var name4 = "goods['" + id + "'][stock_id]";
 	$(opt).attr('name', name1);
 	$(opt).parents('tr').find('.number').attr('name', name2);
 	$(opt).parents('tr').find('.location').attr('name', name3);
+	$(opt).parents('tr').find('.stock_id').attr('name', name4);
 	var machine_price = $(opt).find('option:selected').attr('price');
 	$(opt).parents('tr').find('.price').val("￥"+machine_price);
 	count_price();
@@ -315,6 +319,7 @@ function checkForm(){
 	var res = 0;
 	//var storeage = "<?php echo $storeage; ?>";
 	$("#flexigrid tr").each(function(index, el) {
+		$(el).find("select").attr("disabled",false);
 		var goods = $(el).find('select').val();
 		var max = $(el).find("option:selected").attr("max");
 		//max = (max != false )? max : storeage;

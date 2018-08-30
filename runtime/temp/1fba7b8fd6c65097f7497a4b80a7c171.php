@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:54:"./application/admin/view2/machine\ajaxMachineList.html";i:1534843007;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:54:"./application/admin/view2/machine\ajaxMachineList.html";i:1534924564;}*/ ?>
 <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
     <table width="100%">
         <tbody>

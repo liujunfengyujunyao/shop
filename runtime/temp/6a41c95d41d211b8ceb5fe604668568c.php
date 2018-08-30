@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:42:"./application/admin/view2/index\index.html";i:1534314853;s:45:"./application/admin/view2/public\menubox.html";i:1533876247;s:42:"./application/admin/view2/public\left.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:42:"./application/admin/view2/index\index.html";i:1534924564;s:45:"./application/admin/view2/public\menubox.html";i:1534924564;s:42:"./application/admin/view2/public\left.html";i:1534924564;}*/ ?>
 <!doctype html>
 <html>
 <head>

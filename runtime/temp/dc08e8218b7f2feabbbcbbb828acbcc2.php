@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:54:"./application/admin/view2/machine\_addEditMachine.html";i:1535099425;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:54:"./application/admin/view2/machine\_addEditMachine.html";i:1535350783;s:44:"./application/admin/view2/public\layout.html";i:1534924564;}*/ ?>
 <!doctype html>
 <html>
 <head>
