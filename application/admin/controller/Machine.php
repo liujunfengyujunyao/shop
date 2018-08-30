@@ -773,10 +773,19 @@ class Machine extends Base
     		if ($machine_id) {
 
     			$data = I('post.');
-    			
+    			$this->ajaxReturn($data['goods']);
     			$r = DB::name('machine_conf')->where(['machine_id' => $machine_id])->find();
     			if ($r !== NULL) {
+    				$stock = [];
+    				foreach ($data['goods'] as $key => $value) {
+    					$stock[$key] = $value['stock_id'];
+    				}
+
+    				$this->ajaxReturn($stock);
     				DB::name("machine_conf")->where(['machine_id' => $machine_id])->delete();
+    				
+
+    				DB::name("machine_stock")->where(['machine_id' => $machine_id])->delete();
     			}
 
     			foreach ($data['goods'] as $key => $value) {
@@ -793,6 +802,15 @@ class Machine extends Base
     			}
 
     		$machine_conf = M('machine_conf')->field('goods_id,goods_num')->where('machine_id',$machine_id)->select();
+
+    		if($stock){
+    		// foreach ($data['goods'] as $key => $value) {
+    		// 	$stock['goods_num'] = 
+    		// 	DB::name('machine_stock')->save();
+    		// }
+
+    		
+    		}else{
     		$sql = "INSERT IGNORE INTO __PREFIX__machine_stock (`machine_id`,`goods_id`,`stock_num`) VALUES ";
 			//将记录存入库存表中
 			foreach ($machine_conf as $conf) {
@@ -803,6 +821,8 @@ class Machine extends Base
 			$sql_query = $sql . $value;
 			
 			$res = DB::query($sql_query);
+    		}
+    	
 
     		
     			$this->ajaxReturn(array('status' => 1,'msg' => '操作成功'));
@@ -812,7 +832,9 @@ class Machine extends Base
 
     	} else {
     		//读取商品配置清单
-    	
+    		$stock = DB::name('machine_stock')
+    			->where(['machine_id' => $machine_id])
+    			->getField('stock_id',true);
 
     		$type_id = DB::name('machine')
     			->where(['machine_id' => $machine_id])
@@ -821,9 +843,10 @@ class Machine extends Base
 
     		$info = DB::name('machine_conf')
     			->alias('mc')
-    			->field('mc.goods_id, mc.goods_num, g.shop_price, mc.location')
-    			->join('__GOODS__ g', 'g.goods_id = mc.goods_id')
-    			->where(['mc.machine_id'=>$machine_id])
+    			->field('mc.goods_id, mc.goods_num, g.shop_price, mc.location, ms.stock_id, ms.goods_num')
+    			->join('__GOODS__ g', 'g.goods_id = mc.goods_id','LEFT')
+    			->join('__MACHINE_STOCK__ ms', 'ms.goods_id = mc.goods_id','LEFT')
+    			->where(['mc.machine_id'=>$machine_id,'ms.machine_id'=>$machine_id])
     			->select();
 
 
@@ -842,6 +865,7 @@ class Machine extends Base
 
     		$goods_num = DB::name('machine_type')->where(['id'=>$type_id])->getField("goods_num");
     		
+    		$this->assign('stock',$stock);
     		$this->assign('goods_num',$goods_num);
     		$this->assign('info',$info);
     		$this->assign('machine_id',$machine_id);

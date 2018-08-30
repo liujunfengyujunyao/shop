@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535352230;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/machine\delivery.html";i:1535615483;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -122,6 +122,7 @@
 </style>
 <form class="form-horizontal" id="handleForm" method="post">
 	<input type="hidden" value="<?php echo $count_value; ?>" id="count_value">
+
 	<div class="flexigrid">
 		<div class="hDiv">
 			<div class="hDivBox">
@@ -129,16 +130,19 @@
 					<thead>
 						<tr>
 							<th axis="col0">
-								<div style="width: 50px;"></div>
+								<div style="width: 5px;"></div>
 							</th>
 							<th align="center" axis="col4" class="">
-								<div style="text-align: center; width: 150px;" class="">存放位置</div>
+								<div style="text-align: center; width: 75px;" class="">存放位置</div>
 							</th>
 							<th align="center" axis="col4" class="">
-								<div style="text-align: center; width: 300px;" class="">商品名称</div>
+								<div style="text-align: center; width: 100px;" class="">商品名称</div>
 							</th>
 							<th align="center" axis="col4" class="">
 								<div style="text-align: center; width: 200px;" class="">本店单价</div>
+							</th>
+							<th align="center" axis="col4" class="">
+								<div style="text-align: center; width: 150px;" class="">本机库存</div>
 							</th>
 							<th align="center" axis="col5" class="">
 								<div style="text-align: center; width: 155px;" class="">商品数量</div>
@@ -166,12 +170,12 @@
 								</td> -->
 
 								<td align="left" class="">
-									<div style="text-align: center; width: 150px;">
+									<div style="text-align: center; width: 75px;">
 										<input type="text" class="location" readonly="readonly" value="<?php echo $lo; ?>" />
 									</div>
 								</td>
 								<td align="left" class="">
-									<div style="text-align: center; width: 300px;">
+									<div style="text-align: center; width: 100px;">
 										<select onchange="getId(this)">
 											<option value="">请选择</option>
 											<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
@@ -204,6 +208,7 @@
 											<a title="删除行" onclick="delLine(this)" class="minus"><span class="fa fa-minus"></span></a>
 										</div>
 									</td> -->
+									<input type="hidden" value="<?php echo $vo['stock_id']; ?>" name="goods['<?php echo $vo['goods_id']; ?>'][stock_id]">
 
 									<td align="left" class="">
 										<div style="text-align: center; width: 150px;">
@@ -221,13 +226,17 @@
 											</select>
 										</div>
 									</td>
-
+									
 									<td align="left" class="">
 										<div style="text-align: center; width: 200px;">
 											<input type="text" class="price" readonly="readonly" value="￥<?php echo $vo['shop_price']; ?>" />
 										</div>
 									</td>
-
+									<td align="left" class="">
+										<div style="text-align: center; width: 200px;">
+											<input type="text" class="goods_num" readonly="readonly" value="<?php echo $vo['goods_num']; ?>" />
+										</div>
+									</td>
 									<td align="left" class="">
 										<div style="text-align: center; width: 155px;">
 											<input type="text" class="number" name="goods['<?php echo $vo['goods_id']; ?>'][number]" value="<?php echo $vo['goods_num']; ?>" onchange="count_price()" readonly="readonly" onkeyup='this.value=this.value.replace(/\D/gi,"")' />
@@ -342,6 +351,7 @@ function checkForm(){
 			data: $('#handleForm').serialize(),
 			dataType: "json",
 			error: function () {
+
 				layer.alert("服务器繁忙, 请联系管理员!");
 			},
 			success: function (data) {
