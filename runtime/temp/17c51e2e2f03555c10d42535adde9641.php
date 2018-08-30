@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:53:"./application/admin/view2/goods\ajax_spec_select.html";i:1534924564;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:53:"./application/admin/view2/goods\ajax_spec_select.html";i:1533876247;}*/ ?>
 <table class="table table-bordered" id="goods_spec_table1">                                
     <tr>
         <td colspan="2"><b>商品规格:</b></td>

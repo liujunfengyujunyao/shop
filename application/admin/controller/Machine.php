@@ -375,14 +375,11 @@ class Machine extends Base
 			$post = I("post.");
 			$data['type_name'] = I('post.type_name');//种类名称
 			$data['count_value'] = I('post.count_value');//总价值
-<<<<<<< HEAD
-			$allSelect = implode(',',$_POST['allSelect']);
-			$data['goods_count'] = count($_POST['allSelect']);//固定存储种类数量
-=======
+
 			// $data['goods_count'] = I('post.goods_count');//固定存储种类数量
 			$allSelect = implode(',',$post['allSelect']);
 			$data['goods_count'] = count($post['allSelect']);//固定存储种类数量
->>>>>>> 00373d9e0c055f11dbccd01656219be4286809c4
+
 			$data['goods_value'] = I('post.goods_value');
 			$data['location'] = $allSelect;
 			$r = $machine_type_db->where("id = $id")->save($data);
@@ -727,10 +724,7 @@ class Machine extends Base
         //         // ->order($order_str)
         //         ->limit($Page->firstRow.','.$Page->listRows)
         //         ->select();
-<<<<<<< HEAD
-=======
 
->>>>>>> 00373d9e0c055f11dbccd01656219be4286809c4
  		// $goodsList = M('Goods')
  		// 		->alias('g')
  		// 		->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,m.location")
@@ -751,12 +745,10 @@ class Machine extends Base
  				// ->where(['s.machine_id'=>$machine_id])
  				->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
-<<<<<<< HEAD
-        $catList = D('goods_category')->select();
-=======
+
 
         $catList = DB::name('goods_category')->select();
->>>>>>> 00373d9e0c055f11dbccd01656219be4286809c4
+
         $catList = convert_arr_key($catList, 'id');
 
         //本机库存

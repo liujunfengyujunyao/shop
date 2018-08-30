@@ -1,5 +1,5 @@
 <?php
-//000000000000s:68741:"<!DOCTYPE html>
+//000000000000s:68735:"<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -340,8 +340,8 @@
                         </div>
                         <script>
                             var jiathis_config = {
-                                url:"http://tests.91tfs.com/index.php?m=Home&c=Goods&a=goodsInfo&id=71",
-                                pic:"http://tests.91tfs.com/public/upload/goods/thumb/71/goods_thumb_71_400_400.png",
+                                url:"http://www.shop.com/index.php?m=Home&c=Goods&a=goodsInfo&id=71",
+                                pic:"http://www.shop.com/public/upload/goods/thumb/71/goods_thumb_71_400_400.png",
                             }
                             var is_distribut = getCookie('is_distribut');
                             var user_id = getCookie('user_id');

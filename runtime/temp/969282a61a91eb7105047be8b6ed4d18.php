@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:50:"./application/admin/view2/goods\ajaxGoodsList.html";i:1534924564;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:50:"./application/admin/view2/goods\ajaxGoodsList.html";i:1533876247;}*/ ?>
 <table>
        <tbody>
             <?php if(is_array($goodsList) || $goodsList instanceof \think\Collection || $goodsList instanceof \think\Paginator): $i = 0; $__LIST__ = $goodsList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$list): $mod = ($i % 2 );++$i;?>
