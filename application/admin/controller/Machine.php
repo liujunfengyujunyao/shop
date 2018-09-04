@@ -536,7 +536,8 @@ class Machine extends Base
 				->select();
 				$value['goods'] = $goods;
 		}
-		// halt($list);
+
+		halt($list);
 		$this->assign('page', $show);
 		$this->assign('pager', $Page);
 		$this->assign('list', $list);
@@ -832,7 +833,7 @@ class Machine extends Base
 
     		$info = DB::name('machine_conf')
     			->alias('mc')
-    			->field('mc.goods_id, mc.goods_num, g.shop_price, mc.location, ms.stock_id, ms.goods_num as real_num')
+    			->field('mc.goods_id, mc.goods_num, g.shop_price, mc.location, ms.stock_id, ms.goods_num as real_num')//real_num为本机当前库存
     			->join('__GOODS__ g', 'g.goods_id = mc.goods_id','LEFT')
     			->join('__MACHINE_STOCK__ ms', 'ms.goods_id = mc.goods_id','LEFT')
     			->where(['mc.machine_id'=>$machine_id,'ms.machine_id'=>$machine_id])

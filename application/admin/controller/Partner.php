@@ -187,7 +187,7 @@ class Partner extends Base {
 		$id = I('get.partner_id/d');
 		$content = $this->partner_model->getPartnerStore($id);
 
-		halt($content);
+		
 		$this->assign('partner_id', $id);
 		$this->assign('page', $content['page']);
 		$this->assign('pager', $content['pager']);
@@ -464,7 +464,7 @@ class Partner extends Base {
 				$max = $this->partner_model->max_stock($id, $value['goods_id']);
 				$value['max_num'] = empty($max) ? $value['store_count'] : $max;
 			}
-			halt($list);
+		
 			$this->assign('list', $list);
 			$this->assign('id', $id);
 			return $this->fetch();

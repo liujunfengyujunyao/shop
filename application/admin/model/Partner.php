@@ -49,10 +49,10 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 获取配送员下的工厂店列表（包含分页）
+	 * 获取配送员下的设备列表（包含分页）
 	 * @param int $partner_id 配送员ID
 	 * @param int $pagesize 每页条数（默认为10）
-	 * @return array 工厂店列表
+	 * @return array 设备列表
 	 */
 	public function getPartnerStore($partner_id, $pagesize=10) {
 		$count = DB::name('machine')->where(array('partner_id'=>$partner_id, 'status'=>1))->count();
@@ -155,7 +155,7 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 计算配送员下工厂店的商品最大库存量
+	 * 计算配送员下设备的商品最大库存量
 	 * @param  int $partner_id 配送员ID
 	 * @param  int $goods_id   商品ID
 	 * @return int 商品最大库存
@@ -180,8 +180,8 @@ class Partner extends Model {
 	}
 	
 	/**
-	 * 工厂店库存列表
-	 * @param  int $store_id 工厂店ID
+	 * 设备库存列表
+	 * @param  int $store_id 设备ID
 	 * @param  int $pagesize 每页条数（默认为20）
 	 * @return array 库存列表
 	 */
@@ -190,11 +190,11 @@ class Partner extends Model {
 		$Page = new Page($count, $pagesize);
 		$show = $Page->show();
 
-		$list = DB::name('store_stock')
+		$list = DB::name('machine_stock')
 				->alias('s')
 				->field('s.goods_num, s.edittime, s.stock_num, g.goods_name, s.goods_id ,g.goods_sn')
 				->join('__GOODS__ g', 'g.goods_id = s.goods_id', 'LEFT')
-				->where(array('s.store_id'=>$store_id))
+				->where(array('s.machine_id'=>$store_id))
 				->order('s.edittime desc, s.goods_id desc')
 				->limit($Page->firstRow . ',' . $Page->listRows)
 				->select();
@@ -206,7 +206,7 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 配货单列表（配送员配货给工厂店）
+	 * 配货单列表（配送员配货给设备）
 	 * @param  array $where where条件
 	 * @param  int $pagesize 每页条数（默认为20）
 	 * @return array 配货单列表
@@ -242,7 +242,7 @@ class Partner extends Model {
 	}
 
 	/**
-	 * 配货单详情（配送员配货给工厂店）
+	 * 配货单详情（配送员配货给设备）
 	 * @param  int $id 配货单ID
 	 * @return array 详情
 	 */

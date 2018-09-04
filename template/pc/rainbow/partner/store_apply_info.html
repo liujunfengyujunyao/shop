@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>工厂店补货申请明细-{$tpshop_config['shop_info_store_title']}</title>
+<title>设备补货申请明细-{$tpshop_config['shop_info_store_title']}</title>
 <meta name="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
 <meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
 <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
@@ -53,7 +53,7 @@
 							<div class="base-info">
 								<h3>基本信息</h3>
 								<dl>
-									<dt>申请工厂店：</dt>
+									<dt>申请设备：</dt>
 									<dd>{$info.store_name}（负责人：{$info.nickname}）</dd>
 									<dt>联系方式：</dt>
 									<dd>{$info.mobile}</dd>
@@ -192,7 +192,7 @@ function cancel_apply() {
 		layer.alert('请填写拒绝备注', {icon: 2});
 		return false;
 	}
-	layer.confirm('确定要拒绝工厂店的补货申请吗?', {
+	layer.confirm('确定要拒绝设备的补货申请吗?', {
 		btn: ['确定', '取消'] //按钮
 	}, function () {
 		// 确定

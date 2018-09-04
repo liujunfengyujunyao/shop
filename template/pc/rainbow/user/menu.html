@@ -49,12 +49,12 @@
 			<li><a href="{:U('Home/Order/return_goods_list')}">退货管理</a></li>
 		</ul>
 
-		<if condition="$user.level eq 8"> <!-- 用户等级为合伙人 -->
+		<if condition="$user.level eq 8"> <!-- 用户等级为配货员 -->
 		<ul>
-			<li class="ma"><i class="account-acc6"></i>工厂店管理</li>
-			<li><a href="{:U('Home/Partner/storeList')}">工厂店列表</a></li>
-			<li><a href="{:U('Home/Partner/orderList')}">工厂店订单</a></li>
-			<li><a href="{:U('Home/Partner/store_apply')}">工厂店补货申请</a></li>
+			<li class="ma"><i class="account-acc6"></i>设备管理</li>
+			<li><a href="{:U('Home/Partner/storeList')}">设备列表</a></li>
+			<li><a href="{:U('Home/Partner/orderList')}">设备订单</a></li>
+			<li><a href="{:U('Home/Partner/store_apply')}">设备补货申请</a></li>
 			<li><a href="{:U('Home/Partner/delivery')}">配货单</a></li>
 		</ul>
 		<ul>

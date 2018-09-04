@@ -19,7 +19,7 @@
 		<div class="item-title">
 			<div class="subject">
 				<h3>订单列表</h3>
-				<h5>网站系统合伙人下工厂店的订单</h5>
+				<h5>网站系统配送员下设备的订单</h5>
 			</div>
 		</div>
 	</div>
@@ -30,7 +30,7 @@
 			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
 		</div>
 		<ul>
-			<li>分配到合伙人下所有工厂店的订单，在此展示</li>
+			<li>分配到配送员下所有设备的订单，在此展示</li>
 		</ul>
 	</div>
 	<div class="flexigrid">
@@ -71,7 +71,7 @@
 						</select>
 					</div>
 					<div class="sDiv2">
-						<input size="30" placeholder="合伙人手机号" value="{$Think.request.mobile}" name="mobile" class="qsbox" type="text">
+						<input size="30" placeholder="配送员手机号" value="{$Think.request.mobile}" name="mobile" class="qsbox" type="text">
 						<input class="btn" value="搜索" type="submit">
 					</div>
 				</div>
@@ -101,7 +101,7 @@
 										<div style="width: 24px;"><i class="ico-check"></i></div>
 									</th>
 									<th align="center" axis="col3" class="">
-										<div style="text-align: center; width: 150px;" class="">工厂店名称</div>
+										<div style="text-align: center; width: 150px;" class="">设备名称</div>
 									</th>
 									<th align="center" axis="col3" class="">
 										<div style="text-align: center; width: 150px;" class="">订单编号</div>
@@ -151,7 +151,7 @@ $(document).ready(function(){
 
 function ajax_get_list(id, page) {
 	cur_page = page; //当前页面 保存为全局变量
-	cur_id = id;	//当前选中的合伙人id，保存为全局变量
+	cur_id = id;	//当前选中的配送员id，保存为全局变量
 
 	$.ajax({
 		type: "POST",

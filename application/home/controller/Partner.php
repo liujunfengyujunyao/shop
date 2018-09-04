@@ -1,8 +1,8 @@
 <?php
 /**
  * 用户中心 - 配货员模块
- * @author Dh
- * @date 2017-8-26
+ * @author 
+ * @date 2018-8-26
  */
 namespace app\home\controller; 
 use app\common\logic\MessageLogic;
@@ -34,7 +34,7 @@ class Partner extends Base{
 			$user_message_count = $messageLogic->getUserMessageCount();
 			$this->assign('user_message_count', $user_message_count);
 
-			//获取配货员ID by Dh 2017-8-18
+			//获取配货员ID by  2018-8-18
 			$partner_id = DB::name('partner')->where(array('user_id'=>$this->user_id))->getField('partner_id');
 			$this->partner_id = $partner_id ? $partner_id : 0;
 
@@ -60,9 +60,9 @@ class Partner extends Base{
 	}
 
 	/**
-	 * 配货员下的工厂店列表
-	 * @author Dh
-	 * @date 2017-8-17
+	 * 配货员下的设备列表
+	 * @author 
+	 * @date 2018-8-17
 	 */
 	public function storeList() {
 		$partner = D('Partner');
@@ -75,8 +75,8 @@ class Partner extends Base{
 
 	/**
 	 * 配货员库存列表
-	 * @author Dh
-	 * @date 2017-8-18
+	 * @author 
+	 * @date 2018-8-18
 	 */
 	public function stockList() {
 		$count = DB::name('partner_stock')->where(array('partner_id'=>$this->partner_id))->count();
@@ -96,8 +96,8 @@ class Partner extends Base{
 
 	/**
 	 * 配货员库存日志
-	 * @author Dh
-	 * @date 2017-8-18
+	 * @author 
+	 * @date 2018-8-18
 	 */
 	public function stockLog() {
 		$where = array();
@@ -112,26 +112,26 @@ class Partner extends Base{
 	}
 
 	/**
-	 * 工厂店库存列表
-	 * @author Dh
-	 * @date 2017-8-20
+	 * 设备库存列表
+	 * @author 
+	 * @date 
 	 */
 	public function store_stock_list() {
 		$id = I('get.id/d');
 		$partner = D('Partner');
-		$content = $partner->store_stock_list($id);
-
+		$content = $partner->store_stock_list($id);//admin/model/partner.php
+		// halt($content['list']);
 		$this->assign('page', $content['page']);
 		$this->assign('pager', $content['pager']);
 		$this->assign('list', $content['list']);
-		$this->assign('storeage', tpCache('basic.store_storeage')); //工厂店库存预警比例配置
+		$this->assign('storeage', tpCache('basic.store_storeage')); //设备库存预警比例配置
 		return $this->fetch();
 	}
 
 	/**
 	 * 发货单列表（公司配货给配货员）
-	 * @author Dh
-	 * @date 2017-8-20
+	 * @author 
+	 * @date 2018-8-20
 	 */
 	public function invoiceList() {
 		$where = array();
@@ -166,8 +166,8 @@ class Partner extends Base{
 
 	/**
 	 * 发货单详情（公司配货给配货员）
-	 * @author Dh
-	 * @date 2017-8-21
+	 * @author 
+	 * @date 2018-8-21
 	 */
 	public function invoiceInfo() {
 		$id = I('get.id/d');
@@ -217,6 +217,7 @@ class Partner extends Base{
 				$update_data['goods_num'] = array('exp', 'goods_num + ' . $value['goods_num']);
 				$update_data['edittime'] = time();
 				if (($isset['goods_num'] + $value['goods_num']) > $isset['stock_num']) {
+					//如果实际库存+收货量>最大库存
 					$update_data['stock_num'] = $isset['goods_num'] + $value['goods_num'];
 				}
 				$result = Db::name('partner_stock')->where(array('partner_id'=>$this->partner_id, 'goods_id'=>$value['goods_id']))->save($update_data);
@@ -243,7 +244,7 @@ class Partner extends Base{
 	}
 
 	/**
-	 * 配货员下工厂店的订单列表
+	 * 配货员下设备的订单列表
 	 */
 	public function orderList() {
 		$count = DB::name('relation')
@@ -332,7 +333,8 @@ class Partner extends Base{
 				->field('ps.goods_id, g.goods_name, ps.goods_num, ps.stock_num')
 				->join('__GOODS__ g', 'g.goods_id = ps.goods_id', 'LEFT')
 				->where(array('ps.partner_id'=>$this->partner_id))
-				->select();
+				->select();//申请已经存在于库存中的商品
+
 //		$store = DB::name('store_stock')->alias('ss')
 //				->join('store s', 's.store_id = ss.store_id', 'LEFT')
 //				->where("s.partner_id=$this->partner_id")
@@ -380,7 +382,7 @@ class Partner extends Base{
 	}
 
 	/**
-	 * 配货单列表（配货员配货给工厂店）
+	 * 配货单列表（配货员配货给设备）
 	 */
 	public function delivery() {
 		$where = array();
@@ -396,7 +398,7 @@ class Partner extends Base{
 	}
 
 	/**
-	 * 配货单列表（配货员配货给工厂店）
+	 * 配货单列表（配货员配货给设备）
 	 */
 	public function delivery_info() {
 		$id = I('get.id/d');
@@ -409,7 +411,7 @@ class Partner extends Base{
 	}
 
 	/**
-	 * 工厂店补货申请记录
+	 * 设备补货申请记录
 	 */
 	public function store_apply() {
 		$where = array();
@@ -440,7 +442,7 @@ class Partner extends Base{
 	}
 
 	/**
-	 * 工厂店补货申请明细
+	 * 设备补货申请明细
 	 */
 	public function store_apply_info() {
 		$id = I('get.id/d');	//补货申请ID
@@ -463,7 +465,7 @@ class Partner extends Base{
 				 ->where("i.apply_id=$id")
 				 ->select();
 
-		if (IS_POST) { //处理工厂店补货申请
+		if (IS_POST) { //处理设备补货申请
 			$data = I('post.');
 
 			if ($data['act'] == 'cancel') { //拒绝申请
@@ -495,7 +497,7 @@ class Partner extends Base{
 					$res['addtime'] = time();
 					$res['express_name'] = $data['express_name'];
 					$res['express_code'] = $data['express_code'];
-					$res['delivery_type'] = 3; //配货员发给工厂店
+					$res['delivery_type'] = 3; //配货员发给设备
 					$res['edituser'] = $this->user_id;
 					$delivery_id = DB::name('delivery')->add($res); //插入发货单表
 
@@ -538,25 +540,34 @@ class Partner extends Base{
 	}
 
 	/**
-	 * 工厂店配货
+	 * 设备配货  配货员向设备配货
 	 */
 	public function act_store_apply() {
-		$id = I('get.id/d');
+		$id = I('get.id/d');//获取要进行配货的设备ID
 
 		if (IS_POST) {
 			$data = I('post.');
-			$store = DB::name('store')
-					 ->alias('s')
-					 ->field('s.user_id, u.province as province_id, u.city as city_id, u.district as town_id, u.mobile as phone, u.nickname as name')
-					 ->join('__USERS__ u', 'u.user_id = s.user_id', 'LEFT')
-					 ->where(array('s.store_id'=>$id))
-					 ->find();
-			$store['addtime'] = time();
-			$store['express_name'] = $data['express_name'];
-			$store['express_code'] = $data['express_code'];
-			$store['delivery_type'] = 3; //配货员发给工厂店
-			$store['edituser'] = $this->user_id;
-			$delivery_id = DB::name('delivery')->add($store); //插入发货单表
+			// $store = DB::name('store')
+			// 		 ->alias('s')
+			// 		 ->field('s.user_id, u.province as province_id, u.city as city_id, u.district as town_id, u.mobile as phone, u.nickname as name')
+			// 		 ->join('__USERS__ u', 'u.user_id = s.user_id', 'LEFT')
+			// 		 ->where(array('s.machine_id'=>$id))
+			// 		 ->find();
+			$machine = DB::name('machine')
+					->alias('m')
+					->field('p.user_id, m.province_id,m.city_id,m.district_id as town_id, p.phone, u.nickname as name')
+					->join('__PARTNER__ p','p.partner_id = m.partner_id','LEFT')
+					->join('__USERS__ u','u.user_id = p.user_id','LEFT')
+					->where(['m.machine_id'=>$id])
+					->find();
+					// halt($machine);
+
+			$machine['addtime'] = time();
+			$machine['express_name'] = $data['express_name'];
+			$machine['express_code'] = $data['express_code'];
+			$machine['delivery_type'] = 3; //配货员发给设备
+			$machine['edituser'] = $this->user_id;
+			$delivery_id = DB::name('delivery')->add($machine); //插入发货单表
 
 			if ($delivery_id) {
 				foreach ($data['goods'] as $key => $value) {
@@ -598,10 +609,23 @@ class Partner extends Base{
 						->join('__GOODS__ g', 'g.goods_id = ps.goods_id', 'LEFT')
 						->where(array('ps.partner_id'=>$this->partner_id))
 						->select();
+					//仅能补配货员库存存在的商品
 			}
 
 			$this->assign('list', $list);
 			return $this->fetch();
 		}
+	}
+
+	public function machine($id){
+		$machine_id = I('get.id');
+		// $machine_id = 1;
+		$stock = DB::name('machine_stock')
+		      ->alias('m')
+			  ->join('__GOODS_IMAGES__ g','m.goods_id = g.goods_id')
+		      ->where(['machine_id'=>$machine_id])
+		      ->select();
+
+		halt($stock);
 	}
 }

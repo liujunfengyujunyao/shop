@@ -62,8 +62,8 @@ class Base extends Controller {
 
        /**
         * 获取友情链接
-        * @author Dh
-        * @date 2017-9-22
+        * @author 
+        * @date 
         */
        $link = M('friend_link')->field('link_name, link_url, target')->order('orderby')->where('is_show=1')->select();
        $this->assign('link', $link);

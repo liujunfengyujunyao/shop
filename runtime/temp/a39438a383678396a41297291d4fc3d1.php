@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:51:"./application/admin/view2/partner\stock_config.html";i:1533876247;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:51:"./application/admin/view2/partner\stock_config.html";i:1536029615;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -122,7 +122,7 @@
 		<div class="item-title">
 			<div class="subject">
 				<h3>库存配置</h3>
-				<h5>网站系统合伙人库存配置</h5>
+				<h5>网站系统配货员库存配置</h5>
 			</div>
 		</div>
 	</div>
@@ -134,7 +134,7 @@
 			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
 		</div>
 		<ul>
-			<li>合伙人默认的商品最大库存量，在此配置</li>
+			<li>配货员默认的商品最大库存量，在此配置</li>
 		</ul>
 	</div>
 

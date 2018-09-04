@@ -1,5 +1,5 @@
 <?php
-//000000000000s:36487:"<!DOCTYPE html>
+//000000000000s:38534:"<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -235,6 +235,34 @@
                                                                                                             </dd>
                                                 </dl>
                                                                                             &lt;!&ndash;商品分类底部广告-s&ndash;&gt;
+                                            <div class="advertisement_down">
+                                                <ul>                                                
+                                                                                                    
+                                                </ul>
+                                            </div>
+                                            &lt;!&ndash;商品分类底部广告-e&ndash;&gt;
+                                        </div>
+                                    </div>
+                                    &lt;!&ndash;商品分类右侧广告-s&ndash;&gt;
+                                    <div class="cata-nav-rigth">
+                                                                            </div>
+                                    &lt;!&ndash;商品分类右侧广告-e&ndash;&gt;
+                                </div>
+                            </div>
+                                                        <div class="item fore1">
+                                                                <div class="item-left">
+                                    <div class="cata-nav-name">
+                                        <h3>
+                                            <div class="contiw-cer"><span class="share-icon-22"></span></div>
+                                            <a href="/index.php/Home/Goods/goodsList/id/22.html" title="食品饮料">食品饮料</a>
+                                        </h3>
+                                    </div>
+                                    <b>&gt;</b>
+                                </div>
+                                                                <div class="cata-nav-layer">
+                                    <div class="cata-nav-left">
+                                        <div class="subitems">
+                                                                                        &lt;!&ndash;商品分类底部广告-s&ndash;&gt;
                                             <div class="advertisement_down">
                                                 <ul>                                                
                                                                                                     

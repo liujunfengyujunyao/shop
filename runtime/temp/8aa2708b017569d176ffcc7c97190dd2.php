@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/partner\apply.html";i:1533876247;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/partner\apply.html";i:1536029755;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -121,8 +121,8 @@
 	<div class="fixed-bar">
 		<div class="item-title">
 			<div class="subject">
-				<h3>合伙人补货申请记录</h3>
-				<h5>网站系统合伙人补货申请记录索引与管理</h5>
+				<h3>配货员补货申请记录</h3>
+				<h5>网站系统配货员补货申请记录索引与管理</h5>
 			</div> 
 		</div>
 	</div>
@@ -133,13 +133,13 @@
 			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
 		</div>
 		<ul>
-			<li>合伙人补货申请记录管理</li>
+			<li>配货员补货申请记录管理</li>
 		</ul>
 	</div>
 	<div class="flexigrid">
 		<div class="mDiv">
 			<div class="ftitle">
-				<h3>合伙人补货申请记录</h3>
+				<h3>配货员补货申请记录</h3>
 				<h5>(共<?php echo $pager->totalRows; ?>条记录)</h5>
 			</div>
 			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
@@ -163,7 +163,7 @@
 						</select>
 					</div>
 					<div class="sDiv2" style="margin-right: 5px;">
-						<input size="30" name="mobile" value="<?php echo \think\Request::instance()->request('mobile'); ?>" placeholder="合伙人手机号" class="qsbox" type="text">
+						<input size="30" name="mobile" value="<?php echo \think\Request::instance()->request('mobile'); ?>" placeholder="配货员手机号" class="qsbox" type="text">
 						<input type="submit" class="btn" value="搜索">
 					</div>
 					<div class="sDiv2">
@@ -184,7 +184,7 @@
 							<div style="text-align: center; width: 50px;" class="">ID</div>
 						</th>
 						<th align="center" abbr="ac_id" axis="col4" class="">
-							<div style="text-align: center; width: 100px;" class="">合伙人姓名</div>
+							<div style="text-align: center; width: 100px;" class="">配货员姓名</div>
 						</th>
 						<th align="center" abbr="ac_id" axis="col4" class="">
 							<div style="text-align: center; width: 100px;" class="">联系电话</div>
