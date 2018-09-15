@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:54:"./application/admin/view2/machine\_addEditMachine.html";i:1535099425;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:54:"./application/admin/view2/machine\_addEditMachine.html";i:1536645537;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -133,6 +133,16 @@
         <div class="ncap-form-default">
             <dl class="row">
                 <dt class="tit">
+                    <label for="sn"><em>*</em>设备SN</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="sn" value="<?php echo $info['sn']; ?>" id="sn" class="input-txt">
+                    <span class="err" id="err_sn"></span>
+                    <p class="notic">填入设备SN</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
                     <label for="machine_name"><em>*</em>贩卖机名称</label>
                 </dt>
                 <dd class="opt">
@@ -257,12 +267,16 @@
 <script type="text/javascript">
     function verifyForm(){
         var type_name = $.trim($('input[name="machine_name"]').val());
+        var sn = $.trim($('input[name="sn"]').val());
         var nickname = $.trim($('input[name="nickname"]').val());
         var mobile = $('input[name="mobile"]').val();
         //var password = $('input[name="password"]').val();
         var error ='';
         if(type_name == ''){
-            error += "配货员名称不能为空\n";
+            error += "设备名称不能为空\n";
+        }
+         if(sn == ''){
+            error += "SN不能为空\n";
         }
         // if(password == ''){
         //     error += "密码不能为空\n";

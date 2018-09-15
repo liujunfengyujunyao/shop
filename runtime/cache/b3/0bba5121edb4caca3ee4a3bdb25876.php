@@ -1,0 +1,3 @@
+<?php
+//000000000001a:2:{i:0;a:12:{s:2:"id";i:20;s:4:"name";s:9:"化妆品";s:11:"mobile_name";s:9:"化妆品";s:9:"parent_id";i:0;s:14:"parent_id_path";s:4:"0_20";s:5:"level";i:1;s:10:"sort_order";i:0;s:7:"is_show";i:1;s:5:"image";s:71:"/public/upload/category/2018/08-29/a59c5db1c2783db96b8d49059221aa5b.jpg";s:6:"is_hot";i:1;s:9:"cat_group";i:0;s:15:"commission_rate";i:0;}i:1;a:12:{s:2:"id";i:22;s:4:"name";s:12:"食品饮料";s:11:"mobile_name";s:12:"食品饮料";s:9:"parent_id";i:0;s:14:"parent_id_path";s:4:"0_22";s:5:"level";i:1;s:10:"sort_order";i:0;s:7:"is_show";i:1;s:5:"image";s:71:"/public/upload/category/2018/08-30/34ad6040ea9b351a582ab66322df30a7.jpg";s:6:"is_hot";i:0;s:9:"cat_group";i:0;s:15:"commission_rate";i:0;}}
+?>

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:51:"./application/admin/view2/machine\_addEditType.html";i:1535340891;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:51:"./application/admin/view2/machine\_addEditType.html";i:1536375383;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -131,13 +131,17 @@
             padding: 0;
         }
         .static {
-            border: 1px solid green;
+            border: 1px solid gray;
             /*background: red;*/
         }
-        /*.active {
-            border: 1px solid red;
-            background: red;
-        }*/
+        #selectAll{
+            border-radius:30px;
+        }
+        #selectAll:hover{
+            color:#0ba4da;
+            border: 2px solid #0ba4da;  
+            font-weight: bold;
+        }
     </style>
 <body style="background-color: #FFF; overflow: auto;">
 <div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
@@ -243,43 +247,39 @@
         var titleRow = [0,1,2,3,4,5,6,7,8];
         for(var i = 0; i < row; i++){
             for(var k = 0; k < column;k++){
-                var $li = $('<input  type="text" name="allSelect[]" disabled class="li static">');
                 
                 if(i == 0 && k != 0){
-                    
-                    $li.val(titleRow[k])
+                    var $li = $('<input  type="button" name="allSelect[]" disabled class="li static">');
+                    $li.val(titleRow[k]);
+
                 }
                 if(k == 0 && i !=0){
-                    
+                    var $li = $('<input  type="button" name="allSelect[]" disabled class="li static">');
                     $li.val(titleColumn[i]);
                 }
                 if(i != 0 && k!=0)
                 {
-                    var $li = $('<input  type="checkbox" name="allSelect[]" class="li static">');
+                    var location = titleColumn[i] + titleRow[k];
+                    var $li = $('<input  type="checkbox" name="allSelect[]" class="li static" value="'+location+'">');
 
                 }
-                if(i != 0 && k != 0 )
-                {
-                    (function(i,k){
-                        var location = titleColumn[i] + titleRow[k];
-                        $li.click(function(){
-                        // console.log($(this).attr('location'));
-                        $(this).val(location)
-                        console.log($(this).val())
-                        })
-                    })(i,k)
-
+                if(i == 0 && k == 0 ){
+                    var $li = $('<input  type="button" name="allSelect[]" value="全选" class="li static" id="selectAll">');
                 }
-                
-                // console.log(location);
-                $li.attr('location',location)
-                // console.log(123)
                 $('#tableContainer').append($li);
             }
         }
-        // var $submit = $('<input type="submit" value="send">')
-        //     $('#tableContainer').append($submit);
-        })
+        $('#selectAll').toggle(function(){
+            $('#tableContainer input:checkbox').attr('checked',true);
+            $('#selectAll').val('取消');
+        },function(){
+            $('#tableContainer input:checkbox').attr('checked',false);
+            $('#selectAll').val('全选');
+        });
+        });
+
+        
+
 </script>
 </body>
 </html>

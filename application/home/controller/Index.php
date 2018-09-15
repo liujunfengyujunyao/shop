@@ -39,7 +39,7 @@ class Index extends Base {
         $this->assign('promotion', $promotion);
 
         //获取新品上架商品列表 by DH 2017-11-4
-        $new_goods = M('Goods')->alias('g')
+        $new_goods = M(' Goods')->alias('g')
                     ->join('goods_category c', 'c.id = g.cat_id', 'left')
                     ->field('g.goods_id, g.goods_name, g.shop_price, g.market_price')
                     ->where(array('g.is_new'=>1, 'g.is_on_sale'=>1, 'c.is_show'=>1))

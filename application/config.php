@@ -1,4 +1,4 @@
-<?php
+ <?php
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -314,7 +314,7 @@ return [
         'CANCEL'=> '已取消',
         'FINISH'=> '已完成', //
         'CANCELLED'=> '已作废',
-        'STORECONFIRM'=> '工厂店已确认收货'
+        'STORECONFIRM'=> '贩卖机已确认收货'
     ],
 
     'REFUND_STATUS'=>array(
@@ -333,7 +333,7 @@ return [
         '4'=>array('客户支付','订单:${order_sn}已经支付，请及时发货.','order_pay_sms_enable'),
         '5'=>array('商家发货','尊敬的${user_name}用户，您的订单${order_sn}已发货，收货人${consignee}，请您及时查收','order_shipping_sms_enable'),
         '6'=>array('身份验证','尊敬的 ${user_name}用户，您的验证码为${code}, 本验证码有效时间为10分钟, 请勿告诉他人.','bind_mobile_sms_enable'),
-        '7'=>array('物流配送通知','尊敬的${user_name}先生/女士,订单${order_sn}已分派由工厂店${store_name}进行配送服务，请及时联系工厂店负责人${user_name},联系电话${phone}。','order_store_shipping_sms_enable'),
+        '7'=>array('物流配送通知','尊敬的${user_name}先生/女士,订单${order_sn}已分派由贩卖机${store_name}进行配送服务，请及时联系贩卖机负责人${user_name},联系电话${phone}。','order_store_shipping_sms_enable'),
         '8'=>array('自提码通知', '尊敬的${user_name}先生/女士，订单${order_sn}已到达${address}，自提码为${safe},请妥善保存凭证！','order_safecode_sms_enable'),
     ),
     

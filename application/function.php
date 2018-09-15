@@ -684,3 +684,13 @@ function urlsafe_b64encode($string)
     $data = str_replace(array('+','/','='),array('-','_',''),$data);
     return $data;
 }
+
+function logger($content){
+        $logSize = 100000;//10M 
+        $log = "log.txt";
+        if(file_exists($log) && filesize($log) > $logSize){
+            unlink($log);  //这里是直接删除，可以做备份
+        }
+        file_put_contents($log, date('H:i:s') . " " .$content . PHP_EOL,FILE_APPEND);//日志写入函数
+        // file_put_contents("log.txt", $data  .PHP_EOL, FILE_APPEND);
+    }

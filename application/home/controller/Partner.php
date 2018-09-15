@@ -220,10 +220,10 @@ class Partner extends Base{
 					//如果实际库存+收货量>最大库存
 					$update_data['stock_num'] = $isset['goods_num'] + $value['goods_num'];
 				}
-				$result = Db::name('partner_stock')->where(array('partner_id'=>$this->partner_id, 'goods_id'=>$value['goods_id']))->save($update_data);
+				// $result = Db::name('partner_stock')->where(array('partner_id'=>$this->partner_id, 'goods_id'=>$value['goods_id']))->save($update_data);
 			}else { //新增
 				$data['stock_num'] = $partner->max_stock($this->partner_id, $value['goods_id']);
-				$result = Db::name('partner_stock')->add($data);
+				// $result = Db::name('partner_stock')->add($data);
 			}
 
 			//插入配货员库存日志表

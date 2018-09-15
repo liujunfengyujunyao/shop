@@ -44,6 +44,10 @@ class Base extends Controller {
      */
     public function _initialize() 
     {
+           if(true == isMobile()){
+            header("Location: ".U('Phone/Index/index'));
+            exit;
+        }
         //过滤不需要登陆的行为
         if(in_array(ACTION_NAME,array('login','logout','vertify')) || in_array(CONTROLLER_NAME,array('Ueditor','Uploadify'))){
         	//return;

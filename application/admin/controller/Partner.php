@@ -67,7 +67,6 @@ class Partner extends Base {
 		$partner_where['p.status'] = 1;
 
 		$content = $this->partner_model->partnerList($partner_where);
-
 		$this->assign('partnerList', $content['list']);
 		$this->assign('page', $content['page']); //赋值 分页输出
 		$this->assign('pager', $content['pager']);
@@ -187,7 +186,7 @@ class Partner extends Base {
 		$id = I('get.partner_id/d');
 		$content = $this->partner_model->getPartnerStore($id);
 
-		
+		// halt($content['list']);
 		$this->assign('partner_id', $id);
 		$this->assign('page', $content['page']);
 		$this->assign('pager', $content['pager']);
@@ -409,7 +408,6 @@ class Partner extends Base {
 		$show = $Page->show();
 
 		$content = $this->partner_model->getPartnerStock($id, $Page);
-
 		$this->assign('page', $show);
 		$this->assign('pager', $Page);
 		$this->assign('list', $content);

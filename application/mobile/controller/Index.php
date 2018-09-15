@@ -104,5 +104,9 @@ class Index extends MobileBase {
     		return false;
     	}
     }
+
+    public function admin_index(){
+        return $this->fetch();
+    }
        
 }

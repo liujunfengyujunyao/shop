@@ -1,0 +1,164 @@
+.pa_v_15 {
+  padding-top: 0.15rem;
+  padding-bottom: 0.15rem;
+}
+.pa_v_10 {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+}
+.pa_h_15 {
+  padding-left: 0.15rem;
+  padding-right: 0.15rem;
+}
+.title_style {
+  font-size: 0.15rem;
+  font-weight: bold;
+}
+body {
+  background: #efeff4;
+}
+#head .titlebar {
+  position: relative;
+  background: #4583eb;
+}
+#head .titlebar p {
+  color: #fff;
+  text-align: center;
+}
+#head .titlebar > span {
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  width: 0.3rem;
+  height: 0.3rem;
+  color: #88b8fe;
+  font-size: 0.22rem;
+}
+#head .titlebar .title {
+  padding: 0.12rem;
+}
+#head .titlebar .title_num {
+  font-size: 0.3rem;
+  padding-bottom: 0.23rem;
+}
+#head .foobar {
+  overflow: hidden;
+  background: #558eee;
+}
+#head .foobar .foo_item {
+  float: left;
+  width: 33.3%;
+  padding: 0.1rem 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+#head .foobar .foo_item span {
+  display: inline-block;
+  width: 100%;
+  color: #fff;
+}
+#head .foobar .foo_item:not(:last-child) span {
+  border-right: 1px dashed #2662c8;
+}
+#head .lastbar {
+  background: #fff;
+  overflow: hidden;
+}
+#head .lastbar div {
+  float: left;
+  width: 50%;
+  box-sizing: border-box;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0.15rem;
+  padding-right: 0.15rem;
+}
+#head .lastbar div span {
+  display: inline-block;
+  width: 100%;
+  color: #999;
+}
+#head .lastbar div span:first-child {
+  color: #000;
+  font-size: 0.15rem;
+  font-weight: bold;
+}
+#head .lastbar div:first-child {
+  padding-right: 0;
+}
+#head .lastbar div:first-child span {
+  border-right: 1px solid #999;
+}
+#body {
+  margin-top: 0.2rem;
+}
+#body .module {
+  background: #fff;
+  margin-bottom: 0.12rem;
+}
+#body .module .icon {
+  font-size: 0.25rem;
+  padding-right: 0.15rem;
+}
+#body .module .long {
+  overflow: hidden;
+  border-top: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f1f1f1;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0.15rem;
+  padding-right: 0.15rem;
+}
+#body .module .long a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+#body .module .long div {
+  float: left;
+  box-sizing: border-box;
+}
+#body .module .long div:first-child {
+  color: #4c87ee;
+  font-size: 0.25rem;
+  padding-right: 0.15rem;
+}
+#body .module .long div:last-child .p1 {
+  font-size: 0.15rem;
+  font-weight: bold;
+}
+#body .module .long div:last-child .p2 {
+  color: #999;
+}
+#body .module .short {
+  overflow: hidden;
+}
+#body .module .short li {
+  float: left;
+  width: 50%;
+  box-sizing: border-box;
+  padding-top: 0.15rem;
+  padding-bottom: 0.15rem;
+  padding-left: 0.15rem;
+  padding-right: 0.15rem;
+  overflow: hidden;
+  border: 1px solid #f1f1f1;
+}
+#body .module .short li a {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+#body .module .short li a > div {
+  float: left;
+  box-sizing: border-box;
+}
+#body .module .short li a .text .p1 {
+  font-size: 0.15rem;
+  font-weight: bold;
+}
+#body .module .short li a .text .p2 {
+  color: #999;
+}

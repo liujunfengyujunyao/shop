@@ -23,6 +23,11 @@ use think\Db;
 class Index extends Base {
 
     public function index(){
+         
+         if(true == isMobile()){
+            header("Location: ".U('Phone/Index/index'));
+            exit;
+        }
         $this->pushVersion();        
         $act_list = session('act_list');
         $menu_list = getMenuList($act_list);         

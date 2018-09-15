@@ -178,14 +178,14 @@ return	array(
 	// )),
 
 	/*
-	增加贩卖机模块
+	增加设备模块
 	 @author Junfeng
 	 date 2018-8-13
 	*/
-	'machine'=>array('name'=>'贩卖机','child'=>array(
+	'machine'=>array('name'=>'设备','child'=>array(
 			array('name' => '基础管理','child' => array(
-				array('name'=>'贩卖机列表', 'act'=>'index', 'op'=>'Machine'),
-				array('name'=>'贩卖机分类', 'act'=>'typeList', 'op'=>'Machine'),
+				array('name'=>'设备列表', 'act'=>'index', 'op'=>'Machine'),
+				array('name'=>'设备分类', 'act'=>'typeList', 'op'=>'Machine'),
 				array('name'=>'提现管理', 'act'=>'withdrawals', 'op'=>'Machine'),
 				// array('name'=>'汇款记录', 'act'=>'remittance', 'op'=>'Machine')
 			)),

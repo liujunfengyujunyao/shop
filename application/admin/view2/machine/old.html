@@ -1,0 +1,171 @@
+<include file="public/layout" />
+    <style> 
+        /*最外层容器*/
+        #tableContainer{
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            list-style: none;
+        }
+        .li {
+            width: 11.1%;
+            height: 11.1%;
+            box-sizing: border-box;
+            float:left;
+            text-align: center;
+            margin: 0 ;
+            padding: 0;
+        }
+        .static {
+            border: 1px solid green;
+            /*background: red;*/
+        }
+        /*.active {
+            border: 1px solid red;
+            background: red;
+        }*/
+    </style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>贩卖机类型管理 - 编辑贩卖机类型</h3>
+                <h5>贩卖机类型管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="storetype" method="post">
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="id" value="{$info.id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="type_name"><em>*</em>分类名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="type_name" value="{$info.type_name}" id="type_name" class="input-txt">
+                    <span class="err" id="err_type_name"></span>
+                    <p class="notic">设置贩卖机类型名称</p>
+                </dd>
+            </dl>
+               <dl class="row">
+                <dt class="tit">
+                    <label for="count_value"><em>*</em>总价值(￥)</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="count_value" value="{$info.count_value}" id="count_value" class="input-txt">
+                    <span class="err" id="err_count_value"></span>
+                    <p class="notic">设置贩卖机价值</p>
+                </dd>
+            </dl>
+         
+               <dl class="row">
+                <dt class="tit">
+                    <label for="allSelect"><em>*</em>选择使用仓位</label>
+                </dt>
+                <dd class="opt" id="tableContainer">
+                   
+                </dd>
+            </dl>
+               <dl class="row">
+                <dt class="tit">
+                    <label for="count_value"><em>*</em>规定仓位容量</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="goods_num" value="{$info.goods_num}" id="goods_num" class="input-txt">
+                    <span class="err" id="err_count_value"></span>
+                    <p class="notic">设置每个格子(螺杆)存放商品数量</p>
+                </dd>
+            </dl>
+            
+        <dl class="row">
+                <dt class="tit">
+                    <label for="brief">备注</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="brief" value="{$info.brief}" id="brief" class="input-txt">
+                    <span class="err" id="err_brief"></span>
+                    <p class="notic">可填写规格、售卖种类等</p>
+                </dd>
+            </dl>
+
+        <div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+
+</div>
+<script type="text/javascript">
+    function verifyForm(){
+        var type_name = $.trim($('input[name="type_name"]').val());
+        var count_value = $.trim($('input[name="count_value"]').val());
+        var error ='';
+        if(type_name == ''){
+            error += "贩卖机名称不能为空\n";
+        }
+        if(count_value == ''){
+            error += "贩卖机总价值不能为空\n";
+        }
+        if(error){
+            layer.alert(error, {icon: 2});  //alert(error);
+            return false;
+        }
+        $('#storetype').submit();
+    }
+
+        //规定规格
+        $(function(){
+        // 接口相对路径
+        // var serverUrl = '/ok';
+
+        // $('#tableContainer').attr('action',serverUrl);
+
+        var row = 9;
+        var column = 9;
+        var titleColumn = ['Z','A','B','C','D','E','F','G','H'];
+        var titleRow = [0,1,2,3,4,5,6,7,8];
+        for(var i = 0; i < row; i++){
+            for(var k = 0; k < column;k++){
+                var $li = $('<input  type="text" name="allSelect[]" disabled class="li static">');
+                
+                if(i == 0 && k != 0){
+                    
+                    $li.val(titleRow[k])
+                }
+                if(k == 0 && i !=0){
+                    
+                    $li.val(titleColumn[i]);
+                }
+                if(i != 0 && k!=0)
+                {
+                    var $li = $('<input  type="checkbox" name="allSelect[]" class="li static">');
+
+                }
+                if(i != 0 && k != 0 )
+                {
+                    (function(i,k){
+                        var location = titleColumn[i] + titleRow[k];
+                        $li.click(function(){
+                        // console.log($(this).attr('location'));
+                        $(this).val(location)
+                        console.log($(this).val())
+                        })
+                    })(i,k)
+
+                }
+                
+                // console.log(location);
+                $li.attr('location',location)
+                // console.log(123)
+                $('#tableContainer').append($li);
+            }
+        }
+        // var $submit = $('<input type="submit" value="send">')
+        //     $('#tableContainer').append($submit);
+        })
+</script>
+</body>
+</html>

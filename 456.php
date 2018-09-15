@@ -41,9 +41,50 @@
        // $manager_names = D('manager')->where("id in ({$group['manager_ids']})")->getField('nickname',true);
        // $group['manager_names'] = implode($manager_names,',');
        // $this->assign('group',$group);
-       $n = md5('kakaphp'.md5('123456'));
-       echo($n);
+       // $n = md5('kakaphp'.md5('123456'));
+       // echo($n);
+       // $partner_arr = [1,2,3,4]
+       // $goods_arr = [1,2,3,5]
+       
+       // $default_arr = array_merge(array_diff($partner_stock,$goods_arr),array_diff($goods_arr,$partner_stock));//发生改变的goods_id  原始排在前 新更排在后
+       // $default_key = array_search($v['goods_id'], $default_arr);//取出$v['goods_id']在 双双对应数组的位置
+       // $del_goods_key = $this->arithmetic($count,$default_key);
+       // $del_goods_value = $default_arr[$del_goods_key];  
 
 
-
-
+       // $partner = array(
+       //        'goods_id' => [1,2,3,4];
+       //        );
+       // $machine = array(
+       //        'goods_id' => [1,2,3,5];
+       //        );
+       // foreach ($partner as $key => $value) {
+       //        foreach ($machine as $k => $v) {
+       //               if($value['goods_id'] !== $v['goods_id']){
+                        
+       //               }
+       //        }
+       // }
+       $stock_arr = [1,2,3,4];
+       $goods_arr = [1,2,3,5];
+       $partner_stock = array(
+              'goods_id' => [1,2,3,4],
+              );
+       
+       $machine_stock = array(
+              'goods_id' => [1,2,3,5],
+              );
+       foreach ($partner_stock as $key => $value) {
+              foreach ($machine_stock as $k => $v) {
+                     if ($value['goods_id'] !== $v['goods_id']) {
+                            $default_arr = array_merge($stock_arr,$goods_arr);
+                            $count = count($default_arr);
+                            $default_key = array_search($v['goods_id'], $default_arr);
+                            $del_goods_key = $default_key-$count/2;
+                            $del_goods_value = $default_arr[$del_goods_key];
+                            var_dump($del_goods_value);die;
+                     }
+              }
+       }
+     
+  

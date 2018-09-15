@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:49:"./application/admin/view2/partner\apply_info.html";i:1533876247;s:44:"./application/admin/view2/public\layout.html";i:1533876247;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:49:"./application/admin/view2/partner\apply_info.html";i:1536029763;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -131,7 +131,7 @@ a.green:hover {color: #FFF; background-color: #1BBC9D; border-color: #16A086;}
 		<div class="item-title"><a class="back" href="javascript:history.go(-1)" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
 			<div class="subject">
 				<h3>补货申请详情</h3>
-				<h5>合伙人申请补货记录明细</h5>
+				<h5>配货员申请补货记录明细</h5>
 			</div>
 		</div>	
 	</div>
@@ -227,7 +227,7 @@ a.green:hover {color: #FFF; background-color: #1BBC9D; border-color: #16A086;}
 							</thead>
 							<tbody>
 								<tr>
-									<td>合伙人：<?php echo $info['nickname']; ?></td>
+									<td>配货员：<?php echo $info['nickname']; ?></td>
 									<td><?php echo date('Y-m-d H:i:s',$info['addtime']); ?></td>
 									<td>提交申请</td>
 									<td></td>
@@ -254,7 +254,7 @@ a.green:hover {color: #FFF; background-color: #1BBC9D; border-color: #16A086;}
 								</tr>
 								<?php endif; if($info['confirm_time']): ?>
 								<tr>
-									<td>合伙人：<?php echo $info['nickname']; ?></td>
+									<td>配货员：<?php echo $info['nickname']; ?></td>
 									<td><?php echo $info['confirm_time']; ?></td>
 									<td>确认收货</td>
 									<td></td>
@@ -303,7 +303,7 @@ function cancel_apply() {
 		layer.alert('请填写拒绝备注', {icon: 2});
 		return false;
 	}
-	layer.confirm('确定要拒绝合伙人的补货申请吗?', {
+	layer.confirm('确定要拒绝配货员的补货申请吗?', {
 		btn: ['确定', '取消'] //按钮
 	}, function () {
 		// 确定

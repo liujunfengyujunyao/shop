@@ -224,6 +224,11 @@ class Machine extends Base
 				
 			// }
 
+			$sql = DB::name('machine')->where(['sn'=>$data['sn']])->find();
+			if ($sql) {
+				$this->error('SN已存在 请勿重复添加');
+			}
+
 			$info = array(
 				'machine_name' => $data['machine_name'],
 				'type_id' => intval($data['type_id']),
@@ -233,8 +238,12 @@ class Machine extends Base
 				// 'machine_admin' => $data['machine_admin'],//机台管理员
 				'partner_id' => $data['partner_id'],//机台配货人员
 				'addtime' => time(),
+				'sn' => $data['sn'],
 				);//贩卖机信息
-			
+
+			if($info['type_id'] == 0 || is_null($info['type_id'])){
+				$this->error('未选择种类');
+			}
 			//根据类型将初始配置写入贩卖机库存
 			$machine_conf = M('machine_type_conf')->field('goods_id,goods_num')->where('type_id',$info['type_id'])->select();
 			// if (empty($machine_conf)) {
@@ -537,7 +546,7 @@ class Machine extends Base
 				$value['goods'] = $goods;
 		}
 
-		halt($list);
+		
 		$this->assign('page', $show);
 		$this->assign('pager', $Page);
 		$this->assign('list', $list);
@@ -769,18 +778,46 @@ class Machine extends Base
     public function delivery()
     {
     	$machine_id = I('get.id/d');
-
+    	$partner_id = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('partner_id');
+    	$conf_number = DB::name('machine')
+    			->alias('m')
+    			->join("__MACHINE_TYPE__ t","m.type_id = t.id",'LEFT')
+    			->count("t.location");
     	if (IS_POST) {
+
     		if ($machine_id) {
 
-    			$data = I('post.');
+    			$data = I('post.');	
+    			// $new_location = array_column($data['goods'],'location');
+    			// $old_location = DB::name('machine')
+				   //  			->alias('m')
+				   //  			->join("__MACHINE_TYPE__ t","m.type_id = t.id",'LEFT')
+				   //  			->getField("t.location",true);
+				
+    			// $diff_location = array_diff($old_location,$new_location);
+    			// if ($diff_location) {
+    			// 	foreach ($diff_location as $key => $value) {
+    			// 	$info = array(
+    			// 		'goods_id' => 0,
+    			// 		'goods_num' => 0,
+    			// 		'price' => 0,
+    			// 		'machine_id' => $machine_id,
+    			// 		'location' => $value,
+    			// 		'addtime' => time(),
+    			// 		'edittime' => time(),
+    			// 		);
+    			// 	D('machine_stock')->add($info);
+    			// }
+    			// }
     			
-    			$r = DB::name('machine_conf')->where(['machine_id' => $machine_id])->find();
-    			if ($r !== NULL) {
-    				DB::name("machine_conf")->where(['machine_id' => $machine_id])->delete();
-    				$stock = 1;//非第一次配置商品
+    			$r = DB::name('machine_conf')->where(['machine_id' => $machine_id])->select();//原库存
+    			if ($r) {//有原库存
+    				$stock_arr = DB::name('machine_conf')->where(['machine_id'=>$machine_id])->getField('goods_id',true);//删除前的goods_id数组
+    				$stock_ids =implode(',',$stock_arr);//删除前的商品ids
+    				DB::name("machine_conf")->where(['machine_id' => $machine_id])->delete();//删除原来的配置
     			}
-
+    			//新增配置
+    			
     			foreach ($data['goods'] as $key => $value) {
     				$goods['goods_id'] = $value['goods_id'];
     				$goods['goods_num'] = $value['number'];
@@ -794,32 +831,58 @@ class Machine extends Base
     				DB::name('machine_conf')->add($goods);
     			}
 
-    		$machine_conf = M('machine_conf')->field('goods_id,goods_num')->where('machine_id',$machine_id)->select();
+	    		$machine_conf = M('machine_conf')->field('goods_id,goods_num')->where('machine_id',$machine_id)->select();//现在的配置
+	    		$goods_arr = M('machine_conf')->where('machine_id',$machine_id)->getField('goods_id',true);//现在的商品id数组
+	    		if($stock_ids){//非第一次配置
+		    		foreach ($data['goods'] as $k => $v) {
+		    			DB::name('machine_stock')->where(['stock_id'=>$v['stock_id']])->save(['goods_id'=>$v['goods_id'],'stock_num'=>$v['number']]);//修改机器库存
+		    		}
+		    		$partner_stock = DB::name('partner_stock')->where("goods_id in ({$stock_ids})")->where(['partner_id'=>$partner_id])->select();//原来的仓库库存
+		    		//先减去原来配置的库存
+	    			foreach($r as $key => $value){
+	    				$stock_num = DB::name('partner_stock')->where(['goods_id'=>$value['goods_id'],'partner_id'=>$partner_id])->getField('stock_num');
+    					if($stock_num-$value['goods_num'] <= 0){
+    						DB::name('partner_stock')->where(['goods_id'=>$value['goods_id'],'partner_id'=>$partner_id])->delete();
+    					}else{
+    						DB::name('partner_stock')->where(['goods_id'=>$value['goods_id'],'partner_id'=>$partner_id])->setDec('stock_num',$value['goods_num']);
+    					}
+	    					
+	    			}
+	    		}else{//第一次配置
+		    		$sql = "INSERT IGNORE INTO __PREFIX__machine_stock (`machine_id`,`goods_id`,`stock_num`) VALUES ";
+					//将记录存入库存表中
+					foreach ($machine_conf as $conf) {
+						$values[] = "(" . $machine_id . ',' . $conf['goods_id'] . "," . $conf['goods_num'] . ")";
+					}
 
-    		if($stock){
-	    		foreach ($data['goods'] as $k => $v) {
-	    			DB::name('machine_stock')->where(['stock_id'=>$v['stock_id']])->save(['goods_id'=>$v['goods_id'],'stock_num'=>$v['number']]);
+					$value = implode(',', $values);
+					$sql_query = $sql . $value;
+					
+					$res = DB::query($sql_query);
 	    		}
-    		}else{
-    		$sql = "INSERT IGNORE INTO __PREFIX__machine_stock (`machine_id`,`goods_id`,`stock_num`) VALUES ";
-			//将记录存入库存表中
-			foreach ($machine_conf as $conf) {
-				$values[] = "(" . $machine_id . ',' . $conf['goods_id'] . "," . $conf['goods_num'] . ")";
-			}
-
-			$value = implode(',', $values);
-			$sql_query = $sql . $value;
-			
-			$res = DB::query($sql_query);
-    		}
-    	
-
-    		
+	    		$partner_arr = DB::name('partner_stock')->where(['partner_id'=>$partner_id])->getField('goods_id',true);
+	    		//加上新的库存配置
+		    	$new_arr = array_diff($goods_arr,$partner_arr);//新增的id数组	
+			    foreach ($machine_conf as $k => $v) {
+		    		if(in_array($v['goods_id'],$new_arr)){	
+    					//已有此商品 增加
+    					$stock = array(
+    						'partner_id'=>$partner_id,
+    						'goods_id' => $v['goods_id'],
+    						'goods_num' => 0,
+    						'edittime' => time(),
+    						'stock_num' => $v['goods_num'],
+    					);
+    					DB::name('partner_stock')->add($stock);
+    				}else{
+    					DB::name('partner_stock')->where(['partner_id'=>$partner_id,'goods_id'=>$v['goods_id']])->setInc('stock_num', $v['goods_num']);
+    				
+    				}
+		    	}
     			$this->ajaxReturn(array('status' => 1,'msg' => '操作成功'));
-    		} else {
+    		}else{
     			$this->ajaxReturn(array('status' => 0,'msg' => '操作失败'));
     		}
-
     	} else {
     		//读取商品配置清单
     		$stock = DB::name('machine_stock')
@@ -866,4 +929,62 @@ class Machine extends Base
     		return $this->fetch();
     	}
     }
+
+    public function arithmetic($count,$key){
+    	$key1 = intval($key - ($count/2));
+    	return $key1;
+    }
+
+    public function test(){
+    	     $stock_arr = [1,2,3,4,6];
+       $goods_arr = [1,2,3,5,7];
+       $partner_stock = array(
+              array('goods_id'=>1,'name'=>'aaa'),
+              
+              array('goods_id'=>2,'name'=>'bbb'),
+             
+              array('goods_id'=>3,'name'=>'ccc'),
+             
+              array('goods_id'=>4,'name'=>'ddd'),
+              array('goods_id'=>6,'name'=>'fff'),
+              );
+       
+       $machine_stock = array(
+              array('goods_id'=>1,'name'=>'aaa'),
+              
+              array('goods_id'=>2,'name'=>'bbb'),
+             
+              array('goods_id'=>3,'name'=>'ccc'),
+             
+              array('goods_id'=>5,'name'=>'eee'),
+              array('goods_id'=>7,'name'=>'ggg'),
+              
+              );
+        $diff = array_diff_assoc($goods_arr,$stock_arr);
+        var_dump($diff);die;
+        $diff2 = array_diff_assoc($stock_arr,$goods_arr);
+      
+          foreach ($machine_stock as $k => $v) {
+              	foreach($diff as $key => $value){
+                     if($v['goods_id']==$value){//5
+                     		
+                            $default_arr = array_merge($stock_arr,$goods_arr);	
+                            $count = count($default_arr);
+                            $default_key = array_search($v['goods_id'], $default_arr);
+                            // var_dump($default_key);die;
+                            $del_goods_key = $default_key-($count/2);
+                            $del_goods_value = $default_arr[$del_goods_key];
+                            var_dump($del_goods_value);die;
+                     }
+              }
+       }
+    }
+
+    public function cont(){
+    	$data = I('get.');
+    	$data =  json_encode($data);
+    	$log = logger($data);
+    }
+
+ 
 }
