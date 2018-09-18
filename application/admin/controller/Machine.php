@@ -693,7 +693,7 @@ class Machine extends Base
 	 public function ajaxGoodsList(){            
         $machine_id = I('post.machine_id');
         $type_id = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('type_id');
-
+       
         // halt($type_id);
         $where = ' 1 = 1 '; // 搜索条件                
         I('intro')    && $where = "$where and ".I('intro')." = 1" ;        

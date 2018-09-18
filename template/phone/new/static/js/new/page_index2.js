@@ -1,5 +1,18 @@
 var $activer = null;
 $('.toggler').click(function(){
+
+	// console.log($('.toggler :not(button)'))
+	// console.log(window.event);
+	var e = window.event;
+	console.log(e.target.tagName)
+	if(e.target.tagName == 'BUTTON')
+	{
+		console.log('?')
+		e.stopPropagation();
+		return;
+	}
+
+
 	if($activer)
 	{
 		$activer.removeClass('tableActive');

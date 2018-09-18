@@ -6,8 +6,7 @@ use Think\Db;
 class Index extends MobileBase {
 
     public function index(){
-        //微信登陆 自动获取用户ID
-
+        //微信登陆 自动获取用户ID;
         return $this->fetch();
     }
 

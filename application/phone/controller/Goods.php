@@ -20,13 +20,16 @@ class Goods extends MobileBase{
 
     			);
     		halt(count($data));
-
+    		
 		return $this->fetch();
 	}
 
 	//礼品库存
 	public function stock_index(){
-		// DB::name('client_stock')
+		$count = DB::name('machine')->where(['client_id'=>$id])->count();
+		
+
+		$this->assign('count',$count);
 		return $this->fetch();
 	}
 
@@ -52,5 +55,13 @@ class Goods extends MobileBase{
 		}else{
 			//特定补货
 		}
+	}
+
+	public function ajax_add(){
+
+	}
+
+	public function ajax_clear(){
+
 	}
 }
