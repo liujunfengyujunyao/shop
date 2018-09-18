@@ -68,8 +68,8 @@ class Machine extends MobileBase{
 			$new_location = array_column($data['location'],'location');
 			$old_location = DB::name('machine')
 					->alias('m')
-					->join("__MACHINE_TYPE__ t","m.type_id = t.id".'LEFT')
-					->gitField('t.location',true);
+					->join("__MACHINE_TYPE__ t","m.type_id = t.id",'LEFT')
+					->getField('t.location',true);
 			$diff_location = array_diff($old_location,$new_location);
 			if($diff_location){
 					foreach ($diff_location as $k => $v) {
@@ -106,12 +106,12 @@ class Machine extends MobileBase{
 						$add_conf['edittime'] = time();
 						$add_conf['location'] = $value['location'];
 
-						$add_stock['machine_id'] => $id,
-						$add_stock['goods_name'] => $value['goods_name'],
-						$add_stock['goods_num'] => 0,
-						$add_stock['addtime'] => time(),
-						$add_stock['stock_num'] => $max_stock,
-						$add_stock['location'] => $value['location'],
+						$add_stock['machine_id'] = $id;
+						$add_stock['goods_name'] = $value['goods_name'];
+						$add_stock['goods_num'] = 0;
+						$add_stock['addtime'] = time();
+						$add_stock['stock_num'] = $max_stock;
+						$add_stock['location'] = $value['location'];
 						DB::name("client_machine_conf")->add($add_conf);
 						DB::name("client_machine_stock")->add($add_stock);
 
@@ -121,7 +121,8 @@ class Machine extends MobileBase{
 			}
 
 
-		}else{
+		}
+	}else{
 					//   $goodsList = M('client_machine_stock')
  				// ->alias('s')
  				// ->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,s.machine_id,m.location")
