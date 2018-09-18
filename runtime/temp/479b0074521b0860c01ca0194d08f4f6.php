@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:44:"./template/phone/new/machine\goods_list.html";i:1537185017;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:44:"./template/phone/new/machine\goods_list.html";i:1537254138;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -94,7 +94,7 @@
 				</nav>
 	</section>
 
-		<form id="setup" action="__ACTION__" data-show="false">
+		<form id="setup" action="__ACTION__" data-show="false" method="post">
 			<div class="bg"></div>
 			<table class="table table-bordered">
 
@@ -108,34 +108,52 @@
 					</tr>
 				</thead>
 				<tbody>
-			
+					<?php if(count($info) == 0): if(is_array($location) || $location instanceof \think\Collection || $location instanceof \think\Paginator): if( count($location)==0 ) : echo "" ;else: foreach($location as $key=>$lo): ?>
 					<tr>
 						<td>
-							<input type="text" disabled="disabled" value="A2" class="form-control">
+							<input type="text" readonly="readonly" value="<?php echo $lo; ?>" class="form-control" name="location[<?php echo $lo; ?>][location]">
 						</td>
 						<td>
-							<input type="text"  value="可乐可乐可乐可乐可乐" class="form-control">
+							<input type="text"  value="" class="form-control" name="location[<?php echo $lo; ?>][goods_name]">
 						</td>
 						<td>
-							<input type="text"  value="￥10.00" class="form-control">
+							<input type="text"  value="" class="form-control" name="location[<?php echo $lo; ?>][goods_price]">
 						</td>
 						<td>
-							<input type="text" disabled="disabled" value="0" class="form-control">
+							<input type="text" readonly="readonly" value="0" class="form-control" name="stock">
 						</td>
 						<td>
-							<input type="text" disabled="disabled" value="5" class="form-control">
+							<input type="text" readonly="readonly" value="<?php echo $max_stock; ?>" class="form-control" name="location[<?php echo $lo; ?>][max_stock]">
 						</td>
 					</tr>
-					
+					<?php endforeach; endif; else: echo "" ;endif; else: if(is_array($info) || $info instanceof \think\Collection || $info instanceof \think\Paginator): if( count($info)==0 ) : echo "" ;else: foreach($info as $key=>$vo): ?>
+						<tr>
+						<td>
+							<input type="text" readonly="readonly" value="<?php echo $lo; ?>" class="form-control" name="location">
+						</td>
+						<td>
+							<input type="text"  value="可乐可乐可乐" class="form-control" name="goods">
+						</td>
+						<td>
+							<input type="text"  value="￥10.00" class="form-control" name="price">
+						</td>
+						<td>
+							<input type="text" readonly="readonly" value="0" class="form-control" name="stock">
+						</td>
+						<td>
+							<input type="text" readonly="readonly" value="5" class="form-control" name="max_stock">
+						</td>
+					</tr>
+					<?php endforeach; endif; else: echo "" ;endif; endif; ?>
 					<!-- 提交和总价 -->
 					<tr>
 						<td colspan="2"><b>总价</b>:￥100</td>
 						<td colspan="3">
-							<button class="btn btn-success" type="submit">确认配货</button>
+							<input class="btn btn-success" type="submit" value="确认配货" />
 						
 						</td>
 					</tr>
-
+					
 				</tbody>
 			</table>
 		</form>

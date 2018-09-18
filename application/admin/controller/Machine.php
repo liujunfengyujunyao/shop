@@ -901,7 +901,7 @@ class Machine extends Base
     			->join('__MACHINE_STOCK__ ms', 'ms.goods_id = mc.goods_id','LEFT')
     			->where(['mc.machine_id'=>$machine_id,'ms.machine_id'=>$machine_id])
     			->select();
-
+    			
 
     		$list = DB::name('goods')
     			->field('goods_id,goods_name,shop_price')

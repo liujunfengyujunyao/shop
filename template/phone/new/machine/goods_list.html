@@ -93,7 +93,7 @@
 				</nav>
 	</section>
 
-		<form id="setup" action="__ACTION__" data-show="false">
+		<form id="setup" action="__ACTION__" data-show="false" method="post">
 			<div class="bg"></div>
 			<table class="table table-bordered">
 
@@ -107,34 +107,56 @@
 					</tr>
 				</thead>
 				<tbody>
-			
+					<if condition="count($info) eq 0">
+					<foreach name="location" item="lo">
 					<tr>
 						<td>
-							<input type="text" disabled="disabled" value="A2" class="form-control">
+							<input type="text" readonly="readonly" value="{$lo}" class="form-control" name="location[{$lo}][location]">
 						</td>
 						<td>
-							<input type="text"  value="可乐可乐可乐可乐可乐" class="form-control">
+							<input type="text"  value="" class="form-control" name="location[{$lo}][goods_name]">
 						</td>
 						<td>
-							<input type="text"  value="￥10.00" class="form-control">
+							<input type="text"  value="" class="form-control" name="location[{$lo}][goods_price]">
 						</td>
 						<td>
-							<input type="text" disabled="disabled" value="0" class="form-control">
+							<input type="text" readonly="readonly" value="0" class="form-control" name="stock">
 						</td>
 						<td>
-							<input type="text" disabled="disabled" value="5" class="form-control">
+							<input type="text" readonly="readonly" value="{$max_stock}" class="form-control" name="location[{$lo}][max_stock]">
 						</td>
 					</tr>
-					
+					</foreach>
+					<else />
+						<foreach name="info" item="vo">
+						<tr>
+						<td>
+							<input type="text" readonly="readonly" value="{$lo}" class="form-control" name="location">
+						</td>
+						<td>
+							<input type="text"  value="可乐可乐可乐" class="form-control" name="goods">
+						</td>
+						<td>
+							<input type="text"  value="￥10.00" class="form-control" name="price">
+						</td>
+						<td>
+							<input type="text" readonly="readonly" value="0" class="form-control" name="stock">
+						</td>
+						<td>
+							<input type="text" readonly="readonly" value="5" class="form-control" name="max_stock">
+						</td>
+					</tr>
+					</foreach>
+					</if>
 					<!-- 提交和总价 -->
 					<tr>
 						<td colspan="2"><b>总价</b>:￥100</td>
 						<td colspan="3">
-							<button class="btn btn-success" type="submit">确认配货</button>
+							<input class="btn btn-success" type="submit" value="确认配货" />
 						
 						</td>
 					</tr>
-
+					
 				</tbody>
 			</table>
 		</form>
