@@ -530,7 +530,7 @@ class Machine extends Base
 				->where($where)
 				->limit($Page->firstRow . ',' .$Page->listRows)
 				->select();
-
+		
 		foreach ($list as $key => &$value) {
 			$province = DB::name('region')->where(array('id' => $value['province_id']))->getField('name');
 			$city = DB::name('region')->where(array('id' => $value['city_id']))->getField('name');

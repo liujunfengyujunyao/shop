@@ -50,27 +50,59 @@ class Machine extends MobileBase{
 	//商品列表
 	public function goods_list(){
 		$id = I('get.machine_id');
-		$type_id = DB::name('machine')
-    			->where(['machine_id' => $id])
-    			->getField('type_id');
-		$max_stock = DB::name('machine_type')
-    			->where(['id'=>$type_id])
-    			->getField('goods_num');
+		
+		
+
 		if (IS_POST) {
 			$data = I('post.');
+
+			$id = $data['machine_id'];
+			$type_id = DB::name('machine')
+    			->where(['machine_id' => $id])
+    			->getField('type_id');
+			$max_stock = DB::name('machine_type')
+    			->where(['id'=>$type_id])
+    			->getField('goods_num');
 
 			$r = DB::name('client_machine_conf')->where(['machine_id'=>$id])->select();//原配置
 			if($r){
 				//非第一次配置
+				
+
+			foreach ($data['location'] as $key => $value) {
+						$edit_conf['goods_name'] = $value['goods_name'];
+						// $add_conf['goods_num'] = $value['max_stock'];
+						$edit_conf['goods_price'] = $value['goods_price'];
+						// $add_conf['machine_id'] = $id;
+						// $add_conf['addtime'] = time();
+						$edit_conf['edittime'] = time();
+						// $add_conf['location'] = $value['location'];
+						// $add_stock['machine_id'] = $id;
+						$edit_stock['goods_name'] = $value['goods_name'];
+						// $add_stock['goods_num'] = 0;			
+						$edit_stock['edittime'] = time();
+						// $add_stock['stock_num'] = $max_stock;
+						// $add_stock['location'] = $value['location'];
+						$res = DB::name("client_machine_conf")->where(['machine_id'=>$id,'location'=>$value['location']])->save($edit_conf);
+						$res2 = DB::name("client_machine_stock")->where(['machine_id'=>$id,'location'=>$value['location']])->save($edit_stock);
+
+			}
+
+			$this->redirect('Machine/goods_list',array('machine_id'=>$id));
+
 
 			}else{
 				//第一次配置
 			$new_location = array_column($data['location'],'location');
+
 			$old_location = DB::name('machine')
 					->alias('m')
 					->join("__MACHINE_TYPE__ t","m.type_id = t.id",'LEFT')
-					->getField('t.location',true);
+					->getField('t.location');
+			$old_location = explode(',',$old_location);
+
 			$diff_location = array_diff($old_location,$new_location);
+			
 			if($diff_location){
 					foreach ($diff_location as $k => $v) {
     				$conf = array(
@@ -109,16 +141,15 @@ class Machine extends MobileBase{
 						$add_stock['machine_id'] = $id;
 						$add_stock['goods_name'] = $value['goods_name'];
 						$add_stock['goods_num'] = 0;
-						$add_stock['addtime'] = time();
+						
+						$add_stock['edittime'] = time();
 						$add_stock['stock_num'] = $max_stock;
 						$add_stock['location'] = $value['location'];
 						DB::name("client_machine_conf")->add($add_conf);
 						DB::name("client_machine_stock")->add($add_stock);
-
-
-
-
 			}
+
+			$this->redirect('Machine/goods_list',array('machine_id'=>$id));
 
 
 		}
@@ -134,23 +165,37 @@ class Machine extends MobileBase{
  				// ->limit($Page->firstRow.','.$Page->listRows)
      //            ->select();
      	
-
+		
+		$type_id = DB::name('machine')
+    			->where(['machine_id' => $id])
+    			->getField('type_id');
+		$max_stock = DB::name('machine_type')
+    			->where(['id'=>$type_id])
+    			->getField('goods_num');
     	$location = DB::name('machine_type')
     			->where(['id' => $type_id])
     			->getField('location');
-    	
+    
 	
     	$location = explode(',',$location);
     	
+    	// $info = DB::name('client_machine_conf')
+    	// 		->alias('mc')
+    	// 		->field('mc.goods_name, mc.goods_num, mc.location, ms.stock_id, ms.goods_num as real_num,mc.goods_price')//real_num为本机当前库存
+    	// 		// ->join('__GOODS__ g', 'g.goods_id = mc.goods_id','LEFT')
+    	// 		->join('__CLIENT_MACHINE_STOCK__ ms', 'ms.machine_id = mc.machine_id','LEFT')
+    	// 		->where(['mc.machine_id'=>$id,'ms.machine_id'=>$id])
+    	// 		->select();
     	$info = DB::name('client_machine_conf')
     			->alias('mc')
-    			->field('mc.goods_name, mc.goods_num, mc.location, ms.stock_id, ms.goods_num as real_num,mc.goods_price')//real_num为本机当前库存
-    			// ->join('__GOODS__ g', 'g.goods_id = mc.goods_id','LEFT')
-    			->join('__CLIENT_MACHINE_STOCK__ ms', 'ms.machine_id = mc.machine_id','LEFT')
-    			->where(['mc.machine_id'=>$machine_id,'ms.machine_id'=>$machine_id])
+    			->field('mc.goods_name,ms.goods_num,mc.location,mc.goods_price,ms.stock_num')
+    			->join('__CLIENT_MACHINE_STOCK__ ms','ms.machine_id = mc.machine_id','LEFT')
+    			->where(['mc.machine_id'=>$id,'ms.machine_id'=>$id])
+    			->group('mc.id')
     			->select();
     			
-
+   
+    	$this->assign('machine_id',$id);
     	$this->assign('max_stock',$max_stock);
     	$this->assign('info',$info);
     	$this->assign('location',$location);
@@ -158,5 +203,22 @@ class Machine extends MobileBase{
 		return $this->fetch();
 		}
 
+	}
+
+
+	public function game_price(){
+		$machine_id = I('get.machine_id');
+		$data = DB::name('machine')
+				->where(['machine_id'=>$machine_id])
+				->find();
+
+
+	}
+
+	public function game_odds(){
+		$machine_id = I('get.machine_id');
+		$data = DB::name('machine')
+				->where(['machine_id'=>$machine_id])
+				->find();
 	}
 } 

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:44:"./template/phone/new/machine\goods_list.html";i:1537254138;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:44:"./template/phone/new/machine\goods_list.html";i:1537267126;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -28,7 +28,7 @@
 					<thead>
 						<tr class="title">
 							<td> <span class="fa fa-star" style="color: #666;"></span> </td>
-							<td>ID</td>
+							<!-- <td>ID</td> -->
 							<td>商品名称</td>
 							<td>价格</td>
 							<td>本机库存</td>
@@ -42,30 +42,16 @@
 						</tr> -->
 					</thead>
 					<tbody>
+					<?php if(is_array($info) || $info instanceof \think\Collection || $info instanceof \think\Paginator): if( count($info)==0 ) : echo "" ;else: foreach($info as $key=>$v): ?>
 						<tr>
 							<td><span class="fa fa-star"></span></td>
-							<td>1</td>
-							<td>可乐</td>
-							<td>10.00</td>
-							<td>0</td>
-							<td>A2</td>
+							<!-- <td>1</td> -->
+							<td><?php echo $v['goods_name']; ?></td>
+							<td><?php echo $v['goods_price']; ?></td>
+							<td><?php echo $v['goods_num']; ?></td>
+							<td><?php echo $v['location']; ?></td>
 						</tr>
-						<tr>
-							<td><span class="fa fa-star"></span></td>
-							<td>2</td>
-							<td>雪碧</td>
-							<td>10.00</td>
-							<td>0</td>
-							<td>B2</td>
-						</tr>
-						<tr>
-							<td><span class="fa fa-star"></span></td>
-							<td>3</td>
-							<td>芬达</td>
-							<td>11.00</td>
-							<td>0</td>
-							<td>C2</td>
-						</tr>
+					<?php endforeach; endif; else: echo "" ;endif; ?>	
 					</tbody>
 				</table>
 
@@ -95,6 +81,7 @@
 	</section>
 
 		<form id="setup" action="__ACTION__" data-show="false" method="post">
+		<input type="hidden" name="machine_id" value="<?php echo $machine_id; ?>">
 			<div class="bg"></div>
 			<table class="table table-bordered">
 
@@ -129,19 +116,19 @@
 					<?php endforeach; endif; else: echo "" ;endif; else: if(is_array($info) || $info instanceof \think\Collection || $info instanceof \think\Paginator): if( count($info)==0 ) : echo "" ;else: foreach($info as $key=>$vo): ?>
 						<tr>
 						<td>
-							<input type="text" readonly="readonly" value="<?php echo $lo; ?>" class="form-control" name="location">
+							<input type="text" readonly="readonly" value="<?php echo $vo['location']; ?>" class="form-control" name="location[<?php echo $vo['location']; ?>][location]">
 						</td>
 						<td>
-							<input type="text"  value="可乐可乐可乐" class="form-control" name="goods">
+							<input type="text"  value="<?php echo $vo['goods_name']; ?>" class="form-control" name="location[<?php echo $vo['location']; ?>][goods_name]">
 						</td>
 						<td>
-							<input type="text"  value="￥10.00" class="form-control" name="price">
+							<input type="text"  value="<?php echo $vo['goods_price']; ?>" class="form-control" name="location[<?php echo $vo['location']; ?>][goods_price]">
 						</td>
 						<td>
-							<input type="text" readonly="readonly" value="0" class="form-control" name="stock">
+							<input type="text" readonly="readonly" value="<?php echo $vo['goods_num']; ?>" class="form-control" name="stock">
 						</td>
 						<td>
-							<input type="text" readonly="readonly" value="5" class="form-control" name="max_stock">
+							<input type="text" readonly="readonly" value="<?php echo $vo['stock_num']; ?>" class="form-control" name="location[<?php echo $vo['location']; ?>][stock_num]">
 						</td>
 					</tr>
 					<?php endforeach; endif; else: echo "" ;endif; endif; ?>

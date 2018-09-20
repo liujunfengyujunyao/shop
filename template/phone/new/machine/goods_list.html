@@ -27,7 +27,7 @@
 					<thead>
 						<tr class="title">
 							<td> <span class="fa fa-star" style="color: #666;"></span> </td>
-							<td>ID</td>
+							<!-- <td>ID</td> -->
 							<td>商品名称</td>
 							<td>价格</td>
 							<td>本机库存</td>
@@ -41,30 +41,16 @@
 						</tr> -->
 					</thead>
 					<tbody>
+					<foreach name="info" item="v">
 						<tr>
 							<td><span class="fa fa-star"></span></td>
-							<td>1</td>
-							<td>可乐</td>
-							<td>10.00</td>
-							<td>0</td>
-							<td>A2</td>
+							<!-- <td>1</td> -->
+							<td>{$v.goods_name}</td>
+							<td>{$v.goods_price}</td>
+							<td>{$v.goods_num}</td>
+							<td>{$v.location}</td>
 						</tr>
-						<tr>
-							<td><span class="fa fa-star"></span></td>
-							<td>2</td>
-							<td>雪碧</td>
-							<td>10.00</td>
-							<td>0</td>
-							<td>B2</td>
-						</tr>
-						<tr>
-							<td><span class="fa fa-star"></span></td>
-							<td>3</td>
-							<td>芬达</td>
-							<td>11.00</td>
-							<td>0</td>
-							<td>C2</td>
-						</tr>
+					</foreach>	
 					</tbody>
 				</table>
 
@@ -94,6 +80,7 @@
 	</section>
 
 		<form id="setup" action="__ACTION__" data-show="false" method="post">
+		<input type="hidden" name="machine_id" value="{$machine_id}">
 			<div class="bg"></div>
 			<table class="table table-bordered">
 
@@ -131,19 +118,19 @@
 						<foreach name="info" item="vo">
 						<tr>
 						<td>
-							<input type="text" readonly="readonly" value="{$lo}" class="form-control" name="location">
+							<input type="text" readonly="readonly" value="{$vo.location}" class="form-control" name="location[{$vo['location']}][location]">
 						</td>
 						<td>
-							<input type="text"  value="可乐可乐可乐" class="form-control" name="goods">
+							<input type="text"  value="{$vo.goods_name}" class="form-control" name="location[{$vo['location']}][goods_name]">
 						</td>
 						<td>
-							<input type="text"  value="￥10.00" class="form-control" name="price">
+							<input type="text"  value="{$vo.goods_price}" class="form-control" name="location[{$vo['location']}][goods_price]">
 						</td>
 						<td>
-							<input type="text" readonly="readonly" value="0" class="form-control" name="stock">
+							<input type="text" readonly="readonly" value="{$vo.goods_num}" class="form-control" name="stock">
 						</td>
 						<td>
-							<input type="text" readonly="readonly" value="5" class="form-control" name="max_stock">
+							<input type="text" readonly="readonly" value="{$vo.stock_num}" class="form-control" name="location[{$vo['location']}][stock_num]">
 						</td>
 					</tr>
 					</foreach>
