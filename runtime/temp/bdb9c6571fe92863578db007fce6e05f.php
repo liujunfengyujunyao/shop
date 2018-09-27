@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1537174280;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1538025501;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -48,7 +48,7 @@
                     <a href="#">
                     <div class="icon fa fa-recycle" style="color:#4864ed;"></div>
                     <div class="text">
-                        <div class="p1" >设备注册</div>
+                        <div class="p1" >绑定设备</div>
                         <div class="p2">扫描设备二维码</div>
                     </div>
                     </a>
@@ -155,7 +155,7 @@
             </div>
             <ul class="short">
                 <li>
-                    <a href="#">
+                    <a href="<?php echo U('Phone/Machine/game_price_index'); ?>">
                     <div class="icon fa fa-recycle" style="color:#4864ed;"></div>
                     <div class="text">
                         <div class="p1" >游戏价格</div>
@@ -164,7 +164,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="<?php echo U('Phone/Machine/odds_index'); ?>">
                     <div class="icon fa fa-money" style="color:#fe7b13;"></div>
                     <div class="text">
                         <div class="p1">设备赔率</div>

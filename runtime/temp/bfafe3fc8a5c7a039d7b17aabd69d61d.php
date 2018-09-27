@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1537180880;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1538026339;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -7,16 +7,41 @@
 	<title>Document</title>
 	<link rel="stylesheet" href="__STATIC__/css/new/fontawesome/font-awesome.min.css">
 	<link rel="stylesheet" href="__STATIC__/css/new/common.css">
-	<link rel="stylesheet" href="__STATIC__/css/new/machine_list.css">
+	<!-- <link rel="stylesheet" href="__STATIC__/css/new/machine_list.css"> -->
 	<link rel="stylesheet" href="__STATIC__/css/new/bootstrap.min.css">
 	<link rel="stylesheet" href="__STATIC__/css/new/util.css">
+	<link rel="stylesheet" href="__STATIC__/css/new/index2.css">
+	<link rel="stylesheet" href="__STATIC__/css/new/top_frame.css">
 </head>
 <body>
 	<header id="head">
 
-		<h3>
+	<!-- 	<h3>
 			<span class="fa fa-list-alt"></span>
-			贩卖机列表<small>(共2条记录)</small></h2>
+			贩卖机列表<small>(共2条记录)</small></h2> -->
+	<div class="top_bar">
+			<a href="#" class="fa fa-chevron-left" id="upper"></a>
+			<span class="title">贩卖机列表<small>(共<?php echo $count; ?>条记录)</small></span>
+			<span class="tog fa fa-list"></span>
+		</div>
+		<ul class="slide_bar">
+			<li><a href="<?php echo U('Phone/Index/index'); ?>">
+				<span class="fa fa-home"></span>
+				<span>首页</span>
+			</a></li>
+			<li><a href="#">
+				<span class="fa fa-search"></span>
+				<span>分类</span>
+			</a></li>
+			<li><a href="#">
+				<span class="fa fa-shopping-cart"></span>
+				<span>购物车</span>
+			</a></li>
+			<li><a href="<?php echo U('Phone/Index/index'); ?>">
+				<span class="fa fa-user"></span>
+				<span>我的</span>
+			</a></li>
+		</ul>
 	</header>
 	<section id="body" class="table-responsive">
 		<table class="table table-bordered">
@@ -47,7 +72,7 @@
 							<!-- <td>测试</td> -->
 							<!-- <td>1366666666</td> -->
 							<td>
-								<a href="<?php echo U('Phone/Machine/goods_list',array('machine_id'=>$v['machine_id'])); ?>"><i class="fa fa-edit"></i>配置</a>
+								<a href="<?php echo U('Phone/Machine/goods_list',array('machine_id'=>$v['machine_id'])); ?>"><i class="fa fa-edit"></i>礼品格配置</a>
 								<a href="#"><i class="fa fa-edit"></i>编辑</a>
 								<span><i class="fa fa-trash"></i>删除</span>
 							</td>
@@ -59,10 +84,22 @@
 </body>
 <script src="__STATIC__/js/new/rem.js"></script>
 <script src="__STATIC__/js/new/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/js/new/bootstrap.min.js"></script>
+<script src="__STATIC__/js/new/page_index2.js"></script>
+
+<script src="__PUBLIC__/js/layer/layer.js"></script>
 <script>
 	$('table tbody td').click(function(){
 		$activer = $(this).parent();
 		$(this).parent().addClass('tableActive').siblings().removeClass('tableActive');
 	})
+
+	$('.tog').click(function(){
+		$('.slide_bar').slideToggle();
+	});
+
+$('#upper').click(function(){
+	history.back();
+})
 </script>
 </html>

@@ -72,8 +72,13 @@ class Goods extends MobileBase{
 
 	//一键补货
 	public function ajax_add(){
-		$machine_id = I('get.id');
-	
+		$machine_id = I('post.id');
+
+		
+		$data = M('client_machine_stock')->where(['machine_id'=>$machine_id])->find();
+		if (is_null($data)) {
+			$this->ajaxReturn(['status' => 2,'msg' => '未配置商品']);
+		}
 		$stock = DB::name('machine')
 				->alias('m')
 				->join("__MACHINE_TYPE__ t",'m.type_id = t.id','LEFT')
@@ -89,16 +94,18 @@ class Goods extends MobileBase{
 		$stock_id = implode(',',$stock_id);
 		$r = DB::name('client_machine_stock')
 				->where("stock_id in ({$stock_id})")
-				->save(['goods_num'=>$stock]);
+				->save(['goods_num'=>$stock,'edittime'=>time()]);
 		if($r !== false){
 			$this->ajaxReturn(['status' => 1,'msg' => '操作成功!']);
+		}else{
+			$this->ajaxReturn(['status' => 2,'msg' => '网络错误']);
 		}
 	}
 
 	//一键清货
 	public function ajax_clear(){
-		//
-		$machine_id = I('get.id');
+		
+		$machine_id = I('post.id');
 		$stock = DB::name('client_machine_stock')->where(['machine_id'=>$machine_id])->delete();
 		$conf = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->delete();
 		if ($stock && $conf !== false) {
@@ -118,5 +125,14 @@ class Goods extends MobileBase{
 				->select();
 	}
 
+	//配置礼品(每个格子单独配置)
+	public function goods_list(){
+
+	}
+
+	public function stock_log(){
+		//补货,销货
+		
+	}
 	
 }

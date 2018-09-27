@@ -92,17 +92,20 @@ class Machine extends MobileBase{
 
 
 			}else{
+
 				//第一次配置
 			$new_location = array_column($data['location'],'location');
-
+			
 			$old_location = DB::name('machine')
 					->alias('m')
 					->join("__MACHINE_TYPE__ t","m.type_id = t.id",'LEFT')
+					->where(['m.machine_id'=>$data['machine_id']])
 					->getField('t.location');
-			$old_location = explode(',',$old_location);
-
-			$diff_location = array_diff($old_location,$new_location);
 			
+			$old_location = explode(',',$old_location);
+			
+			$diff_location = array_diff($old_location,$new_location);
+		
 			if($diff_location){
 					foreach ($diff_location as $k => $v) {
     				$conf = array(
@@ -206,19 +209,61 @@ class Machine extends MobileBase{
 	}
 
 
-	public function game_price(){
-		$machine_id = I('get.machine_id');
+	public function ajax_game_price(){
+
+		$machine_id = I('get.id');
 		$data = DB::name('machine')
 				->where(['machine_id'=>$machine_id])
 				->find();
+		//is_same_goods_price 为是否统一标价 可能根据位置(location)设定不同价位
+		$where = DB::name('machine')->where(['is_same_goods_price'=>1])->select();//统一标价的设备
+		
+	}
 
+	public function game_price_index(){
+		$manager = session('manager_info');
+		$manager['manager_id'] = 10;
+
+		$machine = DB::name('machine')
+				->field('machine_id,machine_name,game_price')
+				->where(['client_id'=>$manager['manager_id']])
+				->select();
+		halt($machine);
+		$this->assign('machine',$machine);
+		$this->fetch();
 
 	}
 
-	public function game_odds(){
-		$machine_id = I('get.machine_id');
-		$data = DB::name('machine')
-				->where(['machine_id'=>$machine_id])
-				->find();
+	public function odds_index(){
+		$manager = session('manager_info');
+
+		$manager['manager_id'] = 10;
+
+		$machine = DB::name('machine')->where(['client_id'=>$manager['manager_id']])->select();
+		// halt($machine);
+		$this->assign('info',$machine);
+		return $this->fetch();
 	}
+
+	public function ajax_game_odds(){
+		
+		$post = I('post.');
+
+		if(preg_match('/^(([1-9]|([1-9]\d)|(1\d\d)|(2([0-4]\d|5[0-5]))))$/',$post['odds'])){
+		    $res = DB::name('machine')->where(['machine_id'=>$post['id']])->save(['odds'=>$post['odds']]);
+		if($res !== false){
+			$this->ajaxReturn(['status' => 1,'msg' => '修改成功']);
+		}else{
+			$this->ajaxReturn(['status' => 2,'msg' => '网络错误']);
+		}
+		}else{
+		    $this->ajaxReturn(['status' => 2,'msg' => '参数不合法']);
+		}
+		
+		
+		//is_same_odds 为是否统一赔率 可能根据位置(location)设定不同赔率
+		
+	}
+
+
 } 

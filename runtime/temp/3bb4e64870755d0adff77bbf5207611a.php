@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/goods\stock_index.html";i:1537413676;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/goods\stock_index.html";i:1537418376;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -215,7 +215,7 @@
 
 
 </script>
-<<script>
+<script>
  function supply2(obj) {
         layer.confirm('确认重置？', {
                     btn: ['确定', '取消'] //按钮

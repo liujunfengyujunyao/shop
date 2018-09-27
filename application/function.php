@@ -694,3 +694,95 @@ function logger($content){
         file_put_contents($log, date('H:i:s') . " " .$content . PHP_EOL,FILE_APPEND);//日志写入函数
         // file_put_contents("log.txt", $data  .PHP_EOL, FILE_APPEND);
     }
+
+
+// function qrcode($url,$outfile='',$size=4){
+//     Vendor('phpqrcode.phpqrcode');
+//     ob_clean(oid)
+//     QRcode::png($url,$outfile,QR_ECLEVEL_L,$size,2,false,0xFFFFFF,0x000000);
+//     exit();
+      
+// }
+
+function QRcode($url){
+    vendor('phpqrcode.phpqrcode');
+    $object=new \QRcode();
+    ob_end_clean();
+    $object->png($url,false,3,10,2);
+    exit();
+}
+
+ function httpGet($url) {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 500);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        $res = curl_exec($curl);
+        curl_close($curl);
+        return $res;
+    }
+
+        /**
+ * 微信扫码支付
+ * @param  array $order 订单 必须包含支付所需要的参数 body(产品描述)、total_fee(订单金额)、out_trade_no(订单号)、product_id(产品id)
+ */
+function weixinpay($order){
+    $order['trade_type']='NATIVE';
+    Vendor('Weixinpay.Weixinpay');
+    $weixinpay=new \Weixinpay();
+    $weixinpay->pay($order);
+}
+
+//Json传输数据
+function json_curl($url, $para ){
+
+    $data_string=json_encode($para,JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);//$data JSON类型字符串
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);//SSL证书认证
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);//严格认证
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Content-Length: ' . strlen($data_string)));
+    $result = curl_exec($curl);
+    curl_close($curl);
+    return $result;
+}
+//接口 
+//封装发送curl请求的函数
+function curl_request($url,$post = false,$data = array(),$https = fasle){
+    //初始化curl请求,设置请求地址
+    $ch = curl_init($url);
+    //设置请求参数 针对post请求
+    if ($post) {
+        //发送post请求
+        curl_setopt($ch,CURLOPT_POST,true);//设置请求方式为post
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$data);//设置请求参数
+    }
+
+    //绕过https协议的证书校验
+    if ($https) {
+        //当前发送的是https协议的请求
+        //禁用证书校验
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, fasle);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, fasle);
+    }
+    //发送请求
+    //直接返回结果
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+    $result = curl_exec($ch);//成功就是返回数据 失败返回fasle
+    //关闭请求 释放请求资源
+    curl_close($ch);
+    //返回数据
+    return $result;
+    
+}
+
+function encrypt_password($password){
+    //加盐
+    $salt = 'djsdgfdkfdskafhds';
+    return md5( $salt . md5($password) );
+}
+?>
