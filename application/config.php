@@ -363,6 +363,7 @@ return [
     ['mca'=>'home_Goods_ajax_consult','p'=>['goods_id','consult_type','p']],  // 缓存咨询静态页面 http://www.tpshop2.0.com/index.php?m=Home&c=Goods&a=ajax_consult&goods_id=142&consult_type=0&p=2
     ],   
 
+    //微信扫码支付
      'WEIXINPAY_CONFIG'       => array(
     'APPID'              => 'wx9e8c63f03cbd36aa', // 微信支付APPID
     'MCHID'              => '1457705302', // 微信支付MCHID 商户收款账号
@@ -377,16 +378,41 @@ return [
     'NOTIFY_URL'         => 'http://liujunfeng.imwork.net:41413/phone/weixinpay/notify',
     ),
 
+     //微信公众号内支付
+      'OAUTHPAY_CONFIG'       => array(
+    'APPID'              => 'wx9e8c63f03cbd36aa', // 微信支付APPID
+    'MCHID'              => '1457705302', // 微信支付MCHID 商户收款账号
+    'KEY'                => 'ede449b5c872ada3365d8f91563dd8b6', // 微信支付KEY
+    'APPSECRET'          => 'aa30b7860f3247a789fff62b08681b7e', // 公众帐号secert (公众号支付专用)
+    // 'NOTIFY_URL'         => 'http://www.machine.com/Home/Weixinpay/notify/', // 接收支付状态的连接
+    // 'NOTIFY_URL'         => 'http://liujunfeng.imwork.net:41413/Home/Weixinpay/notify',
+    // 'NOTIFY_URL'         => 'http://192.168.1.3/index.php/Home/Weixinpay/notify',
+    'NOTIFY_URL'         => 'http://liujunfeng.imwork.net:41413/API/weixinpay/notify',
+    ),
 
-     //正式号
+
+     //微信正式号
     // 'OAUTH_CONFIG'       => array(
     // 'APPID'              => 'wx9e8c63f03cbd36aa', // 微信支付APPID  
     // 'APPSECRET'          => 'aa30b7860f3247a789fff62b08681b7e', // 公众帐号secert (公众号支付专用)
     // ),
     // 
-    //测试号
+    //微信测试号
      'OAUTH_CONFIG'       => array(
     'appId'              => 'wx7d93e0114cc3453a', // 微信支付APPID  
     'appSecret'          => 'e64bda5d1006894a4f3cfb1b908dca19', // 公众帐号secert (公众号支付专用)
+    ),
+
+
+      //支付宝面对面支付
+      'ALIPAY_CONFIG'       => array(
+    'APPID'              => 'wx9e8c63f03cbd36aa', // 微信支付APPID
+    'MCHID'              => '1457705302', // 微信支付MCHID 商户收款账号
+    'KEY'                => 'ede449b5c872ada3365d8f91563dd8b6', // 微信支付KEY
+    'APPSECRET'          => 'aa30b7860f3247a789fff62b08681b7e', // 公众帐号secert (公众号支付专用)
+    // 'NOTIFY_URL'         => 'http://www.machine.com/Home/Weixinpay/notify/', // 接收支付状态的连接
+    // 'NOTIFY_URL'         => 'http://liujunfeng.imwork.net:41413/Home/Weixinpay/notify',
+    // 'NOTIFY_URL'         => 'http://192.168.1.3/index.php/Home/Weixinpay/notify',
+    'NOTIFY_URL'         => 'http://liujunfeng.imwork.net:41413/API/weixinpay/notify',
     ),
 ];

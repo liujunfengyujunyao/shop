@@ -1,0 +1,1 @@
+{"appid":"wx9e8c63f03cbd36aa","bank_type":"CFT","cash_fee":"1","fee_type":"CNY","is_subscribe":"Y","mch_id":"1457705302","nonce_str":"test","openid":"otS2SwFP18EEUCsYKeOKQFUs_Eo0","out_trade_no":"4618621538981379","result_code":"SUCCESS","return_code":"SUCCESS","time_end":"20181008144953","total_fee":"1","trade_type":"NATIVE","transaction_id":"4200000165201810089862677031"}
