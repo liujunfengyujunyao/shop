@@ -6,6 +6,7 @@ use think\Db;
 use think\Session;
 header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+// set_time_limit(0);//设置超时时间
 class Weixinpay extends Controller {
 	
     //发起支付,记录入库,status为0,成功走notify,修改status,减少库存
@@ -124,7 +125,7 @@ if ($res) {
         $outTradeNo = strval(rand(100000,999999).time());//自己的商品订单号，不能重复
         file_put_contents("order.txt",$outTradeNo);
         $orderName = "支付测试";
-        $authCode = "134540176769638230";//前端发送过来的一串数字
+        $authCode = "134755534001741374";//前端发送过来的一串数字
 
         //将订单入库
          $params = array(
