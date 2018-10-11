@@ -1,0 +1,75 @@
+body {
+  background: #efeff4;
+}
+body form {
+  font-size: 0.14rem;
+  padding-top: 0.2rem;
+}
+body form .form-group:not(:first-child) {
+  margin-bottom: 0;
+}
+body form .form-group {
+  position: relative;
+}
+body form .form-group input {
+  border-radius: 0!important;
+  border-left: 0!important;
+  border-right: 0!important;
+  text-indent: 0.7rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+body form .form-group label {
+  width: 15%;
+  text-align: right;
+  color: #5e5e5e;
+  position: absolute;
+  left: 0.1rem;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+body form .form-group:last-child {
+  padding: 0.05rem 0.1rem;
+}
+body form .form-group:last-child button {
+  width: 100%;
+  background: #4e89ee;
+  display: block;
+  color: #fff;
+  padding: 0.15rem;
+}
+.indent {
+  text-indent: 0.2rem;
+  padding: 0.05rem 0 0.2rem;
+}
+button {
+  font-size: 0.14rem !important;
+}
+.validate {
+  position: absolute;
+  width: 1rem;
+  text-align: center;
+  height: 85%;
+  box-sizing: border-box;
+  top: 0;
+  right: 0.2rem;
+  bottom: 0;
+  margin: auto;
+  background: #4e89ee;
+  color: #fff;
+}
+button:focus,
+button:hover {
+  color: #fff;
+  outline: none!important;
+  box-shadow: none!important;
+  border: none!important;
+}
+.validate:disabled {
+  opacity: 0.85;
+  color: #fff !important;
+}

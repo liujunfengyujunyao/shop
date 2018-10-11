@@ -19,6 +19,7 @@ class Goods extends MobileBase{
     			array(1,2,3),
 
     			);
+    		halt(5151515);
     		halt(count($data));
     		
 		return $this->fetch();

@@ -1,0 +1,162 @@
+//颜色
+@white: #fff;
+@black: #000;
+@black_l: #333;
+@black_m: #666;
+@black_s: #999;
+@light_black: #f1f1f1;
+// padding
+.pa_v_15 {
+	padding-top: .15rem;
+	padding-bottom: .15rem;
+}
+.pa_v_10 {
+	padding-top: .10rem;
+	padding-bottom: .10rem;
+}
+.pa_h_15 {
+	padding-left: .15rem;
+	padding-right: .15rem;
+}
+// 特定标题
+.title_style {
+	font-size: .15rem;
+	font-weight: bold;
+}
+
+body {
+	background: #efeff4;
+}
+#head {
+.titlebar {
+	position: relative;
+	background: #4583eb;
+	p {
+		color: @white;
+		text-align: center;
+	}
+	>span {
+		position: absolute;
+		top: 50%;
+		right: 10%;
+		width: .3rem;
+		height: .3rem;
+		color: #88b8fe;
+		font-size: .22rem;
+	}
+	.title {
+		padding: .12rem;
+	}
+
+	.title_num {
+		font-size: .3rem;
+		padding-bottom: .23rem;
+		}
+
+		
+	}
+
+	.foobar {
+			overflow: hidden;
+			background: #558eee;
+			.foo_item {
+				float: left;
+				width: 33.3%;
+				padding: .1rem 0;
+				box-sizing: border-box;
+				text-align: center;
+
+				span {
+					display: inline-block;
+					width: 100%;
+					color: @white;
+				}
+				
+			}
+
+			.foo_item:not(:last-child) span {
+					border-right: 1px dashed #2662c8;
+				}
+		}
+		.lastbar { background: @white; overflow: hidden;}
+		.lastbar div{
+				float:left;
+				width: 50%;
+				box-sizing: border-box;
+				.pa_v_10();
+				.pa_h_15();
+				span {
+					display: inline-block;
+					width: 100%;
+					color: @black_s;
+				}
+				span:first-child {
+					color: @black;
+					.title_style();
+				}
+			}
+			.lastbar div:first-child{ padding-right: 0;}
+			.lastbar div:first-child span{
+				border-right: 1px solid @black_s;
+			}
+
+}
+
+#body{
+	margin-top: .2rem;
+	.module {
+		background: @white;
+		margin-bottom: .12rem;
+		.icon {
+				font-size: .25rem;
+				padding-right: .15rem;
+		}
+		.long {
+			overflow: hidden;
+			border-top: 1px solid @light_black;
+			border-bottom: 1px solid @light_black;
+			.pa_v_10();
+			.pa_h_15();
+			div {
+				float: left;
+				box-sizing: border-box;
+			}
+			div:first-child {
+				color:#4c87ee;
+				.icon()
+			}
+			div:last-child {
+				.p1 {
+					.title_style();
+				}
+				.p2 {
+					color: @black_s;
+				}
+			}
+		}
+		.short { overflow: hidden; }
+		.short li {
+			float: left;
+			width: 50%;
+			box-sizing: border-box;
+			.pa_v_15();
+			.pa_h_15();
+			overflow: hidden;
+			border: 1px solid @light_black;
+			>div {
+				float: left;
+				box-sizing: border-box;
+			}
+			.text {
+				.p1 {
+					.title_style();
+				}
+				.p2 {
+					color: @black_s;
+				}
+			}
+		}
+	}
+}
+
+

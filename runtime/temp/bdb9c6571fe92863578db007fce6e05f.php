@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1538025501;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1539237347;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -45,7 +45,7 @@
             </div>
             <ul class="short">
                 <li>
-                    <a href="#">
+                    <a href="<?php echo U('Phone/Scan/index'); ?>">
                     <div class="icon fa fa-recycle" style="color:#4864ed;"></div>
                     <div class="text">
                         <div class="p1" >绑定设备</div>

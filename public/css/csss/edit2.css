@@ -1,0 +1,62 @@
+h1 {
+  padding: 0.1rem;
+  font-size: 0.23rem;
+  font-weight: 500;
+}
+h1 small {
+  padding-left: 0.03rem;
+  color: #999;
+}
+form {
+  padding: 0.1rem;
+}
+form > div.form-group {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  margin-left: 0!important;
+  margin-right: 0!important;
+  padding: 0.05rem 0;
+  overflow: hidden;
+}
+form > div.form-group label {
+  margin-top: 0.02rem;
+  padding-right: 0.05rem;
+  width: 30%;
+  float: left;
+  display: flex!important;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+form > div.form-group label span:first-child {
+  font-size: 0.18rem;
+  color: #f00;
+  margin-right: 0.1rem;
+}
+form > div.form-group label span:last-child {
+  text-align: center;
+  line-height: 1.5;
+  width: 67%;
+}
+form > div.form-group input,
+form > div.form-group select {
+  height: 0.27rem !important;
+  width: 65%!important;
+  float: right;
+  height: 100%;
+  box-sizing: border-box;
+  display: inline-block !important;
+  border: 1px solid #e1e1e1;
+}
+form > div.form-group select {
+  text-indent: 10px;
+  padding: 0!important;
+  color: #333 !important;
+}
+form .btns {
+  padding-left: 1.03rem;
+}
+form .btns button {
+  padding: 0.05rem 0.15rem;
+  margin-right: 0.1rem;
+}

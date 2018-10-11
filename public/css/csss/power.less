@@ -1,0 +1,90 @@
+html { min-height:100vh; }
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+#head {
+	position: relative;
+	background: #ecf8fc;
+	height: .4rem;
+	text-align: center;
+
+	>h2 {
+		line-height: .4rem;
+		display: inline-block;
+		text-align: center;
+		color: green;
+		font-size: .17rem;
+		margin: 0;
+	}
+
+	>span.toggle {
+			color: green;
+			line-height: .9;
+			font-size: .28rem;
+			position: absolute;
+			width: .25rem;
+			height: .25rem;
+			left: .25rem;
+			top: 0;
+			bottom: 0;
+			margin: auto;
+		}
+}
+
+
+	.content {
+		flex-grow: 1;
+		padding: .1rem;
+		box-sizing: border-box;
+
+		>h1 {
+			font-size: .23rem;
+			font-weight: 500;
+
+			small {
+				padding-left: .03rem;
+				color: #999;
+			}
+		}
+
+
+		>table {
+			border-collapse: collapse;
+			.title {
+				background: #f5f5f5;
+				font-weight: 700;
+			}
+			.title2 {
+				background: #fafafa;
+				color: #0ba4da;
+				span {
+					padding: .03rem .03rem;
+					border: 1px solid #0ba4da;
+					border-radius: 5px;
+
+					i {
+						padding-right: .03rem;
+					}
+				}
+			}
+			>tbody td{
+				border: 1px solid #f5eded;
+			}
+			tbody td:first-child {
+				color: #666;
+			}
+			tbody td:last-child  {
+				display: flex;
+				justify-content: center;
+			}
+			tbody td:last-child span {
+				padding-right: .1rem;
+			}
+			tbody td:last-child span i {
+				padding-right: .03rem;
+			}
+		}
+	}
+

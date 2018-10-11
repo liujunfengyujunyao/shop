@@ -4,9 +4,10 @@ use app\common\logic\JssdkLogic;
 use think\Controller;
 use think\Db;
 use think\Session;
+use plugins\weixinpay\weixinpay\example\Wxpay_MicroPay;
 header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-// set_time_limit(0);//设置超时时间
+set_time_limit(0);//设置超时时间
 class Weixinpay extends Controller {
 	
     //发起支付,记录入库,status为0,成功走notify,修改status,减少库存
@@ -121,11 +122,11 @@ if ($res) {
         Vendor('Weixinpay.barcode');
         $mchid='1457705302'; $appid='wx9e8c63f03cbd36aa'; $apiKey='ede449b5c872ada3365d8f91563dd8b6';
 
-        $payAmount = 0.01;//金额
+        $payAmount = 0.02;//金额
         $outTradeNo = strval(rand(100000,999999).time());//自己的商品订单号，不能重复
         file_put_contents("order.txt",$outTradeNo);
         $orderName = "支付测试";
-        $authCode = "134755534001741374";//前端发送过来的一串数字
+        $authCode = "134619025995263792";//前端发送过来的一串数字
 
         //将订单入库
          $params = array(
@@ -163,9 +164,14 @@ if ($res) {
         $wxPay->setOrderName($orderName);
         $wxPay->setAuthCode($authCode);
         $arr = $wxPay->createJsBizPackage();
-        halt($arr);
+       
         file_put_contents('arr.txt',$arr);
-        if($arr['return_code']=='SUCCESS'){
+        // if($arr['return_code']=='SUCCESS'){
+        //     echo '付款成功！返回信息如下：<br><hr>';
+        //     echo '<pre>'.print_r($arr).'</pre>';
+        //     exit();
+        // }
+         if($arr!==false){
             echo '付款成功！返回信息如下：<br><hr>';
             echo '<pre>'.print_r($arr).'</pre>';
             exit();
@@ -241,6 +247,18 @@ if ($res) {
         }
         return false;
     }
+
+    public function chexiao(){
+        // import('Plugins.weixinpay.weixinpay.example.Wxpay_MicroPay');
+        Vendor('cancel.example.Wxpay_MicroPay');
+        $m = new \MicroPay;
+        $out_trade_no = "1498501539169598";
+        $result = $m->cancel($out_trade_no, $depth = 0);
+        halt($result);
+    }
+
+
+
 
 
    

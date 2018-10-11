@@ -1,0 +1,88 @@
+h1 {
+  padding: 0.1rem;
+  font-size: 0.23rem;
+  font-weight: 500;
+}
+h1 small {
+  padding-left: 0.03rem;
+  color: #999;
+}
+form {
+  padding: 0.1rem;
+}
+form > div {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  margin-left: 0!important;
+  margin-right: 0!important;
+  padding: 0.05rem 0;
+  overflow: hidden;
+}
+form > div label {
+  margin-top: 0.02rem;
+  padding-right: 0.05rem;
+  width: 30%;
+  float: left;
+  display: flex!important;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+form > div label span:first-child {
+  font-size: 0.18rem;
+  color: #f00;
+  margin-right: 0.1rem;
+}
+form > div label span:last-child {
+  text-align: center;
+  line-height: 1.5;
+  width: 67%;
+}
+form > div > input {
+  height: 0.27rem !important;
+  width: 65%!important;
+  float: right;
+  height: 100%;
+  box-sizing: border-box;
+  display: inline-block !important;
+  border: 1px solid #e1e1e1;
+}
+form > div:last-child {
+  align-items: flex-start;
+}
+form .allcheck {
+  border: none;
+  padding-top: 0;
+}
+form .allcheck table tr {
+  border: 1px solid #efefef;
+}
+form .allcheck table tr td {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: center;
+}
+form .allcheck table tr td input {
+  display: inline-block;
+  width: 0.18rem;
+  height: 0.18rem;
+  margin: 0;
+  margin-right: 0.05rem;
+}
+form .allcheck table tr td span {
+  margin-right: 0.05rem;
+}
+form .allcheck table tr:nth-child(2n+1) {
+  background: #efefef;
+}
+form .allcheck table tr:nth-child(2n) span {
+  color: #337ab7;
+}
+form .allcheck table tr:last-child {
+  background: none;
+  border: none;
+}
+form .allcheck table tr:last-child td {
+  padding-left: 0;
+}
