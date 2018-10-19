@@ -20,7 +20,7 @@ class Weixinpay extends Controller {
 
     $params = array(
         'machine_id' => 1,
-        'location' => "A4"
+        'location' => "A2"
         );
     $goods = DB::name('client_machine_conf')
             ->where(['machine_id'=>$params['machine_id'],'location'=>$params['location']])
@@ -87,12 +87,14 @@ if ($res) {
         $result=$wxpay->notify();
         if ($result) {
            //  // 验证成功 修改数据库的订单状态等 $result['out_trade_no']为订单号
-           //  $result = json_encode($result);
-          	// file_put_contents('weixinpay.txt',$result);//"out_trade_no":"4618621538981379"
+            
             $log = DB::name('weixinpay_log')->where(['out_trade_no'=>$result['out_trade_no']])->find();//修改支付记录表的状态
             DB::name('weixinpay_log')->where(['out_trade_no'=>$log['out_trade_no']])->save(['status'=>1]);
-            // $l = json_encode($log);
-            // file_put_contents('weixinpay_log.txt',$l);
+            //接口发送消息*****************
+            //
+            //
+            //
+            //****************************
             $stock = DB::name('client_machine_stock')->where(['machine_id'=>$log['machine_id'],'location'=>$log['location']])->find();
             // $s = json_encode($stock);
             // file_put_contents('weixinpay_stock.txt',$s);
@@ -125,13 +127,13 @@ if ($res) {
         $payAmount = 0.02;//金额
         $outTradeNo = strval(rand(100000,999999).time());//自己的商品订单号，不能重复
         file_put_contents("order.txt",$outTradeNo);
-        $orderName = "支付测试";
-        $authCode = "134619025995263792";//前端发送过来的一串数字
+        $orderName = "支付测试";//商品名称
+        $authCode = "134686428740282872";//前端发送过来的一串数字
 
         //将订单入库
          $params = array(
         'machine_id' => 1,
-        'location' => "A4"
+        'location' => "A2"
         );
         $goods = DB::name('client_machine_conf')
             ->where(['machine_id'=>$params['machine_id'],'location'=>$params['location']])
@@ -151,6 +153,8 @@ if ($res) {
         'goods_name' => $goods['goods_name'],
         'goods_price' => $order['total_fee'],
         'out_trade_no' => $outTradeNo,
+
+        'auth_code' => $authCode,
         );
 // halt($add);
         $res = DB::name('weixinpay_log')->add($add);
@@ -179,6 +183,8 @@ if ($res) {
         exit('error');
     }
 
+
+    //查询订单
     public function order(){
         Vendor('Weixinpay.orderquery');
         /** 请填写以下配置信息 */
@@ -186,9 +192,10 @@ if ($res) {
         // $appid = 'xxxxx';  //公众号APPID 通过微信支付商户资料审核后邮件发送
         // $apiKey = 'xxxxx';   //https://pay.weixin.qq.com 帐户设置-安全设置-API安全-API密钥-设置API密钥
         $mchid='1457705302'; $appid='wx9e8c63f03cbd36aa'; $apiKey='ede449b5c872ada3365d8f91563dd8b6';
-        $outTradeNo = '8480041539078462';     //要查询的订单号
+        $outTradeNo = '2245841539769765';     //要查询的订单号
         /** 配置结束 */
-        $wxPay = new \WxpayService($mchid,$appid,$apiKey);
+        $wxPay = new \WxpayServiceo($mchid,$appid,$apiKey);
+        // $wxPay = new \WxpayService($mchid,$appid,$apiKey);
         $result = $wxPay->orderquery($outTradeNo);
         // echo json_encode($result);die;
         halt($result);
@@ -252,15 +259,53 @@ if ($res) {
         // import('Plugins.weixinpay.weixinpay.example.Wxpay_MicroPay');
         Vendor('cancel.example.Wxpay_MicroPay');
         $m = new \MicroPay;
-        $out_trade_no = "1498501539169598";
+
+
+        $out_trade_no = "8559961539772454";
         $result = $m->cancel($out_trade_no, $depth = 0);
         halt($result);
     }
 
 
+    public function haha(){
+        //获取用户信息
+        //dump($_SERVER['HTTP_USER_AGENT']);
+        //判断是不是微信
+        if ( strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false ) {  
+         echo "weixin";
+        }    
+        //判断是不是支付宝
+        if (strpos($_SERVER['HTTP_USER_AGENT'], 'AlipayClient') !== false) {
+            echo "Alipay";  
+        }
+        
+        
+    }
 
+    public function hehe(){
+        QRcode("http://192.168.1.164/phone/weixinpay/haha");
+    }
 
-
+    //微信H5支付 (未开通)
+    public function wxh5Request(){
+        Vendor('weixinpay.h5');
+        $data['oid'] = time();
+        $appid = 'wx9e8c63f03cbd36aa';
+        $mch_id = '1457705302';//商户号
+        $key = 'ede449b5c872ada3365d8f91563dd8b6';//商户key
+        $notify_url = "http://liujunfeng.imwork.net:41413/API/weixinpay/notify";//回调地址
+        $wechatAppPay = new \wechatAppPay($appid, $mch_id, $notify_url, $key);
+        
+        $params['body'] = '估价啦';                       //商品描述
+        $params['out_trade_no'] = $data['oid'];    //自定义的订单号
+        $params['total_fee'] = '1';                       //订单金额 只能为整数 单位为分
+        $params['trade_type'] = 'MWEB';                   //交易类型 JSAPI | NATIVE | APP | WAP 
+        $params['scene_info'] = '{"h5_info": {"type":"Wap","wap_url": "http://liujunfeng.imwork.net:41413","wap_name": "估价啦"}}';
+        $result = $wechatAppPay->unifiedOrder( $params );
+        halt($result);
+        $url = $result['mweb_url'].'&redirect_url=https%3A%2F%2Fliujunfeng.imwork.net:41413';//redirect_url 是支付完成后返回的页面
+        return $url;
+    }
    
 
 }

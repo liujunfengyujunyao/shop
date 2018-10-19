@@ -26,7 +26,7 @@ class Logina extends Controller{
 		$info = M('admin')->where(['phone'=>$data['tel']])->find();
 		$id = M('admin')->where(['phone'=>$data['tel']])->getField('admin_id');
 		if($data['pass'] == $info['password']){
-			session('weixin_id',$id);
+			session('client_id',$id);
 			session("manager_info",$info);
 			$this->success('登录成功',U('Phone/Index/index'));
 		}else{

@@ -8,8 +8,13 @@ namespace app\Phone\controller;
 use think\Controller;
 use think\Page;
 use think\Request;
-use think\Db;
+
+use app\common\logic\CartLogic;
 use think\Session;
+
+use app\common\logic\UsersLogic;
+
+
 class Base extends controller{
 	 // public $weixin_id = 0;
 	//构造方法  每次登陆都会自行进行判断
@@ -17,7 +22,7 @@ class Base extends controller{
 		//调用父类的构造方法
 		parent::__construct();
 		//登录判断
-		if(!session('?weixin_id')){
+		if(!session('?client_id')){
 			//没有登录则跳转到登录页面
 			$this->redirect('logina/index');
 		}

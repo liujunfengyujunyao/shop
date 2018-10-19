@@ -7,6 +7,7 @@ class Index extends Base {
 
     public function index(){
         //微信登陆 自动获取用户ID;
+        // halt($_SESSION);
         return $this->fetch();
     }
 
@@ -64,4 +65,8 @@ class Index extends Base {
         return $this->fetch();
     }
        
+    //测试微信H5支付
+    public function test(){
+        return $this->fetch();
+    }
 }

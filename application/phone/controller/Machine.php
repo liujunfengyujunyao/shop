@@ -2,27 +2,45 @@
 
 namespace app\phone\controller;
 use think\Db;
-class Machine extends MobileBase{
-	public function add(){
-		
-	}
+class Machine extends Base{
+	   public function getRegion($pid, $level)
+    {
+        $region = M('region')->where(array('parent_id' => $pid, 'level' => $level))->select();
+        return $region;
+    }
 
 	public function index(){
-		$data = array(
-			'manager_id' => 10,
-			'nickname' => '测试',
-			);
-		session('manager_info',$data);
-		//测试 用完删除----------------------------
-
-		$info = session('manager_info');
+		$client_id = session('client_id');
 		
-		$machine = DB::name('machine')->where(['client_id'=>$info['manager_id']])->select();
+		$machine = DB::name('machine')->where(['client_id'=>$client_id])->select();
 		// halt($machine);
 		$this->assign('machine',$machine);
 		return $this->fetch();
 		
 	}
+
+	public function edit(){
+		if (IS_POST) {
+			
+		}else{
+			$machine_id = I('post.machine_id');
+			// $machine_id = 3;
+			$info = DB::name('machine')
+			        ->where(['machine_id'=>$machine_id])
+			        ->find();
+			// halt($this->getRegion(0,1));
+			// halt($this->getRegion($info['province_id'],2));
+			// halt($this->getRegion($info['city_id'],3));
+			$this->assign('province', $this->getRegion(0, 1)); 
+            $this->assign('city', $this->getRegion($info['province_id'], 2));
+            $this->assign('district', $this->getRegion($info['city_id'], 3));
+			$this->assign('info',$info);
+			return $this->fetch();
+
+		}
+	
+	}
+
 
 	public function machine_config(){
 		$machine_id = I('post.id');
@@ -192,11 +210,11 @@ class Machine extends MobileBase{
     	$info = DB::name('client_machine_conf')
     			->alias('mc')
     			->field('mc.goods_name,ms.goods_num,mc.location,mc.goods_price,ms.stock_num')
-    			->join('__CLIENT_MACHINE_STOCK__ ms','ms.machine_id = mc.machine_id','LEFT')
+    			->join('__CLIENT_MACHINE_STOCK__ ms','ms.location = mc.location','LEFT')
     			->where(['mc.machine_id'=>$id,'ms.machine_id'=>$id])
     			->group('mc.id')
     			->select();
-    			
+
    
     	$this->assign('machine_id',$id);
     	$this->assign('max_stock',$max_stock);
@@ -263,6 +281,31 @@ class Machine extends MobileBase{
 		
 		//is_same_odds 为是否统一赔率 可能根据位置(location)设定不同赔率
 		
+	}
+
+	public function fujin(){
+
+    $latitude = $_GET['y']; //当前坐标y
+    $longitude = $_GET['x']; //当前坐标x
+    $distance = 5; //5公里以内的信息，这里的5公里为半径。
+    
+    // 此查询无排序
+    $sql = "select * from  weixin_map where sqrt( ( ((".$longitude."-Longitude)*PI()*12656*cos(((".$latitude."+Latitude)/2)*PI()/180)/180) * ((".$longitude."-Longitude)*PI()*12656*cos (((".$latitude."+Latitude)/2)*PI()/180)/180) ) + ( ((".$latitude."-Latitude)*PI()*12656/180) * ((".$latitude."-Latitude)*PI()*12656/180) ) )/2 < ".$distance;
+  	$data = Db::query($sql);
+  	halt($data);
+    // 加入排序，从最近到最近排序。
+    $sql = "select *, sqrt( ( ((".$longitude."-Longitude)*PI()*12656*cos(((".$latitude."+Latitude)/2)*PI()/180)/180) * ((".$longitude."-Longitude)*PI()*12656*cos (((".$latitude."+Latitude)/2)*PI()/180)/180) ) + ( ((".$latitude."-Latitude)*PI()*12656/180) * ((".$latitude."-Latitude)*PI()*12656/180) ) )/2 as dis
+  from weixin_map group by dis asc having dis <".$distance;
+	}
+
+	public function detail(){
+		$machine_id = I('get.machine_id');
+		$info = DB::name('machine')
+			 ->field('address,machine_name')
+		     ->where(['machine_id'=>$machine_id])
+		     ->find();
+		//机器名称 机器位置 
+		halt($info);
 	}
 
 

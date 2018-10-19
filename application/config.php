@@ -404,15 +404,19 @@ return [
     ),
 
 
-      //支付宝面对面支付
-      'ALIPAY_CONFIG'       => array(
-    'APPID'              => 'wx9e8c63f03cbd36aa', // 微信支付APPID
-    'MCHID'              => '1457705302', // 微信支付MCHID 商户收款账号
-    'KEY'                => 'ede449b5c872ada3365d8f91563dd8b6', // 微信支付KEY
-    'APPSECRET'          => 'aa30b7860f3247a789fff62b08681b7e', // 公众帐号secert (公众号支付专用)
-    // 'NOTIFY_URL'         => 'http://www.machine.com/Home/Weixinpay/notify/', // 接收支付状态的连接
-    // 'NOTIFY_URL'         => 'http://liujunfeng.imwork.net:41413/Home/Weixinpay/notify',
-    // 'NOTIFY_URL'         => 'http://192.168.1.3/index.php/Home/Weixinpay/notify',
-    'NOTIFY_URL'         => 'http://liujunfeng.imwork.net:41413/API/weixinpay/notify',
+     //支付宝扫码支付(面对面)
+    'ALIPAY_CONFIG'          => array(
+    'partner'            => '2088331077668487', // partner 从支付宝商户版个人中心获取
+    'seller_email'       => 'jwxf2006@163.com', // email 从支付宝商户版个人中心获取
+    'key'                => 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDl24BEpUJUkfNHdrRPIiXiYa3EoYRkDCoSQ6UKt+Ss4/dqqLrJRX9dv5AzA6ZkWaaeiFUVXZ5KmbErXw+c1413H/alTfaCzgmlutGckivqOT0HrvKnM+NZT3umKWkxAFWjrN1mLOvznfq7stMCsfDlOtPsl05vFlTExPDWfUVGRwIDAQAB', // key 从支付宝商户版个人中心获取
+    'sign_type'          => strtoupper(trim('RSA')), // 可选md5  和 RSA
+    'input_charset'      => 'utf-8', // 编码 (固定值不用改)
+    'transport'          => 'http', // 协议  (固定值不用改)
+    'cacert'             => VENDOR_PATH.'Alipay/cacert.pem',  // cacert.pem存放的位置 (固定值不用改)
+    'notify_url'         => 'http://liujunfeng.imwork.net:41413/api/Alipay/alipay_notify', // 异步接收支付状态通知的链接
+    'return_url'         => 'http://liujunfeng.imwork.net:41413/api/Alipay/alipay_return', // 页面跳转 同步通知 页面路径 支付宝处理完请求后,当前页面自 动跳转到商户网站里指定页面的 http 路径。 (扫码支付专用)
+    'show_url'           => 'http://baijunyao.com/User/Order/index', // 商品展示网址,收银台页面上,商品展示的超链接。 (扫码支付专用)
+    'private_key_path'   => '', //移动端生成的私有key文件存放于服务器的 绝对路径 如果为MD5加密方式；此项可为空 (移动支付专用)
+    'public_key_path'    => '', //移动端生成的公共key文件存放于服务器的 绝对路径 如果为MD5加密方式；此项可为空 (移动支付专用)
     ),
 ];

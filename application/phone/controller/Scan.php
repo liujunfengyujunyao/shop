@@ -15,7 +15,7 @@ class Scan extends Base{
 
 	public function index(){
 		if(IS_POST){
-			$id = session('weixin_id');
+			$id = session('client_id');
 			$data = I('post.');
 			// dump($data);die;
 			$machine = M('machine')->where(['sn'=>$data['sn']])->find();
@@ -25,11 +25,11 @@ class Scan extends Base{
 			}else{
 				if($machine['status'] == 0){
 					return json(['info' => '机台已删除。', 'error_code' => '2']);
-				}elseif($machine['user_id']  != 0){
+				}elseif($machine['client_id']  != 0){
 					return json(['info' => '机台已注冊。', 'error_code' => '3']);
 				
 				}else{
-					$machine = M('machine')->where(['sn'=>$data['sn']])->save(['user_id'=>$id]);
+					$machine = M('machine')->where(['sn'=>$data['sn']])->save(['client_id'=>$id]);
 					return json(['info' => '注册成功。', 'error_code' => '4']);
 				}
 			}
@@ -56,12 +56,12 @@ class Scan extends Base{
 				$this->error('请检查SN号！平台没有此机台。');
 			}elseif ($Machine['status'] == 0) {
 				$this->error('机台已删除。');
-			}elseif($Machine['user_id'] != 0){
+			}elseif($Machine['client_id'] != 0){
 				$this->error('机台已注冊。');
 			}else{
 				// dump('tiao');die;
 				$data['addtime'] = time();
-				$data['user_id'] =$id;
+				$data['client_id'] =$id;
 				$data['status'] = 1;
 				$Machine_id = M('machine')->where(['machine_id'=>$Machine['machine_id']])->save($data);
 

@@ -1,9 +1,9 @@
 <?php
 namespace app\phone\controller;
 use app\common\logic\JssdkLogic;
-use Think\Db;
+use think\Db;
 
-class Goods extends MobileBase{
+class Goods extends Base{
 
 	//配置商品(位置,名称,价格)
 	public function index(){
@@ -27,14 +27,16 @@ class Goods extends MobileBase{
 
 	//礼品库存
 	public function stock_index(){
-		$id = 10;
-		$count = DB::name('machine')->where(['client_id'=>$id])->count();
+		$client_id = session('client_id');
+		$test = M('machine')->where(['client_id'=>$client_id])->select();
 		
-		$client_id = 10;
+		$count = DB::name('machine')->where(['client_id'=>$client_id])->count();
+		
 		$machine = DB::name('machine')
 				->field("machine_name,province_id,city_id,machine_id,district_id")
 		        ->where(['client_id'=>$client_id])
 		        ->select();
+		        // halt($machine);
 		if ($machine) {
 			//查询名下设备
 			foreach ($machine as $key => &$value) {
@@ -134,6 +136,12 @@ class Goods extends MobileBase{
 	public function stock_log(){
 		//补货,销货
 		
+	}
+
+	public function test(){
+		$client_id = 11;
+		
+		$data = DB::name('machine')->where(['client_id'=>$client_id])->find();halt($data);
 	}
 	
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:36:"./template/phone/new/scan\index.html";i:1539157494;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:36:"./template/phone/new/scan\index.html";i:1539591465;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -34,8 +34,9 @@
  <script src="__PUBLIC__/js/js/util.js"></script>
 
 <script type="text/javascript">
-var qr=getQueryString("qrresult");
+var qr=getQueryString("qrresult");//获取带参数查询,post方法传的参数获取不到
 // console.log(qr);
+// alert(qr);
 
 
 

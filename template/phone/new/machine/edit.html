@@ -1,0 +1,77 @@
+<include file="public/tion" />
+<link rel="stylesheet" href="__PUBLIC__/css/csss/power_edit.css">
+<body>
+
+	<h1 style='margin-top:0px'><a class="back" href="javascript:history.back();"  title="返回列表"><i class="fa fa-arrow-circle-o-left" style="font-size: .35rem;"></i></a>&nbsp;&nbsp;编辑管理员<small>{$username.user_name}</small></h1>
+	<form action="{:U('Phone/Scan/add')}" method="post">
+		<div class="form-group">
+			<label for="username" >
+				<span>*</span>
+				<span class="label label-primary">机器名称</span>
+			</label>
+			<input type="text" name="sn" class="form-control" id="machine_name" value="{$info.machine_name}">
+		</div>
+		<div class="form-group">
+			<label for="username" >
+				<span>*</span>
+				<span class="label label-primary">详细地址</span>
+			</label>
+			<input type="text" name="machine_name" class="form-control" id="address" value="{$info.address}">
+		</div>
+		<div class="form-group">
+			<label for="username" >
+				<span>*</span>
+				<span class="label label-primary">备注</span>
+			</label>
+			<input type="text" name="machine_name" class="form-control" id="brief" value="{$info.brief}">
+		</div>
+		
+		 <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>地址</label>
+                </dt>
+                <dd class="opt">
+                    <select name="province" id="province" onChange="get_city(this)">
+                        <option value="">请选择</option>
+                        <volist name="province" id="p">
+                            <option <if condition="$info['province_id'] eq $p['id']">selected</if>  value="{$p.id}">{$p.name}</option>
+                        </volist>
+                    </select>
+                    <select name="city" id="city" onChange="get_area(this)">
+                        <option value="">请选择</option>
+                        <volist name="city" id="p">
+                            <option <if condition="$info['city_id'] eq $p['id']">selected</if>  value="{$p.id}">{$p.name}</option>
+                        </volist>
+                    </select>
+                    <select name="district" id="district">
+                        <option value="">请选择</option>
+                        <volist name="district" id="p">
+                            <option <if condition="$info['district_id'] eq $p['id']">selected</if>  value="{$p.id}">{$p.name}</option>
+                        </volist>
+                    </select>
+                    <span class="err" id="err_district"></span>
+                    <p class="notic">地址</p>
+                </dd>
+            </dl>
+          
+	<!-- 	<div class="form-group">
+			<label for="role" >
+				<span>*</span>
+				<span class="label label-primary">机台类型</span>
+			</label>
+			<select name="type_id" id="role" class="form-control">
+			<option value="0">请选择类型</option>
+			<volist name="type" id="v">
+			<option value="{$v.type_id}">{$v.type_name}</option>
+			</volist>
+			</select>
+		</div> -->
+		<button class="btn btn-primary" type="submit">提交</button>
+	</form>
+</body>
+<script src="__PUBLIC__/js/js/rem.js"></script>
+<script src="__PUBLIC__/js/global.js"></script>
+
+</html>
+
+  <!-- placeholder="请填写SN号" -->
