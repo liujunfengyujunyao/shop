@@ -1,5 +1,5 @@
 <?php
-namespace app\sever\controller;
+namespace app\Sever\controller;
 use app\common\logic\JssdkLogic;
 use think\Controller;
 use think\Db;
@@ -7,12 +7,22 @@ use think\Session;
 use plugins\weixinpay\weixinpay\example\Wxpay_MicroPay;
 header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-class Receive extends Controller {
+class Index extends Controller {
 	public function index(){//被动请求的接口
 		$params = $GLOBALS['HTTP_RAW_POST_DATA'];
+		//写入日志
+		$newLog ='log_time:'.date('Y-m-d H:i:s').$params;
+		file_put_contents('./sever_log.txt', $newLog.PHP_EOL, FILE_APPEND);
 		$params = json_decode($params,true);
-		// $type = $params['msgtype'] ? $params['msgtype'] : "";
-		$type = $params['msg']['msgtype'] ? $params['msg']['msgtype'] : "";
+
+
+	
+
+
+		if($params['msgtype'] == 'receive_message'){//链接服务器转发的设备请求
+			$type = $params['msg']['msgtype'] ? $params['msg']['msgtype'] : "";
+
+
 		// $ip = $params['ip'];
 		// $list = $this->white_list($ip);
 		// $url="http://192.168.1.3";
@@ -25,12 +35,21 @@ class Receive extends Controller {
 				break;
 			case 'disconnect'://断开连接
 		        echo $this->disconnect($params);
+		        break;
+		    case 'rooms_status'://仓位状态汇报
+		        echo $this->rooms_status($params);
+		        break;
+		    case 'rooms_status'://仓位状态汇报
+		        echo $this->rooms_status($params);
 		        break;	
 			case 'price_strategy'://当前价格策略
 		        echo $this->price_strategy($params);
 		        break;
 		    case 'game_log'://游戏记录
 		        echo $this->game_log($params);
+		        break;
+		    case 'sell_log'://游戏记录
+		        echo $this->sell_log($params);
 		        break;
 		    case 'pay_cancel'://退款
 		        echo $this->pay_cancel($params);
@@ -44,30 +63,57 @@ class Receive extends Controller {
 						),
 					);
 				
-				$data = json_encode($data,JSON_UNESCAPED_UNICODE);
-				echo $data;
+				// $data = json_encode($data,JSON_UNESCAPED_UNICODE);
+				// echo $data;
 
+			}
+		}elseif($params['msgtype'] == "connection_lost"){//链接服务器发送的通知设备下线通知
+			DB::name('machine')->where(['sn'=>$params['machinesn']])->save(['is_online'=>0]);
+		}elseif($params['msgtype'] == "phone_disconnect"){//phone管理客户端发送的断开连接指令
+			$data = array(
+				'msgtype' => 'disconnect',
+				'machinesn' => $params['sn'],
+				);
+			$url = "http://192.168.1.3:8080";
+			json_curl($url,$data);
+		}elseif(!$this->white_list($params['ip'])){
+			$data = array(
+
+				);
+			// $data = json_encode($data,JSON_UNESCAPED_UNICODE);
+			// echo $data;
+		}else{
+			$data = array(
+				'errid' => 20000,
+				'msgtype' => "msgtype error",
+				);
+			// $data = json_encode($data,JSON_UNESCAPED_UNICODE);
+			// echo $data;
 		}
+			$data = json_encode($data,JSON_UNESCAPED_UNICODE);
+			echo $data;
 	}
 
 
 	//设备发起的登陆请求(5.2)
 	public function login($params){
 		$data = $params['msg'];//打包过来的JSON数据
-		$machine = DB::name('machine')->where(['sn'=>$params['sn']])->find();
+		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
+
 		$prices = DB::name('client_machine_conf')
-				->field('location as roomid,goods_name as goodsid,odds as gameodds,goods_price as goodsprice')//位置,名称,
+				->field('location as roomid,goods_name as goodsid,game_odds as gameodds,goods_price as goodsprice')//位置,名称,
 				->where(['machine_id'=>$machine['machine_id']])
 				->select();
 		$ip = $this->white_list($params['ip']);//检测是否存在于白名单内
 
-		
+		// return json_encode($ip,JSON_UNESCAPED_UNICODE);
 
 		if ($machine && $ip == 1) {
+			
 			//更新设备的经纬度
 			DB::name('machine')
 				->where(['sn'=>$data['sn']])
-				->save(['position_lng'=>$data['poslong'],'position_lat'=>$data['poslat']]);
+				->save(['position_lng'=>$data['poslong'],'position_lat'=>$data['poslat'],'is_online'=>1]);
 			if($machine['priority'] == 1){
 				$result = array(
 				'msg' => array(
@@ -102,34 +148,53 @@ class Receive extends Controller {
 		return json_encode($result,JSON_UNESCAPED_UNICODE);
 	}
 
+	//获取仓位状态信息  仓位状态用数字表示，0空仓，1满仓(有货)，2被锁定，-1损坏
+	public function rooms_status($params){
+		$data = $params['msg'];
+		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
+		foreach ($data as $key => $value) {
+			DB::name('client_machine_stock')->where(['machine_id'=>$machine['machine_id'],'location'=>$value['roomid']])->save(['status'=>$value['stauts']]);
+		}
+
+	}
+
 	//客户端发送的当前价格政策(需要在phone模块显示当前设备的价格策略)(6.1)
 	public function price_strategy($params){
+
 		//如果本地价格政策优先级高，在登录成功时，平台不会发送此消息
 		//客户端登录成功后主动发送此消息。也就是说这个协议会在两种条件下发送：政策被修改时和登录成功时
 		// 这个协议会在3种情况下发送：登录成功后(机台['priority']为1 {发送} |  机台['priority']为0 {接收})、改变了价格设置决定权(机台['priority']由0变1)后{发送}  和修改了价格政策后(机台['priority']为1时 {发送})。
 		$data = $params['msg'];//客户端发送的数据
-		$machine_id = DB::name('machine')->where(['sn'=>$params['sn']])->getField('machine_id');
+		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
 		$machine_conf = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->select();//平台机器conf
 		$offline_machine = DB::name('offline_machine_conf')->where(['machine_id'=>$machine_id])->select();
+		$time = time();
+		$price = $params['msg']['price'];
 		//当切换经营模式直接读取offline_machine_conf数据
 		//存在添加.不存在修改
 		if ($offline_machine) {//修改
 
-				DB::name('machine')->where(['machine_id'=>$machine_id])->save(['offline_odds'=>$data['gameodds'],'offline_game_price'=>$data['goodsprice']]);
-			foreach ($data['msg']['prices'] as $key => $value) {
+				DB::name('machine')->where(['machine_id'=>$machine_id])->save(['offline_game_price'=>$data['gameprice']]);	
+			foreach ($price as $key => $value) {
 		
-				DB::name('offline_machine_conf')->where(['location'=>$value['roomid'],'machine_id'=>$machine_id])->save(['goods_price'=>$value['goodsprice']]);
+				DB::name('offline_machine_conf')->where(['location'=>$value['roomid'],'machine_id'=>$machine_id])->save(['goods_price'=>$value['goodsprice'],'game_odds'=>$value['gameodds'],'edittime'=>$time]);
 			}
 		}else{//添加
+		
+				DB::name('machine')->where(['machine_id'=>$machine_id])->save(['offline_game_price'=>$data['gameprice']]);//修改设备赔率
+			
 
-				DB::name('machine')->where(['machine_id'=>$machine_id])->save(['offline_odds'=>$data['gameodds'],'offline_game_price'=>$data['goodsprice']]);//修改设备赔率
-
-			foreach ($data['msg']['prices'] as $key => $value) {
-				$new[]['location'] = $value['roomid'];//仓库编号
-				$new[]['goods_price'] = $value['goodsprice'];//售卖价格
-				//游戏中奖概率
-				//商品id    ??   商品名称
+			foreach ($price as $key => $value) {
+				$new[$key]['location'] = $value['roomid'];
+				$new[$key]['goods_price'] = $value['goodsprice'];
+				$new[$key]['game_odds'] = $value['gameodds'];
+				$new[$key]['machine_id'] = $machine_id;
+				$new[$key]['addtime'] = time();
 			}
+
+			
+
+			
 		    $add = DB::name('offline_machine_conf')->insertAll($new);
 		}
 
@@ -153,20 +218,42 @@ class Receive extends Controller {
 
 	//本地游戏日志(7.1)
 	public function game_log($params){
+		
 		$data = $params['msg'];
-		$machine_id = DB::name('machine')->where(['sn'=>$params['sn']])->getField('machine_id');
+		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
 		$add = array(
 			'machine_id' => $machine_id,
-			'game_id' => $data['gameid'],//???
-			'game_log_id' => $data['gamelogid'],
+			'game_id' => $data['gameid'],//见缝插针 game_id为0
+			// 'game_log_id' => $data['gamelogid'],
 			'start_time' => $data['starttime'],
 			'end_time' => $data['endtime'],
 			'result' => $data['result'],
-			'prizeid' => $data['prizeid'],//???
-			'prize_number' => $data['prizenumber'],//????
+			'goods_name' => $data['goodsname'],
 			'location' => $data['roomid'], 
+			'li_online' => 0,
+			'game_log_id' => $this->get_log_id(),
 			);
+		
 		DB::name('game_log')->add($add);
+	}
+
+	//本地售卖日志(7.2)
+	public function sell_log($params){
+		$data = $params['msg'];
+		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
+		$add = array(
+			'machine_id' => $machine_id,
+			'goods_name' => $data['goodsname'],
+			'location' => $data['roomid'],
+			'sell_time' => $data['selltime'],
+			'paytype' => $data['paytype'],
+			'amount' => $data['amount'],
+			'paysn' => $data['paysn'],
+			'is_online' => 0,
+			'sell_log_id' => $this->get_log_id(),
+			);
+	// return json_encode($add,JSON_UNESCAPED_UNICODE);
+		DB::name('sell_log')->add($add);
 	}
 
 
@@ -205,9 +292,12 @@ class Receive extends Controller {
 	}
 
 
-	//
-	//
-	public function test(){
-		echo 53525252525;
-	}
+	
+
+
+	    function get_log_id( $length = 8 ) 
+    {
+        $str = substr(md5(time()), 0, $length);//md5加密，time()当前时间戳
+        return $str;
+    }
 }

@@ -196,9 +196,7 @@ public function dangmian(){
 	}
 
 	public function test(){
-		$data = I('get.');
-
-		
+		$data = I("get.");
 		$data = json_encode($data,JSON_UNESCAPED_UNICODE);
 		echo $data;
 	}
