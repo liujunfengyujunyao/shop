@@ -39,16 +39,16 @@ class Index extends Controller {
 		    case 'rooms_status'://仓位状态汇报
 		        echo $this->rooms_status($params);
 		        break;
-		    case 'rooms_status'://仓位状态汇报
-		        echo $this->rooms_status($params);
+		    case 'change_priority'://改变价格设置
+		        echo $this->change_priority($params);
 		        break;	
 			case 'price_strategy'://当前价格策略
 		        echo $this->price_strategy($params);
 		        break;
-		    case 'game_log'://游戏记录
+		    case 'game_log'://本地游戏日志
 		        echo $this->game_log($params);
 		        break;
-		    case 'sell_log'://游戏记录
+		    case 'sell_log'://本地销售日志
 		        echo $this->sell_log($params);
 		        break;
 		    case 'pay_cancel'://退款
@@ -63,8 +63,8 @@ class Index extends Controller {
 						),
 					);
 				
-				// $data = json_encode($data,JSON_UNESCAPED_UNICODE);
-				// echo $data;
+				$data = json_encode($data,JSON_UNESCAPED_UNICODE);
+				echo $data;
 
 			}
 		}elseif($params['msgtype'] == "connection_lost"){//链接服务器发送的通知设备下线通知
@@ -80,18 +80,18 @@ class Index extends Controller {
 			$data = array(
 
 				);
-			// $data = json_encode($data,JSON_UNESCAPED_UNICODE);
-			// echo $data;
+			$data = json_encode($data,JSON_UNESCAPED_UNICODE);
+			echo $data;
 		}else{
 			$data = array(
 				'errid' => 20000,
 				'msgtype' => "msgtype error",
 				);
-			// $data = json_encode($data,JSON_UNESCAPED_UNICODE);
-			// echo $data;
-		}
 			$data = json_encode($data,JSON_UNESCAPED_UNICODE);
 			echo $data;
+		}
+			// $data = json_encode($data,JSON_UNESCAPED_UNICODE);
+			// echo $data;
 	}
 
 
@@ -151,9 +151,12 @@ class Index extends Controller {
 	//获取仓位状态信息  仓位状态用数字表示，0空仓，1满仓(有货)，2被锁定，-1损坏
 	public function rooms_status($params){
 		$data = $params['msg'];
+		$rooms = $data['rooms'];
 		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
-		foreach ($data as $key => $value) {
-			DB::name('client_machine_stock')->where(['machine_id'=>$machine['machine_id'],'location'=>$value['roomid']])->save(['status'=>$value['stauts']]);
+		// return json_encode($machine['machine_id'],JSON_UNESCAPED_UNICODE);
+		foreach ($rooms as $key => $value) {
+			
+			DB::name('client_machine_stock')->where(['machine_id'=>$machine['machine_id'],'location'=>$value['roomid']])->save(['status'=>$value['status']]);
 		}
 
 	}
@@ -166,15 +169,32 @@ class Index extends Controller {
 		// 这个协议会在3种情况下发送：登录成功后(机台['priority']为1 {发送} |  机台['priority']为0 {接收})、改变了价格设置决定权(机台['priority']由0变1)后{发送}  和修改了价格政策后(机台['priority']为1时 {发送})。
 		$data = $params['msg'];//客户端发送的数据
 		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
+		$priority = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('priority');
+		$game_price = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('game_price');
+		if($priority == 1){
+			$msg = DB::name('client_machine_conf')
+					->field('location as roomid,goods_name as goodsid,game_odds as gameodds,goods_price as goodsprice')//位置,名称,
+					->where(['machine_id'=>$machine_id])
+					->select();
+			$result = array(
+				'errid' => 20002,
+				'gameprice' => $game_price,
+				'msg' => $msg,
+				);
+			return json_encode($result,JSON_UNESCAPED_UNICODE);
+		}
 		$machine_conf = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->select();//平台机器conf
 		$offline_machine = DB::name('offline_machine_conf')->where(['machine_id'=>$machine_id])->select();
+
 		$time = time();
 		$price = $params['msg']['price'];
+		// return json_encode($price,JSON_UNESCAPED_UNICODE);
 		//当切换经营模式直接读取offline_machine_conf数据
 		//存在添加.不存在修改
 		if ($offline_machine) {//修改
 
 				DB::name('machine')->where(['machine_id'=>$machine_id])->save(['offline_game_price'=>$data['gameprice']]);	
+
 			foreach ($price as $key => $value) {
 		
 				DB::name('offline_machine_conf')->where(['location'=>$value['roomid'],'machine_id'=>$machine_id])->save(['goods_price'=>$value['goodsprice'],'game_odds'=>$value['gameodds'],'edittime'=>$time]);
@@ -198,7 +218,17 @@ class Index extends Controller {
 		    $add = DB::name('offline_machine_conf')->insertAll($new);
 		}
 
+		$result = array(
+			'msgtype' => 'OK',
+			);
+		return json_encode($result,JSON_UNESCAPED_UNICODE);
 
+	}
+
+	//接收改变价格设置的响应结果
+	public function change_priority($params){
+		$data = $params['msg'];
+		DB::name('command')->where(['commandid'=>$data['commandid']])->save(['status'=>1]);//等待轮询页面wait.php 查找出对应这个commandid的machine_id  offline_machine_conf->where(machineid)
 
 	}
 
@@ -208,7 +238,7 @@ class Index extends Controller {
 
 		$result = array(
 			'msg' => '',
-			'machinesn' => $params['sn'],
+			'machinesn' => $params['machinesn'],
 			'cmd' => "disconnect",
 			);
 		return json_encode($result,JSON_UNESCAPED_UNICODE);

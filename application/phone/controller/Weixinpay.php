@@ -128,7 +128,7 @@ if ($res) {
         $outTradeNo = strval(rand(100000,999999).time());//自己的商品订单号，不能重复
         file_put_contents("order.txt",$outTradeNo);
         $orderName = "支付测试";//商品名称
-        $authCode = "134686428740282872";//前端发送过来的一串数字
+        $authCode = "134537395331086230";//前端发送过来的一串数字
 
         //将订单入库
          $params = array(
