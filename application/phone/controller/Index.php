@@ -69,4 +69,70 @@ class Index extends Base {
     public function test(){
         return $this->fetch();
     }
+
+    public function wait(){
+        $machine_id = I('get.machine_id');//选择更改策略后 按button
+        $add = array(
+            'msgtype' => 'change_priority',
+            'machine_id' => $machine_id,
+            'send_time' => time(),
+            );
+        $commandid = DB::name('command')->add($add);
+        $machine = DB::name('machine')->where(['machine_id'=>$machine_id])->find();//$machine_id是手机管理端传过来的
+
+        $prices = DB::name('client_machine_conf')
+                ->field('location as roomid,goods_name as goodsid,game_odds as gameodds,goods_price as goodsprice')//位置,名称,
+                ->where(['machine_id'=>$machine['machine_id']])
+                ->select();
+        //手机管理端修改应用的模式 设备为准->平台为准 手机管理端发送 (发送)
+        if($machine['priority'] == 0){//修改完为1
+        $msg = array(
+            'msgtype' => 'change_priority',
+            'commandid' => $commandid,
+            'priority' => 1,
+            'gameprice' => $machine['game_price'],
+            'singleprice' => $machine['goods_price'],
+            'singleodds' => $machine['odds'],
+            'prices' => $prices,
+            );
+            $priority = 1;
+            }else{
+                $msg = array(
+                    'msgtype' => 'change_priority',
+                    'commandid' => $commandid,
+                    'priority' => 0,
+                    );
+            $priority = 0;
+            }
+        $params = array(
+            'msgtype' => 'send_message',
+            'machinesn' => $machine['sn'],
+            'msg' => $msg,
+            );
+        $url = "http://192.168.1.3/";
+        $result = json_curl($url,$params);
+        for($x=0; $x<=3; $x++){//轮询查找是否返回成功
+            $command = DB::name('command')->where(['commandid'=>$commandid])->find();
+            if ($command['status'] == 1) {//查询出对应的command   完成后删除此$commandid
+                //执行成功
+                DB::name('command')->where(['commandid'=>$commandid])->delete();
+                DB::name('machine')->where(['machine_id'=>$machine_id])->save(['priority'=>$priority]);
+                $data = ['返回结果','成功'];
+            }elseif($command['status'] == 0){
+                sleep(2);
+            }else{
+                DB::name('command')->where(['commandid'=>$commandid])->delete();
+                $data = ['返回结果','请求超时'];
+            }
+            
+        }
+        $this->assign('data',$data);
+        return $this->fetch();
+
+    }
+
+    //ajax请求
+    public function edit_priority(){
+
+    }
 }

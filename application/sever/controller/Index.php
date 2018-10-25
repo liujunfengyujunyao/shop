@@ -10,6 +10,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 class Index extends Controller {
 	public function index(){//被动请求的接口
 		$params = $GLOBALS['HTTP_RAW_POST_DATA'];
+		// return "sssss";
 		//写入日志
 		$newLog ='log_time:'.date('Y-m-d H:i:s').$params;
 		file_put_contents('./sever_log.txt', $newLog.PHP_EOL, FILE_APPEND);
@@ -76,13 +77,15 @@ class Index extends Controller {
 				);
 			$url = "http://192.168.1.3:8080";
 			json_curl($url,$data);
-		}elseif(!$this->white_list($params['ip'])){
-			$data = array(
+		}
+		// elseif(!$this->white_list($params['ip'])){
+		// 	$data = array(
 
-				);
-			$data = json_encode($data,JSON_UNESCAPED_UNICODE);
-			echo $data;
-		}else{
+		// 		);
+		// 	$data = json_encode($data,JSON_UNESCAPED_UNICODE);
+		// 	echo $data;
+		// }
+		else{
 			$data = array(
 				'errid' => 20000,
 				'msgtype' => "msgtype error",
@@ -98,17 +101,17 @@ class Index extends Controller {
 	//设备发起的登陆请求(5.2)
 	public function login($params){
 		$data = $params['msg'];//打包过来的JSON数据
-		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
-
+		$machine = DB::name('machine')->where(['sn'=>$data['sn']])->find();
+			// return json_encode($machine,JSON_UNESCAPED_UNICODE);
 		$prices = DB::name('client_machine_conf')
 				->field('location as roomid,goods_name as goodsid,game_odds as gameodds,goods_price as goodsprice')//位置,名称,
 				->where(['machine_id'=>$machine['machine_id']])
 				->select();
-		$ip = $this->white_list($params['ip']);//检测是否存在于白名单内
+		// $ip = $this->white_list($params['ip']);//检测是否存在于白名单内
 
 		// return json_encode($ip,JSON_UNESCAPED_UNICODE);
 
-		if ($machine && $ip == 1) {
+		if ($machine) {
 			
 			//更新设备的经纬度
 			DB::name('machine')
@@ -120,7 +123,9 @@ class Index extends Controller {
 					'msgtype' => 'login_success',
 					'priority' => $machine['priority'],//0以设备为准,1以平台为准
 					'gameprice' => $machine['game_price'],
-					'price' => $prices,
+					'singleodds' => $machine['odds'],
+					'singleprice' => $machine['goods_price'],
+					'price' => $prices,//忽略此条数据
 					
 					),
 				'machinesn' => $machine['sn'],
@@ -140,7 +145,7 @@ class Index extends Controller {
 				'msg' => array(
 					'errid' => 20003,//SN验证失败
 					),
-				'machinesn' => '',
+				'machinesn' => $data['sn'],
 				'cmd' => "disconnect",//错误
 				);
 		}
@@ -171,15 +176,24 @@ class Index extends Controller {
 		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
 		$priority = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('priority');
 		$game_price = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('game_price');
-		if($priority == 1){
+		if($priority == 1){//为1执行平台策略
 			$msg = DB::name('client_machine_conf')
 					->field('location as roomid,goods_name as goodsid,game_odds as gameodds,goods_price as goodsprice')//位置,名称,
 					->where(['machine_id'=>$machine_id])
 					->select();
+			$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
 			$result = array(
-				'errid' => 20002,
-				'gameprice' => $game_price,
-				'msg' => $msg,
+				
+				'machinesn' => $params['machinesn'],
+				'msg' => array(
+					'errid' => 20002,
+					'msgtype' => 'price_strategy',
+					'priority' => $machine['priority'],//0以设备为准,1以平台为准
+					'gameprice' => $machine['game_price'],
+					'singleodds' => $machine['odds'],
+					'singleprice' => $machine['goods_price'],
+					'price' => $msg,//忽略此条数据		
+					)
 				);
 			return json_encode($result,JSON_UNESCAPED_UNICODE);
 		}
@@ -217,6 +231,8 @@ class Index extends Controller {
 			
 		    $add = DB::name('offline_machine_conf')->insertAll($new);
 		}
+		// return json_encode($data,JSON_UNESCAPED_UNICODE);
+		DB::name('machine')->where(['machine_id'=>$machine_id])->save(['offline_odds'=>$data['singleodds'],'offline_game_price'=>$data['gameprice'],'offline_goods_prices'=>$data['singleprice']]);
 
 		$result = array(
 			'msgtype' => 'OK',
@@ -227,8 +243,9 @@ class Index extends Controller {
 
 	//接收改变价格设置的响应结果
 	public function change_priority($params){
-		$data = $params['msg'];
-		DB::name('command')->where(['commandid'=>$data['commandid']])->save(['status'=>1]);//等待轮询页面wait.php 查找出对应这个commandid的machine_id  offline_machine_conf->where(machineid)
+		$commandid = $params['msg']['commandid'];//成功接收到此条commandid后 返回OK  通过price_strategy接口将新的offline_machine_conf发给我
+		DB::name('command')->where(['commandid'=>$commandid])->save(['status'=>1]);//等待轮询页面wait.php 查找出对应这个commandid的machine_id  offline_machine_conf->where(machineid)
+
 
 	}
 
@@ -241,6 +258,7 @@ class Index extends Controller {
 			'machinesn' => $params['machinesn'],
 			'cmd' => "disconnect",
 			);
+		DB::name('machine')->where(['sn'=>$params['machinesn']])->save(['is_online'=>0]);
 		return json_encode($result,JSON_UNESCAPED_UNICODE);
 
 	}
@@ -263,6 +281,10 @@ class Index extends Controller {
 			'li_online' => 0,
 			'game_log_id' => $this->get_log_id(),
 			);
+		if($data['result'] == 1){//游戏成功 ,减库存 client_machine_stock
+			DB::name('client_machine_stock')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
+
+		}
 		
 		DB::name('game_log')->add($add);
 	}
@@ -309,6 +331,7 @@ class Index extends Controller {
 	public function white_list($ip){ 
 		//白名单列表
 		$list = array(
+			'43.254.90.98:53560',
 			'1111',
 			'2222',
 			'3333',

@@ -8,6 +8,18 @@ header('Content-type:text/html; Charset=utf-8');
 header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 class Alipay extends Controller {
+	public function index(){
+		$data = I('get.');
+		// halt($data);
+		if ( strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false ) {
+        	 $this->redirect('api/Weixinpay/h5',array('roomid'=>$data['roomid'],'goods_name'=>$data['goods_name'],'machinesn'=>$data['machinesn'],'goods_price'=>$data['goods_price']));
+			}
+		//判断是不是支付宝
+		if (strpos($_SERVER['HTTP_USER_AGENT'], 'AlipayClient') !== false) {
+		    $this->redirect('api/Alipay/wap',array('roomid'=>$data['roomid'],'goods_name'=>$data['goods_name'],'machinesn'=>$data['machinesn'],'goods_price'=>$data['goods_price']));
+		}
+	}
+
 		/**
  * notify_url接收页面
  */
@@ -133,6 +145,37 @@ public function dangmian(){
 		$stock = DB::name('client_machine_stock')->where(['machine_id'=>$log['machine_id'],'location'=>$log['location']])->find();
 		$goods_number = intval(intval($stock['goods_num']) - 1);
 		DB::name('client_machine_stock')->where(['stock_id'=>$stock['stock_id']])->save(['goods_num'=>$goods_number]);//减少库存
+
+
+		//接口发送网络支付到账通知
+		$machine_id = $log['machine_id'];
+		 $add = array(
+            'msgtype' => 'netpay_ack',
+            'machine_id' => $machine_id,
+            'send_time' => time(),
+            );
+        $commandid = DB::name('command')->add($add);
+		$sn = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('sn');
+		$params = array(
+			'msgtype' => 'send_message',
+			'machinesn' => $sn,
+			'msg' => array(
+				'msgtype' => 'netpay_ack',
+				'commandid' => intval($commandid),
+				'paytype' => 'alipay',
+				'amount' => $log['goods_price'],
+				'paysn' => $result['out_trade_no'],
+				),
+			
+			);
+		// $test = json_encode($params,JSON_UNESCAPED_UNICODE);
+		// file_put_contents('adfqwdqdqwdqwdqdqdqwdwq.txt',$test);
+		$url = "https://www.goldenbrother.cn:23232/account_server";
+		$params = json_encode($params,JSON_UNESCAPED_UNICODE);
+		post_curls($url,$params);
+		//接口发送网络支付到账通知
+		
+
 	    //处理你的逻辑，例如获取订单号$_POST['out_trade_no']，订单金额$_POST['total_amount']等
 	    //程序执行完后必须打印输出“success”（不包含引号）。如果商户反馈给支付宝的字符不是success这7个字符，支付宝服务器会不断重发通知，直到超过24小时22分钟。一般情况下，25小时以内完成8次通知（通知的间隔频率一般是：4m,10m,10m,1h,2h,6h,15h）；
 	    echo 'success';exit();
@@ -149,24 +192,42 @@ public function dangmian(){
 		$returnUrl = 'http://liujunfeng.imwork.net:41413/';     //付款成功后的同步回调地址
 		$notifyUrl = 'http://liujunfeng.imwork.net:41413/api/Alipay/notify';     //付款成功后的异步回调地址
 
-		$machine_id = 1;//模拟数据
-		$params = array(//模拟数据
-			'machine_id' => 1,
-			'roomid' => "A2",
-			);
-		// $params = $_GET;
-		$goods = DB::name('client_machine_conf')
-				->where(['machine_id'=>1,'location'=>"A2"])
-				->find();
+		// $machine_id = $params['machinesn'];//模拟数据
+		// $machine = DB::name('machine')->where(['machine_id'=>$machine_id])->find();
+		$params = I('get.');
+		// http://192.168.1.164/api/alipay/wap?machine_id=1&roomid=A2&goods_name=雪碧&goods_price=3
+		// halt($params);
+		// $params = array(//模拟数据
+		// 	'machine_id' => 1,
+		// 	'roomid' => "A2",
+		// 	'goods_name' => '雪碧',
+		// 	'goods_price' => 3,
+		// 	);
+		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
 		$time = time();
-		$order = array(
-			'create_time' => time(),
-			'machine_id' => $machine_id,
-			'location' => $params['roomid'],
-			'goods_name' => $goods['goods_name'],
-			'goods_price' => $goods['goods_price'],
-			'out_trade_no' => strval(rand(100000,999999).$time),
-			);
+			$order = array(
+				'create_time' => time(),
+				'machine_id' => $machine_id,
+				'location' => $params['roomid'],
+				'goods_name' => $params['goods_name'],
+				'goods_price' => $params['goods_price'],
+				'out_trade_no' => strval(rand(100000,999999).$time),
+				);
+		
+		
+		// $params = $_GET;
+		// $goods = DB::name('client_machine_conf')
+		// 		->where(['machine_id'=>1,'location'=>"A2"])
+		// 		->find();
+		$time = time();
+		// $order = array(
+		// 	'create_time' => time(),
+		// 	'machine_id' => $machine_id,
+		// 	'location' => $params['roomid'],
+		// 	'goods_name' => $goods['goods_name'],
+		// 	'goods_price' => $goods['goods_price'],
+		// 	'out_trade_no' => strval(rand(100000,999999).$time),
+		// 	);
 		
 		DB::name('alipay_log')->add($order);
 
@@ -195,9 +256,31 @@ public function dangmian(){
 		echo $sHtml;
 	}
 
-	public function test(){
-		$data = I("get.");
-		$data = json_encode($data,JSON_UNESCAPED_UNICODE);
-		echo $data;
+	public function refund(){
+		vendor('Alipay2/refund');
+		$appid = '2018101061623772';  //https://open.alipay.com 账户中心->密钥管理->开放平台密钥，填写添加了电脑网站支付的应用的APPID
+		$tradeNo = '';     //在支付宝系统中的交易流水号。最短 16 位，最长 64 位。和out_trade_no不能同时为空
+		$outTradeNo = '7320431540284498';     //订单支付时传入的商户订单号,和支付宝交易号不能同时为空。
+		$signType = 'RSA2';       //签名算法类型，支持RSA2和RSA，推荐使用RSA2
+		$refundAmount = 0.03;       ////需要退款的金额，该金额不能大于订单金额,单位为元，支持两位小数
+		//商户私钥，填写对应签名算法类型的私钥，如何生成密钥参考：https://docs.open.alipay.com/291/105971和https://docs.open.alipay.com/200/105310
+		$rsaPrivateKey='MIIEowIBAAKCAQEAyCh22eEub7jG5iaVcojksj/Fa8ZlUFRDp5vEW3uYhVihSw2cQOVCxdVc8q/7NQSTdPfzyHc0Vc9NSDHrLL15mYeymzLaLwIR3XXy6YmwQtZIATKaa1AmrHinf8cdIxkBd/9sEB5DSlxMDzMKeVOwr6Muhcnso9deXrR5CfCWbdztVX4T32FmM19qmQyxt7C/uNCbRJEToncAcpxnd7XOXMIlIhVkYFyhXotROCG+DPCR6MQZjQ5vn4CVva8EXSjinnGOEYcbM+M0hFxCcpGknxUW4M8ezYO3xv+dRSYG51ex8zdD7pNvtTxvo6EDSQTk5j2iQQIqVS0Z33JxXJIT0QIDAQABAoIBAFdrDNWF+rECw6PbMCRQ04liPsgeYztdQhse9fh6l5eNqQxNinPxbWNYF3tLDu0N7ZUFgiyIm4vquTcRzkPBES3TzVbpM8+aGNFfZVNINnpKejJDtput6uYi4Az3mqssja6qGLlFbmA4xWNSCH4K5j0fiP8XvMmmE2pLah3EPP8H27BNUdNWqaslBIsMLi2Oyj2YMCwqsaONvNWTauBofBEU6uA1HmAy88qC0EouCFlPbTGIlb/2+YgUQdEzfQ4on7sqw9pLoMab8Ox32sDeTKR5j8I0yn3taWFrpZLinx581jEBsE7VfwPrJ4fxexWNnK9vkvDC7s8JYYbtoGBvPZ0CgYEA6ZhgRtKD1JJbXTYP2izpR3AL2yctSHkerMKOGoQuhBfx4jVcxF6rqJRmOXkOv1YSdYCPMJHBnxK90rrwXToJp0FpYtOVL+KgF/+bdGRFifyL+XI4L8FBWazUJD+16aUuFmsw5mODTzj2kBiWx51Th64+t51uWnZqkFQUbyTEG28CgYEA21sVLY651o1TAu5DjNGLEuSsjOrAOudhdsxqIc7EGFtlmzeijikoWHeEIcgNCubYL4U7QffVEeJdRI7yJjk+NuJoPl9RtQ/XIuswac6AEn0zvmfVAcCDvEhULSC7m/3uJIjku9Mdz/XPOpvM96lKJl/kWZWikr06Sly7inD6JL8CgYADh1e8+iUfqu5SZCStKQyFFb44G0ll1N6PwYigAesp96qhviielseFDmjU6W09mrFAsSZ4l1sTahcP/d7vqZbHvgc3hPa1+HhupF/WzET4pqX+qKkMn6C7GA9EVOoMk4A0un3MnSg4pCWlW5m7fjbqz8kGwQwPtcY6U+rTGv0TZQKBgQDCqiIxO+hQLzrr7uajoZH6QlWe+PV/ULd95gqJ1iTQOMwC42yvHHdhiy8Hi7GHazWPdn0QHhBIvspmfTUIFuTPcD1ynMS2GkiiBHYCb+/YeKPi5eJym5ZNESMiqVnVJZShd5sF1GUwmMQ/DuTnJKVZSOAtYE3WS3ffZkxIn9pdoQKBgHFty0VE1lBQhNHxNyh2GzchBCIHcc/HqeEDTsQX4uVgNOnqBpwShjFndZ6nZBJ4yfAq8L8fJF9V74nD0WUSu8MD1JtqAal5YKUllf12I5eXju2ry0xzw92iXJeOpnnWhtPZZ+TasMND3OT6ZwneKSBsh9x0GKY30YKoJW6QYnhp';
+		/*** 配置结束 ***/
+		$aliPay = new \AlipayService();
+		$aliPay->setAppid($appid);
+		$aliPay->setRsaPrivateKey($rsaPrivateKey);
+		$aliPay->setTradeNo($tradeNo);
+		$aliPay->setOutTradeNo($outTradeNo);
+		$aliPay->setRefundAmount($refundAmount);
+		$result = $aliPay->doRefund();
+		$result = $result['alipay_trade_refund_response'];
+		if($result['code'] && $result['code']=='10000'){
+			DB::name('alipay_log')->where(['out_trade_no'=>$outTradeNo])->save(['close'=>1]);//已经退款
+
+		    echo '退款成功';
+		}else{
+		    echo $result['msg'].' : '.$result['sub_msg'];
+		}
+
 	}
 }

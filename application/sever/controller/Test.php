@@ -98,18 +98,20 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 		public function login(){
 			$params = array(
 				'msgtype' => 'receive_message',
-				'machinesn' => 'ceshi',
-				// 'ip' => '1111',
+				// 'machinesn' => 'ceshi',
+				// 'ip' => '43.254.90.98:53560',
 				'msg' => array(
 					'msgtype' => 'login',
-					'sn' => 'ceshi',
-					'poslong' => '',
-					'poslat' => '',
+					'sn' => 12,
+					'poslong' => '39.91488908',
+					'poslat' => '116.40387397',
 					'version' => '',
+					// 'timestamp' => '-1.22734E+09', 
 					'timestamp' => time(), 
 
 					),
 				);
+			halt(json_encode($params));
 			$url = "http://192.168.1.164/Sever/";
 			$result = json_curl($url,$params);
 			dump($result);
@@ -138,7 +140,7 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 			$rooms = array(
 				array(
 					'roomid' => "A2",
-					'status' => 1
+					'status' => 3
 					
 					),
 				array(
@@ -147,18 +149,20 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 					),
 				array(
 					'roomid' => "A4",
-					'status' => 3
+					'status' => 2
 					),
 				);
+			// halt(json_encode($rooms));
 			$params = array(
 				'msgtype' => 'receive_message',
-				'machinesn' => 'ceshi',
+				'machinesn' => '12',
 				'ip' => '1111',
 				'msg' => array(
 					'msgtype' => 'rooms_status',
 					'rooms' => $rooms,
 					),
 				);
+			// halt(json_encode($params,JSON_UNESCAPED_UNICODE));
 			$url = "http://192.168.1.164/Sever/";
 			$result = json_curl($url,$params);
 			dump($result);
@@ -172,28 +176,30 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 	public function price_strategy(){
 		$price = array(
 				array(
-					'roomid' => "A1",
-					'goodsprice' => 10,
-					'gameodds' => 30,
-					),
-				array(
 					'roomid' => "A2",
-					'goodsprice' => 20,
-					'gameodds' => 30,
+					'goodsprice' => 10,
+					'gameodds' => 40,
 					),
 				array(
 					'roomid' => "A3",
+					'goodsprice' => 20,
+					'gameodds' => 40,
+					),
+				array(
+					'roomid' => "A4",
 					'goodsprice' => 30,
-					'gameodds' => 30,
+					'gameodds' => 40,
 					),
 				);
 		$params = array(
 			'msgtype' => 'receive_message',
-			'machinesn' => 'ceshi',
+			'machinesn' => '12',
 			'ip' => '1111',
 			'msg' => array(
 				'msgtype' => 'price_strategy',
 				'gameprice' => 11,
+				'singleodds' => 80,
+				'singleprice' => 20,
 				'price' => $price,
 				),
 			); 
@@ -204,7 +210,7 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 	}
 
 
-	public function change_priority(){//需要传$machine_id  手机管理端调用此function
+	public function change_priority($machine_id){//需要传$machine_id  手机管理端调用此function
 
 		$add = array(
 			'msgtype' => 'change_priority',
@@ -238,10 +244,30 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 			'machinesn' => 'ceshi',
 			'msg' => $msg,
 			);
+		return $params;
 			$url = "http://192.168.1.164/Sever/";
 			$result = json_curl($url,$params);
 			dump($result);
 			dump(json_decode($result,true));
 	}
 	
+	//测试变更价格设置
+	public function change_test(){
+		$machine_id = 1;
+		$result = $this->change_priority($machine_id);
+		halt($result);
+	}
+
+	public function test_privote(){
+
+	}
+
+	public function yuan(){
+		$params = array(
+			'msgtpye' => 'test',
+			);
+		$url = "https://www.goldenbrother.cn:23232/account_server";
+		$result = post_curls($url,$params);
+		halt($result);
+	}
 }

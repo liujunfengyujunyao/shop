@@ -293,7 +293,8 @@ if ($res) {
         $appid = 'wx9e8c63f03cbd36aa';
         $mch_id = '1457705302';//商户号
         $key = 'ede449b5c872ada3365d8f91563dd8b6';//商户key
-        $notify_url = "http://liujunfeng.imwork.net:41413/API/weixinpay/notify";//回调地址
+        // $notify_url = "http://liujunfeng.imwork.net:41413/API/weixinpay/notify";//回调地址
+        $notify_url = "http://www.12202.com.cn/shop/test.txt";//回调地址
         $wechatAppPay = new \wechatAppPay($appid, $mch_id, $notify_url, $key);
         
         $params['body'] = '估价啦';                       //商品描述
@@ -302,7 +303,7 @@ if ($res) {
         $params['trade_type'] = 'MWEB';                   //交易类型 JSAPI | NATIVE | APP | WAP 
         $params['scene_info'] = '{"h5_info": {"type":"Wap","wap_url": "http://liujunfeng.imwork.net:41413","wap_name": "估价啦"}}';
         $result = $wechatAppPay->unifiedOrder( $params );
-        halt($result);
+        // halt($result);
         $url = $result['mweb_url'].'&redirect_url=https%3A%2F%2Fliujunfeng.imwork.net:41413';//redirect_url 是支付完成后返回的页面
         return $url;
     }

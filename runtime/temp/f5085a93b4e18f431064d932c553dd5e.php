@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/machine\edit.html";i:1539602008;s:37:"./template/phone/new/public\tion.html";i:1537152658;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/machine\edit.html";i:1540274146;s:37:"./template/phone/new/public\tion.html";i:1537152658;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -19,31 +19,53 @@
 <link rel="stylesheet" href="__PUBLIC__/css/csss/power_edit.css">
 <body>
 
-	<h1 style='margin-top:0px'><a class="back" href="javascript:history.back();"  title="返回列表"><i class="fa fa-arrow-circle-o-left" style="font-size: .35rem;"></i></a>&nbsp;&nbsp;编辑管理员<small><?php echo $username['user_name']; ?></small></h1>
-	<form action="<?php echo U('Phone/Scan/add'); ?>" method="post">
+	<h1 style='margin-top:0px'><a class="back" href="javascript:history.back();"  title="返回列表"><i class="fa fa-arrow-circle-o-left" style="font-size: .35rem;"></i></a>&nbsp;&nbsp;编辑机器<small><?php echo $username['user_name']; ?></small></h1>
+	<form action="<?php echo U('Phone/machine/edit'); ?>" method="post">
+		<input type="hidden" name="machine_id" value="<?php echo $info['machine_id']; ?>">
 		<div class="form-group">
 			<label for="username" >
 				<span>*</span>
 				<span class="label label-primary">机器名称</span>
 			</label>
-			<input type="text" name="sn" class="form-control" id="machine_name" value="<?php echo $info['machine_name']; ?>">
+			<input type="text" name="machine_name" class="form-control" id="machine_name" value="<?php echo $info['machine_name']; ?>">
 		</div>
 		<div class="form-group">
 			<label for="username" >
 				<span>*</span>
 				<span class="label label-primary">详细地址</span>
 			</label>
-			<input type="text" name="machine_name" class="form-control" id="address" value="<?php echo $info['address']; ?>">
+			<input type="text" name="address" class="form-control" id="address" value="<?php echo $info['address']; ?>">
 		</div>
 		<div class="form-group">
 			<label for="username" >
 				<span>*</span>
 				<span class="label label-primary">备注</span>
 			</label>
-			<input type="text" name="machine_name" class="form-control" id="brief" value="<?php echo $info['brief']; ?>">
+			<input type="text" name="brief" class="form-control" id="brief" value="<?php echo $info['brief']; ?>">
+		</div>
+		<div class="form-group">
+			<label for="username" >
+				<span>*</span>
+				<span class="label label-primary">统一游戏价格</span>
+			</label>
+			<input type="text" name="game_price" class="form-control" id="game_price" value="<?php echo $info['game_price']; ?>">
+		</div>
+		<div class="form-group">
+			<label for="username" >
+				<span>*</span>
+				<span class="label label-primary">统一游戏赔率</span>
+			</label>
+			<input type="text" name="odds" class="form-control" id="odds" value="<?php echo $info['odds']; ?>">
+		</div>
+		<div class="form-group">
+			<label for="username" >
+				<span>*</span>
+				<span class="label label-primary">统一商品价格</span>
+			</label>
+			<input type="text" name="goods_price" class="form-control" id="goods_price" value="<?php echo $info['goods_price']; ?>">
 		</div>
 		
-		 <dl class="row">
+		<!--  <dl class="row">
                 <dt class="tit">
                     <label><em>*</em>地址</label>
                 </dt>
@@ -69,7 +91,7 @@
                     <span class="err" id="err_district"></span>
                     <p class="notic">地址</p>
                 </dd>
-            </dl>
+            </dl> -->
           
 	<!-- 	<div class="form-group">
 			<label for="role" >

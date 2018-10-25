@@ -22,6 +22,10 @@ class Machine extends Base{
 	public function edit(){
 		if (IS_POST) {
 			
+			$data = $_POST;
+			DB::name('machine')->where(['machine_id'=>$data['machine_id']])->save($data);
+			$this->redirect('Machine/index');
+
 		}else{
 			$machine_id = I('post.machine_id');
 			// $machine_id = 3;
@@ -35,6 +39,7 @@ class Machine extends Base{
             $this->assign('city', $this->getRegion($info['province_id'], 2));
             $this->assign('district', $this->getRegion($info['city_id'], 3));
 			$this->assign('info',$info);
+			// halt($info);
 			return $this->fetch();
 
 		}
