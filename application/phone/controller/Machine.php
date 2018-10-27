@@ -260,9 +260,9 @@ class Machine extends Base{
 	public function odds_index(){
 		$manager = session('manager_info');
 
-		$manager['manager_id'] = 10;
+		
 
-		$machine = DB::name('machine')->where(['client_id'=>$manager['manager_id']])->select();
+		$machine = DB::name('machine')->where(['client_id'=>$manager['admin_id']])->select();
 		// halt($machine);
 		$this->assign('info',$machine);
 		return $this->fetch();
