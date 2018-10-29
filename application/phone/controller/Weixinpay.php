@@ -46,7 +46,11 @@ $add = array(
 // halt($add);
 $res = DB::name('weixinpay_log')->add($add);
 if ($res) {
-    weixinpay($order);//展示二维码
+    $order['trade_type']='NATIVE';
+    Vendor('Weixinpay.Weixinpay');
+    $weixinpay=new \Weixinpay();
+    $weixinpay->pay($order);
+    // weixinpay($order);//展示二维码
 }else{
     echo "网络错误";
 }
@@ -261,7 +265,7 @@ if ($res) {
         $m = new \MicroPay;
 
 
-        $out_trade_no = "8559961539772454";
+        $out_trade_no = "5bd1752478e92";
         $result = $m->cancel($out_trade_no, $depth = 0);
         halt($result);
     }
@@ -308,5 +312,18 @@ if ($res) {
         return $url;
     }
    
+    public function saoma(){
+        $order=array(
+    'body'=>"ceshi",
+    'total_fee'=>1,
+    'out_trade_no'=>strval(rand(100000,999999).time()),//rand(100000,999999).time()
+    'product_id'=>"A2"//商品ID (位置)
+    );
+   $order['trade_type']='NATIVE';
+    Vendor('Weixinpay.Weixinpay');
+    $weixinpay=new \Weixinpay();
+    $url = $weixinpay->pay($order);
+    $this->redirect($url);
+}
 
 }

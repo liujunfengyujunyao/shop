@@ -116,13 +116,13 @@ class Weixinpay extends Controller {
             $params = I('get.');
             $machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
             $time = time();
-            
+            // halt($params);
 
             $mchid = '1457705302';          //微信支付商户号 PartnerID 通过微信支付商户资料审核后邮件发送
             $appid = 'wx9e8c63f03cbd36aa';  //微信支付申请对应的公众号的APPID
             $appKey = 'aa30b7860f3247a789fff62b08681b7e';   //微信支付申请对应的公众号的APP Key
             $apiKey = 'ede449b5c872ada3365d8f91563dd8b6';   //https://pay.weixin.qq.com 帐户设置-安全设置-API安全-API密钥-设置API密钥
-            $outTradeNo = trval(rand(100000,999999).$time);    //你自己的商品订单号
+            $outTradeNo = strval(rand(100000,999999).$time);    //你自己的商品订单号
             $payAmount = 0.01;          //付款金额，单位:元
             $orderName = '支付';    //订单标题
             // $notifyUrl = 'http://www.12202.com.cn/tp/index.php/home/index/notify';     //付款成功后的回调地址(不要有问号)
@@ -134,7 +134,7 @@ class Weixinpay extends Controller {
             $wapName = 'H5';       //WAP 网站名
             /** 配置结束 */
             //存入数据库
-            $order = aray(
+            $order = array(
                 'timestamp' => $time,
                 'machine_id' => $machine_id,
                 'location' => $params['roomid'],
@@ -159,4 +159,25 @@ class Weixinpay extends Controller {
             exit();
         }
 
+
+        public function oauth(){
+          vendor('weixinpay.Jsapi');
+          $mchid = 'WxpayService';          //微信支付商户号 PartnerID 通过微信支付商户资料审核后邮件发送
+          $appid = 'wx9e8c63f03cbd36aa';  //微信支付申请对应的公众号的APPID
+          $appKey = 'aa30b7860f3247a789fff62b08681b7e';   //微信支付申请对应的公众号的APP Key
+          $apiKey = 'ede449b5c872ada3365d8f91563dd8b6';   //https://pay.weixin.qq.com 帐户设置-安全设置-API安全-API密钥-设置API密钥
+          //①、获取用户openid
+          $wxPay = new \WxpayService($mchid,$appid,$appKey,$apiKey);
+          $openId = $wxPay->GetOpenid();      //获取openid
+          if(!$openId) exit('获取openid失败');
+          //②、统一下单
+          $outTradeNo = uniqid();     //你自己的商品订单号
+          $payAmount = 0.01;          //付款金额，单位:元
+          $orderName = '支付测试';    //订单标题
+          $notifyUrl = 'http://www.12202.com.cn/tp/index.php/index/notify';     //付款成功后的回调地址(不要有问号)
+          $payTime = time();      //付款时间
+          $jsApiParameters = $wxPay->createJsBizPackage($openId,$payAmount,$outTradeNo,$orderName,$notifyUrl,$payTime);
+          $jsApiParameters = json_encode($jsApiParameters);
+          halt($jsApiParameters);
+        }
 }

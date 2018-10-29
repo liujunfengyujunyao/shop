@@ -135,4 +135,8 @@ class Index extends Base {
     public function edit_priority(){
 
     }
+
+    public function oauth(){
+        return $this->fetch();
+    }
 }
