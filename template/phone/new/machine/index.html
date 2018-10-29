@@ -74,8 +74,11 @@
 							<!-- <td>1366666666</td> -->
 							<td>
 								<!-- <a href="{:U('Phone/Machine/goods_list',array('machine_id'=>$v.machine_id))}"><i class="fa fa-edit"></i>礼品格配置</a> -->
-								<a href="{:U('Phone/Machine/edit',array('machine_id'=>$v.machine_id))}"><i class="fa fa-edit"></i>配置</a>
+								<a href="{:U('Phone/Machine/edit',array('machine_id'=>$v.machine_id))}"><i class="fa fa-edit"></i>配置</a>				
 								<span><i class="fa fa-trash"></i>删除</span>
+								<input type="radio" <if condition='$v.priority eq 1'>checked</if> name="priority"  id="priority" value=1/><label>平台</label>
+								<input type="radio" <if condition='$v.priority eq 0'>checked</if> name="priority"  id="priority" value=0/><label>设备</label>
+
 							</td>
 						</tr>
 					</volist>

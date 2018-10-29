@@ -55,6 +55,8 @@ class Index extends Controller {
 		    case 'pay_cancel'://退款
 		        echo $this->pay_cancel($params);
 		        break;
+		    case 'command'://更改价格策略
+		    	echo $this->change_priority($params);
 			default:
 				$data = array(
 					'msgtype' => 'error',

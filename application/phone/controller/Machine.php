@@ -19,12 +19,115 @@ class Machine extends Base{
 		
 	}
 
+	//更改价格政策
+	public function change_priority(){
+		$machine_id = input('get.machine_id');
+		$priority = input('get.priority');
+		if(!$machine_id || !$priority){
+			$msg = array(
+        		'errid'=>10000,
+        		'msg'=>'参数不全'
+        		);
+		}else{
+			$change = array(
+	            'msgtype' => 'change_priority',
+	            'machine_id' => $machine_id,
+	            'send_time' => time(),
+	            );
+	        $commandid = DB::name('command')->add($change);
+	        if($commandid > 0){       	
+	        	if ($priority == 0){
+	        		$data = array(
+						'msgtype'=>'change_priority',
+						'commandid'=>$commandid,
+						'priority'=>0
+						);
+	        	}elseif ($priority == 1) {
+	        		$machine = DB::name('machine')->where(['machine_id'=>$machine_id])->find();
+	        		$prices = array(
+						'odd'=>$machine['odds'],
+						'price'=>$machine['goods_price']
+						);
+					$prices = json_encode($prices);
+					$data = array(
+						'msgtype'=>'change_priority',
+						'priority'=>1,
+						'commandid'=>$commandid,
+						'gameprice'=>$machine['game_price'],
+						'singleodds'=>$machine['odds'],
+						'singleprice'=>$machine['goods_price'],
+						'prices'=>$prices,
+						);
+	        	}
+	        	$url = 'https://www.goldenbrother.cn:23232/account_server';
+				$res = post_curls($url,$data);
+				halt($res);
+	        }else{
+	        	$msg = array(
+	        		'errid'=>10000,
+	        		'msg'=>'请求失败'
+	        		);
+	        	return json($error);
+	        }
+	    }
+	}
+
+	//轮询请求状态
+	public function check_status(){
+		$commandid = input('post.commandid');
+		if(!$commandid){
+			$error = array(
+				'errid'=>10000,
+				'msg'=>'参数错误',
+				);
+			return json($error);
+		}
+		$data = ['返回结果','失败'];
+		for($x=0; $x<=3; $x++){//轮询查找是否返回成功
+            $command = DB::name('command')->where(['commandid'=>$commandid])->find();//查询出对应的command 
+            if ($command['status'] == 1) {
+                //status=1为执行成功
+                DB::name('machine')->where(['machine_id'=>$command['machine_id']])->save(['priority'=>$command['priority']]);
+                $data = ['返回结果','成功'];
+                break;
+            }elseif($command['status'] == 0){
+                sleep(2);//延迟2s
+            }           
+        }
+        return json($data);
+	}
+
+
+	//定时删除过期数据command表，保留至上一个月
+	//如今天为2018 10 X日 ，则删除范围为2018 8 1 --2018 9 1
+	public function delete_data(){
+		$month = date('m') - 1;
+		$year = date('Y');
+		$last_month = $month - 1;
+		if($month == 1){
+		 	$last_month = 12;
+			$year = $year - 1;
+		}
+		$start_time = mktime(0, 0, 0, $last_month, 1, $year);
+		$end_time = mktime(0, 0, 0, $month, 1, $year);
+		$res = Db::name('command')->where('send_time','between',[$start_time,$end_time])->delete();
+		if($res !== false){
+			echo "操作已完成 请关闭页面";
+    		flush();
+		}else{
+			echo "删除失败";
+    		flush();
+		}
+	}
+
+
+
 	public function edit(){
 		if (IS_POST) {
 			
 			$data = $_POST;
 			DB::name('machine')->where(['machine_id'=>$data['machine_id']])->save($data);
-			$this->redirect('Machine/index');
+			//$this->redirect('Machine/index');
 
 		}else{
 			$machine_id = I('post.machine_id');
@@ -313,5 +416,11 @@ class Machine extends Base{
 		halt($info);
 	}
 
+	public function test(){
+		$url="https://www.goldenbrother.cn:23232/account_server";
+		$data = 1;
+		$res = post_curls($url,$data);
+		halt($res);
+	}
 
 } 

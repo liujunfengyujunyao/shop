@@ -16,7 +16,7 @@ return [
     // 'hostname'       => '218.245.1.214',
       'hostname'       => 'localhost',
     // 数据库名
-    'database'       => 'tfs',
+    'database'       => 'shop',
    // 用户名
     'username'       => 'root',
     // 'username' => "ljf"
