@@ -162,7 +162,7 @@ class Weixinpay extends Controller {
 
         public function oauth(){
           vendor('weixinpay.Jsapi');
-          $mchid = 'WxpayService';          //微信支付商户号 PartnerID 通过微信支付商户资料审核后邮件发送
+          $mchid = '1457705302';          //微信支付商户号 PartnerID 通过微信支付商户资料审核后邮件发送
           $appid = 'wx9e8c63f03cbd36aa';  //微信支付申请对应的公众号的APPID
           $appKey = 'aa30b7860f3247a789fff62b08681b7e';   //微信支付申请对应的公众号的APP Key
           $apiKey = 'ede449b5c872ada3365d8f91563dd8b6';   //https://pay.weixin.qq.com 帐户设置-安全设置-API安全-API密钥-设置API密钥
@@ -179,5 +179,30 @@ class Weixinpay extends Controller {
           $jsApiParameters = $wxPay->createJsBizPackage($openId,$payAmount,$outTradeNo,$orderName,$notifyUrl,$payTime);
           $jsApiParameters = json_encode($jsApiParameters);
           halt($jsApiParameters);
+        }
+
+
+        public function refund(){
+          vendor('weixinpay.refund');
+          $mchid = '1457705302';          //微信支付商户号 PartnerID 通过微信支付商户资料审核后邮件发送
+          $appid = 'wx9e8c63f03cbd36aa';  //微信支付申请对应的公众号的APPID
+          $apiKey = 'ede449b5c872ada3365d8f91563dd8b6';   //https://pay.weixin.qq.com 帐户设置-安全设置-API安全-API密钥-设置API密钥
+          $orderNo = '8633571541063496';                      //商户订单号（商户订单号与微信订单号二选一，至少填一个）
+          $wxOrderNo = '';                     //微信订单号（商户订单号与微信订单号二选一，至少填一个）
+          $totalFee = 0.05;                   //订单金额，单位:元
+          $refundFee = 0.05;                  //退款金额，单位:元
+          $refundNo = 'refund_'.uniqid();        //退款订单号(可随机生成)
+          $wxPay = new \WxpayService($mchid,$appid,$apiKey);
+          $result = $wxPay->doRefund($totalFee, $refundFee, $refundNo, $wxOrderNo,$orderNo);
+          if($result===true){
+              echo 'refund success';exit();
+          }
+          echo 'refund fail';
+
+        }
+
+        public function test(){
+          $data = getcwd();
+          dump($data);
         }
 }

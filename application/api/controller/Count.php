@@ -14,7 +14,7 @@ class Count extends Controller {
         foreach($all as $k=>&$v){
             foreach($other as $k1=>$v1){
                 if($v['machine_id']==$v1['machine_id']){
-                  $v[$pre] = $v1['count'];
+                  $v[$pre] = $v1[$pre];
                 }
               }
             if(!$v[$pre]){
@@ -60,18 +60,78 @@ class Count extends Controller {
 	       		->select();
 	       	$all3 = $this->inspirit($all2,$data_notget,'fail_number');
 
+	       	//微信游戏收入
 	       	$data_weixin_game = DB::name('weixinpay_log')
 	       		->field("sum(goods_price) weixinpay_game_count,machine_id")
-	       		->where("timestamp between $star and $end")
+	       		->where("timestamp between $star and $end && status=1 && model=0")
 	       		->Group('machine_id')
 	       		->select();
+	       		// halt($data_weixin_game);
 	       	$all4 = $this->inspirit($all3,$data_weixin_game,'weixinpay_game_count');
-	       //有点问题
-	       	halt($all4);
+	       
+	       //支付宝游戏收入
+	       $data_ali_game = DB::name('alipay_log')
+	       		->field("sum(goods_price) alipay_game_count,machine_id")
+	       		->where("create_time between $star and $end && status=1 && model=0")
+	       		->Group("machine_id")
+	       		->select();
+
+	       	$all5 = $this->inspirit($all4,$data_ali_game,'alipay_game_count');
+	       	
+
+	       	//直接售卖模式微信的收入
+	       	$data_weixin_sell = DB::name('weixinpay_log')
+	       		->field("sum(goods_price) weixinpay_goods_count,machine_id")
+	       		->where("timestamp between $star and $end && status=1 && model=1")
+	       		->Group("machine_id")
+	       		->select();
+	       	$all6 = $this->inspirit($all5,$data_weixin_sell,'weixinpay_goods_count');
+	       	   	
+	       	//直接售卖模式支付宝的收入
+	       	$data_ali_sell = DB::name('alipay_log')
+	       		->field("sum(goods_price) alipay_goods_count,machine_id")
+	       		->where("create_time between $star and $end && status=1 && model=1")
+	       		->Group("machine_id")
+	       		->select();
+	       	$all7 = $this->inspirit($all6,$data_ali_sell,'alipay_goods_count');
+	       	halt($all7);
+
+
+
+	       	 
+
+	       	//卖出的商品数量
+
+	       	
+	       	
+	       	//现金收入
+	       	/*
+	       	
+
+
+
+
+	       	 */
+	       	
+	       	//礼品出货量
+	       	/*
+	       	
+
+
+
+
+	       	 */
+	       	
 
 		}
 
 		public function machine_month_statistics(){
+
+		}
+
+		public function test(){
+			$time = "2018-10-30";
+			echo strtotime($time);
 
 		}
 
