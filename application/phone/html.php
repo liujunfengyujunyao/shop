@@ -23,6 +23,7 @@ return [
         'view_replace_str'  =>  [
             '__PUBLIC__'=>'/public',
             '__STATIC__' => '/template/phone/new/static',
+            '__NEW__' => '/template/phone/new/new',
             '__ROOT__'=>''
         ]
     ];

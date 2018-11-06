@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/index\index1.html";i:1541400160;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -13,9 +14,9 @@
 	<header id="head">
 		<div class="titlebar">
 			<div id="tit">
-				<img src="__NEW__/img/mine.png" id="me" >
+				<img src="img/mine.png" id="me" >
 				<p class="title">今日总收益（元）</p>
-				<img src="__NEW__/img/message.png" id="msg">
+				<img src="img/message.png" id="msg">
 			</div>
 			<p class="title_num">393.00</p>
 		</div>
@@ -106,7 +107,7 @@
 				</div>
 				<div class="text">
 					<div id="txt1">
-						<img src="__NEW__/img/device%20management.png" alt="" style="width: 0.3rem;height: 0.3rem; float: left;">
+						<img src="img/device%20management.png" alt="" style="width: 0.3rem;height: 0.3rem; float: left;">
 					</div>
 					<!-- <img src="img/error.png" style="float: right; width: 0.31rem; height: 0.3rem;" > -->
 					<p class="p1">设备管理</p>
@@ -119,11 +120,11 @@
 			</div>
 			<ul class="short">
 				<li>
-					<a href="{:U('Phone/Scan/index')}">
+					<a href="#">
 					<div class="icon fa fa-recycle" style="color:#4864ed;"></div>
 					<div class="text">
 						<div id="txt1">
-							<img src="__NEW__/img/Equipment%20registration.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
+							<img src="img/Equipment%20registration.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
 							<p class="p1" >设备注册</p>
 						</div>
 						<div class="p2" >扫描设备二维码</div>
@@ -131,12 +132,12 @@
 					</a>
 				</li>
 				<li>
-					<a href="{:U('Phone/Machine/index')}">
+					<a href="#">
 					<div class="icon fa fa-money" style="color:#fe7b13;"></div>
 					<div class="text">
 						<div id="txt1">
-							<img src="__NEW__/img/setting.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
-							<p class="p1" >设备管理</p>
+							<img src="img/setting.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
+							<p class="p1" >设备设置</p>
 						</div>
 						<div class="p2">设备参数修改</div>
 					</div>
@@ -147,7 +148,7 @@
 					<div class="icon fa fa-line-chart" style="color:#ff524c;"></div>
 					<div class="text">
 						<div id="txt1">
-							<img src="__NEW__/img/Statistics.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
+							<img src="img/Statistics.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
 							<p class="p1" >统计</p>
 						</div>
 						<div class="p2">实时收益流水</div>
@@ -159,7 +160,7 @@
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">
 						<div id="txt1">
-							<img src="__NEW__/img/gift.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
+							<img src="img/gift.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
 							<p class="p1">礼品管理</p>
 						</div>
 						<div class="p2">礼品统计及管理</div>
@@ -176,7 +177,7 @@
 					<div class="icon fa fa-recycle" style="color:#4864ed;"></div>
 					<div class="text">
 						<div id="txt1">
-							<img src="__NEW__/img/Statistics.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
+							<img src="img/Statistics.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
 							<p class="p1">收益统计</p>
 						</div>
 						<div class="p2">所有营收统计</div>
@@ -188,7 +189,7 @@
 					<div class="icon fa fa-money" style="color:#fe7b13;"></div>
 					<div class="text">
 						<div id="txt1">
-							<img src="__NEW__/img/Personnel%20management.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
+							<img src="img/Personnel%20management.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
 							<p class="p1">人员管理</p>
 						</div>
 						<div class="p2">编辑管理员信息</div>
@@ -200,7 +201,7 @@
 					<div class="icon fa fa-line-chart" style="color:#ff524c;"></div>
 					<div class="text">
 						<div id="txt1">
-							<img src="__NEW__/img/Remote.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
+							<img src="img/Remote.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
 							<p class="p1">远程上分</p>
 						</div>
 						<div class="p2">远程为游戏机充值</div>
@@ -212,7 +213,7 @@
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">
 						<div id="txt1">
-							<img src="__NEW__/img/binding.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
+							<img src="img/binding.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
 							<p class="p1">设备绑定</p>
 						</div>
 					</div>
