@@ -115,7 +115,7 @@ class Room extends Base{
     		'machinesn'=>intval($machinesn),
     		);
 		$url = 'https://www.goldenbrother.cn:23232/account_server';
-		$res = post_curlss($url,$data);
+		$res = post_curls($url,$data);
 		return $res;
 	}
 
