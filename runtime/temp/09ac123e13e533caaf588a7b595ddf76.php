@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:44:"./template/phone/new/machine\odds_index.html";i:1537501570;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:44:"./template/phone/new/machine\odds_index.html";i:1540012757;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>

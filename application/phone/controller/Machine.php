@@ -23,51 +23,62 @@ class Machine extends Base{
 	public function change_priority(){
 		$machine_id = input('get.machine_id');
 		$priority = input('get.priority');
-		if(!$machine_id || !$priority){
+		if(!$machine_id || !in_array($priority,[0,1])){
 			$msg = array(
         		'errid'=>10000,
         		'msg'=>'参数不全'
         		);
+			return json($msg);
 		}else{
 			$change = array(
 	            'msgtype' => 'change_priority',
 	            'machine_id' => $machine_id,
 	            'send_time' => time(),
+	            'content'=>$priority
 	            );
 	        $commandid = DB::name('command')->add($change);
-	        if($commandid > 0){       	
+	        DB::name('machine')->where(['machine_id'=>$machine_id])->save(['priority'=>$priority]);
+	        if($commandid > 0){
 	        	if ($priority == 0){
-	        		$data = array(
+	        		$msg = array(
 						'msgtype'=>'change_priority',
-						'commandid'=>$commandid,
+						'commandid'=>intval($commandid),
 						'priority'=>0
 						);
 	        	}elseif ($priority == 1) {
 	        		$machine = DB::name('machine')->where(['machine_id'=>$machine_id])->find();
-	        		$prices = array(
-						'odd'=>$machine['odds'],
-						'price'=>$machine['goods_price']
-						);
-					$prices = json_encode($prices);
-					$data = array(
+	        		$rooms = Db::name('client_machine_conf')->field('id,location,goods_price,game_odds')->where(['machine_id'=>$machine_id])->select();
+	        		foreach ($rooms as $k => $v) {
+	        			$prices[$k]['goodsid'] = strval($v['id']);
+	        			$prices[$k]['roomid'] = $v['location'];
+	        			$prices[$k]['goodsprice'] = $v['goods_price'];
+	        			$prices[$k]['gameodds'] = $v['game_odds'];
+	        		}
+					$msg = array(
 						'msgtype'=>'change_priority',
 						'priority'=>1,
-						'commandid'=>$commandid,
+						'commandid'=>intval($commandid),
 						'gameprice'=>$machine['game_price'],
 						'singleodds'=>$machine['odds'],
 						'singleprice'=>$machine['goods_price'],
 						'prices'=>$prices,
 						);
 	        	}
+	        	$machinesn = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('sn');
+	        	$data = array(
+	        		'msg'=>$msg,
+	        		'msgtype'=>'send_message',
+	        		'machinesn'=>intval($machinesn),
+	        		);
 	        	$url = 'https://www.goldenbrother.cn:23232/account_server';
-				$res = post_curls($url,$data);
-				halt($res);
+				$res = post_curlss($url,$data);
+				halt($data);
 	        }else{
 	        	$msg = array(
 	        		'errid'=>10000,
 	        		'msg'=>'请求失败'
 	        		);
-	        	return json($error);
+	        	return json($msg);
 	        }
 	    }
 	}
@@ -75,21 +86,44 @@ class Machine extends Base{
 	//轮询请求状态
 	public function check_status(){
 		$commandid = input('post.commandid');
-		if(!$commandid){
+		$command = DB::name('command')->where(['commandid'=>$commandid])->find();
+		if(!$commandid || !$command){
 			$error = array(
-				'errid'=>10000,
+				'status'=>0,
 				'msg'=>'参数错误',
 				);
 			return json($error);
 		}
-		$data = ['返回结果','失败'];
+		$data = array(
+			'status'=>0,
+			'msg'=>'操作失败'
+			);
 		for($x=0; $x<=3; $x++){//轮询查找是否返回成功
-            $command = DB::name('command')->where(['commandid'=>$commandid])->find();//查询出对应的command 
+            //查询出对应的command 
             if ($command['status'] == 1) {
                 //status=1为执行成功
-                DB::name('machine')->where(['machine_id'=>$command['machine_id']])->save(['priority'=>$command['priority']]);
-                $data = ['返回结果','成功'];
-                break;
+            	//成功之后操作
+                switch ($command['msgtype']) {
+                	case 'lock_room':
+                		# code...
+                		break;
+                	case 'unlock_room':
+                		# code...
+                		break;
+                	case 'change_priority':
+                		# code...
+                		break;
+                	case 'open_room':
+                		# code...
+                		break;
+                	case 'update_firmware':
+                		# code...
+                		break;
+                	case 'get_room_status':
+                		# code...
+                		break;
+                }
+
             }elseif($command['status'] == 0){
                 sleep(2);//延迟2s
             }           
@@ -117,6 +151,43 @@ class Machine extends Base{
 		}else{
 			echo "删除失败";
     		flush();
+		}
+	}
+
+	//解绑设备
+	public function unbind(){
+		$machine_id = input('post.machine_id');
+		$user_id = input('post.user_id');
+		if(!$machine_id || !$user_id){
+			$data = array(
+        		'status'=>0,
+        		'msg'=>'参数不全'
+        		);
+			return json($data);
+		}else{
+			$machine_user = Db::name('machine')->where(['machine_id'=>machine_id])->getField('user_id');
+			if($machine_user != $user_id){
+				$data = array(
+					'status'=>0,
+					'msg'=>'该机器由他人绑定'
+					);
+				return json($data);
+			}else{
+				$res = Db::name('machine')->where(['machine_id'=>$machine_id])->setField('user_id',0);
+				if($res !== false){
+					$data = array(
+					'status'=>1,
+					'msg'=>'解绑成功'
+					);
+					return json($data);
+				}else{
+					$data = array(
+					'status'=>0,
+					'msg'=>'解绑失败'
+					);
+					return json($data);
+				}
+			}
 		}
 	}
 
@@ -416,11 +487,13 @@ class Machine extends Base{
 		halt($info);
 	}
 
+
 	public function test(){
 		$url="https://www.goldenbrother.cn:23232/account_server";
 		$data = 1;
 		$res = post_curls($url,$data);
 		halt($res);
 	}
+
 
 } 

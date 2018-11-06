@@ -145,17 +145,17 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 					),
 				array(
 					'roomid' => "A3",
-					'status' => 2
+					'status' => 3
 					),
 				array(
 					'roomid' => "A4",
-					'status' => 2
+					'status' => 3
 					),
 				);
-			// halt(json_encode($rooms));
+			
 			$params = array(
 				'msgtype' => 'receive_message',
-				'machinesn' => '12',
+				'machinesn' => 12,
 				'ip' => '1111',
 				'msg' => array(
 					'msgtype' => 'rooms_status',
@@ -191,6 +191,7 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 					'gameodds' => 40,
 					),
 				);
+		// $price = '';
 		$params = array(
 			'msgtype' => 'receive_message',
 			'machinesn' => '12',
@@ -200,9 +201,10 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 				'gameprice' => 11,
 				'singleodds' => 80,
 				'singleprice' => 20,
-				'price' => $price,
+				'prices' => $price,
 				),
 			); 
+		halt(json_encode($params));
 		$url = "http://192.168.1.164/Sever/";
 			$result = json_curl($url,$params);
 			dump($result);
@@ -269,5 +271,21 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 		$url = "https://www.goldenbrother.cn:23232/account_server";
 		$result = post_curls($url,$params);
 		halt($result);
+	}
+
+	public function pay_cancel(){
+		$params = array(
+				'msgtype' => 'receive_message',
+				'machinesn' => 12,
+				'ip' => '1111',
+				'msg' => array(
+					'msgtype' => 'pay_cancel',
+					'paysn' => "1317501541065010",
+					),
+				);
+		$url = "http://192.168.1.164/Sever/";
+			$result = json_curl($url,$params);
+			dump($result);
+			dump(json_decode($result,true));
 	}
 }

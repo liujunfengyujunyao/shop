@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1540456258;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1540808086;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -74,9 +74,12 @@
 							<!-- <td>测试</td> -->
 							<!-- <td>1366666666</td> -->
 							<td>
-								<a href="<?php echo U('Phone/Machine/goods_list',array('machine_id'=>$v['machine_id'])); ?>"><i class="fa fa-edit"></i>礼品格配置</a>
-								<a href="<?php echo U('Phone/Machine/edit',array('machine_id'=>$v['machine_id'])); ?>"><i class="fa fa-edit"></i>配置</a>
+								<!-- <a href="<?php echo U('Phone/Machine/goods_list',array('machine_id'=>$v['machine_id'])); ?>"><i class="fa fa-edit"></i>礼品格配置</a> -->
+								<a href="<?php echo U('Phone/Machine/edit',array('machine_id'=>$v['machine_id'])); ?>"><i class="fa fa-edit"></i>配置</a>				
 								<span><i class="fa fa-trash"></i>删除</span>
+								<input type="radio" <?php if($v['priority'] == 1): ?>checked<?php endif; ?> name="priority"  id="priority" value=1/><label>平台</label>
+								<input type="radio" <?php if($v['priority'] == 0): ?>checked<?php endif; ?> name="priority"  id="priority" value=0/><label>设备</label>
+
 							</td>
 						</tr>
 					<?php endforeach; endif; else: echo "" ;endif; ?>

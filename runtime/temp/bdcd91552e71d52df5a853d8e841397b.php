@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:45:"./template/mobile/new2/index\ajaxGetMore.html";i:1533876250;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:45:"./template/mobile/new2/index\ajaxGetMore.html";i:1540012757;}*/ ?>
 <?php if(is_array($favourite_goods) || $favourite_goods instanceof \think\Collection || $favourite_goods instanceof \think\Paginator): if( count($favourite_goods)==0 ) : echo "" ;else: foreach($favourite_goods as $key=>$v): ?>
 <li>
 	<div class="similer-product products_kuang">   

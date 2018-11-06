@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/goods\stock_index.html";i:1537418376;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/goods\stock_index.html";i:1541405079;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -63,7 +63,7 @@
 					<span class="label label-default"><?php echo $val['address']; ?></span>
 				</span>
 
-					<button id=" replenishment" class="btn btn-success" data-url="<?php echo U('Goods/ajax_add'); ?>" data-id="<?php echo $val['machine_id']; ?>" onClick="supply(this)">一键补货</button>
+					<button id=" replenishment" class="btn btn-success" data-url="<?php echo U('room/operate_room'); ?>" data-id="<?php echo $val['machine_id']; ?>" onClick="supply(this)">一键补货</button>
 
 					<button id="clear" class="btn btn-danger" data-url="<?php echo U('Goods/ajax_clear'); ?>" data-id="<?php echo $val['machine_id']; ?>" onClick="supply2(this)">一键清货</button>
 
@@ -193,15 +193,31 @@
                     layer.close(index);
                     // 确定
                     $.ajax({
+                    	async : false,
                         type: 'post',
                         url: $(obj).attr('data-url'),
-                        data: {act: '_ADD_', id: $(obj).attr('data-id')},
+                        data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'open_room'},
                         dataType: 'json',
                         success: function (v) {
                             if (v.status == 1) {
-                                layer.msg('操作成功', {icon: 1});
-                                location.reload();
-                                // $(obj).parent().parent().parent().remove();
+                                //layer.msg('操作成功', {icon: 1});
+                                //location.reload();
+                                //$(obj).parent().parent().parent().remove();
+                                $.ajax({
+                                	async : false,
+                                	type: 'post',
+                                	url: 'http://192.168.1.133/phone/room/check_status',
+                                	data: {commandid:v.commandid},
+                                	dataType: 'json',
+                                	success: function(res){
+                                		if(res.status == 1){
+                                			layer.msg('操作成功', {icon: 1});
+                                			//location.reload();
+                                		}else{
+                                			layer.msg(res.msg, {icon: 2, time: 2000});
+                                		}
+                                	}
+                                })
                             } else {
                                 layer.msg(v.msg, {icon: 2, time: 2000});
                             }
@@ -231,7 +247,8 @@
                             if (v.status == 1) {
                                 layer.msg('操作成功', {icon: 1});
                                 location.reload();
-                                // $(obj).parent().parent().parent().remove();
+                                //$(obj).parent().parent().parent().remove();
+                                
                             } else {
                                 layer.msg(v.msg, {icon: 2, time: 2000});
                             }

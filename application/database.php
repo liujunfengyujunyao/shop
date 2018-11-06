@@ -14,15 +14,21 @@ return [
     'type'           => 'mysql',
     // 服务器地址
     // 'hostname'       => '218.245.1.214',
-      'hostname'       => 'localhost',
+      // 'hostname'       => 'localhost',
+      'hostname'       => 'mysql.sql41.cdncenter.net',
+      
     // 数据库名
-    'database'       => 'shop',
+
+    'database'       => 'sq_nugh123',
+
    // 用户名
-    'username'       => 'root',
+    // 'username'       => 'root',
+    'username'       => 'sq_nugh123',
     // 'username' => "ljf"
     // 密码
     // 'password'       => '123456',
-    'password'       => 'root',
+    // 'password'       => 'root',
+    'password'       => 'k5487561',
     // 'password'       => 'bjyxkf@2308',
     // 端口
     'hostport'       => '3306',

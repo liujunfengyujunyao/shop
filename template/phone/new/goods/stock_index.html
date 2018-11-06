@@ -62,7 +62,7 @@
 					<span class="label label-default">{$val.address}</span>
 				</span>
 
-					<button id=" replenishment" class="btn btn-success" data-url="{:U('Goods/ajax_add')}" data-id="{$val.machine_id}" onClick="supply(this)">一键补货</button>
+					<button id=" replenishment" class="btn btn-success" data-url="{:U('room/operate_room')}" data-id="{$val.machine_id}" onClick="supply(this)">一键补货</button>
 
 					<button id="clear" class="btn btn-danger" data-url="{:U('Goods/ajax_clear')}" data-id="{$val.machine_id}" onClick="supply2(this)">一键清货</button>
 
@@ -192,15 +192,31 @@
                     layer.close(index);
                     // 确定
                     $.ajax({
+                    	async : false,
                         type: 'post',
                         url: $(obj).attr('data-url'),
-                        data: {act: '_ADD_', id: $(obj).attr('data-id')},
+                        data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'open_room'},
                         dataType: 'json',
                         success: function (v) {
                             if (v.status == 1) {
-                                layer.msg('操作成功', {icon: 1});
-                                location.reload();
-                                // $(obj).parent().parent().parent().remove();
+                                //layer.msg('操作成功', {icon: 1});
+                                //location.reload();
+                                //$(obj).parent().parent().parent().remove();
+                                $.ajax({
+                                	async : false,
+                                	type: 'post',
+                                	url: 'http://192.168.1.133/phone/room/check_status',
+                                	data: {commandid:v.commandid},
+                                	dataType: 'json',
+                                	success: function(res){
+                                		if(res.status == 1){
+                                			layer.msg('操作成功', {icon: 1});
+                                			//location.reload();
+                                		}else{
+                                			layer.msg(res.msg, {icon: 2, time: 2000});
+                                		}
+                                	}
+                                })
                             } else {
                                 layer.msg(v.msg, {icon: 2, time: 2000});
                             }
@@ -230,7 +246,8 @@
                             if (v.status == 1) {
                                 layer.msg('操作成功', {icon: 1});
                                 location.reload();
-                                // $(obj).parent().parent().parent().remove();
+                                //$(obj).parent().parent().parent().remove();
+                                
                             } else {
                                 layer.msg(v.msg, {icon: 2, time: 2000});
                             }
