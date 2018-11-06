@@ -26,6 +26,7 @@ class Room extends Base{
 	}
 
 
+
 	//操控仓位  解锁、锁定、开舱门
 	public function operate_room(){
 		$msgtype = input('post.msgtype');//锁定传lock_room,解锁传unlock_room
@@ -96,9 +97,13 @@ class Room extends Base{
 				'commandid'=>intval($commandid),
 				);
 			$res = $this->post_to_server($data,$machine_id);
-			halt($res);
+			//halt($res);
+			if($res === ''){//请求连接服务器成功
+				return json (['status'=>1,'commandid'=>$commandid]);
+			}
 		}
 	}
+
 
 
 	//向服务器发送数据

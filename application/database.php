@@ -18,9 +18,8 @@ return [
       'hostname'       => 'mysql.sql41.cdncenter.net',
       
     // 数据库名
-
+    // 'database'       => 'tfs',
     'database'       => 'sq_nugh123',
-
    // 用户名
     // 'username'       => 'root',
     'username'       => 'sq_nugh123',

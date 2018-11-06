@@ -55,8 +55,9 @@ class Index extends Controller {
 		    case 'pay_cancel'://退款
 		        echo $this->pay_cancel($params);
 		        break;
-		    case 'ok':
-		    	echo $this->change_priority($params);
+		    case 'OK'://退款
+		        echo $this->change_priority($params);
+		        break;
 			default:
 				$data = array(
 					'msgtype' => 'error',
@@ -125,9 +126,9 @@ class Index extends Controller {
 					'msgtype' => 'login_success',
 					'priority' => $machine['priority'],//0以设备为准,1以平台为准
 					'gameprice' => $machine['game_price'],
-					'singleodds' => $machine['odds'],
-					'singleprice' => $machine['goods_price'],
-					'price' => $prices,//忽略此条数据
+					// 'singleodds' => $machine['odds'],
+					// 'singleprice' => $machine['goods_price'],
+					'prices' => $prices,//忽略此条数据
 					
 					),
 				'machinesn' => intval($machine['sn']),
@@ -158,6 +159,9 @@ class Index extends Controller {
 	//获取仓位状态信息  仓位状态用数字表示，0空仓，1满仓(有货)，2被锁定，-1损坏
 	public function rooms_status($params){
 		$data = $params['msg'];
+		if ($data['commandid']) {
+			DB::name('command')->where(['commandid'=>$data['commandid']])->save(['status'=>1]);
+		}
 		$rooms = $data['rooms'];
 		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
 		// return json_encode($machine['machine_id'],JSON_UNESCAPED_UNICODE);
@@ -165,6 +169,7 @@ class Index extends Controller {
 			
 			DB::name('client_machine_stock')->where(['machine_id'=>$machine['machine_id'],'location'=>$value['roomid']])->save(['status'=>$value['status']]);
 		}
+
 
 	}
 
@@ -192,9 +197,9 @@ class Index extends Controller {
 					'msgtype' => 'price_strategy',
 					'priority' => $machine['priority'],//0以设备为准,1以平台为准
 					'gameprice' => $machine['game_price'],
-					'singleodds' => $machine['odds'],
-					'singleprice' => $machine['goods_price'],
-					'price' => $msg,//忽略此条数据		
+					// 'singleodds' => $machine['odds'],
+					// 'singleprice' => $machine['goods_price'],
+					'prices' => $msg,//忽略此条数据		
 					)
 				);
 			return json_encode($result,JSON_UNESCAPED_UNICODE);
@@ -251,7 +256,8 @@ class Index extends Controller {
 	//接收改变价格设置的响应结果
 	public function change_priority($params){
 		$commandid = $params['msg']['commandid'];//成功接收到此条commandid后 返回OK  通过price_strategy接口将新的offline_machine_conf发给我
-		DB::name('command')->where(['commandid'=>$commandid])->save(['status'=>1]);//等待轮询页面wait.php 查找出对应这个commandid的machine_id  offline_machine_conf->where(machineid)
+		$time = time();
+		DB::name('command')->where(['commandid'=>$commandid])->save(['status'=>1,'receive_time'=>$time]);//等待轮询页面wait.php 查找出对应这个commandid的machine_id  offline_machine_conf->where(machineid)
 
 	}
 

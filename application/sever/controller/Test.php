@@ -261,7 +261,8 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 	}
 
 	public function test_privote(){
-
+		$data = DB::name('machine')->select();
+		dump($data);die;
 	}
 
 	public function yuan(){
