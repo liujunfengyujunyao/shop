@@ -40,5 +40,8 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-
+.label{
+	
+	padding: 6px,8px !important;
+}
 

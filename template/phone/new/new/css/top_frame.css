@@ -6,7 +6,7 @@
 }
 #head .top_bar {
   background: #CB297C;
-  padding: 0.1rem 0.1rem 0.05rem 0.1rem;
+  padding: 0.2rem 0.1rem 0.05rem 0.1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -47,6 +47,7 @@
 	bottom: 0;
 	width: 100%;
 	margin: 0;
+	z-index:9999
 }
 #head .slide_bar li {
   flex-grow: 1;
@@ -76,7 +77,26 @@
 /*搜索框*/
 .search-row {
   position: relative;
-  height: 30px; padding: 7px 0;
+  height: 0.5rem; 
+  padding: 7px 5px;
+  box-sizing: border-box;
+}
+.search_box{
+  height: 100%;
+  background-color: #fff;
+  border:solid 2px #950000;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+.search_box i{
+  width: 30px;
+  height: 30px;
+}
+.search_box input{
+  outline: none;
+  width: 100%;
+	height: 0.33rem;
 }
 .search-row input[type=search] {
   position: absolute; top: 7px;
@@ -116,24 +136,55 @@
 }
 #find{
 	width: 100%;
-	height: 0.38rem;
+	height: 0.5rem;
 	background-color: #F27AB7;
 }
 /*设备管理列表*/
 .list ul{
-	padding-left: 0.15rem;
+	padding:0 .15rem;
+	background-color:#FFFFFF;
 }
 .list ul li{
-	border-bottom: 1px solid #ADADAD;
-	padding-right: 0.2rem;
+  padding: 0.05rem 0;
+  border-bottom: 1px solid #ADADAD;
 }
 .list ul li a{
-	height: 0.35rem;
-	line-height: 0.5rem;
+  padding: 0 .05rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 	overflow: hidden;
 	font-size: 0.13rem;
 }
-
+.list ul li .list_p:first-child{
+  text-align: left;
+}
+.list ul li .list_p{
+  text-align: center;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.list ul li .list_p span{
+  padding: .05rem;
+}
+.list ul li .list_p #sp1{
+	font-size: 0.15rem;
+	font-weight: normal;
+}
+.list ul li .list_p #sp2{
+	font-size: 0.08rem;
+	font-weight: normal;
+	color: #ADADAD;
+}
+.list ul li .list_p #sp3{
+	font-size: 0.15rem;
+	font-weight: normal;
+}
+.list ul li .list_p #sp4{
+	font-size: 0.15rem;
+	font-weight: normal;
+}
 
 
 

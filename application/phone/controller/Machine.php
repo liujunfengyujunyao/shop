@@ -313,7 +313,7 @@ class Machine extends Base{
 		halt($info);
 	}
 
-	:
+	
 //更改价格政策
 	public function change_priority(){
 		$machine_id = input('get.machine_id');
@@ -387,7 +387,7 @@ class Machine extends Base{
 		for($x=0; $x<=3; $x++){//轮询查找是否返回成功
             $command = DB::name('command')->where(['commandid'=>$commandid])->find();//查询出对应的command 
             if ($command['status'] == 1) {
-:
+
 //status=1为执行成功
                 DB::name('machine')->where(['machine_id'=>$command['machine_id']])->save(['priority'=>$command['content']]);
                 $data = ['返回结果','成功'];

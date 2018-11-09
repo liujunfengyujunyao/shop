@@ -238,44 +238,61 @@ class Count extends Controller {//入库存储过程
 		              settype($value['client_id'],'string');//转换成字符串
 		          }
       		}
-
+      		// halt($machine);
       		$returnarr = array();
-      		foreach ($machine as $val) {
-      			if (isset($returnarr[$val['pid']])) {
-      				$returnarr[$value['client_id']]['statistics_date'] = $start;
-      				$returnarr[$value['client_id']]['game_count'] += $val['game_count'];
-      				$returnarr[$value['client_id']]['success_number'] += $val['success_number'];
-      				$returnarr[$value['client_id']]['fail_number'] += $val['fail_number'];
-      				$returnarr[$value['client_id']]['weixinpay_game_count'] += $val['weixinpay_game_count'];
-      				$returnarr[$value['client_id']]['alipay_game_count'] += $val['alipay_game_count'];
-      				$returnarr[$value['client_id']]['weixinpay_goods_count'] += $val['weixinpay_goods_count'];
-      				$returnarr[$value['client_id']]['alipay_goods_count'] += $val['alipay_goods_count'];
-      				$returnarr[$value['client_id']]['goods_out_count'] += $val['goods_out_count'];
-      				$returnarr[$value['client_id']]['money_count'] += $val['money_count'];
-      				$returnarr[$value['client_id']]['gift_out_count'] += $val['gift_out_count'];
-      				$returnarr[$value['client_id']]['online_count'] += $val['online_count'];
-      				$returnarr[$value['client_id']]['create_time'] = time();
-      				$returnarr[$value['client_id']]['client_id'] = $val['pid'];
       		
+      		foreach ($machine as $key => $val) {
+      			if (isset($returnarr[$val['pid']])) {
+      				$returnarr[$val['client_id']]['statistics_date'] = $start;
+      				$returnarr[$val['client_id']]['game_count'] += $val['game_count'];
+      				$returnarr[$val['client_id']]['success_number'] += $val['success_number'];
+      				$returnarr[$val['client_id']]['fail_number'] += $val['fail_number'];
+      				$returnarr[$val['client_id']]['weixinpay_game_count'] += $val['weixinpay_game_count'];
+      				$returnarr[$val['client_id']]['alipay_game_count'] += $val['alipay_game_count'];
+      				$returnarr[$val['client_id']]['weixinpay_goods_count'] += $val['weixinpay_goods_count'];
+      				$returnarr[$val['client_id']]['alipay_goods_count'] += $val['alipay_goods_count'];
+      				$returnarr[$val['client_id']]['goods_out_count'] += $val['goods_out_count'];
+      				$returnarr[$val['client_id']]['money_count'] += $val['money_count'];
+      				$returnarr[$val['client_id']]['gift_out_count'] += $val['gift_out_count'];
+      				$returnarr[$val['client_id']]['online_count'] += $val['online_count'];
+      				if ($returnarr[$val['client_id']]['game_count'] == 0) {
+      					
+      					$returnarr[$val['client_id']]['rate'] = 0;
+      				}else{
+      					
+      					$returnarr[$val['client_id']]['rate'] = $returnarr[$val['client_id']]['success_number']/$returnarr[$val['client_id']]['game_count']*100;
+      				}
+      		
+      				$returnarr[$val['client_id']]['create_time'] = time();
+      				$returnarr[$val['client_id']]['client_id'] = $val['pid'];
+      				
 
       			}else{
-      				$returnarr[$value['client_id']]['statistics_date'] = $start;
-      				$returnarr[$value['client_id']]['game_count'] = $val['game_count'];
-      				$returnarr[$value['client_id']]['success_number'] = $val['success_number'];
-      				$returnarr[$value['client_id']]['fail_number'] = $val['fail_number'];
-      				$returnarr[$value['client_id']]['weixinpay_game_count'] = $val['weixinpay_game_count'];
-      				$returnarr[$value['client_id']]['alipay_game_count'] = $val['alipay_game_count'];
-      				$returnarr[$value['client_id']]['weixinpay_goods_count'] = $val['weixinpay_goods_count'];
-      				$returnarr[$value['client_id']]['alipay_goods_count'] = $val['alipay_goods_count'];
-      				$returnarr[$value['client_id']]['goods_out_count'] = $val['goods_out_count'];
-      				$returnarr[$value['client_id']]['money_count'] = $val['money_count'];
-      				$returnarr[$value['client_id']]['gift_out_count'] = $val['gift_out_count'];
-      				$returnarr[$value['client_id']]['online_count'] = $val['online_count'];
-      				$returnarr[$value['client_id']]['create_time'] = time();
-      				$returnarr[$value['client_id']]['client_id'] = $val['pid'];
+      				$returnarr[$val['client_id']]['statistics_date'] = $start;
+      				$returnarr[$val['client_id']]['game_count'] = $val['game_count'];
+      				$returnarr[$val['client_id']]['success_number'] = $val['success_number'];
+      				$returnarr[$val['client_id']]['fail_number'] = $val['fail_number'];
+      				$returnarr[$val['client_id']]['weixinpay_game_count'] = $val['weixinpay_game_count'];
+      				$returnarr[$val['client_id']]['alipay_game_count'] = $val['alipay_game_count'];
+      				$returnarr[$val['client_id']]['weixinpay_goods_count'] = $val['weixinpay_goods_count'];
+      				$returnarr[$val['client_id']]['alipay_goods_count'] = $val['alipay_goods_count'];
+      				$returnarr[$val['client_id']]['goods_out_count'] = $val['goods_out_count'];
+      				$returnarr[$val['client_id']]['money_count'] = $val['money_count'];
+      				$returnarr[$val['client_id']]['gift_out_count'] = $val['gift_out_count'];
+      				$returnarr[$val['client_id']]['online_count'] = $val['online_count'];
+      				if ($returnarr[$val['client_id']]['game_count'] == 0) {
+      					
+      					$returnarr[$val['client_id']]['rate'] = 0;
+      				}else{
+      					
+      					$returnarr[$val['client_id']]['rate'] = $returnarr[$val['client_id']]['success_number']/$returnarr[$val['client_id']]['game_count']*100;
+      				}
+      				$returnarr[$val['client_id']]['create_time'] = time();
+      				$returnarr[$val['client_id']]['client_id'] = $val['pid'];
       			}
       		}
-      		// halt($returnarr);
+      		
+      		
       		DB::name('client_day_statistics')->insertAll($returnarr);
       		echo "操作已完成 请关闭页面";
     		flush();
