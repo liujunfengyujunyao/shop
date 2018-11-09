@@ -63,36 +63,55 @@ class Count extends Controller {//入库存储过程
 	       	$all3 = $this->inspirit($all2,$data_notget,'fail_number');
 
 	       	//微信游戏收入
-	       	$data_weixin_game = DB::name('weixinpay_log')
-	       		->field("sum(goods_price) weixinpay_game_count,machine_id")
-	       		->where("timestamp between $star and $end && status=1 && model=0")
+	       	// $data_weixin_game = DB::name('weixinpay_log')
+	       	// 	->field("sum(goods_price) weixinpay_game_count,machine_id")
+	       	// 	->where("timestamp between $star and $end && status=1 && model=0")
+	       	// 	->Group('machine_id')
+	       	// 	->select();
+	       	$data_weixin_game = DB::name('sell_log')
+	       		->field("sum(amount) weixinpay_game_count,machine_id")
+	       		->where("sell_time between $star and $end && usetype=0 && paytype=3")
 	       		->Group('machine_id')
 	       		->select();
 	       		// halt($data_weixin_game);
 	       	$all4 = $this->inspirit($all3,$data_weixin_game,'weixinpay_game_count');
 	       
 	       //支付宝游戏收入
-	       $data_ali_game = DB::name('alipay_log')
-	       		->field("sum(goods_price) alipay_game_count,machine_id")
-	       		->where("create_time between $star and $end && status=1 && model=0")
+	       // $data_ali_game = DB::name('alipay_log')
+	       // 		->field("sum(goods_price) alipay_game_count,machine_id")
+	       // 		->where("create_time between $star and $end && status=1 && model=0")
+	       // 		->Group("machine_id")
+	       // 		->select();
+	       	$data_ali_game = DB::name('sell_log')
+	       		->field("sum(amount) alipay_game_count,machine_id")
+	       		->where("sell_time between $star and $end && usetype=0 && paytype=2")
 	       		->Group("machine_id")
 	       		->select();
-
 	       	$all5 = $this->inspirit($all4,$data_ali_game,'alipay_game_count');
 	       	
 
 	       	//直接售卖模式微信的收入
-	       	$data_weixin_sell = DB::name('weixinpay_log')
-	       		->field("sum(goods_price) weixinpay_goods_count,machine_id")
-	       		->where("timestamp between $star and $end && status=1 && model=1")
+	       	// $data_weixin_sell = DB::name('weixinpay_log')
+	       	// 	->field("sum(goods_price) weixinpay_goods_count,machine_id")
+	       	// 	->where("timestamp between $star and $end && status=1 && model=1")
+	       	// 	->Group("machine_id")
+	       	// 	->select();
+	       	$data_weixin_sell = DB::name('sell_log')
+	       		->field("sum(amount) weixinpay_goods_count,machine_id")
+	       		->where("sell_time between $star and $end && usetype=1 && paytype=3")
 	       		->Group("machine_id")
 	       		->select();
 	       	$all6 = $this->inspirit($all5,$data_weixin_sell,'weixinpay_goods_count');
 	       	   	
 	       	//直接售卖模式支付宝的收入
-	       	$data_ali_sell = DB::name('alipay_log')
-	       		->field("sum(goods_price) alipay_goods_count,machine_id")
-	       		->where("create_time between $star and $end && status=1 && model=1")
+	       	// $data_ali_sell = DB::name('alipay_log')
+	       	// 	->field("sum(goods_price) alipay_goods_count,machine_id")
+	       	// 	->where("create_time between $star and $end && status=1 && model=1")
+	       	// 	->Group("machine_id")
+	       	// 	->select();
+	       	$data_ali_sell = DB::name('sell_log')
+	       		->field("sum(amount) weixinpay_goods_count,machine_id")
+	       		->where("sell_time between $star and $end && usetype=1 && paytype=2")
 	       		->Group("machine_id")
 	       		->select();
 	       	$all7 = $this->inspirit($all6,$data_ali_sell,'alipay_goods_count');
@@ -118,6 +137,7 @@ class Count extends Controller {//入库存储过程
 	       		->Group("machine_id")
 	       		->select();
 	       	$all9 = $this->inspirit($all8,$data_money_count,'money_count');
+	       	
 	       		
 	       	
 	       	// //礼品出货量
@@ -134,7 +154,7 @@ class Count extends Controller {//入库存储过程
 	       		$value['create_time'] = time();
 	       		$value['statistics_date'] = $star;
 	       	}
-
+	       
 	       	$statistics = DB::name("machine_day_statistics")->insertAll($all9);
 	       	echo "操作已完成 请关闭页面";
 	       	flush();
@@ -292,7 +312,7 @@ class Count extends Controller {//入库存储过程
       			}
       		}
       		
-      		
+      	
       		DB::name('client_day_statistics')->insertAll($returnarr);
       		echo "操作已完成 请关闭页面";
     		flush();

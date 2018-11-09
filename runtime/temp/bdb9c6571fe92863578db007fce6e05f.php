@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1541671493;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1541748948;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -17,7 +17,8 @@
 			<div id="tit">
 				<img src="__NEW__/img/mine.png" id="me" >
 				<p class="title">今日总收益（元）</p>
-				<img src="__NEW__/img/message.png" id="msg">
+				<img src="__NEW__/img/message.png" id="msg" title="消息">
+				
 			</div>
 			<p class="title_num"><?php echo $data['all_count']; ?></p>
 		</div>

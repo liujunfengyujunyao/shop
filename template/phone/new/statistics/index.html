@@ -17,7 +17,7 @@
 				<a href="#" class="fa fa-chevron-left" id="upper"></a>
 				<span id="t_time">{$date}</span>
 				<span id="t_money">合计{$data.all_count}(元)</span>
-				<span id="t_jl"><a href="">历史记录</a></span> 
+				<span id="t_jl"><a href="{:U('Phone/Statistics/list_index')}">历史记录</a></span> 
 				<!-- <span class="title">账单详情</span>
 				<p id="hertory"><a href="">历史记录</a> </p>
 				<a class="no-addon" href="#"></a> -->
@@ -78,9 +78,9 @@
 				</div> -->
 		</div>
 		<div id="echarts" style="height: 130px;background-color: white;"></div>
-		<div id="m_nmb">
-			<span id="m_nmb2">出奖个数</span>
-		</div>
+		<!-- <div id="m_nmb">
+			<span id="m_nmb2">出奖比率</span>
+		</div> -->
 		</div>
 
 
@@ -176,7 +176,7 @@
 			 grid: {
 		        left: '3%',
 		        right: '4%',
-		        bottom: '3%',
+		        bottom: '4%',
 		        containLabel: true
 		    },	
 		   xAxis: {

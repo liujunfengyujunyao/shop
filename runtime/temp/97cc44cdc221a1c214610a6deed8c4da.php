@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:42:"./template/phone/new/statistics\index.html";i:1541739862;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/statistics\detail.html";i:1541745301;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -46,9 +46,9 @@
 			<div id="ysecharts" style="height: 250px;background-color: #F3F3F3; margin-top: 0.05rem;"></div>
 			<div class="m_content">
 				<div class="m_c_left">
-					<div id="m_c_f1">礼品消耗&nbsp;<?php echo $data['gift_out_number']; ?>个</div>
+					<div id="m_c_f1">礼品消耗&nbsp;<?php echo $data['gift_out_count']; ?>个</div>
 					<HR align=center width=90% color=#D5D5D5 SIZE=2>
-					<div id="m_c_f1">卖出商品&nbsp;<?php echo $data['sell_number']; ?>个</div>
+					<div id="m_c_f1">卖出商品&nbsp;<?php echo $data['goods_out_count']; ?>个</div>
 				</div>
 				<div id="m_line" style="width: 0.1%; height: 0.8rem;background-color: #d5d5d5d; float: left;"></div>
 				<div class="m_c_right">
@@ -121,14 +121,14 @@
 				radius: '80%',
 				center: ['50%', '50%'],
 				data: [{
-						value: <?php echo $data['weixin_game']; ?>,
+						value: <?php echo $data['weixinpay_game_count']; ?>,
 						name: '微信游戏',
 						itemStyle: {
 							color: '#A1DBB5',
 						}
 					},
 					{
-						value: <?php echo $data['weixin_goods']; ?>,
+						value: <?php echo $data['weixinpay_goods_count']; ?>,
 						name: '微信商品',
 						itemStyle: {
 							color: '#21974B',
@@ -136,33 +136,33 @@
 
 					},
 					{
-						value: <?php echo $data['ali_game']; ?>,
+						value: <?php echo $data['alipay_game_count']; ?>,
 						name: '支付宝游戏',
 						itemStyle: {
 							color: '#92C6D4',
 						}
 					},
 					{
-						value: <?php echo $data['ali_goods']; ?>,
+						value: <?php echo $data['alipay_goods_count']; ?>,
 						name: '支付宝商品',
 						itemStyle: {
 							color: '#1B8AA8',
 						}
 					},
 					{
-						value: <?php echo $data['money_game']; ?>,
-						name: '现金游戏',
+						value: <?php echo $data['money_count']; ?>,
+						name: '现金收入',
 						itemStyle: {
 							color: '#C33531',
 						}
 					},
-					{
-						value: <?php echo $data['money_goods']; ?>,
-						name: '现金商品',
-						itemStyle: {
-							color: '#DE908E',
-						}
-					}
+					// {
+					// 	value: <?php echo $data['money_goods']; ?>,
+					// 	name: '现金商品',
+					// 	itemStyle: {
+					// 		color: '#DE908E',
+					// 	}
+					// }
 				],
 			}]
 		};
@@ -189,7 +189,7 @@
 		        type: 'value'
 		    },
 		    series: [{
-		        data: <?php echo $charts; ?>,
+		        data: <?php echo $rate; ?>,
 		        type: 'line'
 		    }]
 		};

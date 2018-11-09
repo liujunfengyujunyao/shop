@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:36:"./template/phone/new/scan\index.html";i:1541749202;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -49,11 +50,11 @@
 				</li>
 				<li>
 					<!-- <input type="text" name="" id="" value="" placeholder="手动输入SN绑定设备"/> -->
-					<button class="btn"><a href="{:U('Scan/add')}"><i class="fa fa-plus"></i>手动添加机台</a></button>
+					<button class="btn"><a href="<?php echo U('Scan/add'); ?>"><i class="fa fa-plus"></i>手动添加机台</a></button>
 				</li>
 				<li>
 
-					<button class="btn"><i class="fa fa-pencil-square-o"></i><a href="{:U('Index/index')}">返回首頁</a></button>
+					<button class="btn"><i class="fa fa-pencil-square-o"></i><a href="<?php echo U('Index/index'); ?>">返回首頁</a></button>
 				</li>
 			</ul>
 			<div style="height: 40px;"></div>
@@ -100,7 +101,7 @@
 					//     alert(e);
 					// })
 					$.ajax({
-						url: "{:U('Scan/index')}",
+						url: "<?php echo U('Scan/index'); ?>",
 						type: 'POST',
 						data: data,
 						success: function(e) {

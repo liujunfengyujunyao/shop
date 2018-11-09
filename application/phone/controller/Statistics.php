@@ -77,6 +77,85 @@ class Statistics extends Base {
 			return $this->fetch();
 		}
 
+		public function list_index(){
+			$client_id = $_SESSION['think']['client_id'];
+			$statistics = DB::name('client_day_statistics')->where("client_id = $client_id")->select();
+			foreach ($statistics as $key => $value) {
+				// $value['statistics_date'] = date('Y-m-d',$value['statistics_date']);
+				$data[$key]['count'] = $value['online_count'] + $value['money_count'];
+				$data[$key]['statistics_date'] = $value['statistics_date']; 
+				
+			}
+			$this->assign('data',$data);
+			return $this->fetch();
+		}
 
+		public function detail(){
+			$client_id = $_SESSION['think']['client_id'];
+			$date = I('get.statistics_date');
+			$end = $date+60*60*24-1;
+			$data = DB::name('client_day_statistics')->where("client_id = $client_id && statistics_date = $date")->find();
+			//总收入
+			$data['all_count'] = $data['money_count'] + $data['online_count'];
+			// halt($data);
+			
+
+		$one_date = $date - 60*60*24*1;
+        $two_date = $date - 60*60*24*2;
+        $three_date = $date - 60*60*24*3;
+        $four_date = $date - 60*60*24*4;
+        $five_date = $date - 60*60*24*5;
+        $six_date = $date - 60*60*24*6;
+
+        $one = DB::name('client_day_statistics')->where(['client_id'=>$client_id,'statistics_date'=>$one_date])->getField('rate');
+        $two = DB::name('client_day_statistics')->where(['client_id'=>$client_id,'statistics_date'=>$two_date])->getField('rate');
+        $three = DB::name('client_day_statistics')->where(['client_id'=>$client_id,'statistics_date'=>$three_date])->getField('rate');
+        $four = DB::name('client_day_statistics')->where(['client_id'=>$client_id,'statistics_date'=>$four_date])->getField('rate');
+        $five = DB::name('client_day_statistics')->where(['client_id'=>$client_id,'statistics_date'=>$five_date])->getField('rate');
+        $six = DB::name('client_day_statistics')->where(['client_id'=>$client_id,'statistics_date'=>$six_date])->getField('rate');
+        if (is_null($one)) {
+            $one = 0;
+        }if(is_null($two)){
+            $two = 0;
+        }if(is_null($three)){
+            $three = 0;
+        }if(is_null($four)){
+            $four = 0;
+        }if(is_null($five)){
+            $five = 0;
+        }if(is_null($six)){
+            $six = 0;
+        }
+        $rate = array(
+            $six,$five,$four,$three,$two,$one
+            );
+        $rate = json_encode($rate,true);
+
+
+
+
+
+        	$date = date('Y-m-d',$date);
+
+			$checkdate = array(
+	           date('m-d',strtotime($date.'-6 day')),
+	           date('m-d',strtotime($date.'-5 day')),
+	           date('m-d',strtotime($date.'-4 day')),
+	           date('m-d',strtotime($date.'-3 day')),
+	           date('m-d',strtotime($date.'-2 day')),
+	           date('m-d',strtotime($date.'-1 day')),
+           
+            );
+			$checkdate = json_encode($checkdate,true);
+
+			$this->assign('checkdate',$checkdate);
+			$this->assign('rate',$rate);
+			
+			$this->assign('date',$date);
+			$this->assign('data',$data);
+			
+			return $this->fetch();
+			
+		}
 
 }
