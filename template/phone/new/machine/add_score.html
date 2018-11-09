@@ -67,13 +67,28 @@
 		})
 		$(".affirmBtn").click(function() {
 			$.ajax({
+				async : false,
             	type: 'post',
             	url: "{:U('machine/add_score')}",
             	data: {machine_id:{$machine.machine_id},amount:$("#un1_money").val()},
             	dataType: 'json',
             	success: function(res){
             		if(res.status == 1){
-            			alert("上分成功");
+            			$.ajax({
+                        	async : false,
+                        	type: 'post',
+                        	url: "{:U('machine/check_status')}",
+                        	data: {commandid:res.commandid},
+                        	dataType: 'json',
+                        	success: function(res){
+                        		if(res.status == 1){
+                        			alert("上分成功");
+                        			//location.reload();
+                        		}else{
+                        			alert("上分失败");
+                        		}
+                        	}
+                        })
             		}else{
             			alert("上分失败");
             		}

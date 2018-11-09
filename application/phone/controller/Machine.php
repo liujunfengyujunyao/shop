@@ -226,10 +226,11 @@ class Machine extends Base{
 					);
 				$machinesn = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('sn');
 	        	$data = array(
-	        		'msg'=>$msg,
+	        		'msg'=>$data,
 	        		'msgtype'=>'send_message',
 	        		'machinesn'=>intval($machinesn),
 	        		);
+	        	//dump($data);die;
 	        	$url = 'https://www.goldenbrother.cn:23232/account_server';
 				$res = post_curls($url,$data);
 				if($res === ''){//请求连接服务器成功
@@ -568,5 +569,6 @@ class Machine extends Base{
 		//机器名称 机器位置 
 		halt($info);
 	}
+
 
 } 

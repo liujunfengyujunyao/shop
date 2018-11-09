@@ -11,8 +11,6 @@
 		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
 		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
-		<link rel="stylesheet" href="//at.alicdn.com/t/font_626784_0j006ef09vff.css" />
-    <script src="https://cdn.staticfile.org/jquery/1.11.2/jquery.min.js"></script>
 	</head>
 	<body>
 		<header id="head">
@@ -37,10 +35,9 @@
 			</ul>
 		</header>
 		<section class="ib_content">
-		<div id="result"></div><!-- 有用 -->
 			<ul>
 				<li>
-					<span id="ib_c1"><a href="http://sao315.com/w/api/saoyisao?redirect_uri=">二维码绑定设备</a></span>
+					<span id="ib_c1"><a href="">二维码绑定设备</a></span>
 				</li>
 				<li>
 					<input type="text" name="" id="ib_c2" value="" placeholder="手动输入SN绑定设备"/>
@@ -52,25 +49,30 @@
 			</div>
 		</section>
 
-		
-		
-	</body>
-	<script src="__NEW__/js/rem.js"></script>
-	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
-	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-	<script src="__PUBLIC__/js/js/alert.js"></script>
- 	<script src="__PUBLIC__/js/js/util.js"></script>
-	<script>
-		<!--头部-->
-		$('.tog').click(function() {
-			$('.slide_bar').slideToggle();
-		})
-				$('#upper').click(function(){
-	history.back();
-})
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_626784_0j006ef09vff.css" />
+    <script src="https://cdn.staticfile.org/jquery/1.11.2/jquery.min.js"></script>
+   
+   
+</head>
+<body>
+<div id="result"></div><!-- 有用 -->
+<a href="http://sao315.com/w/api/saoyisao?redirect_uri=">扫一扫</a>
+<p id="inner"></p>
+<button class="btn btn-success"><a href="{:U('Scan/add')}" ><i class="fa fa-plus"></i>手动添加机台</a></button><br/>
+<button class="btn btn-success"><i class="fa fa-pencil-square-o"></i><a href="{:U('Index/index')}" >返回首頁</a></button><br/>
+<!-- <span><a href="{:U('Machine/add')}" ><i class="fa fa-plus"></i>手动添加机台</a></span> -->
+</body>
+<script src="__PUBLIC__/js/js/rem.js"></script>
 
+<script src="__PUBLIC__/js/js/page_power.js"></script>
+	<!-- <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script> -->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+ <script src="__PUBLIC__/js/js/alert.js"></script>
+ <script src="__PUBLIC__/js/js/util.js"></script>
 
-				var qr=getQueryString("qrresult");//获取带参数查询,post方法传的参数获取不到
+<script type="text/javascript">
+var qr=getQueryString("qrresult");//获取带参数查询,post方法传的参数获取不到
 // console.log(qr);
 // alert(qr);
 
@@ -135,5 +137,5 @@ function getQueryString(name)
     var r = location.href.match(reg);
     if (r!=null) return unescape(r[1]);
 }
-	</script>
+</script>
 </html>

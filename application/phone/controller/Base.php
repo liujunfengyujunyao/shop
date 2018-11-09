@@ -8,7 +8,7 @@ namespace app\Phone\controller;
 use think\Controller;
 use think\Page;
 use think\Request;
-
+use Think\Db;
 use app\common\logic\CartLogic;
 use think\Session;
 
