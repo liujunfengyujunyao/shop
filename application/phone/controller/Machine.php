@@ -98,7 +98,7 @@ class Machine extends Base{
 			'status'=>0,
 			'msg'=>'操作失败'
 			);
-		for($x=0; $x<=3; $x++){//轮询查找是否返回成功
+		for($x=0; $x<=2; $x++){//轮询查找是否返回成功
             //查询出对应的command 
             if ($command['status'] == 1) {
                 //status=1为执行成功
@@ -123,7 +123,7 @@ class Machine extends Base{
                 		# code...
                 		break;
                 }
-
+                $data = ['status'=>1,'msg'=>'操作成功'];
             }elseif($command['status'] == 0){
                 sleep(2);//延迟2s
             }           
@@ -191,7 +191,89 @@ class Machine extends Base{
 		}
 	}
 
+	//上分机器列表
+	public function addscore_list(){
+		$priority = array('0'=>'设备策略','1'=>'平台策略');
+		$online = array('0'=>'离线','1'=>'在线');
+		$user_id = session('client_id');
+		$machine_list = Db::name('machine')->field('machine_id,machine_name,is_online,priority,address')->where(['client_id'=>$user_id])->select();
+		foreach ($machine_list as $k => $v) {
+			$machine_list[$k]['is_online'] = $online[$v['is_online']];
+			$machine_list[$k]['priority'] = $priority[$v['priority']];
+		}
+		$this->assign('machine_list',$machine_list);
+		return $this->fetch();
+	}
 
+	//远程上分
+	public function add_score(){
+		if(IS_POST){
+			$msgtype = 'add_score';
+			$machine_id = input('post.machine_id');
+			$amount = intval(input('post.amount'));
+			if(!$machine_id || !$amount){
+				$data = array(
+					'status'=>0,
+					'msg'=>'参数错误'
+					);
+				return json($data);
+			}else{
+				$commandid = $this->get_command($msgtype,$machine_id);
+				$data = array(
+					'msgtype'=>$msgtype,
+					'commandid'=>intval($commandid),
+					'amount'=>$amount
+					);
+				$machinesn = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('sn');
+	        	$data = array(
+	        		'msg'=>$msg,
+	        		'msgtype'=>'send_message',
+	        		'machinesn'=>intval($machinesn),
+	        		);
+	        	$url = 'https://www.goldenbrother.cn:23232/account_server';
+				$res = post_curls($url,$data);
+				if($res === ''){//请求连接服务器成功
+					return json (['status'=>1,'commandid'=>$commandid]);
+				}
+			}
+		}else{
+			$machine_id = input('get.machine_id');
+			$machine = Db::name('machine')->field('machine_id,machine_name')->where(['machine_id'=>$machine_id])->find();
+			$this->assign('machine',$machine);
+			return $this->fetch();
+		}
+	}
+
+
+	//机器列表
+	public function machine_list(){
+		$priority = array('0'=>'设备策略','1'=>'平台策略');
+		$online = array('0'=>'离线','1'=>'在线');
+		$user_id = session('client_id');
+		$machine_list = Db::name('machine')->field('machine_id,machine_name,is_online,priority,address,addtime')->where(['client_id'=>$user_id])->select();
+		foreach ($machine_list as $k => $v) {
+			$machine_list[$k]['is_online'] = $online[$v['is_online']];
+			$machine_list[$k]['priority'] = $priority[$v['priority']];
+		}
+		$this->assign('machine_list',$machine_list);
+		return $this->fetch();
+	}
+
+	//生成command
+	public function get_command($msgtype,$machine_id,$content=''){
+		$change = array(
+            'msgtype' => $msgtype,
+            'machine_id' => $machine_id,
+            'send_time' => time(),
+            'content'=>$content
+            );
+        $commandid = DB::name('command')->add($change);
+        if($commandid > 0){
+        	return $commandid;
+        }else{
+        	return ['command生成失败'];
+        }
+	}
 
 	public function edit(){
 		if (IS_POST) {

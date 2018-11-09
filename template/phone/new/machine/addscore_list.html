@@ -1,4 +1,3 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:36:"./template/phone/new/scan\index.html";i:1541741167;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -17,7 +16,7 @@
 		<header id="head">
 			<div class="top_bar">
 				<a href="#" class="fa fa-chevron-left"></a>
-				<span class="title">设备绑定</span>
+				<span class="title">上分机器列表</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
 			<ul class="slide_bar">
@@ -34,23 +33,37 @@
 					</a>
 				</li>
 			</ul>
-		</header>
-		<section class="ib_content">
-			<ul>
-				<li>
-					<span id="ib_c1"><a href="">二维码绑定设备</a></span>
-				</li>
-				<li>
-					<input type="text" name="" id="ib_c2" value="" placeholder="手动输入SN绑定设备"/>
-				</li>
-			</ul>
-			<div style="height: 40px;"></div>
-			<div class="addStoreBtn1">
-				确定绑定  
+			<!-- 搜索 -->
+			<div id="find">
+				<form name="search" class="search" id="search" action="">
+					<div class="search-row">
+						<div class="search_box">
+							<i class="icon"><img src="__NEW__/img/sousuo.png" ></i>
+							<!-- 搜索图标  嫌弃搜索框小调试高度就行-->
+							<input type="text" name="" id="" value="" placeholder="搜索"/>
+						</div>
+					</div>
+				</form>
 			</div>
-		</section>
-
-		
+		</header>
+		<div class="list">
+				<ul id="list_content">
+				<volist name='machine_list' id='val'>
+					<li>
+						<a href="{:U('machine/add_score','machine_id='.$val.machine_id)}">
+							<p class="list_p">
+								<span id="sp1">{$val.machine_name}</span>
+								<span id="sp2">{$val.address}</span>
+							</p>
+							<p class="list_p">
+								<span id="sp3">{$val.is_online}</span>
+								<span id="sp4">{$val.priority}</span>
+							</p>
+						</a>
+					</li>
+				</volist>
+				</ul>
+			</div>
 		
 	</body>
 	<script src="__NEW__/js/rem.js"></script>

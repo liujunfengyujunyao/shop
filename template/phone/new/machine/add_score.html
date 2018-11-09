@@ -1,4 +1,3 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:36:"./template/phone/new/scan\index.html";i:1541741167;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -17,7 +16,7 @@
 		<header id="head">
 			<div class="top_bar">
 				<a href="#" class="fa fa-chevron-left"></a>
-				<span class="title">设备绑定</span>
+				<span class="title">远程上分</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
 			<ul class="slide_bar">
@@ -35,30 +34,51 @@
 				</li>
 			</ul>
 		</header>
-		<section class="ib_content">
-			<ul>
-				<li>
-					<span id="ib_c1"><a href="">二维码绑定设备</a></span>
-				</li>
-				<li>
-					<input type="text" name="" id="ib_c2" value="" placeholder="手动输入SN绑定设备"/>
-				</li>
-			</ul>
-			<div style="height: 40px;"></div>
-			<div class="addStoreBtn1">
-				确定绑定  
+		<section class="up_number">
+			<div class="un1">
+				<div id="un1_name">
+					<span id="{$machine.machine_id}">{$machine.machine_name}</span>
+				</div>
+				<input type="text" name="" id="un1_money" value="" />
 			</div>
+			<ul class="checkbox">
+				<li class="checkbox_item">1元</li>
+				<li class="checkbox_item">5元</li>
+				<li class="checkbox_item">10元</li>
+				<li class="checkbox_item">20元</li>
+				<li class="checkbox_item">50元</li>
+				<li class="checkbox_item">100元</li>
+				<b class="cle"></b>
+			</ul>
+			<div class="affirmBtn">确认上分</div>
 		</section>
-
-		
-		
 	</body>
 	<script src="__NEW__/js/rem.js"></script>
 	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+	
 	<script>
 		<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
+		})
+		<!--上分-->
+		$(".checkbox_item").click(function() {
+			$("#un1_money").val(parseInt($(this).text()));
+		})
+		$(".affirmBtn").click(function() {
+			$.ajax({
+            	type: 'post',
+            	url: "{:U('machine/add_score')}",
+            	data: {machine_id:{$machine.machine_id},amount:$("#un1_money").val()},
+            	dataType: 'json',
+            	success: function(res){
+            		if(res.status == 1){
+            			alert("上分成功");
+            		}else{
+            			alert("上分失败");
+            		}
+            	}
+            })
 		})
 	</script>
 </html>

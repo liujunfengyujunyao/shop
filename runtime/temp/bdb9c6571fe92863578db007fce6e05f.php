@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1540012757;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1541401610;}*/ ?>
->>>>>>> cefef7f154f4283c1e094bb8b3d4ee82312a67eb
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1541743257;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -105,7 +101,7 @@
 		</div>
 		<div class="module">
 			<div class="long">
-				<a href="#">
+				<a href="<?php echo U('machine/machine_list'); ?>">
 				<div class="icon fa fa-tachometer">
 					<!-- <span class=""></span> -->
 				</div>
@@ -201,7 +197,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="#">
+					<a href="<?php echo U('Phone/machine/addscore_list'); ?>">
 					<div class="icon fa fa-line-chart" style="color:#ff524c;"></div>
 					<div class="text">
 						<div id="txt1">

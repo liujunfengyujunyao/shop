@@ -57,31 +57,7 @@ class Room extends Base{
 		}
 	}
 
-	//远程上分
-	public function add_score(){
-		$msgtype = 'add_score';
-		$machine_id = input('get.machine_id');
-		$amount = intval(input('get.amount'));
-		if(!$machine_id || !$amount){
-			$data = array(
-				'status'=>0,
-				'msg'=>'参数错误'
-				);
-			return json($data);
-		}else{
-			$commandid = $this->get_command($msgtype,$machine_id);
-			$data = array(
-				'msgtype'=>$msgtype,
-				'commandid'=>intval($commandid),
-				'amount'=>$amount
-				);
-			$res = $this->post_to_server($data,$machine_id);
-			//halt($res);
-			if($res === ''){//请求连接服务器成功
-				return json (['status'=>1,'commandid'=>$commandid]);
-			}
-		}
-	}
+	
 
 
 	//获取设备信息

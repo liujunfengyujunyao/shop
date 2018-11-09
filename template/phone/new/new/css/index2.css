@@ -1,12 +1,13 @@
 #head {
-  border-bottom: 1px solid #666;
-  padding: 0.1rem;
-  background: #4583eb;
+  border-bottom: 1px solid #FFFFFF;
+  padding: 0.01rem;
+  background: #CB297C;
   color: #fff;
 }
 #head h3 {
   font-size: 0.18rem;
   font-weight: 600;
+	text-align: center;
 }
 #head h3 small {
   padding-left: 0.03rem;

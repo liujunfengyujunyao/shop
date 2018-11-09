@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/machine\edit.html";i:1540274146;s:37:"./template/phone/new/public\tion.html";i:1537152658;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/machine\edit.html";i:1540637252;s:37:"./template/phone/new/public\tion.html";i:1540012757;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -29,6 +29,18 @@
 			</label>
 			<input type="text" name="machine_name" class="form-control" id="machine_name" value="<?php echo $info['machine_name']; ?>">
 		</div>
+
+		<div class="form-group">
+			<label for="username" >
+				<span>*</span>
+				<span class="label label-primary">价格基准</span>
+			</label>
+			
+			<input type="radio" name="priority"  id="priority" value=1><label>平台</label>
+			<input type="radio" checked name="priority"  id="priority" value=0><label>设备</label>
+			
+		</div>
+
 		<div class="form-group">
 			<label for="username" >
 				<span>*</span>
