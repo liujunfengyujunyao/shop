@@ -192,7 +192,6 @@
                     layer.close(index);
                     // 确定
                     $.ajax({
-                    	async : false,
                         type: 'post',
                         url: $(obj).attr('data-url'),
                         data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'open_room'},
@@ -203,7 +202,6 @@
                                 //location.reload();
                                 //$(obj).parent().parent().parent().remove();
                                 $.ajax({
-                                	async : false,
                                 	type: 'post',
                                 	url: 'http://192.168.1.133/phone/room/check_status',
                                 	data: {commandid:v.commandid},

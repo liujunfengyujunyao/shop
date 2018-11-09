@@ -85,9 +85,8 @@ class Machine extends Base{
 
 	//轮询请求状态
 	public function check_status(){
-		$commandid = input('post.commandid');
-		$command = DB::name('command')->where(['commandid'=>$commandid])->find();
-		if(!$commandid || !$command){
+		$commandid = input('post.commandid');	
+		if(!$commandid){
 			$error = array(
 				'status'=>0,
 				'msg'=>'参数错误',
@@ -100,6 +99,7 @@ class Machine extends Base{
 			);
 		for($x=0; $x<=2; $x++){//轮询查找是否返回成功
             //查询出对应的command 
+            $command = DB::name('command')->where(['commandid'=>$commandid])->find();
             if ($command['status'] == 1) {
                 //status=1为执行成功
             	//成功之后操作

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/machine\add_score.html";i:1541734243;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/machine\add_score.html";i:1541753268;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -51,7 +51,7 @@
 				<li class="checkbox_item">100元</li>
 				<b class="cle"></b>
 			</ul>
-			<div class="affirmBtn">确认上分</div>
+			<input type="button" class="affirmBtn" id="submit" value="确认上分" />
 		</section>
 	</body>
 	<script src="__NEW__/js/rem.js"></script>
@@ -66,15 +66,33 @@
 		$(".checkbox_item").click(function() {
 			$("#un1_money").val(parseInt($(this).text()));
 		})
-		$(".affirmBtn").click(function() {
-			$.ajax({
+		$(".affirmBtn").click(function() {		
+			$.ajax({				
             	type: 'post',
             	url: "<?php echo U('machine/add_score'); ?>",
             	data: {machine_id:<?php echo $machine['machine_id']; ?>,amount:$("#un1_money").val()},
             	dataType: 'json',
+            	beforeSend:function(){ 
+         		// 禁用按钮防止重复提交
+        			$("#submit").val('提交中...').attr('disabled',true);
+    			},
             	success: function(res){
             		if(res.status == 1){
-            			alert("上分成功");
+            			$.ajax({                     	
+                        	type: 'post',
+                        	url: "<?php echo U('machine/check_status'); ?>",
+                        	data: {commandid:res.commandid},
+                        	dataType: 'json',                       	 
+                        	success: function(res){
+                        		if(res.status == 1){
+                        			alert("上分成功");
+                        			$("#submit").val('确认上分').attr('disabled',false);
+                        			//location.reload();
+                        		}else{
+                        			alert("上分失败");
+                        		}
+                        	}
+                        })
             		}else{
             			alert("上分失败");
             		}
