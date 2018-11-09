@@ -196,6 +196,10 @@
                         url: $(obj).attr('data-url'),
                         data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'open_room'},
                         dataType: 'json',
+                        beforeSend:function(){ 
+		         		// 禁用按钮防止重复提交
+		        			$(":button").attr('disabled',true);
+		    			},
                         success: function (v) {
                             if (v.status == 1) {
                                 //layer.msg('操作成功', {icon: 1});
@@ -203,20 +207,23 @@
                                 //$(obj).parent().parent().parent().remove();
                                 $.ajax({
                                 	type: 'post',
-                                	url: 'http://192.168.1.133/phone/room/check_status',
+                                	url: '{:U('room/check_status')}',
                                 	data: {commandid:v.commandid},
                                 	dataType: 'json',
                                 	success: function(res){
                                 		if(res.status == 1){
                                 			layer.msg('操作成功', {icon: 1});
+                                			$(":button").attr('disabled',false);
                                 			//location.reload();
                                 		}else{
                                 			layer.msg(res.msg, {icon: 2, time: 2000});
+                                			$(":button").attr('disabled',false);
                                 		}
                                 	}
                                 })
                             } else {
                                 layer.msg(v.msg, {icon: 2, time: 2000});
+                                $(":button").attr('disabled',false);
                             }
                         }
                     })

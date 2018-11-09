@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/machine\add_score.html";i:1541753268;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/machine\add_score.html";i:1541754465;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -89,11 +89,13 @@
                         			$("#submit").val('确认上分').attr('disabled',false);
                         			//location.reload();
                         		}else{
+                        			$("#submit").val('确认上分').attr('disabled',false);
                         			alert("上分失败");
                         		}
                         	}
                         })
             		}else{
+            			$("#submit").val('确认上分').attr('disabled',false);
             			alert("上分失败");
             		}
             	}

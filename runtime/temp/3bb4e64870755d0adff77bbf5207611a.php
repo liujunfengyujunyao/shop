@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/goods\stock_index.html";i:1541405079;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/goods\stock_index.html";i:1541755721;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -193,33 +193,38 @@
                     layer.close(index);
                     // 确定
                     $.ajax({
-                    	async : false,
                         type: 'post',
                         url: $(obj).attr('data-url'),
                         data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'open_room'},
                         dataType: 'json',
+                        beforeSend:function(){ 
+		         		// 禁用按钮防止重复提交
+		        			$(":button").attr('disabled',true);
+		    			},
                         success: function (v) {
                             if (v.status == 1) {
                                 //layer.msg('操作成功', {icon: 1});
                                 //location.reload();
                                 //$(obj).parent().parent().parent().remove();
                                 $.ajax({
-                                	async : false,
                                 	type: 'post',
-                                	url: 'http://192.168.1.133/phone/room/check_status',
+                                	url: '<?php echo U('room/check_status'); ?>',
                                 	data: {commandid:v.commandid},
                                 	dataType: 'json',
                                 	success: function(res){
                                 		if(res.status == 1){
                                 			layer.msg('操作成功', {icon: 1});
+                                			$(":button").attr('disabled',false);
                                 			//location.reload();
                                 		}else{
                                 			layer.msg(res.msg, {icon: 2, time: 2000});
+                                			$(":button").attr('disabled',false);
                                 		}
                                 	}
                                 })
                             } else {
                                 layer.msg(v.msg, {icon: 2, time: 2000});
+                                $(":button").attr('disabled',false);
                             }
                         }
                     })

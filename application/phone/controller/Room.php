@@ -31,17 +31,17 @@ class Room extends Base{
 	public function operate_room(){
 		$msgtype = input('post.msgtype');//锁定传lock_room,解锁传unlock_room
 		$machine_id = input('post.machine_id');
-		//$roomid = array('A1','A2','A3');//input('get.roomid');
-		if(!in_array($msgtype,['lock_room','unlock_room','open_room']) || !$machine_id)
-		{
-			return json(['errid'=>10000,'msg'=>'参数错误']);
-		}else{
-			if($msgtype == 'open_room' && !$roomid){
-				$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id,'goods_num'=>0])->select();
-				foreach ($rooms as $k => $v) {
-					$roomid[$k] = $v['location'];
-				}
+		$roomid = input('post.roomid');
+		if($msgtype == 'open_room' && !$roomid){
+			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id,'goods_num'=>0])->select();
+			foreach ($rooms as $k => $v) {
+				$roomid[$k] = $v['location'];
 			}
+		}
+		if(!in_array($msgtype,['lock_room','unlock_room','open_room']) || !$machine_id || !is_array($roomid))
+		{
+			return json(['status'=>0,'msg'=>'参数错误']);
+		}else{			
 			$str_room = implode(',',$roomid);
 			$commandid = $this->get_command($msgtype,$machine_id,$str_room);
 			$data = array(
@@ -122,9 +122,9 @@ class Room extends Base{
 				);
 			return json($error);
 		}
-		$data = ['msg'=>'操作失败'];
+		$data = ['msg'=>'操作失败','status'=>0];
 		for($x=0; $x<=2; $x++){//轮询查找是否返回成功
-            $command = DB::name('command')->where(['commandid'=>$commandid])->find();//查询出对应的command 
+            $command = DB::name('command')->where(['commandid'=>$commandid])->find();//查询出对应的command
             if ($command['status'] == 1) {
                 //status=1为执行成功
                 //对应数据库操作
