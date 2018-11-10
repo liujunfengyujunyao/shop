@@ -12,6 +12,7 @@ class Statistics extends Base {
 			$y = date("Y");
 	        $m = date("m");
 	        $d = date("d");
+
 			$start = mktime(0,0,0,$m,$d,$y);
 			$end = $start+60*60*24-1;
 			//销售日志
@@ -55,7 +56,7 @@ class Statistics extends Base {
 				$data['rate'] = $data['success_number']/$data['game_count']*100;
 			}
 
-		
+			
 			
 			//直接购买
 			$sell_numebr = DB::name('sell_log')->where("machine_id in ({$machine_ids}) && sell_time between $start and $end && usetype = 1")->getField("count(id) as sell_number");
@@ -78,6 +79,7 @@ class Statistics extends Base {
 		}
 
 		public function list_index(){
+
 			$client_id = $_SESSION['think']['client_id'];
 			$statistics = DB::name('client_day_statistics')->where("client_id = $client_id")->select();
 			foreach ($statistics as $key => $value) {

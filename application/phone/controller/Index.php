@@ -46,11 +46,16 @@ class Index extends Base {
 
         if ($success_number['success_number'] == 0) {
             $rate = 0;
+        
+        }elseif($fail_number['fail_number']+$success_number['success_number'] == 0){
+            $rate = 0;
+      
         }else{
+
             $game_count = $success_number['success_number']+$fail_number['fail_number'];
             $rate = $success_number['success_number']/$game_count*100;
         }
-        // halt($online_count);
+        
         $data = array(
             'rate' => $rate,
             'all_count' => sprintf("%.2f", $all_count['all_count']),//总收益sprintf("%.2f", $num)
@@ -91,7 +96,7 @@ class Index extends Base {
             );
         $rate = json_encode($rate,true);
         session('history',$rate);
-
+        
 
         $normal = DB::name('machine')->where(['client_id'=>$manager_info['admin_id'],'status'=>1])->getField("count(machine_id) as normal");
         $fault = DB::name('machine')->where(['client_id'=>$manager_info['admin_id'],'status'=>2])->getField("count(machine_id) as fault");
@@ -101,6 +106,7 @@ class Index extends Base {
         $data['fault'] = $fault;
         $data['normal_rate'] = $normal_rate;
         $data['fault_rate'] = $fault_rate;
+
         // $history = array(
         //     $six['success_number']/$six['game_count']*100,
         //     $five['success_number']/$five['game_count']*100,

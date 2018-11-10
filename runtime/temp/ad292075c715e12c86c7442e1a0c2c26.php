@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:42:"./template/phone/new/statistics\index.html";i:1541739862;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:42:"./template/phone/new/statistics\index.html";i:1541820366;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -25,7 +25,7 @@
 			</div>
 			<ul class="slide_bar">
 				<li>
-					<a href="#">
+					<a href="<?php echo U('Phone/Index/index'); ?>">
 						<span class="fa fa-home"></span>
 						<!-- <span>首页</span> -->
 					</a>

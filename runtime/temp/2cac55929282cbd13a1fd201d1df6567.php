@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:47:"./template/phone/new/statistics\list_index.html";i:1541745452;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:47:"./template/phone/new/statistics\list_index.html";i:1541820501;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -124,6 +124,7 @@
 
 	</body>
 	<script src="__NEW__/js/rem.js"></script>
+	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
 	<!--头部-->
 	<script>
 		$('.tog').click(function() {
