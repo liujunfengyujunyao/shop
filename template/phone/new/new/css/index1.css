@@ -336,7 +336,7 @@ body {
 }
 .m_c_bottom{
 	margin-top: 0.05rem;
-	height: 0.3rem;
+	height: 0.2rem;
 	background-color: #FFFFFF;
 }
 
@@ -842,24 +842,42 @@ body {
 	line-height: 0.4rem;
 	margin-top: 0.05rem;
 }
+.ib_content ul li input{
+	height: 0.3rem;
+	border-radius: 0.05rem;
+	
+}
 .ib_content ul li #ib_c2{
 	height: 0.3rem;
 	border-radius: 0.05rem;
 }
-
+.ib_content ul li span a{
+	font-size: 0.13rem;
+	color: #000000;
+}
+.ib_content ul li button{
+	width: 1rem;
+	height: 0.3rem;
+	border-radius: 0.05rem;
+}
 .addStoreBtn1 {
 	width: 100%;
 	height: 40px;
 	line-height: 40px;
 	text-align: center;
-	color: #fff;
-	font-size: 25px;
+	color: #FFFFFF;
+	font-size: 25px;	
 	position: fixed;
 	left: 0;
 	bottom: .4rem;
 	background-color: #eb7cb1;
 }
-
+.addStoreBtn1 a{
+	line-height: 40px;
+	text-align: center;
+	color: #FFFFFF !important;
+	font-size: 25px;
+}
 /*店铺列表*/
 .storeList {
 	padding: 0 .1rem;
@@ -1180,3 +1198,122 @@ body {
 .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
 	right: 0px;
 }
+/*消息通知*/
+.ifm_content .ifm_cont ul{
+	margin: 0 auto;
+	margin-top: 0.15rem;
+}
+.ifm_content .ifm_cont ul li{
+	height: 0.4rem;
+	background-color: #FFFFFF;
+	margin-top: 0.18rem;
+}
+.ifm_content .ifm_cont ul li #if_pic1 {
+	width:0.25rem;
+	height: 0.25rem;
+	float: left;
+	margin-left: 5%;
+	margin-top: 2%;
+}
+.ifm_content .ifm_cont ul li #if_pic1 img{
+	width: 0.25rem;
+	height: 0.25rem;
+}
+
+.ifm_content .ifm_cont ul li #if_ct1{
+	margin-left: 8%;
+	width: 0.5rem;
+	height: 0.3rem;
+	float: left;
+}
+.ifm_content .ifm_cont ul li #if_ct1 span{
+	font-size: 0.18rem;
+	color: #000000;
+	text-align: center;
+	line-height: 0.4rem;
+}
+.ifm_content .ifm_cont ul li #if_ct2{
+	float: left;
+	width: 1.5rem;
+	height: 0.3rem;
+}
+.ifm_content .ifm_cont ul li #if_ct2 span{
+	font-size: 0.13rem;
+	color: #A9A9A9;
+	text-align: center;
+	line-height: 0.4rem;
+}
+.ifm_content .ifm_cont ul li #if_pic2{
+	width:0.25rem;
+	height: 0.25rem;
+	float: right;
+	margin-right: 5%;
+	margin-top: 2%;
+}
+.ifm_content .ifm_cont ul li #if_pic2 img{
+	width: 0.25rem;
+	height: 0.25rem;
+}
+/*个人中心*/
+.peo_content .p_cont .p_con_header{
+	height: 0.5rem;
+	background-color: #FFFFFF;
+	margin-top: 0.15rem;
+}
+.peo_content .p_cont .p_con_header #p_img{
+	width: 0.4rem;
+	height: 0.4rem;
+	float: left;
+}
+.peo_content .p_cont .p_con_header #p_img img{
+	width: 0.4rem;
+	height: 0.4rem;
+	margin-top: 10%;
+}
+.peo_content .p_cont .p_con_header #p_name{
+	width: 3rem;
+	height: 0.4rem;
+	float: left;
+}
+.peo_content .p_cont .p_con_header #p_name #p_n{
+	font-size: 0.18rem;
+	color: #333333;
+	margin-left: 5%;
+}
+.peo_content .p_cont .p_con_header #p_name #p_time{
+	font-size: 0.13rem;
+	color: #A9A9A9;
+	margin-left: 5%;
+}
+.peo_content .p_cont ul{
+	margin-top: 0.2rem;
+	background-color: #FFFFFF;
+}
+.peo_content .p_cont ul li{
+	width: 90%;
+	margin: 0 auto;
+	padding-top: 0.15rem;
+	padding-bottom: 0.15rem;
+}
+.peo_content .p_cont ul li span{
+	font-size: 0.15rem;
+	color: #333333;
+}
+.peo_content .p_cont ul li img{
+	width: 0.25rem;
+	height: 0.25rem;
+	float: right;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

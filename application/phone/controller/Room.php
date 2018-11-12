@@ -164,5 +164,14 @@ class Room extends Base{
 		}
 	}
 
-
+	public function add_power(){
+		$data = array(
+		'name'=>'编辑群组',
+		'pid'=>5,
+		'controller'=>'group',
+		'function'=>'edit',
+		'create_time'=>time()
+		);
+		Db::name('user_power')->add($data);
+	}
 }

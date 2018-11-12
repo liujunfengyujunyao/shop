@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1541747688;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1541999528;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -15,7 +15,7 @@
 	<a href="<?php echo U('Phone/statistics/index'); ?>">
 		<div class="titlebar">
 			<div id="tit">
-				<img src="__NEW__/img/mine.png" id="me" >
+				<img src="__NEW__/img/mine.png" id="me" href="<?php echo U('machine/mine'); ?>" >
 				<p class="title">今日总收益（元）</p>
 				<img src="__NEW__/img/message.png" id="msg">
 			</div>

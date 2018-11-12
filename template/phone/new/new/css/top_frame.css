@@ -140,13 +140,20 @@
 	background-color: #F27AB7;
 }
 /*设备管理列表*/
+body{
+	background-color: #a9a9a9;
+}
 .list ul{
-	padding:0 .15rem;
-	background-color:#FFFFFF;
+	margin-top: 0.1rem;
+	background-color:#A9A9A9;
 }
 .list ul li{
-  padding: 0.05rem 0;
-  border-bottom: 1px solid #ADADAD;
+	width: 100%;
+	background-color: #FFFFFF;
+	margin-top: 0.1rem;
+	margin-bottom: 0.1rem;
+  padding-top: 0.15rem;
+	padding-bottom: 0.15rem;
 }
 .list ul li a{
   padding: 0 .05rem;
@@ -185,12 +192,57 @@
 	font-size: 0.15rem;
 	font-weight: normal;
 }
-
-
-
-
-
-
+.list #list_content #huo{
+	margin: 0 auto;
+	width: 100%;
+	height: 0.2rem;
+}
+.list #list_content #huo #sb_show{
+	font-size: 0.15rem;
+	color: #333333;
+	text-align: center;
+	line-height: 0.2rem;
+	/* margin-left: 20%; */
+}
+.list #list_content #huo #sb_hide{
+	width: 100%;
+	margin: 0 auto;
+	display: none;
+	background-color: #FFFFFF;
+}
+.list #list_content #huo #sb_hide #s_h{
+	width: 80%;
+	margin: 0 auto;
+}
+.list #list_content #huo #sb_hide th{
+	font-size: 0.15rem;
+	color: #333333;
+}
+.list #list_content #huo #sb_hide td{
+	font-size: 0.15rem;
+	color: #333333;
+}
+.list #list_content #huo #sb_show3{
+	font-size: 0.15rem;
+	color: #333333;
+	text-align: center;
+	line-height: 0.2rem;
+	/* margin-left: 20%; */
+}
+.list #list_content #huo #sb_hide3{
+	width: 100%;
+	margin: 0 auto;
+	display: none;
+	background-color: #FFFFFF;
+}
+.list #list_content #huo #sb_hide3 th{
+	font-size: 0.15rem;
+	color: #333333;
+}
+.list #list_content #huo #sb_hide3 td{
+	font-size: 0.15rem;
+	color: #333333;
+}
 
 
 

@@ -10,9 +10,17 @@ class Machine extends Base{
     }
 
 	public function index(){
-		$client_id = session('client_id');
-		
+		$client_id = $_SESSION['think']['client_id'];
+		$user_name = Db::name('admin')->where(['admin_id'=>$client_id])->getField('user_name');
+		$priority = array('0'=>'设备策略','1'=>'平台策略');
+		$online = array('0'=>'离线','1'=>'在线');
 		$machine = DB::name('machine')->where(['client_id'=>$client_id])->select();
+		foreach ($machine as $k => $v) {
+			$machine[$k]['is_online'] = $online[$v['is_online']];
+			$machine[$k]['priority'] = $priority[$v['priority']];
+			$machine[$k]['addtime'] = date('Y.m.d',$v['addtime']);
+			$machine[$k]['user_name'] = $user_name;
+		}
 		// halt($machine);
 		$this->assign('machine',$machine);
 		return $this->fetch();
@@ -157,7 +165,7 @@ class Machine extends Base{
 	//解绑设备
 	public function unbind(){
 		$machine_id = input('post.machine_id');
-		$user_id = input('post.user_id');
+		$user_id = $_SESSION['think']['client_id'];
 		if(!$machine_id || !$user_id){
 			$data = array(
         		'status'=>0,
@@ -195,7 +203,7 @@ class Machine extends Base{
 	public function addscore_list(){
 		$priority = array('0'=>'设备策略','1'=>'平台策略');
 		$online = array('0'=>'离线','1'=>'在线');
-		$user_id = session('client_id');
+		$user_id = $_SESSION['think']['client_id'];
 		$machine_list = Db::name('machine')->field('machine_id,machine_name,is_online,priority,address')->where(['client_id'=>$user_id])->select();
 		foreach ($machine_list as $k => $v) {
 			$machine_list[$k]['is_online'] = $online[$v['is_online']];
@@ -250,7 +258,7 @@ class Machine extends Base{
 	public function machine_list(){
 		$priority = array('0'=>'设备策略','1'=>'平台策略');
 		$online = array('0'=>'离线','1'=>'在线');
-		$user_id = session('client_id');
+		$user_id = $_SESSION['think']['client_id'];
 		$machine_list = Db::name('machine')->field('machine_id,machine_name,is_online,priority,address,addtime')->where(['client_id'=>$user_id])->select();
 		foreach ($machine_list as $k => $v) {
 			$machine_list[$k]['is_online'] = $online[$v['is_online']];
@@ -284,8 +292,8 @@ class Machine extends Base{
 			//$this->redirect('Machine/index');
 
 		}else{
-			$machine_id = I('post.machine_id');
-			// $machine_id = 3;
+			//$machine_id = I('post.machine_id');
+			$machine_id = 3;
 			$info = DB::name('machine')
 			        ->where(['machine_id'=>$machine_id])
 			        ->find();
@@ -315,6 +323,11 @@ class Machine extends Base{
 		}
 	}
 
+
+	//个人中心
+	public function mine(){
+		return $this->fetch();
+	}
 
 
 	public function delivery(){

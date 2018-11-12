@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:47:"./template/phone/new/machine\addscore_list.html";i:1541669987;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:47:"./template/phone/new/machine\addscore_list.html";i:1541821034;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -16,7 +16,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="#" class="fa fa-chevron-left"></a>
+				<a href="#" class="fa fa-chevron-left" id="upper"></a>
 				<span class="title">上分机器列表</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -73,6 +73,9 @@
 		<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
+		})
+		$('#upper').click(function(){
+			history.back();
 		})
 	</script>
 </html>
