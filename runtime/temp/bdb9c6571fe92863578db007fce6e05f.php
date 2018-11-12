@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1541828204;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1541830327;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -253,27 +253,19 @@
 <script src="__NEW__/js/rem.js"></script>
 <script src="__NEW__/js/jquery-2.1.4.min.js"></script>
 <script>
-	$(function(){
-        
+$(function(){
 	var getting = {
                 url:'__MODULE__/Msg/notReadMsg',
                 dataType:'json',
                 success:function(res) {
                 	if(res.status==1001){
-                                $('#Hui-msg').attr('data-content',res.msg);
                 		if(res.count > 99){
-                			$('#Hui-msg .badge').text('99+');
+                			$('#msg .badge').text('99+');
                 		}else{
-                			$('#Hui-msg .badge').text(res.count);
+                			$('#msg .badge').text(res.count);
                 		}
-                                if(res.renew == 1){
-                                        $('#Hui-msg').popover('show');
-                                        setTimeout(function(){$('#Hui-msg').popover('hide')},7000);
-                                }
                 	}else{
-                		$('#Hui-msg .badge').text('');
-                                $('#Hui-msg').removeAttr('title');
-                                $('#Hui-msg').attr('data-content','暂无新消息');
+                		$('#msg .badge').text('');
                 	} 
                 }
 	};

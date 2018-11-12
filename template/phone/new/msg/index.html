@@ -15,7 +15,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="#" class="fa fa-chevron-left" id="upper"></a>
+				<a href="#" class="fa fa-chevron-left"></a>
 				<span class="title">消息通知</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -37,19 +37,79 @@
 		<section class="ifm_content">
 			<div class="ifm_cont">
 				<ul>
-					<foreach name="msg" item="v" key="k">
+				<foreach name="msg" item="v" key="key">
 					<li>
-						{$v}
+						<a href="">
+							<div id="if_pic1">
+								<img src="__NEW__/img/ui16.png" id="">
+							</div>
+							<div id="if_ct1">
+								<span id="">{$v.errmsg}</span>
+							</div>
+							<div id="if_ct2">
+								<span id="">{$v.machine_name}</span>
+								<span id="">{$v.time|date='Y-m-d',###}</span>
+							</div>
+
+							<div id="if_pic2">
+								<img src="__NEW__/img/rightjt.png">
+									<if condition = " $v['status'] == 0 ">
+								<img src="__NEW__/img/error.png" style="width: 0.1rem;height: 0.1rem; margin-right: 1%;" onclick="">
+									</if>
+							</div>
+						</a>
 					</li>
 					</foreach>
-				<!-- 	<li>
-						
+					<!-- <li>
+						<a href="">
+							<div id="if_pic1">
+								<img src="__NEW__/img/ui15.png" id="">
+							</div>
+							<div id="if_ct1">
+								<span id="">离线</span>
+							</div>
+							<div id="if_ct2">
+								<span id="">口红机1号</span>
+								<span id="">2018.10.02已离线</span>
+							</div>
+							<div id="if_pic2">
+								<img src="__NEW__/img/rightjt.png">
+							</div>
+						</a>
 					</li>
 					<li>
-						
+						<a href="">
+							<div id="if_pic1">
+								<img src="__NEW__/img/ui16.png" id="">
+							</div>
+							<div id="if_ct1">
+								<span id="">库存</span>
+							</div>
+							<div id="if_ct2">
+								<span id="">口红机1号</span>
+								<span id="">剩余库存500件</span>
+							</div>
+							<div id="if_pic2">
+								<img src="__NEW__/img/rightjt.png">
+							</div>
+						</a>
 					</li>
 					<li>
-						
+						<a href="">
+							<div id="if_pic1">
+								<img src="__NEW__/img/ui15.png" id="">
+							</div>
+							<div id="if_ct1">
+								<span id="">离线</span>
+							</div>
+							<div id="if_ct2">
+								<span id="">口红机1号</span>
+								<span id="">2018.10.02</span>
+							</div>
+							<div id="if_pic2">
+								<img src="__NEW__/img/rightjt.png">
+							</div>
+						</a>
 					</li> -->
 				</ul>
 			</div>
@@ -63,9 +123,6 @@
 		<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
-		});
-		$('#upper').click(function(){
-			history.back();
 		})
 	</script>
 </html>

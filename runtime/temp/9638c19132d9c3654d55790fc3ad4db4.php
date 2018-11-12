@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:35:"./template/phone/new/msg\index.html";i:1541828819;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:35:"./template/phone/new/msg\index.html";i:1542001320;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -16,7 +16,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="#" class="fa fa-chevron-left" id="upper"></a>
+				<a href="#" class="fa fa-chevron-left"></a>
 				<span class="title">消息通知</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -38,19 +38,79 @@
 		<section class="ifm_content">
 			<div class="ifm_cont">
 				<ul>
-					<?php if(is_array($msg) || $msg instanceof \think\Collection || $msg instanceof \think\Paginator): if( count($msg)==0 ) : echo "" ;else: foreach($msg as $k=>$v): ?>
+				<?php if(is_array($msg) || $msg instanceof \think\Collection || $msg instanceof \think\Paginator): if( count($msg)==0 ) : echo "" ;else: foreach($msg as $key=>$v): ?>
 					<li>
-						<?php echo $v; ?>
+						<a href="">
+							<div id="if_pic1">
+								<img src="__NEW__/img/ui16.png" id="">
+							</div>
+							<div id="if_ct1">
+								<span id=""><?php echo $v['errmsg']; ?></span>
+							</div>
+							<div id="if_ct2">
+								<span id=""><?php echo $v['machine_name']; ?></span>
+								<span id=""><?php echo date('Y-m-d',$v['time']); ?></span>
+							</div>
+
+							<div id="if_pic2">
+								<img src="__NEW__/img/rightjt.png">
+									<?php if($v['status'] == 0): ?>
+								<img src="__NEW__/img/error.png" style="width: 0.1rem;height: 0.1rem; margin-right: 1%;" onclick="">
+									<?php endif; ?>
+							</div>
+						</a>
 					</li>
 					<?php endforeach; endif; else: echo "" ;endif; ?>
-				<!-- 	<li>
-						
+					<!-- <li>
+						<a href="">
+							<div id="if_pic1">
+								<img src="__NEW__/img/ui15.png" id="">
+							</div>
+							<div id="if_ct1">
+								<span id="">离线</span>
+							</div>
+							<div id="if_ct2">
+								<span id="">口红机1号</span>
+								<span id="">2018.10.02已离线</span>
+							</div>
+							<div id="if_pic2">
+								<img src="__NEW__/img/rightjt.png">
+							</div>
+						</a>
 					</li>
 					<li>
-						
+						<a href="">
+							<div id="if_pic1">
+								<img src="__NEW__/img/ui16.png" id="">
+							</div>
+							<div id="if_ct1">
+								<span id="">库存</span>
+							</div>
+							<div id="if_ct2">
+								<span id="">口红机1号</span>
+								<span id="">剩余库存500件</span>
+							</div>
+							<div id="if_pic2">
+								<img src="__NEW__/img/rightjt.png">
+							</div>
+						</a>
 					</li>
 					<li>
-						
+						<a href="">
+							<div id="if_pic1">
+								<img src="__NEW__/img/ui15.png" id="">
+							</div>
+							<div id="if_ct1">
+								<span id="">离线</span>
+							</div>
+							<div id="if_ct2">
+								<span id="">口红机1号</span>
+								<span id="">2018.10.02</span>
+							</div>
+							<div id="if_pic2">
+								<img src="__NEW__/img/rightjt.png">
+							</div>
+						</a>
 					</li> -->
 				</ul>
 			</div>
@@ -64,9 +124,6 @@
 		<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
-		});
-		$('#upper').click(function(){
-			history.back();
 		})
 	</script>
 </html>

@@ -301,42 +301,48 @@ body {
 }
 
 /*账单详情*/
-.m_content{
+.m_content {
 	height: 0.6rem;
 }
-.m_content .m_c_left{
+
+.m_content .m_c_left {
 	float: left;
 	width: 49%;
 	height: 0.6rem;
 	background-color: #FFFFFF;
 }
-.m_content .m_c_left #m_c_f1{
+
+.m_content .m_c_left #m_c_f1 {
 	font-size: 0.18rem;
 	color: #000000;
 	margin-left: 10%;
 	padding: 0.03rem 0.03rem;
 }
-.m_content .m_c_right{
+
+.m_content .m_c_right {
 	width: 49%;
 	height: 0.6rem;
 	float: right;
 	background-color: #FFFFFF;
 }
-.m_content .m_c_right #m_c_r1{
+
+.m_content .m_c_right #m_c_r1 {
 	font-size: 0.18rem;
 	color: #000000;
 	text-align: center;
 	padding: 0.03rem 0.03rem;
 }
-.m_content .m_c_right #m_c_r2{
+
+.m_content .m_c_right #m_c_r2 {
 	font-size: 0.18rem;
 	color: #000000;
 	text-align: center;
 	padding: 0.03rem 0.03rem;
 }
-.m_c_bottom{
+
+.m_c_bottom {
 	margin-top: 0.05rem;
-	height: 0.3rem;
+	height: 0.2rem;
 	background-color: #FFFFFF;
 }
 
@@ -830,19 +836,39 @@ body {
 	border-radius: 0.05rem;
 	border: #FFFFFF;
 }
+
 /*设备绑定*/
-.ib_content ul{
+.ib_content ul {
 	margin-top: 0.1rem;
 	height: 1rem;
 }
-.ib_content ul li{
+
+.ib_content ul li {
 	height: 0.4rem;
 	background-color: #FFFFFF;
 	text-align: center;
 	line-height: 0.4rem;
 	margin-top: 0.05rem;
 }
-.ib_content ul li #ib_c2{
+
+.ib_content ul li input {
+	height: 0.3rem;
+	border-radius: 0.05rem;
+
+}
+
+.ib_content ul li #ib_c2 {
+	height: 0.3rem;
+	border-radius: 0.05rem;
+}
+
+.ib_content ul li span a {
+	font-size: 0.13rem;
+	color: #000000;
+}
+
+.ib_content ul li button {
+	width: 1rem;
 	height: 0.3rem;
 	border-radius: 0.05rem;
 }
@@ -852,12 +878,19 @@ body {
 	height: 40px;
 	line-height: 40px;
 	text-align: center;
-	color: #fff;
+	color: #FFFFFF;
 	font-size: 25px;
 	position: fixed;
 	left: 0;
 	bottom: .4rem;
 	background-color: #eb7cb1;
+}
+
+.addStoreBtn1 a {
+	line-height: 40px;
+	text-align: center;
+	color: #FFFFFF !important;
+	font-size: 25px;
 }
 
 /*店铺列表*/
@@ -1042,9 +1075,11 @@ body {
 	border: #FFFFFF;
 	float: right;
 }
-.in_set .in_set_content #in_ip6{
+
+.in_set .in_set_content #in_ip6 {
 	float: right;
 }
+
 .in_set .in_set_content #in_ip4 {
 	width: 1.3rem;
 	height: 0.4rem;
@@ -1053,13 +1088,15 @@ body {
 	background-color: #FF72B4;
 	border-radius: 0.05rem;
 	border: #FFFFFF;
-	
+
 	/* 	margin-top: 70%;
 	margin-right: 10%; */
 }
-.in_set .in_set_content #in_ip7{
+
+.in_set .in_set_content #in_ip7 {
 	/* float: right; */
 }
+
 .in_set .in_set_content #in_ip5 {
 	width: 1.3rem;
 	height: 0.4rem;
@@ -1083,25 +1120,30 @@ body {
 	background-color: #FFFFFF;
 }
 
-.in_set .in_set_content .in_set_cont2 #is1{
+.in_set .in_set_content .in_set_cont2 #is1 {
 	width: 80%;
 	height: 0.5rem;
 	margin: 0 auto;
 	margin-top: 5%;
 }
+
 .in_set .in_set_content .in_set_cont2 #is1 span {
 	font-size: 0.18rem;
 	color: #000000;
 }
-.in_set .in_set_content .in_set_cont2 #is2{
+
+.in_set .in_set_content .in_set_cont2 #is2 {
 	width: 80%;
 	height: 0.5rem;
-	margin: 0 auto;margin-top: 5%;
+	margin: 0 auto;
+	margin-top: 5%;
 }
+
 .in_set .in_set_content .in_set_cont2 #is2 span {
 	font-size: 0.18rem;
 	color: #000000;
 }
+
 .onoffswitch {
 	position: relative;
 	width: 70px;
@@ -1179,4 +1221,253 @@ body {
 
 .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
 	right: 0px;
+}
+
+/*消息通知*/
+.ifm_content .ifm_cont ul {
+	margin: 0 auto;
+	margin-top: 0.15rem;
+}
+
+.ifm_content .ifm_cont ul li {
+	height: 0.4rem;
+	background-color: #FFFFFF;
+	margin-top: 0.18rem;
+}
+
+.ifm_content .ifm_cont ul li #if_pic1 {
+	width: 0.25rem;
+	height: 0.25rem;
+	float: left;
+	/* margin-left: 1%; */
+	margin-top: -1.5%;
+}
+
+.ifm_content .ifm_cont ul li #if_pic1 img {
+	width: 0.5rem;
+	height: 0.5rem;
+}
+
+.ifm_content .ifm_cont ul li #if_ct1 {
+	margin-left: 6%;
+	width: 0.8rem;
+	height: 0.3rem;
+	float: left;
+}
+
+.ifm_content .ifm_cont ul li #if_ct1 span {
+	font-size: 0.18rem;
+	color: #000000;
+	text-align: center;
+	line-height: 0.4rem;
+}
+
+.ifm_content .ifm_cont ul li #if_ct2 {
+	float: left;
+	width: 2rem;
+	height: 0.3rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ifm_content .ifm_cont ul li #if_ct2 span {
+	font-size: 0.13rem;
+	color: #A9A9A9;
+	text-align: center;
+	line-height: 0.4rem;
+}
+
+.ifm_content .ifm_cont ul li #if_pic2 {
+	width: 0.25rem;
+	height: 0.25rem;
+	float: right;
+	margin-right: 1%;
+	margin-top: 2%;
+}
+
+.ifm_content .ifm_cont ul li #if_pic2 img {
+	width: 0.25rem;
+	height: 0.25rem;
+}
+
+/*个人中心*/
+.peo_content .p_cont .p_con_header {
+	height: 0.5rem;
+	background-color: #FFFFFF;
+	margin-top: 0.15rem;
+}
+
+.peo_content .p_cont .p_con_header #p_img {
+	width: 0.4rem;
+	height: 0.4rem;
+	float: left;
+}
+
+.peo_content .p_cont .p_con_header #p_img img {
+	width: 0.4rem;
+	height: 0.4rem;
+	margin-top: 10%;
+}
+
+.peo_content .p_cont .p_con_header #p_name {
+	width: 3rem;
+	height: 0.4rem;
+	float: left;
+}
+
+.peo_content .p_cont .p_con_header #p_name #p_n {
+	font-size: 0.18rem;
+	color: #333333;
+	margin-left: 5%;
+}
+
+.peo_content .p_cont .p_con_header #p_name #p_time {
+	font-size: 0.13rem;
+	color: #A9A9A9;
+	margin-left: 5%;
+}
+
+.peo_content .p_cont ul {
+	margin-top: 0.2rem;
+	background-color: #FFFFFF;
+}
+
+.peo_content .p_cont ul li {
+	width: 90%;
+	margin: 0 auto;
+	padding-top: 0.15rem;
+	padding-bottom: 0.15rem;
+}
+
+.peo_content .p_cont ul li span {
+	font-size: 0.15rem;
+	color: #333333;
+}
+
+.peo_content .p_cont ul li img {
+	width: 0.25rem;
+	height: 0.25rem;
+	float: right;
+
+}
+
+/*人员管理*/
+.pm_content .pm_ct ul {
+	width: 100%;
+	margin-top: 0.15rem;
+}
+
+.pm_content .pm_ct ul li {
+	width: 100%;
+	height: 0.4rem;
+	background-color: #FFFFFF;
+	margin-top: 0.15rem;
+}
+
+.pm_content .pm_ct ul li span {
+	font-size: 0.15rem;
+	color: #333333;
+	margin-left: 5%;
+	text-align: center;
+	line-height: 0.4rem;
+}
+
+.pm_content .pm_ct ul li img {
+	float: right;
+	width: 0.45rem;
+	height: 0.45rem;
+	margin-right: 5%;
+}
+
+/*人员列表*/
+.pl_content .pl_ct ul {
+	width: 100%;
+	margin-top: 0.15rem;
+}
+
+.pl_content .pl_ct ul li {
+	width: 100%;
+	height: 0.4rem;
+	background-color: #FFFFFF;
+	margin-top: 0.15rem;
+}
+
+.pl_content .pl_ct ul li span {
+	font-size: 0.15rem;
+	color: #333333;
+	float: left;
+	margin-left: 5%;
+	text-align: center;
+	line-height: 0.4rem;
+}
+
+.pl_content .pl_ct ul li p {
+	font-size: 0.1rem;
+	color: #A9A9A9;
+	float: left;
+	text-align: center;
+	line-height: 0.45rem;
+	margin-left: 35%;
+}
+
+.pl_content .pl_ct ul li img {
+	width: 0.36rem;
+	height: 0.36rem;
+	float: right;
+	margin-right: 5%;
+}
+
+/*人员管理*/
+.pw_content .pw_ct ul {
+	width: 80%;
+	margin: 0 auto;
+	margin-top: 0.15rem;
+}
+
+.pw_content .pw_ct ul li {
+	width: 90%;
+	height: 0.4rem;
+	margin-top: 0.15rem;
+}
+
+.pw_content .pw_ct ul li span {
+	font-size: 0.15rem;
+	color: #333333;
+	margin-left: 5%;
+	text-align: center;
+	line-height: 0.4rem;
+	float: left;
+}
+
+/* .pw_content .pw_ct ul li #pw_box{
+	width: 1.5rem;
+	height: 0.3rem;
+	float: right;
+	position: relative;
+}
+.pw_content .pw_ct ul li #pw_box #pw_icon{
+	width: 0.05rem;
+	height: 0.25rem;
+	position: absolute;
+} */
+.pw_content .pw_ct ul li input {
+	width: 1.5rem;
+	height: 0.3rem;
+	float: right;
+	border-radius: 0.05rem;
+	margin-top: 0.05rem;
+	margin-right: 10%;
+	background: url(../img);
+	padding-left: 0.5rem;
+}
+
+.pw_content .pw_ct ul li select {
+	width: 1.5rem;
+	height: 0.3rem;
+	border-radius: 0.05rem;
+	float: right;
+	margin-top: 0.05rem;
+	margin-right: 10%;
+	padding-left: 0.5rem;
 }
