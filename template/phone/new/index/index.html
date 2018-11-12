@@ -16,7 +16,9 @@
 			<div id="tit">
 				<img src="__NEW__/img/mine.png" id="me" href="{:U('machine/mine')}" >
 				<p class="title">今日总收益（元）</p>
-				<img src="__NEW__/img/message.png" id="msg">
+				<a href="{:U('Phone/Msg/index')}">
+				<img src="__NEW__/img/message.png" id="msg" title="消息"><span class="badge">3</span>
+				</a>
 			</div>
 			<p class="title_num">{$data.all_count}</p>
 		</div>
@@ -177,7 +179,7 @@
 					</div>
 					</a>
 				</li>
-				<li>
+			<!-- 	<li>
 					<a href="#">
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">
@@ -188,21 +190,21 @@
 						<div class="p2">礼品统计及管理</div>
 					</div>
 					</a>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 
 		<div class="module">
 			<ul class="short">
 				<li>
-					<a href="#">
+					<a href="{:U('Phone/statistics/list_index')}">
 					<div class="icon fa fa-recycle" style="color:#4864ed;"></div>
 					<div class="text">
 						<div id="txt1">
 							<img src="__NEW__/img/Statistics.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
 							<p class="p1">收益统计</p>
 						</div>
-						<div class="p2">所有营收统计</div>
+						<div class="p2">历史营收统计</div>
 					</div>
 					</a>
 				</li>
@@ -249,6 +251,29 @@
 </body>
 <script src="__NEW__/js/rem.js"></script>
 <script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+<script>
+$(function(){
+	var getting = {
+                url:'__MODULE__/Msg/notReadMsg',
+                dataType:'json',
+                success:function(res) {
+                	if(res.status==1001){
+                		if(res.count > 99){
+                			$('#msg .badge').text('99+');
+                		}else{
+                			$('#msg .badge').text(res.count);
+                		}
+                	}else{
+                		$('#msg .badge').text('');
+                	} 
+                }
+	};
+        $.ajax(getting);
+	//Ajax定时访问服务端，不断获取数据 ，10秒请求一次。
+	window.setInterval(function(){$.ajax(getting)},10000);
 
+       
+});
+</script>
 <!-- <script src="js/bootstrap.min.js"></script> -->
 </html>

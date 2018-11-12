@@ -159,4 +159,79 @@ class Base extends controller{
         M('operate_log')->add($data);
 
     }
+
+
+    //ajax查询未读消息
+	public function notReadMsg(){
+		$manager_id = $_SESSION['think']['client_id'];
+		$machineid = M('machine')->where(['client_id'=>$manager_id])->getField('id',true);
+		$machineids = implode(',',$machineid);
+		$msg = M('error')->where("machine_id in ($machineids) and status = 0")->order('time DESC')->select();
+		$count = count($msg);
+		session('msg_count',$count);
+
+		if(session('ajax_time')){
+			$old_time = session('ajax_time');
+			$new_msg = M('error')->where("machine_id in ($machineids) and status = 0 and time > $old_time ")->order('time ASC')->select();
+		}else{
+			$new_msg = $msg;
+		}
+		$renew = $new_msg ? 1 : 0;
+		session('ajax_time',time());
+		$li = "";
+		foreach(array_slice($msg,0,5) as $k=>$v){
+			$li .= "<li style='padding:0 5px;list-style-type: disc;color:#ff3333;font-size:10px;border-bottom:1px solid #eee;text-align:left;'><span style='color:#333; font-size:13px;'>" .$v['machineid'] . "号机台" . $v['errmsg'] ."</span><br/><span style='font-size:10px;color:#555;'>" .date("Y-m-d H:i:s",$v['time']).  "</span> </li>";
+		}
+		if($count>5){
+			$html = "<ul style='text-align:center;'>" . $li ."<span style='color:#555;'>......</span></ul>";
+		}else{
+			$html = "<ul>" . $li ."</ul>";
+		}
+		if($count == 0){
+			$return = array(
+				'status' => 1000 ,
+				);
+		}else{
+			$return = array(
+				'status' => 1001 ,
+				'msg' => $html ,
+				'count' => $count ,
+				'renew' =>$renew ,
+			);
+		}
+		$this->ajaxReturn($return);
+	}
+	//查询所有报警消息
+	public function allMsg(){
+		//管理员id
+		$manager_id = $_SESSION['think']['client_id'];
+		$machineid = M('machine')->where(['client_id'=>$manager_id])->getField('machine_id',true);
+		$machineids = implode(',',$machineid);
+		$msg = M('error')->where("machine_id in ($machineids)")->order('time DESC')->select();
+		$li = "";
+		if($msg){
+			foreach($msg as $k=>$v){
+				if($v['status']==0){
+					$li .= "<li style='padding:10px 20px;list-style-type: disc;color:#ff3333;font-size:12px;border-bottom:1px solid #eee;text-align:left;'><span style='color:#333; font-size:15px;'>" .$v['machineid'] . "号机台" . $v['errmsg'] ."<div style='font-size:13px;color:#777;float:right;'>" .date("Y-m-d H:i:s",$v['time']).  "</div> </li>";
+				}else{
+					$li .= "<li style='padding:10px 20px;border-bottom:1px solid #eee;text-align:left;overflow:hidden;'><span style='color:#333; font-size:15px;'>" .$v['machineid'] . "号设备" . $v['errmsg'] ."<div style='font-size:13px;color:#777;float:right;'>" .date("Y-m-d H:i:s",$v['time']).  "</div> </li>";
+				}
+				
+			}
+			$return = array(
+				'status' => 1001,
+				'html'=> $li,
+				);
+
+		}else{
+			$return = array(
+				'status' => 1000 ,
+				);
+		}
+		//修未读状态
+		$notRead = M('error')->where("machineid in ($machineids) and status = 0")->save(['status'=>1]);
+		$this->ajaxReturn($return);
+
+
+	}
 }
