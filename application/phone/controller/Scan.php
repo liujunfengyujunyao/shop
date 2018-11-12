@@ -42,7 +42,7 @@ class Scan extends Base{
 	public function add(){
 		if(IS_POST){
 			$id = session('weixin_id');
-			dump($_SESSION);die;
+		
 			$data = I('post.');
 			if($data['sn'] == NULL){
 				$this->error('sn是机台识别不能为空');
@@ -68,8 +68,8 @@ class Scan extends Base{
 			}
 			$this->success("机台上线成功!",U('Phone/Scan/index'));
 		}else{
-			$type = M('type')->select();
-			$this->assign('type',$type);
+			// $type = M('type')->select();
+			// $this->assign('type',$type);
 			return $this->fetch();
 		}
 		// // $params = $GLOBALS['HTTP_RAW_POST_DATA'];
