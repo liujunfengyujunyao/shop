@@ -201,9 +201,12 @@ class Machine extends Base{
     	$location = DB::name('machine_type')
     			->where(['id' => $type_id])
     			->getField('location');
-    
+    	
 	
     	$location = explode(',',$location);
+    	$location = DB::name('machine')->where(['machine_id'=>$id])->getField('location');
+    	$location = explode(',',$location);
+    
     	
     	// $info = DB::name('client_machine_conf')
     	// 		->alias('mc')
@@ -219,7 +222,7 @@ class Machine extends Base{
     			->where(['mc.machine_id'=>$id,'ms.machine_id'=>$id])
     			->group('mc.id')
     			->select();
-
+    		
    
     	$this->assign('machine_id',$id);
     	$this->assign('max_stock',$max_stock);

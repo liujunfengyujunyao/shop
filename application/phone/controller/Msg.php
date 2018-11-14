@@ -83,6 +83,7 @@ class Msg extends Base{
 	// }
 
 	public function read(){
+		//修改未读状态status=1
 		$id = I('get.id');
 		$res = DB::name('error')->where(['id'=>$id])->save(['status'=>1]);
 		if ($res !== false) {
@@ -95,5 +96,9 @@ class Msg extends Base{
 				);
 		}
 		$this->ajaxReturn($result);
+	}
+
+	public function test(){
+		highlight_file("Msg.php");
 	}
 }

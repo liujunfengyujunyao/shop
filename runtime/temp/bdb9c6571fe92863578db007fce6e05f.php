@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1541830327;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542192128;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="__NEW__/css/common.css">
 	<link rel="stylesheet" href="__NEW__/css/index1.css">
 	<script src="__NEW__/js/echarts.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 	<title>设备管理系统</title>
 </head>
 <body>
@@ -17,9 +18,13 @@
 			<div id="tit">
 				<img src="__NEW__/img/mine.png" id="me" >
 				<p class="title">今日总收益（元）</p>
-				<a href="<?php echo U('Phone/Msg/index'); ?>">
-				<img src="__NEW__/img/message.png" id="msg" title="消息"><span class="badge">3</span>
-				</a>
+				<!-- <a href="<?php echo U('Phone/Msg/index'); ?>">
+		
+				<a href="<?php echo U('Phone/Msg/index'); ?>"><img src="__NEW__/img/message.png" id="msg" title="消息" class="badge">50</span></a> -->
+
+				<!-- <img src="__NEW__/img/message.png" id="msg" title="消息"><span class="badge">3</span> -->
+				<!-- </a> -->
+				<a><span class="glyphicon glyphicon-envelope"></span> </a>
 			</div>
 			<p class="title_num"><?php echo $data['all_count']; ?></p>
 		</div>
@@ -252,6 +257,8 @@
 </body>
 <script src="__NEW__/js/rem.js"></script>
 <script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+ <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
 $(function(){
 	var getting = {
