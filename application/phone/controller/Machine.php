@@ -10,13 +10,278 @@ class Machine extends Base{
     }
 
 	public function index(){
-		$client_id = session('client_id');
-		
+		$client_id = $_SESSION['think']['client_id'];
+		$user_name = Db::name('admin')->where(['admin_id'=>$client_id])->getField('user_name');
+		$priority = array('0'=>'设备策略','1'=>'平台策略');
+		$online = array('0'=>'离线','1'=>'在线');
 		$machine = DB::name('machine')->where(['client_id'=>$client_id])->select();
+		foreach ($machine as $k => $v) {
+			$machine[$k]['is_online'] = $online[$v['is_online']];
+			$machine[$k]['priority'] = $priority[$v['priority']];
+			$machine[$k]['addtime'] = date('Y.m.d',$v['addtime']);
+			$machine[$k]['user_name'] = $user_name;
+		}
 		// halt($machine);
 		$this->assign('machine',$machine);
 		return $this->fetch();
 		
+	}
+
+	//更改价格政策
+	public function change_priority(){
+		$machine_id = input('get.machine_id');
+		$priority = input('get.priority');
+		if(!$machine_id || !in_array($priority,[0,1])){
+			$msg = array(
+        		'errid'=>10000,
+        		'msg'=>'参数不全'
+        		);
+			return json($msg);
+		}else{
+			$change = array(
+	            'msgtype' => 'change_priority',
+	            'machine_id' => $machine_id,
+	            'send_time' => time(),
+	            'content'=>$priority
+	            );
+	        $commandid = DB::name('command')->add($change);
+	        DB::name('machine')->where(['machine_id'=>$machine_id])->save(['priority'=>$priority]);
+	        if($commandid > 0){
+	        	if ($priority == 0){
+	        		$msg = array(
+						'msgtype'=>'change_priority',
+						'commandid'=>intval($commandid),
+						'priority'=>0
+						);
+	        	}elseif ($priority == 1) {
+	        		$machine = DB::name('machine')->where(['machine_id'=>$machine_id])->find();
+	        		$rooms = Db::name('client_machine_conf')->field('id,location,goods_price,game_odds')->where(['machine_id'=>$machine_id])->select();
+	        		foreach ($rooms as $k => $v) {
+	        			$prices[$k]['goodsid'] = strval($v['id']);
+	        			$prices[$k]['roomid'] = $v['location'];
+	        			$prices[$k]['goodsprice'] = $v['goods_price'];
+	        			$prices[$k]['gameodds'] = $v['game_odds'];
+	        		}
+					$msg = array(
+						'msgtype'=>'change_priority',
+						'priority'=>1,
+						'commandid'=>intval($commandid),
+						'gameprice'=>$machine['game_price'],
+						'singleodds'=>$machine['odds'],
+						'singleprice'=>$machine['goods_price'],
+						'prices'=>$prices,
+						);
+	        	}
+	        	$machinesn = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('sn');
+	        	$data = array(
+	        		'msg'=>$msg,
+	        		'msgtype'=>'send_message',
+	        		'machinesn'=>intval($machinesn),
+	        		);
+	        	$url = 'https://www.goldenbrother.cn:23232/account_server';
+				$res = post_curls($url,$data);
+				halt($data);
+	        }else{
+	        	$msg = array(
+	        		'errid'=>10000,
+	        		'msg'=>'请求失败'
+	        		);
+	        	return json($msg);
+	        }
+	    }
+	}
+
+	//轮询请求状态
+	public function check_status(){
+		$commandid = input('post.commandid');	
+		if(!$commandid){
+			$error = array(
+				'status'=>0,
+				'msg'=>'参数错误',
+				);
+			return json($error);
+		}
+		$data = array(
+			'status'=>0,
+			'msg'=>'操作失败'
+			);
+		for($x=0; $x<=2; $x++){//轮询查找是否返回成功
+            //查询出对应的command 
+            $command = DB::name('command')->where(['commandid'=>$commandid])->find();
+            if ($command['status'] == 1) {
+                //status=1为执行成功
+            	//成功之后操作
+                switch ($command['msgtype']) {
+                	case 'lock_room':
+                		# code...
+                		break;
+                	case 'unlock_room':
+                		# code...
+                		break;
+                	case 'change_priority':
+                		# code...
+                		break;
+                	case 'open_room':
+                		# code...
+                		break;
+                	case 'update_firmware':
+                		# code...
+                		break;
+                	case 'get_room_status':
+                		# code...
+                		break;
+                }
+                $data = ['status'=>1,'msg'=>'操作成功'];
+            }elseif($command['status'] == 0){
+                sleep(2);//延迟2s
+            }           
+        }
+        return json($data);
+	}
+
+
+	//定时删除过期数据command表，保留至上一个月
+	//如今天为2018 10 X日 ，则删除范围为2018 8 1 --2018 9 1
+	public function delete_data(){
+		$month = date('m') - 1;
+		$year = date('Y');
+		$last_month = $month - 1;
+		if($month == 1){
+		 	$last_month = 12;
+			$year = $year - 1;
+		}
+		$start_time = mktime(0, 0, 0, $last_month, 1, $year);
+		$end_time = mktime(0, 0, 0, $month, 1, $year);
+		$res = Db::name('command')->where('send_time','between',[$start_time,$end_time])->delete();
+		if($res !== false){
+			echo "操作已完成 请关闭页面";
+    		flush();
+		}else{
+			echo "删除失败";
+    		flush();
+		}
+	}
+
+	//解绑设备
+	public function unbind(){
+		$machine_id = input('post.machine_id');
+		$user_id = $_SESSION['think']['client_id'];
+		if(!$machine_id || !$user_id){
+			$data = array(
+        		'status'=>0,
+        		'msg'=>'参数不全'
+        		);
+			return json($data);
+		}else{
+			$machine_user = Db::name('machine')->where(['machine_id'=>machine_id])->getField('user_id');
+			if($machine_user != $user_id){
+				$data = array(
+					'status'=>0,
+					'msg'=>'该机器由他人绑定'
+					);
+				return json($data);
+			}else{
+				$res = Db::name('machine')->where(['machine_id'=>$machine_id])->setField('user_id',0);
+				if($res !== false){
+					$data = array(
+					'status'=>1,
+					'msg'=>'解绑成功'
+					);
+					return json($data);
+				}else{
+					$data = array(
+					'status'=>0,
+					'msg'=>'解绑失败'
+					);
+					return json($data);
+				}
+			}
+		}
+	}
+
+	//上分机器列表
+	public function addscore_list(){
+		$priority = array('0'=>'设备策略','1'=>'平台策略');
+		$online = array('0'=>'离线','1'=>'在线');
+		$user_id = $_SESSION['think']['client_id'];
+		$machine_list = Db::name('machine')->field('machine_id,machine_name,is_online,priority,address')->where(['client_id'=>$user_id])->select();
+		foreach ($machine_list as $k => $v) {
+			$machine_list[$k]['is_online'] = $online[$v['is_online']];
+			$machine_list[$k]['priority'] = $priority[$v['priority']];
+		}
+		$this->assign('machine_list',$machine_list);
+		return $this->fetch();
+	}
+
+	//远程上分
+	public function add_score(){
+		if(IS_POST){
+			$msgtype = 'add_score';
+			$machine_id = input('post.machine_id');
+			$amount = intval(input('post.amount'));
+			if(!$machine_id || !$amount){
+				$data = array(
+					'status'=>0,
+					'msg'=>'参数错误'
+					);
+				return json($data);
+			}else{
+				$commandid = $this->get_command($msgtype,$machine_id);
+				$data = array(
+					'msgtype'=>$msgtype,
+					'commandid'=>intval($commandid),
+					'amount'=>$amount
+					);
+				$machinesn = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('sn');
+	        	$data = array(
+	        		'msg'=>$data,
+	        		'msgtype'=>'send_message',
+	        		'machinesn'=>intval($machinesn),
+	        		);
+	        	//dump($data);die;
+	        	$url = 'https://www.goldenbrother.cn:23232/account_server';
+				$res = post_curls($url,$data);
+				if($res === ''){//请求连接服务器成功
+					return json (['status'=>1,'commandid'=>$commandid]);
+				}
+			}
+		}else{
+			$machine_id = input('get.machine_id');
+			$machine = Db::name('machine')->field('machine_id,machine_name')->where(['machine_id'=>$machine_id])->find();
+			$this->assign('machine',$machine);
+			return $this->fetch();
+		}
+	}
+
+
+	//机器列表
+	public function machine_list(){
+		$priority = array('0'=>'设备策略','1'=>'平台策略');
+		$online = array('0'=>'离线','1'=>'在线');
+		$user_id = $_SESSION['think']['client_id'];
+		$machine_list = Db::name('machine')->field('machine_id,machine_name,is_online,priority,address,addtime')->where(['client_id'=>$user_id])->select();
+		foreach ($machine_list as $k => $v) {
+			$machine_list[$k]['is_online'] = $online[$v['is_online']];
+			$machine_list[$k]['priority'] = $priority[$v['priority']];
+		}
+		$this->assign('machine_list',$machine_list);
+		return $this->fetch();
+	}
+
+	//生成command
+	public function get_command($msgtype,$machine_id,$content=''){
+		$change = array(
+            'msgtype' => $msgtype,
+            'machine_id' => $machine_id,
+            'send_time' => time(),
+            'content'=>$content
+            );
+        $commandid = DB::name('command')->add($change);
+        if($commandid > 0){
+        	return $commandid;
+        }else{
+        	return ['command生成失败'];
+        }
 	}
 
 	public function edit(){
@@ -24,11 +289,11 @@ class Machine extends Base{
 			
 			$data = $_POST;
 			DB::name('machine')->where(['machine_id'=>$data['machine_id']])->save($data);
-			$this->redirect('Machine/index');
+			//$this->redirect('Machine/index');
 
 		}else{
-			$machine_id = I('post.machine_id');
-			// $machine_id = 3;
+			//$machine_id = I('post.machine_id');
+			$machine_id = 3;
 			$info = DB::name('machine')
 			        ->where(['machine_id'=>$machine_id])
 			        ->find();
@@ -58,6 +323,11 @@ class Machine extends Base{
 		}
 	}
 
+
+	//个人中心
+	public function mine(){
+		return $this->fetch();
+	}
 
 
 	public function delivery(){
@@ -316,112 +586,5 @@ class Machine extends Base{
 		halt($info);
 	}
 
-	
-//更改价格政策
-	public function change_priority(){
-		$machine_id = input('get.machine_id');
-		$priority = input('get.priority');
-		if(!$machine_id || !$priority){
-			$msg = array(
-        		'errid'=>10000,
-        		'msg'=>'参数不全'
-        		);
-			return json($error);
-		}else{
-			$change = array(
-	            'msgtype' => 'change_priority',
-	            'machine_id' => $machine_id,
-	            'send_time' => time(),
-	            'content'=>$priority
-	            );
-	        $commandid = DB::name('command')->add($change);
-	        if($commandid > 0){       	
-	        	if ($priority == 0){
-	        		$msg = array(
-						'msgtype'=>'change_priority',
-						'commandid'=>intval($commandid),
-						'priority'=>0
-						);
-	        	}elseif ($priority == 1) {
-	        		$machine = DB::name('machine')->where(['machine_id'=>$machine_id])->find();
-	        		$prices = array(
-						'odd'=>$machine['odds'],
-						'price'=>$machine['game_price']
-						);
-					$msg = array(
-						'msgtype'=>'change_priority',
-						'priority'=>1,
-						'commandid'=>intval($commandid),
-						'gameprice'=>$machine['game_price'],
-						'singleodds'=>$machine['odds'],
-						'singleprice'=>$machine['game_price'],
-						'prices'=>$prices,
-						);
-	        	}
-	        	$data = array(
-	        		'msg'=>$msg,
-	        		'msgtype'=>'send_message',
-	        		'machinesn'=>12
-	        		);
-	        	$url = 'https://www.goldenbrother.cn:23232/account_server';
-				$res = post_curlss($url,$data);
-				dump($data);
-	        }else{
-	        	$msg = array(
-	        		'errid'=>10000,
-	        		'msg'=>'请求失败'
-	        		);
-	        	return json($error);
-	        }
-	    }
-	}
 
-	//轮询请求状态
-	public function check_status(){
-		$commandid = input('post.commandid');
-		if(!$commandid){
-			$error = array(
-				'errid'=>10000,
-				'msg'=>'参数错误',
-				);
-			return json($error);
-		}
-		$data = ['返回结果','失败'];
-		for($x=0; $x<=3; $x++){//轮询查找是否返回成功
-            $command = DB::name('command')->where(['commandid'=>$commandid])->find();//查询出对应的command 
-            if ($command['status'] == 1) {
-
-//status=1为执行成功
-                DB::name('machine')->where(['machine_id'=>$command['machine_id']])->save(['priority'=>$command['content']]);
-                $data = ['返回结果','成功'];
-                break;
-            }elseif($command['status'] == 0){
-                sleep(2);//延迟2s
-            }           
-        }
-        return json($data);
-	}
-
-
-	//定时删除过期数据command表，保留至上一个月
-	//如今天为2018 10 X日 ，则删除范围为2018 8 1 --2018 9 1
-	public function delete_data(){
-		$month = date('m') - 1;
-		$year = date('Y');
-		$last_month = $month - 1;
-		if($month == 1){
-		 	$last_month = 12;
-			$year = $year - 1;
-		}
-		$start_time = mktime(0, 0, 0, $last_month, 1, $year);
-		$end_time = mktime(0, 0, 0, $month, 1, $year);
-		$res = Db::name('command')->where('send_time','between',[$start_time,$end_time])->delete();
-		if($res !== false){
-			echo "操作已完成 请关闭页面";
-    		flush();
-		}else{
-			echo "删除失败";
-    		flush();
-		}
-	}
 } 

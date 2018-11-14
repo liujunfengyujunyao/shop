@@ -7,7 +7,9 @@ use think\Session;
 header('Content-type:text/html; Charset=utf-8');
 header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
 class Count extends Controller {//入库存储过程
+
 
 		    //生成每日机器记录时用到的遍历函数
         public function inspirit($all = array(),$other = array(),$pre = 'count'){
@@ -24,6 +26,7 @@ class Count extends Controller {//入库存储过程
         }
         return $all;
     }
+
 
     	//设备日统计表
 		public function machine_day_statistics(){
@@ -49,6 +52,7 @@ class Count extends Controller {//入库存储过程
 	       	//全部成功次数
 	       	$data_get = DB::name('game_log')
 	       		->field("count(id) success_number,machine_id")
+
 	       		->where("end_time between $star and $end && result=1")
 	       		->Group("machine_id")
 	       		->select();
@@ -115,13 +119,10 @@ class Count extends Controller {//入库存储过程
 	       		->Group("machine_id")
 	       		->select();
 	       	$all7 = $this->inspirit($all6,$data_ali_sell,'alipay_goods_count');
-	       	
-
-
-
-	       	 
+      	 
 
 	       	//卖出的商品数量
+
 	       	$data_sell_count = DB::name('sell_log')
 	       		->field("count(id) count,machine_id")
 	       		->where("sell_time between $star and $end && usetype=1")

@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/goods\stock_index.html";i:1541755721;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -16,14 +17,14 @@
 
 		<!-- <h3>
 			<span class="fa fa-cubes"></span>
-			贩卖机库存列表<small>(共{$count}条记录)</small></h2> -->
+			贩卖机库存列表<small>(共<?php echo $count; ?>条记录)</small></h2> -->
 	<div class="top_bar">
 			<a href="#" class="fa fa-chevron-left" id="upper"></a>
-			<span class="title">贩卖机库存列表<small>(共{$count}条记录)</small></span>
+			<span class="title">贩卖机库存列表<small>(共<?php echo $count; ?>条记录)</small></span>
 			<span class="tog fa fa-list"></span>
 		</div>
 		<ul class="slide_bar">
-			<li><a href="{:U('Phone/Index/index')}">
+			<li><a href="<?php echo U('Phone/Index/index'); ?>">
 				<span class="fa fa-home"></span>
 				<span>首页</span>
 			</a></li>
@@ -35,7 +36,7 @@
 				<span class="fa fa-shopping-cart"></span>
 				<span>购物车</span>
 			</a></li>
-			<li><a href="{:U('Phone/Index/index')}">
+			<li><a href="<?php echo U('Phone/Index/index'); ?>">
 				<span class="fa fa-user"></span>
 				<span>我的</span>
 			</a></li>
@@ -44,33 +45,33 @@
 	</header>
 	<section id="body">
 		<ul class="main list-group">
-			<volist name='machine' id='val'>
+			<?php if(is_array($machine) || $machine instanceof \think\Collection || $machine instanceof \think\Paginator): $i = 0; $__LIST__ = $machine;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$val): $mod = ($i % 2 );++$i;?>
 			<li class="list-group-item toggler"
 					role='button'
 					data-open="false"
 					data-toggle="collapse"
-					data-target="#{$val.machine_id}"
+					data-target="#<?php echo $val['machine_id']; ?>"
 					aria-expanded="false"
-					aria-controls="{$val.machine_id}"
+					aria-controls="<?php echo $val['machine_id']; ?>"
 			>
 				<span class="title textFlow">
 					<i class="fa fa-toggle-right"></i>
-					<span class="label label-primary">{$val.machine_name}</span>
+					<span class="label label-primary"><?php echo $val['machine_name']; ?></span>
 				</span>
 
 				<span class="title textFlow">
-					<span class="label label-default">{$val.address}</span>
+					<span class="label label-default"><?php echo $val['address']; ?></span>
 				</span>
 
-					<button id=" replenishment" class="btn btn-success" data-url="{:U('room/operate_room')}" data-id="{$val.machine_id}" onClick="supply(this)">一键补货</button>
+					<button id=" replenishment" class="btn btn-success" data-url="<?php echo U('room/operate_room'); ?>" data-id="<?php echo $val['machine_id']; ?>" onClick="supply(this)">一键补货</button>
 
-					<button id="clear" class="btn btn-danger" data-url="{:U('Goods/ajax_clear')}" data-id="{$val.machine_id}" onClick="supply2(this)">一键清货</button>
+					<button id="clear" class="btn btn-danger" data-url="<?php echo U('Goods/ajax_clear'); ?>" data-id="<?php echo $val['machine_id']; ?>" onClick="supply2(this)">一键清货</button>
 
 				<!-- 折叠部分 -->
 				
 			</li>
 		
-			<li class="col_holder collapse table-responsive" id="{$val.machine_id}">
+			<li class="col_holder collapse table-responsive" id="<?php echo $val['machine_id']; ?>">
 				<table class="table table-bordered" >
 					<thead>
 						<tr>
@@ -85,20 +86,20 @@
 						</tr>
 					</thead>
 					<tbody>
-					<volist name="$val.goods" id="v">
+					<?php if(is_array($val['goods']) || $val['goods'] instanceof \think\Collection || $val['goods'] instanceof \think\Paginator): $i = 0; $__LIST__ = $val['goods'];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
 						<tr>
 							<td>	<span class="fa fa-star"></span></td>
-							<td>{$key+1}</td>
-							<td>{$v.location}</td>
-							<if condition = " $v.goods_price == 0 ">
+							<td><?php echo $key+1; ?></td>
+							<td><?php echo $v['location']; ?></td>
+							<?php if($v['goods_price'] == 0): ?>
 							<td style="color:red">未配置</td>
 							<td style="color:red">0/0</td>
-							<else />
-							<td>{$v.goods_name}</td>
-							<td>{$v.goods_num}/{$v.stock_num}</td>
-							</if>
+							<?php else: ?>
+							<td><?php echo $v['goods_name']; ?></td>
+							<td><?php echo $v['goods_num']; ?>/<?php echo $v['stock_num']; ?></td>
+							<?php endif; ?>
 							
-							<td>{$v.edittime}</td>
+							<td><?php echo $v['edittime']; ?></td>
 						</tr>
 						<!-- <tr>
 							<td>	<span class="fa fa-star"></span></td>
@@ -107,12 +108,12 @@
 							<td>{}/{}</td>
 							<td>无</td>
 						</tr> -->
-						</volist>
+						<?php endforeach; endif; else: echo "" ;endif; ?>
 					</tbody>
 				</table>
 				</li>
 
-				</volist>
+				<?php endforeach; endif; else: echo "" ;endif; ?>
 <!-- 
 				<li class="list-group-item toggler"
 					role='button'
@@ -207,7 +208,7 @@
                                 //$(obj).parent().parent().parent().remove();
                                 $.ajax({
                                 	type: 'post',
-                                	url: '{:U('room/check_status')}',
+                                	url: '<?php echo U('room/check_status'); ?>',
                                 	data: {commandid:v.commandid},
                                 	dataType: 'json',
                                 	success: function(res){

@@ -1,0 +1,157 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:44:"./template/phone/new/machine\odds_index.html";i:1540012757;}*/ ?>
+<!DOCTYPE html>
+<html lang="en" id="rootHTML">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="__STATIC__/css/new/fontawesome/font-awesome.min.css">
+	<link rel="stylesheet" href="__STATIC__/css/new/common.css">
+	<link rel="stylesheet" href="__STATIC__/css/new/machines.css">
+	<link rel="stylesheet" href="__STATIC__/css/new/bootstrap.min.css">
+	<link rel="stylesheet" href="__STATIC__/css/new/util.css">
+	<link rel="stylesheet" href="__STATIC__/css/new/top_frame.css">
+</head>
+<body>
+	<header id="head">
+		<!-- <h3>
+			<span class="fa fa-building-o"></span>
+			机台列表<small>(共2条记录)</small>
+		</h3> -->
+		<div class="top_bar">
+			<a href="#" class="fa fa-chevron-left" id="upper"></a>
+			<span class="title">贩卖机赔率列表<small>(共<?php echo $count; ?>条记录)</small></span>
+			<span class="tog fa fa-list"></span>
+		</div>
+		<ul class="slide_bar">
+			<li><a href="<?php echo U('Phone/Index/index'); ?>">
+				<span class="fa fa-home"></span>
+				<span>首页</span>
+			</a></li>
+			<li><a href="#">
+				<span class="fa fa-search"></span>
+				<span>分类</span>
+			</a></li>
+			<li><a href="#">
+				<span class="fa fa-shopping-cart"></span>
+				<span>购物车</span>
+			</a></li>
+			<li><a href="<?php echo U('Phone/Index/index'); ?>">
+				<span class="fa fa-user"></span>
+				<span>我的</span>
+			</a></li>
+		</ul>
+	</header>
+	<section id="body">
+		<ul class="list-group">
+			<?php if(is_array($info) || $info instanceof \think\Collection || $info instanceof \think\Paginator): if( count($info)==0 ) : echo "" ;else: foreach($info as $key=>$v): ?>
+			<li class="list-group-item">
+				<section class="left">
+					<p class="name">
+						<span class="ti label label-default">名称</span>
+						<span class="iner textFlow"><?php echo $v['machine_name']; ?></span>
+					</p>
+					<div class="attr">
+						<span>
+							<span class="label label-success">属性1</span><span class="textFlow">统一价格</span>
+						</span>
+						<span>
+							<span class="label label-success">属性2</span><span class="textFlow">统一赔率</span>
+						</span>
+						<span>
+							<span class="label label-success">属性3</span><span class="textFlow">解决</span>
+						</span>
+					</div>
+					<!-- <div class="desc textFlow">这个机器是一个口红机</div> -->
+				</section>
+				<section class="mid">
+					<div class="rate">
+						<span>设定赔率</span>
+						<span><i class="fa fa-line-chart"></i><?php echo $v['odds']; ?>:1</span>
+						
+					</div>
+					<div class="rate">
+						<span>实际赔率</span>
+						<span><i class="fa fa-line-chart"></i>20:1</span>
+					</div>
+					<button class="fa fa-edit" data-url="<?php echo U('Machine/ajax_game_odds'); ?>" data-id="<?php echo $v['machine_id']; ?>" onClick="game_odds(this)">编辑赔率</button>
+				</section>
+				<section class="right">
+					<button class="btn btn-primary">查看日志</button>
+				</section>
+			</li>
+			<?php endforeach; endif; else: echo "" ;endif; ?>
+			<!-- <li class="list-group-item">
+				<section class="left">
+					<p class="name">
+						<span class="ti label label-default">名称</span>
+						<span class="iner textFlow">超级口红机</span>
+			 		</p>
+					<div class="attr">
+						<span>
+							<span class="label label-success">属性1</span><span class="textFlow">统一价格</span>
+						</span>
+						<span>
+							<span class="label label-success">属性2</span><span class="textFlow">统一赔率</span>
+						</span>
+						<span>
+							<span class="label label-success">属性3</span><span class="textFlow">解决</span>
+						</span>
+					</div>
+					<div class="desc textFlow">这个机器是一个口红机这个机器是一个口红机</div>
+				</section>
+				<section class="mid">
+					<div class="rate">
+						<span>设定赔率</span>
+						<span><i class="fa fa-line-chart"></i>15:1</span>
+						
+					</div>
+					<div class="rate">
+						<span>实际赔率</span>
+						<span><i class="fa fa-line-chart"></i>20:1</span>
+					</div>
+					<a href="#"><i class="fa fa-edit"></i>编辑赔率</a>
+				</section>
+				<section class="right">
+					<button class="btn btn-primary">查看日志</button>
+				</section>
+			</li> -->
+
+		</ul>
+	</section>
+</body>
+<script src="__STATIC__/js/new/rem.js"></script>
+<script src="__STATIC__/js/new/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/js/new/bootstrap.min.js"></script>
+<script src="__STATIC__/js/new/page_index2.js"></script>
+
+<script src="__PUBLIC__/js/layer/layer.js"></script>
+<script>
+$('.tog').click(function(){
+		$('.slide_bar').slideToggle();
+	});
+
+$('#upper').click(function(){
+	history.back();
+})
+
+function game_odds(obj){
+	var odds = prompt("请输入赔率","");
+	$.ajax({
+		type : 'post',
+		url : $(obj).attr('data-url'),
+		data : {odds:odds,id:$(obj).attr('data-id')},
+		dataType : 'json',
+		success:function(v){
+			if(v.status==1){
+				layer.msg('操作成功',{icon:1});
+				location.reload();
+			}else{
+				layer.msg(v.msg,{icon:2,time:2000});
+			}
+		}
+	})
+}
+
+</script>
+</html>

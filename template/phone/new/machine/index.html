@@ -1,106 +1,188 @@
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<title>Document</title>
-	<link rel="stylesheet" href="__STATIC__/css/new/fontawesome/font-awesome.min.css">
-	<link rel="stylesheet" href="__STATIC__/css/new/common.css">
-	<!-- <link rel="stylesheet" href="__STATIC__/css/new/machine_list.css"> -->
-	<link rel="stylesheet" href="__STATIC__/css/new/bootstrap.min.css">
-	<link rel="stylesheet" href="__STATIC__/css/new/util.css">
-	<link rel="stylesheet" href="__STATIC__/css/new/index2.css">
-	<link rel="stylesheet" href="__STATIC__/css/new/top_frame.css">
-</head>
-<body>
-	<header id="head">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<title>Document</title>
+		<link rel="stylesheet" href="__NEW__/css/common.css">
+		<link rel="stylesheet" href="__NEW__/css/bootstrap.css">
+		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
+		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
+		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
+	</head>
 
-	<!-- 	<h3>
-			<span class="fa fa-list-alt"></span>
-			贩卖机列表<small>(共2条记录)</small></h2> -->
-	<div class="top_bar">
-			<a href="#" class="fa fa-chevron-left" id="upper"></a>
-			<span class="title">贩卖机列表<small>(共{$count}条记录)</small></span>
-			<span class="tog fa fa-list"></span>
+	<body>
+		<header id="head">
+			<div class="top_bar">
+				<a href="#" class="fa fa-chevron-left"></a>
+				<span class="title">
+					</i>设备管理</span>
+				<a class="no-addon" href="#"></a>
+			</div>
+			<ul class="slide_bar">
+				<li>
+					<a href="#">
+						<span class="fa fa-home"></span>
+						<!-- <span>首页</span> -->
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="fa fa-user"></span>
+						<!-- <span>我的</span> -->
+					</a>
+				</li>
+			</ul>
+			<!-- 搜索 -->
+			<div id="find">
+				<form name="search" class="search" id="search" action="">
+					<div class="search-row">
+						<div class="search_box">
+							<i class="icon"><img src="__NEW__/img/sousuo.png"></i>
+							<!-- 搜索图标  嫌弃搜索框小调试高度就行-->
+							<input type="text" placeholder="搜索">
+						</div>
+					</div>
+				</form>
+			</div>
+		</header>
+
+
+		
+		<div class="list">
+			<ul id="list_content">
+			<volist name="machine" id='v'>
+				<li>
+					<a href="" role="text" data-toggle="modal" data-target="#myModal">
+						<p class="list_p">
+							<span id="sp1">{$v.machine_name}</span>
+							<span id="sp2">{$v.address}</span>
+						</p>
+						<p class="list_p">
+							<span id="sp3">{$v.is_online}</span>
+							<span id="sp4">{$v.priority}</span>
+						</p>
+					</a>
+					<hr width="90%" color="#333333" size="1" align="center">
+					<div id="huo">
+						<div id="sb_show">显示详情信息</div>
+						<div id="sb_hide">
+							<div id="s_h">
+								<table class="table">
+									<th>{$v.machine.machine_name}</th>
+									<th>{$v.is_online}</th>
+									<tr>
+										<td>策略</td>
+										<td>{$v.priority}</td>
+									</tr>
+									<tr>
+										<td>管理员</td>
+										<td>{$v.user_name}</td>
+									</tr>
+									<tr>
+										<td>设备地点</td>
+										<td>{$v.address}</td>
+									</tr>
+									<tr>
+										<td>设备编号</td>
+										<td>{$v.machine_id}</td>
+									</tr>
+									<tr>
+										<td>编辑日期</td>
+										<td>{$v.addtime}</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</li>
+			</volist>
+			</ul>
 		</div>
-		<ul class="slide_bar">
-			<li><a href="{:U('Phone/Index/index')}">
-				<span class="fa fa-home"></span>
-				<span>首页</span>
-			</a></li>
-			<li><a href="#">
-				<span class="fa fa-search"></span>
-				<span>分类</span>
-			</a></li>
-			<li><a href="#">
-				<span class="fa fa-shopping-cart"></span>
-				<span>购物车</span>
-			</a></li>
-			<li><a href="{:U('Phone/Index/index')}">
-				<span class="fa fa-user"></span>
-				<span>我的</span>
-			</a></li>
-		</ul>
-	</header>
-	<section id="body" class="table-responsive">
-		<table class="table table-bordered">
-					<thead>
-						<tr class="title">
-							<td> <span class="fa fa-star" style="color: #666;"></span> </td>
-							<td>ID</td>
-							<td>贩卖机名称</td>
-							<!-- <td>配货员</td> -->
-							<!-- <td>类型</td> -->
-							<!-- <td>联系方式</td> -->
-							<td>操作</td>
-						</tr>
-						<!-- <tr class="title2">
-							<td colspan="5">
-								<span><i class="fa fa-plus"></i>添加管理员</span>
-							</td>
-							
-						</tr> -->
-					</thead>
-					<tbody>
-					<volist name="machine" id="v">
-						<tr>
-							<td><span class="fa fa-star"></span></td>
-							<td>{$v.machine_id}</td>
-							<td>
-							<a href="{:U('Phone/Machine/detail',array('machine_id'=>$v.machine_id))}"><i ></i>{$v.machine_name}</a>
-							</td>
-							<!-- <td>某某配货员</td> -->
-							<!-- <td>测试</td> -->
-							<!-- <td>1366666666</td> -->
-							<td>
-								<a href="{:U('Phone/Machine/goods_list',array('machine_id'=>$v.machine_id))}"><i class="fa fa-edit"></i>礼品格配置</a>
-								<a href="{:U('Phone/Machine/edit',array('machine_id'=>$v.machine_id))}"><i class="fa fa-edit"></i>配置</a>
-								<span><i class="fa fa-trash"></i>删除</span>
-							</td>
-						</tr>
-					</volist>
-					</tbody>
-				</table>
-	</section>
-</body>
-<script src="__STATIC__/js/new/rem.js"></script>
-<script src="__STATIC__/js/new/jquery-2.1.4.min.js"></script>
-<script src="__STATIC__/js/new/bootstrap.min.js"></script>
-<script src="__STATIC__/js/new/page_index2.js"></script>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
 
-<script src="__PUBLIC__/js/layer/layer.js"></script>
-<script>
-	$('table tbody td').click(function(){
-		$activer = $(this).parent();
-		$(this).parent().addClass('tableActive').siblings().removeClass('tableActive');
-	})
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">选择操作类型</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#">
+					<a href="{:U('machine/edit')}">
+						<div class="form-group">
+							<label for="addname">设备编辑</label>
+						</div>
+					</a>
+					<a href="{:U('machine/machine_config')}">
+						<div class="form-group">
+							<label for="addpassword">设备配置</label>
+						</div>
+					</a>
+					<a href="">
+						<div class="form-group">
+							<label for="addpassword1">经营日志</label>
+						</div>
+					</a>
+					<a href="">
+						<div class="form-group">
+							<label for="addemail">解绑设备</label>
+						</div>
+					</a>
+					<a href="">
+						<div class="form-group">
+							<label for="addyonghuzu">设备库存</label>
+						</div>
+					</a>                                                        
+                </form>
+            </div>
 
-	$('.tog').click(function(){
-		$('.slide_bar').slideToggle();
-	});
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <!-- <button type="button" class="btn btn-primary">提交</button> -->
+            </div>
+        </div>
+    </div>
+</div>
 
-$('#upper').click(function(){
-	history.back();
-})
-</script>
+
+
+	</body>
+	<script src="__NEW__/js/rem.js"></script>
+	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+	<script src="__NEW__/js/bootstrap.js"></script>
+	<script>
+		$('.tog').click(function() {
+			$('.slide_bar').slideToggle();
+		})
+	</script>
+
+	<script type="text/javascript">
+		/* 输入框获取到焦点 表示用户正在输入 */
+		$("#word").focusin(function() {
+			$(".search-row").addClass("active iconfont icon-sousuo");
+		});
+		/* 输入框失去焦点 表示用户输入完毕 */
+		$("#word").focusout(function() {
+			/* 判断用户是否有内容输入 */
+			if ($(this).val() == "") {
+				/* 没有内容输入 改变样式 */
+				$(".search-row").removeClass("active iconfont icon-sousuo");
+			} else {
+				/* 有内容输入 保持样式 并提交表单 */
+				$("#search").submit();
+			}
+		});
+
+		/*显示隐藏*/
+		$(document).ready(function() {
+			$("#sb_show").click(function() {
+				$("#sb_hide").slideToggle("slow");
+
+			});
+		});
+
+	</script>
+
 </html>

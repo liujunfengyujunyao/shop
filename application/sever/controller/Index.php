@@ -259,7 +259,6 @@ class Index extends Controller {
 		$time = time();
 		DB::name('command')->where(['commandid'=>$commandid])->save(['status'=>1,'receive_time'=>$time]);//等待轮询页面wait.php 查找出对应这个commandid的machine_id  offline_machine_conf->where(machineid)
 
-
 	}
 
 

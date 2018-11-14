@@ -4,6 +4,7 @@ namespace app\phone\controller;
 use think\Db;
 class Room extends Base{
 
+
 	//测试
 	public function a(){
 		//$a = file_get_contents('https://www.goldenbrother.cn/rouge.apk',FALSE,NULL,0,9999*9999);
@@ -25,16 +26,23 @@ class Room extends Base{
 	}
 
 
-	//操控仓位
+
+	//操控仓位  解锁、锁定、开舱门
 	public function operate_room(){
-		$msgtype = input('get.msgtype');//锁定传lock_room,解锁传unlock_room
-		$machine_id = input('get.machine_id');
-		$roomid = input('get.roomid');
-		if(!in_array($msgtype,['lock_room','unlock_room']) || !$machine_id || !$roomid || !is_array($roomid))
+		$msgtype = input('post.msgtype');//锁定传lock_room,解锁传unlock_room
+		$machine_id = input('post.machine_id');
+		$roomid = input('post.roomid');
+		if($msgtype == 'open_room' && !$roomid){
+			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id,'goods_num'=>0])->select();
+			foreach ($rooms as $k => $v) {
+				$roomid[$k] = $v['location'];
+			}
+		}
+		if(!in_array($msgtype,['lock_room','unlock_room','open_room']) || !$machine_id || !is_array($roomid))
 		{
-			return json(['errid'=>10000,'msg'=>'参数错误']);
-		}else{
-			$str_room = explode(',',$roomid);
+			return json(['status'=>0,'msg'=>'参数错误']);
+		}else{			
+			$str_room = implode(',',$roomid);
 			$commandid = $this->get_command($msgtype,$machine_id,$str_room);
 			$data = array(
 				'msgtype'=>$msgtype,
@@ -42,9 +50,14 @@ class Room extends Base{
 				'roomid'=>$roomid
 				);
 			$res = $this->post_to_server($data,$machine_id);
-			halt($res);
+			//halt($res);
+			if($res === ''){//请求连接服务器成功
+				return json (['status'=>1,'commandid'=>$commandid]);
+			}
 		}
 	}
+
+	
 
 
 	//获取设备信息
@@ -60,28 +73,14 @@ class Room extends Base{
 				'commandid'=>intval($commandid),
 				);
 			$res = $this->post_to_server($data,$machine_id);
-			halt($res);
+			//halt($res);
+			if($res === ''){//请求连接服务器成功
+				return json (['status'=>1,'commandid'=>$commandid]);
+			}
 		}
 	}
 
-	//开舱门
-	public function open_room(){
-		$msgtype = 'open_room';
-		$machine_id = input('get.machine_id');
-		$roomid = input('get.roomid');
-		if(!$machine_id || !$roomid){
-			return json(['errid'=>10000,'msg'=>'参数错误']);
-		}else{
-			$commandid = $this->get_command($msgtype,$machine_id);
-			$data = array(
-				'msgtype'=>$msgtype,
-				'commandid'=>intval($commandid),
-				'roomid'=>$roomid
-				);
-			$res = $this->post_to_server($data,$machine_id);
-			halt($res);
-		}
-	}
+
 
 	//向服务器发送数据
 	public function post_to_server($msg,$machine_id){
@@ -89,10 +88,10 @@ class Room extends Base{
 		$data = array(
     		'msg'=>$msg,
     		'msgtype'=>'send_message',
-    		'machinesn'=>12
+    		'machinesn'=>intval($machinesn),
     		);
 		$url = 'https://www.goldenbrother.cn:23232/account_server';
-		$res = post_curlss($url,$data);
+		$res = post_curls($url,$data);
 		return $res;
 	}
 
@@ -123,16 +122,15 @@ class Room extends Base{
 				);
 			return json($error);
 		}
-		$data = ['返回结果','失败'];
-		for($x=0; $x<=3; $x++){//轮询查找是否返回成功
-            $command = DB::name('command')->where(['commandid'=>$commandid])->find();//查询出对应的command 
+		$data = ['msg'=>'操作失败','status'=>0];
+		for($x=0; $x<=2; $x++){//轮询查找是否返回成功
+            $command = DB::name('command')->where(['commandid'=>$commandid])->find();//查询出对应的command
             if ($command['status'] == 1) {
                 //status=1为执行成功
                 //对应数据库操作
                 
 
-                $data = ['返回结果','成功'];
-                break;
+                $data = ['status'=>1,'msg'=>'操作成功'];
             }elseif($command['status'] == 0){
                 sleep(2);//延迟2s
             }           
@@ -161,11 +159,19 @@ class Room extends Base{
 				'MD5'=>$md5
 				);
 			//halt($data);
-			dump($data);
 			$res = $this->post_to_server($data,$machine_id);
 			halt($res);
 		}
 	}
 
-
+	public function add_power(){
+		$data = array(
+		'name'=>'编辑群组',
+		'pid'=>5,
+		'controller'=>'group',
+		'function'=>'edit',
+		'create_time'=>time()
+		);
+		Db::name('user_power')->add($data);
+	}
 }

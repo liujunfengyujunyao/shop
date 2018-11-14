@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542192128;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542001772;}*/ ?>
+>>>>>>> 56af8e7d155e3c724fc3349125c2e6717782a9b3
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -16,7 +20,7 @@
 	<a href="<?php echo U('Phone/statistics/index'); ?>">
 		<div class="titlebar">
 			<div id="tit">
-				<img src="__NEW__/img/mine.png" id="me" >
+				<img src="__NEW__/img/mine.png" id="me" href="<?php echo U('machine/mine'); ?>" >
 				<p class="title">今日总收益（元）</p>
 				<!-- <a href="<?php echo U('Phone/Msg/index'); ?>">
 		
@@ -131,7 +135,7 @@
 		</div>
 		<div class="module">
 			<div class="long">
-				<a href="#">
+				<a href="<?php echo U('machine/machine_list'); ?>">
 				<div class="icon fa fa-tachometer">
 					<!-- <span class=""></span> -->
 				</div>
@@ -227,7 +231,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="#">
+					<a href="<?php echo U('Phone/machine/addscore_list'); ?>">
 					<div class="icon fa fa-line-chart" style="color:#ff524c;"></div>
 					<div class="text">
 						<div id="txt1">

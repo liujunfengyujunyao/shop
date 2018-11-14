@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1541994079;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -49,19 +50,19 @@
 					<span id="city">设备位置:</span>
 					<div id="city2">
 						<select id="cmbProvince" name="cmbProvince">
-							<volist name="province" id='v'>
-								<option value ="{$v.id}">{$v.name}</option>
-							</volist>
+							<?php if(is_array($province) || $province instanceof \think\Collection || $province instanceof \think\Paginator): $i = 0; $__LIST__ = $province;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
+								<option value ="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
+							<?php endforeach; endif; else: echo "" ;endif; ?>
 						</select>
 						<select id="cmbCity" name="cmbCity">
-							<volist name="city" id='v'>
-								<option value ="{$v.id}">{$v.name}</option>
-							</volist>
+							<?php if(is_array($city) || $city instanceof \think\Collection || $city instanceof \think\Paginator): $i = 0; $__LIST__ = $city;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
+								<option value ="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
+							<?php endforeach; endif; else: echo "" ;endif; ?>
 						</select>
 						<select id="cmbArea" name="cmbArea">
-							<volist name="district" id='v'>
-								<option value ="{$v.id}">{$v.name}</option>
-							</volist>
+							<?php if(is_array($district) || $district instanceof \think\Collection || $district instanceof \think\Paginator): $i = 0; $__LIST__ = $district;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
+								<option value ="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
+							<?php endforeach; endif; else: echo "" ;endif; ?>
 						</select>
 						<input type="text" id="cmb_d" placeholder="请输入详细地址" />
 					</div>
