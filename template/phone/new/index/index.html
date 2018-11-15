@@ -19,7 +19,7 @@
 				
 				<p class="title" style="width:68%;float:left;">今日总收益（元）</p>
 
-				<a id="msg" ><span class="glyphicon glyphicon-envelope"><span class="badge">52</span></span></a>
+				<a id="msg" ><span class="glyphicon glyphicon-envelope"><span class="badge">{$data.error_number}</span></span></a>
 			</div>
 			<p class="title_num">{$data.all_count}</p>
 		</div>
@@ -257,7 +257,8 @@
 <script>
 $(function(){
 	var getting = {
-                url:'__MODULE__/Msg/notReadMsg',
+                // url:'__CONTROLLER__/Msg/notReadMsg',
+                url : "{:U('Msg/notReadMsg')}",
                 dataType:'json',
                 success:function(res) {
                 	if(res.status==1001){

@@ -65,7 +65,7 @@ class Msg extends Base{
 				'count' => $count ,
 			);
 		}
-		$this->ajaxReturn($return);
+		return json($return);
 	}
 	// //查看所有消息
 	// public function allMsg(){

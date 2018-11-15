@@ -21,7 +21,7 @@ class Machine extends Base{
 			$machine[$k]['addtime'] = date('Y.m.d',$v['addtime']);
 			$machine[$k]['user_name'] = $user_name;
 		}
-		// halt($machine);
+
 		$this->assign('machine',$machine);
 		return $this->fetch();
 		
@@ -586,5 +586,7 @@ class Machine extends Base{
 		halt($info);
 	}
 
-
+	public function test(){
+		halt(I('get.'));
+	}
 } 

@@ -1455,3 +1455,9 @@ log_time:2018-11-14 14:24:28
 =======
 >>>>>>> 04b1ff4aee911f1ad76182655cc697720ab670e0
 >>>>>>> 56af8e7d155e3c724fc3349125c2e6717782a9b3
+log_time:2018-11-15 15:08:25{"msgtype":"receive_message","msg":{"msgtype":"login","sn":12,"poslong":"39.91488908","poslat":"116.40387397","version":"2018.11.8.version1.0","timestamp":1542265708,"signature":"35BEC06AA934E504C12DD580E9C4E9FAB3A3FF86"},"ip":"43.254.90.98:56585"}
+log_time:2018-11-15 15:08:25{"msgtype":"receive_message","msg":{"msgtype":"rooms_status","rooms":[{"roomid":"A2","status":1},{"roomid":"A3","status":2},{"roomid":"A4","status":1}]},"machinesn":12}
+log_time:2018-11-15 15:08:26{"msgtype":"receive_message","msg":{"msgtype":"OK"},"machinesn":12}
+log_time:2018-11-15 15:09:51{"msgtype":"receive_message","msg":{"msgtype":"login","sn":12,"poslong":"39.91488908","poslat":"116.40387397","version":"2018.11.8.version1.0","timestamp":1542265794,"signature":"8AFD2DB99DCDF225B0FCA74197E6F2DDB366DF9E"},"ip":"43.254.90.98:56683"}
+log_time:2018-11-15 15:09:52{"msgtype":"receive_message","msg":{"msgtype":"rooms_status","rooms":[{"roomid":"A2","status":1},{"roomid":"A3","status":2},{"roomid":"A4","status":1}]},"machinesn":12}
+log_time:2018-11-15 15:09:52{"msgtype":"receive_message","msg":{"msgtype":"OK"},"machinesn":12}

@@ -107,6 +107,11 @@ class Index extends Base {
         $data['normal_rate'] = $normal_rate;
         $data['fault_rate'] = $fault_rate;
 
+        $machine_ids = DB::name('machine')->where(['client_id'=>$manager_info['admin_id']])->getField('machine_id',true);
+        $machine_ids = implode(",",$machine_ids);
+        
+        $data['error_number'] = count(DB::name('error')->where("machine_id in ({$machine_ids}) and status = 0")->select());
+        
         // $history = array(
         //     $six['success_number']/$six['game_count']*100,
         //     $five['success_number']/$five['game_count']*100,
