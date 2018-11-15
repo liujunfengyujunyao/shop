@@ -589,4 +589,10 @@ class Machine extends Base{
 	public function test(){
 		halt(I('get.'));
 	}
+	//弹出层
+	public function modal(){
+		$this->assign('machine_id',$_GET['id']);
+		$this->assign('machine_name',$_GET['name']);
+		return $this->fetch();
+	}
 } 
