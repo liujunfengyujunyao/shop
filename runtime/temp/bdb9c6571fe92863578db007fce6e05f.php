@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542192128;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542001772;}*/ ?>
->>>>>>> 56af8e7d155e3c724fc3349125c2e6717782a9b3
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542261258;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -20,15 +16,11 @@
 	<a href="<?php echo U('Phone/statistics/index'); ?>">
 		<div class="titlebar">
 			<div id="tit">
-				<img src="__NEW__/img/mine.png" id="me" href="<?php echo U('machine/mine'); ?>" >
-				<p class="title">今日总收益（元）</p>
-				<!-- <a href="<?php echo U('Phone/Msg/index'); ?>">
-		
-				<a href="<?php echo U('Phone/Msg/index'); ?>"><img src="__NEW__/img/message.png" id="msg" title="消息" class="badge">50</span></a> -->
+				<a id="me" href="<?php echo U('machine/mine'); ?>" ><span class="glyphicon glyphicon-user" ></span> </a>
+				
+				<p class="title" style="width:68%;float:left;">今日总收益（元）</p>
 
-				<!-- <img src="__NEW__/img/message.png" id="msg" title="消息"><span class="badge">3</span> -->
-				<!-- </a> -->
-				<a><span class="glyphicon glyphicon-envelope"></span> </a>
+				<a id="msg" ><span class="glyphicon glyphicon-envelope"><span class="badge">52</span></span></a>
 			</div>
 			<p class="title_num"><?php echo $data['all_count']; ?></p>
 		</div>
@@ -43,7 +35,7 @@
 			<div href="#"><span>礼品消耗</span><!-- <img src="img/gift.png" id="gt" > --><span><?php echo $data['machine_count']; ?>台，<?php echo $data['gift_out_number']; ?>只</span></div>
 			<div href="#"><span>出奖率</span><p id="sp1"><?php echo $data['rate']; ?>%</p></div>
 		</div>
-		</a>
+	</a>
 	</header>
 	<section id="body">
 

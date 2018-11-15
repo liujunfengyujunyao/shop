@@ -15,15 +15,11 @@
 	<a href="{:U('Phone/statistics/index')}">
 		<div class="titlebar">
 			<div id="tit">
-				<img src="__NEW__/img/mine.png" id="me" href="{:U('machine/mine')}" >
-				<p class="title">今日总收益（元）</p>
-				<!-- <a href="{:U('Phone/Msg/index')}">
-		
-				<a href="{:U('Phone/Msg/index')}"><img src="__NEW__/img/message.png" id="msg" title="消息" class="badge">50</span></a> -->
+				<a id="me" href="{:U('machine/mine')}" ><span class="glyphicon glyphicon-user" ></span> </a>
+				
+				<p class="title" style="width:68%;float:left;">今日总收益（元）</p>
 
-				<!-- <img src="__NEW__/img/message.png" id="msg" title="消息"><span class="badge">3</span> -->
-				<!-- </a> -->
-				<a><span class="glyphicon glyphicon-envelope"></span> </a>
+				<a id="msg" ><span class="glyphicon glyphicon-envelope"><span class="badge">52</span></span></a>
 			</div>
 			<p class="title_num">{$data.all_count}</p>
 		</div>
@@ -38,7 +34,7 @@
 			<div href="#"><span>礼品消耗</span><!-- <img src="img/gift.png" id="gt" > --><span>{$data.machine_count}台，{$data.gift_out_number}只</span></div>
 			<div href="#"><span>出奖率</span><p id="sp1">{$data.rate}%</p></div>
 		</div>
-		</a>
+	</a>
 	</header>
 	<section id="body">
 

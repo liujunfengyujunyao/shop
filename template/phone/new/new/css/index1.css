@@ -273,23 +273,37 @@ body {
 	float: right;
 	background: url(../img/error.png) center;
 }
-
+#tit{
+	overflow: hidden;
+}
 #me {
+	display: block;
 	float: left;
-	width: 0.31rem;
-	height: 0.31rem;
-	margin-top: 0.1rem;
-	margin-left: 0.1rem;
+	width: 15%;
+	height: 0.41rem;
+	padding-top: 0.1rem;
+	padding-left: 5%;
 }
 
 #msg {
-	float: right;
-	width: 0.31rem;
-	height: 0.31rem;
-	margin-top: -0.38rem;
-	margin-right: 0.2rem;
+	display: block;
+	float: left;
+	width: 15%;
+	height: 0.41rem;
+	padding-top: 0.1rem;
+	padding-right: 5%;
 }
-
+.glyphicon{
+	color:white;
+	font-size: 30px;
+}
+#msg .glyphicon .badge{
+	position: absolute;
+	top:-6px;
+	left:20px;
+	padding:3px 6px;
+	background-color: red;
+}
 .lastbar #gtt {
 	width: 50%;
 }
