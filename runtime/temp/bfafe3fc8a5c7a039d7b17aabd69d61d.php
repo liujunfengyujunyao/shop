@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1542288223;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1542338147;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 
@@ -49,7 +49,7 @@
 			</div>
 		</header>
 		
-		<div>
+		<div class="machine-list">
 		<?php if(is_array($machine) || $machine instanceof \think\Collection || $machine instanceof \think\Paginator): if( count($machine)==0 ) : echo "" ;else: foreach($machine as $k=>$v): ?>
 		<div class="list">
 		
