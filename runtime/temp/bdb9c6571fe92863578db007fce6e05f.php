@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542283957;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542357533;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -20,7 +20,7 @@
 				
 				<p class="title" style="width:68%;float:left;">今日总收益（元）</p>
 
-				<a id="msg" ><span class="glyphicon glyphicon-envelope"><span class="badge"><?php echo $data['error_number']; ?></span></span></a>
+				<a id="msg" href="<?php echo U('Phone/Msg/index'); ?>"><span class="glyphicon glyphicon-envelope"><span class="badge"><?php echo $data['error_number']; ?></span></span></a>
 			</div>
 			<p class="title_num"><?php echo $data['all_count']; ?></p>
 		</div>

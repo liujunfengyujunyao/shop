@@ -595,4 +595,192 @@ class Machine extends Base{
 		$this->assign('machine_name',$_GET['name']);
 		return $this->fetch();
 	}
+
+
+	public function statistics_today(){
+			//今日
+			$y = date("Y");
+	        $m = date("m");
+	        $d = date("d");
+
+			$start = mktime(0,0,0,$m,$d,$y);
+			$end = $start+60*60*24-1;
+			//销售日志
+        	$machine_id = I('get.machine_id');
+        	$machine_id = 1;
+        	//总营收
+			$all_count = DB::name('sell_log')->where("machine_id = $machine_id && sell_time between $start and $end")->getField("sum(amount) as all_count");
+			$data['all_count'] = sprintf("%.2f", $all_count);
+			//微信游戏
+			$weixin_game = DB::name('sell_log')->where("machine_id = $machine_id && sell_time between $start and $end && paytype = 3 && usetype = 0")->getField("sum(amount) as all_count");
+			$data['weixin_game'] = sprintf("%.2f", $weixin_game);
+			//微信商品
+			$weixin_goods = DB::name('sell_log')->where("machine_id = $machine_id && sell_time between $start and $end && paytype = 3 && usetype = 1")->getField("sum(amount) as all_count");
+			$data['weixin_goods'] = sprintf("%.2f", $weixin_goods);
+			//支付宝游戏
+			$ali_game = DB::name('sell_log')->where("machine_id = $machine_id && sell_time between $start and $end && paytype = 2 && usetype = 0")->getField("sum(amount) as all_count");
+			$data['ali_game'] = sprintf("%.2f", $ali_game);
+			//支付宝商品
+			$ali_goods = DB::name('sell_log')->where("machine_id = $machine_id && sell_time between $start and $end && paytype = 2 && usetype = 1")->getField("sum(amount) as all_count");
+			$data['ali_goods'] = sprintf("%.2f", $ali_goods);
+			//现金游戏
+			$money_game = DB::name('sell_log')->where("machine_id = $machine_id && sell_time between $start and $end && paytype = 1 && usetype = 0")->getField("sum(amount) as all_count");
+			$data['money_game'] = sprintf("%.2f", $money_game);
+			//现金商品
+			$money_goods = DB::name('sell_log')->where("machine_id = $machine_id && sell_time between $start and $end && paytype = 1 && usetype = 1")->getField("sum(amount) as all_count");
+			$data['money_goods'] = sprintf("%.2f", $money_goods);
+			//游戏运行
+			$game_count = DB::name('game_log')->where("machine_id = $machine_id && start_time between $start and $end")->getField("count(id) as game_count");
+			$data['game_count'] = intval($game_count);
+			//成功次数
+			$success_number = DB::name('game_log')->where("machine_id = $machine_id && start_time between $start and $end && result = 1")->getField("count(id) as success_number");
+			$data['success_number'] = intval($success_number);
+			//失败次数
+			$fail_number = DB::name('game_log')->where("machine_id = $machine_id && start_time between $start and $end && result =0")->getField("count(id) as fail_number");
+			$data['fail_number'] = intval($fail_number);
+			//出奖率
+			if($data['game_count'] == 0){
+				$data['rate'] = 0;
+			}else{
+				$data['rate'] = $data['success_number']/$data['game_count']*100;
+			}
+
+			
+			
+			//直接购买
+			$sell_number = DB::name('sell_log')->where("machine_id = $machine_id && sell_time between $start and $end && usetype = 1")->getField("count(id) as sell_number");
+			$data['sell_number'] = intval($sell_number);
+			//礼品消耗 (游戏成功||直接购买)
+			$data['gift_out_number'] = $data['sell_number'] + $data['success_number'];
+			
+			$date = date('Y-m-d',time());
+			$this->assign('date',$date);
+			// halt($data);
+			//线型图
+			$y = date("Y");
+	        $m = date("m");
+	        $d = date("d");
+	        $morningTime= mktime(0,0,0,$m,$d,$y);
+			$one_date = $morningTime - 60*60*24*1;
+		    $two_date = $morningTime - 60*60*24*2;
+		    $three_date = $morningTime - 60*60*24*3;
+		    $four_date = $morningTime - 60*60*24*4;
+		    $five_date = $morningTime - 60*60*24*5;
+		    $six_date = $morningTime - 60*60*24*6;
+			$one = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$one_date])->getField("money_count + online_count"));
+	        $two = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$two_date])->getField("money_count + online_count"));
+	        $three = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$three_date])->getField("money_count + online_count"));
+	        $four = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$four_date])->getField("money_count + online_count"));
+	        $five = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$five_date])->getField("money_count + online_count"));
+	        $six = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$six_date])->getField("money_count + online_count"));
+	        if (is_null($one)) {
+	            $one = 0;
+	        }if(is_null($two)){
+	            $two = 0;
+	        }if(is_null($three)){
+	            $three = 0;
+	        }if(is_null($four)){
+	            $four = 0;
+	        }if(is_null($five)){
+	            $five = 0;
+	        }if(is_null($six)){
+	            $six = 0;
+	        }
+	        $rate = array(
+	            $six,$five,$four,$three,$two,$one
+	            );
+	        $charts = json_encode($rate,true);
+			//前七天的日期
+			$checkdate = $_SESSION['think']['checkdate'];
+			$this->assign('machine_id',$machine_id);
+			$this->assign('charts',$charts);
+			$this->assign('checkdate',$checkdate);
+			$this->assign('data',$data);
+			
+			return $this->fetch();
+		}
+
+	//历史记录
+	public function statistics_list(){
+
+			$machine_id = I('get.machine_id');
+			$statistics = DB::name('machine_day_statistics')->where("machine_id = $machine_id")->select();
+			foreach ($statistics as $key => $value) {
+				// $value['statistics_date'] = date('Y-m-d',$value['statistics_date']);
+				$data[$key]['count'] = $value['online_count'] + $value['money_count'];
+				$data[$key]['statistics_date'] = $value['statistics_date']; 
+				
+			}
+			$this->assign('machine_id',$machine_id);
+			$this->assign('data',$data);
+			return $this->fetch();
+		}
+
+		public function statistics_detail(){
+			$machine_id = I('get.machine_id');
+			$date = I('get.statistics_date');
+			$end = $date+60*60*24-1;
+			$data = DB::name('machine_day_statistics')->where("machine_id = $machine_id && statistics_date = $date")->find();
+			//总收入
+			$data['all_count'] = $data['money_count'] + $data['online_count'];
+			// halt($data);
+			
+
+		$one_date = $date - 60*60*24*1;
+        $two_date = $date - 60*60*24*2;
+        $three_date = $date - 60*60*24*3;
+        $four_date = $date - 60*60*24*4;
+        $five_date = $date - 60*60*24*5;
+        $six_date = $date - 60*60*24*6;
+
+        $one = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$one_date])->getField('online_count + money_count'));
+        $two = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$two_date])->getField('online_count + money_count'));
+        $three = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$three_date])->getField('online_count + money_count'));
+        $four = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$four_date])->getField('online_count + money_count'));
+        $five = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$five_date])->getField('online_count + money_count'));
+        $six = intval(DB::name('machine_day_statistics')->where(['machine_id'=>$machine_id,'statistics_date'=>$six_date])->getField('online_count + money_count'));
+        if (is_null($one)) {
+            $one = 0;
+        }if(is_null($two)){
+            $two = 0;
+        }if(is_null($three)){
+            $three = 0;
+        }if(is_null($four)){
+            $four = 0;
+        }if(is_null($five)){
+            $five = 0;
+        }if(is_null($six)){
+            $six = 0;
+        }
+        $rate = array(
+            $six,$five,$four,$three,$two,$one
+            );
+        $rate = json_encode($rate,true);
+
+
+
+
+
+        	$date = date('Y-m-d',$date);
+
+			$checkdate = array(
+	           date('m-d',strtotime($date.'-6 day')),
+	           date('m-d',strtotime($date.'-5 day')),
+	           date('m-d',strtotime($date.'-4 day')),
+	           date('m-d',strtotime($date.'-3 day')),
+	           date('m-d',strtotime($date.'-2 day')),
+	           date('m-d',strtotime($date.'-1 day')),
+           
+            );
+			$checkdate = json_encode($checkdate,true);
+			// halt($checkdate);
+			$this->assign('checkdate',$checkdate);
+			$this->assign('rate',$rate);
+			
+			$this->assign('date',$date);
+			$this->assign('data',$data);
+			halt($data);
+			return $this->fetch();
+			
+		}
 } 

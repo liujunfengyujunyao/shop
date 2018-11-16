@@ -59,7 +59,8 @@ class Statistics extends Base {
 			
 			
 			//直接购买
-			$sell_numebr = DB::name('sell_log')->where("machine_id in ({$machine_ids}) && sell_time between $start and $end && usetype = 1")->getField("count(id) as sell_number");
+			$sell_number = DB::name('sell_log')->where("machine_id in ({$machine_ids}) && sell_time between $start and $end && usetype = 1")->getField("count(id) as sell_number");
+			
 			$data['sell_number'] = intval($sell_number);
 			//礼品消耗 (游戏成功||直接购买)
 			$data['gift_out_number'] = $data['sell_number'] + $data['success_number'];

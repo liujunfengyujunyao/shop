@@ -314,7 +314,7 @@ class Index extends Controller {
 			'paytype' => $data['paytype'],//0为现金,1为网络支付
 			'amount' => $data['amount'],
 			'paysn' => $data['paysn'],
-			'is_sell' => $data['usetype'],//0为游戏 1为售卖
+			'usetype' => $data['usetype'],//0为游戏 1为售卖
 			'sell_log_id' => $this->get_log_id(),//生成logid
 			);
 		if ($data['usetype'] == 1) {
