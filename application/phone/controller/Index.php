@@ -95,6 +95,7 @@ class Index extends Base {
             $six,$five,$four,$three,$two,$one
             );
         $rate = json_encode($rate,true);
+
         session('history',$rate);
         
 
@@ -124,7 +125,8 @@ class Index extends Base {
         // halt($history);
 
         // $rate = array()
-
+       
+        $data['rate'] = sprintf("%.2f",$data['rate']);
         $checkdate = array(
             date("m-d",strtotime("-6 day")),
             date("m-d",strtotime("-5 day")),

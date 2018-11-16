@@ -596,7 +596,7 @@ class Machine extends Base{
 		return $this->fetch();
 	}
 
-
+	//机器今日日志
 	public function statistics_today(){
 			//今日
 			$y = date("Y");
@@ -700,7 +700,7 @@ class Machine extends Base{
 			return $this->fetch();
 		}
 
-	//历史记录
+	//历史记录列表
 	public function statistics_list(){
 
 			$machine_id = I('get.machine_id');
@@ -716,7 +716,9 @@ class Machine extends Base{
 			return $this->fetch();
 		}
 
-		public function statistics_detail(){
+
+	//历史记录
+	public function statistics_detail(){
 			$machine_id = I('get.machine_id');
 			$date = I('get.statistics_date');
 			$end = $date+60*60*24-1;
