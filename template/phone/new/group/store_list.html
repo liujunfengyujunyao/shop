@@ -39,7 +39,9 @@
 			<volist name="list" id="v">
 				<div class="store_item">
 					{$v.group_name}
-					<img href="{:U('group/edit_store')}" class="store_icon" src="__NEW__/img/ui1.png" alt="">
+					<a href="{:U('group/edit_store',array('id'=>$v.id))}">
+						<img class="store_icon" src="__NEW__/img/ui1.png" alt="">
+					</a>
 				</div>
 			</volist>	
 			</div>

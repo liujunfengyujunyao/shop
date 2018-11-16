@@ -28,15 +28,15 @@ class Machine extends Base{
 	}
 
 	//更改价格政策
-	public function change_priority(){
-		$machine_id = input('get.machine_id');
-		$priority = input('get.priority');
+	public function change_priority($machine_id,$priority){
+		//$machine_id = input('get.machine_id');
+		//$priority = input('get.priority');
 		if(!$machine_id || !in_array($priority,[0,1])){
 			$msg = array(
         		'errid'=>10000,
         		'msg'=>'参数不全'
         		);
-			return json($msg);
+			return $msg;
 		}else{
 			$change = array(
 	            'msgtype' => 'change_priority',
@@ -80,26 +80,28 @@ class Machine extends Base{
 	        		);
 	        	$url = 'https://www.goldenbrother.cn:23232/account_server';
 				$res = post_curls($url,$data);
-				halt($data);
+				if($res === ''){
+					return intval($commandid);
+				}
 	        }else{
 	        	$msg = array(
 	        		'errid'=>10000,
 	        		'msg'=>'请求失败'
 	        		);
-	        	return json($msg);
+	        	return $msg;
 	        }
 	    }
 	}
 
 	//轮询请求状态
-	public function check_status(){
-		$commandid = input('post.commandid');	
+	public function check_status($commandid){
+		//$commandid = input('post.commandid');	
 		if(!$commandid){
 			$error = array(
 				'status'=>0,
 				'msg'=>'参数错误',
 				);
-			return json($error);
+			return $error;
 		}
 		$data = array(
 			'status'=>0,
@@ -136,7 +138,7 @@ class Machine extends Base{
                 sleep(2);//延迟2s
             }           
         }
-        return json($data);
+        return $data;
 	}
 
 
@@ -315,8 +317,34 @@ class Machine extends Base{
 		//修改设备配置
 		if(IS_POST){
 			//修改游戏价格 , 修改单独格子的赔率 , 更换游戏
+			$machine_id = input('post.machine_id');
+			$priority=input('post.priority');
+			$data = array(
+				'game_price'=>input('post.game_price'),
+				'goods_price'=>input('post.goods_price'),
+				'odds'=>input('post.odds'),
+				//'priority'=>input('post.priority')
+				);
+			//halt($data);
 
+			$res = Db::name('machine')->where(['machine_id'=>$machine_id])->save($data);
+			if($res !== false){
+				$commandid = $this->change_priority($machine_id,$priority);
+				if($commandid){
+					$check = $this->check_status($commandid);
+					if($check['status']==1){
+						return $this->success('修改成功');
+					}else{
+						return $this->error('修改失败');
+					}
+				}				
+			}else{
+				return $this->error('编辑失败');
+			}
 		}else{
+			$machine_id = input('get.id');
+			$machine = Db::name('machine')->where(['machine_id'=>$machine_id])->field('machine_id,game_price,goods_price,odds,priority')->find();
+			$this->assign('machine',$machine);
 			return $this->fetch();
 		}
 	}
@@ -369,25 +397,100 @@ class Machine extends Base{
 				return $this->error('参数不全');
 			}else{
 				$data = array(
-					'goods_price'=>input('post.price'),
-					'game_odds'=>input('post.odds')
+					'goods_price'=>input('post.goods_price'),
+					'game_odds'=>input('post.game_odds')
 					);
 				$res = Db::name('client_machine_conf')->where(['machine_id'=>$machine_id,'location'=>$location])->save($data);
 				if($res !== false){
-					return $this->success('修改成功',U('machine/gift_list'));
+					return $this->success('修改成功',U('machine/gift_select',array('id'=>$machine_id)));
 				}else{
 					return $this->error('修改失败');
 				}
 			}
 		}else{
-			$machine_id = input('get.machine_id');
+			$machine_id = input('get.id');
+			$game_price = DB::name('machine')
+				->where(['machine_id' => $machine_id])
+				->getField('game_price');
 			$location = input('get.location');
 			// $room = Db::name('client_machine_conf')->alias('a')->join('tfs_client_machine_stock b','a.id=b.stock_id','left')->where(['a.machine_id'=>$machine_id,'a.location'=>$location])->field('')->select();
 			$room = Db::name('client_machine_conf')->where(['machine_id'=>$machine_id,'location'=>$location])->field('goods_price,game_odds')->find();
+			$this->assign('id',$machine_id);
+			$this->assign('location',$location);
+			$this->assign('game_price',$game_price);
 			$this->assign('room',$room);
 			return $this->fetch();
 		}
 	}
+
+	//设备库存
+	public function stock(){
+		$client_id = session('client_id');
+		$test = M('machine')->where(['client_id'=>$client_id])->select();
+		
+		$count = DB::name('machine')->where(['client_id'=>$client_id])->count();
+		
+		$machine = DB::name('machine')
+				->field("machine_name,province_id,city_id,machine_id,district_id")
+		        ->where(['client_id'=>$client_id])
+		        ->select();
+		        // halt($machine);
+		if ($machine) {
+			//查询名下设备
+			foreach ($machine as $key => &$value) {
+			$province = DB::name('region')->where(['id'=>$value['province_id']])->getField('name');
+			$city = DB::name('region')->where(['id'=>$value['city_id']])->getField('name');
+			$district = DB::name('region')->where(['id'=>$value['district_id']])->getField('name');
+			// $value['address'] = $province . $city . $district;
+			$value['address'] = $province . $district;
+			$goods = DB::name('client_machine_stock')
+					->alias('ms')
+					->field("ms.* , FROM_UNIXTIME(ms.edittime, '%Y-%m-%d %H:%i:%s') as edittime,mc.goods_price")
+					->join("__CLIENT_MACHINE_CONF__ mc","mc.location = ms.location",'LEFT')
+					->where(['ms.machine_id'=>$value['machine_id'],'mc.machine_id'=>$value['machine_id']])
+					->select();
+			$value['goods'] = $goods;
+		}
+		}
+
+		$this->assign('machine',$machine);
+		$this->assign('count',$count);
+		return $this->fetch();
+	}
+
+
+	//礼品格选择
+	public function gift_select(){
+		$machine_id = input('get.id');
+		$game_price = DB::name('machine')
+			->where(['machine_id' => $machine_id])
+			->getField('game_price');
+	
+    	$location = explode(',',$location);
+    	
+    	// $info = DB::name('client_machine_conf')
+    	// 		->alias('mc')
+    	// 		->field('mc.goods_name, mc.goods_num, mc.location, ms.stock_id, ms.goods_num as real_num,mc.goods_price')//real_num为本机当前库存
+    	// 		->join('__GOODS__ g', 'g.goods_id = mc.goods_id','LEFT')
+    	// 		->join('__CLIENT_MACHINE_STOCK__ ms', 'ms.machine_id = mc.machine_id','LEFT')
+    	// 		->where(['mc.machine_id'=>$id,'ms.machine_id'=>$id])
+    	// 		->select();
+    	$info = DB::name('client_machine_conf')
+    			->alias('mc')
+    			->field('mc.goods_name,ms.goods_num,mc.location,mc.goods_price,mc.game_odds')
+    			->join('__CLIENT_MACHINE_STOCK__ ms','ms.location = mc.location','LEFT')
+    			->where(['mc.machine_id'=>$machine_id,'ms.machine_id'=>$machine_id])
+    			->group('mc.id')
+    			->select();
+
+    	$this->assign('machine_id',$machine_id);
+    	$this->assign('max_stock',$max_stock);
+    	$this->assign('info',$info);
+    	$this->assign('game_price',$game_price);
+    	//halt($info);
+		return $this->fetch();
+	}
+
 
 
 	public function delivery(){

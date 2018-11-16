@@ -10,13 +10,13 @@
 		<link rel="stylesheet" href="__NEW__/css/util.css">
 		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
 		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
-		<link rel="stylesheet" type="text/css" href="__NEW__//css/index1.css" />
+		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
 	</head>
-	<body>
+	<body style="background-color:#FFFFFF !important;">
 		<header id="head">
 			<div class="top_bar">
-				<a class="fa fa-chevron-left" id="upper"></a>
-				<span class="title">礼品格设置</span>
+				<a href="#" class="fa fa-chevron-left"></a>
+				<span class="title">礼品格编辑</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
 			<ul class="slide_bar">
@@ -34,40 +34,46 @@
 				</li>
 			</ul>
 		</header>
-		<section class="gf_set">
-		<form name="room_config" method="post" action="{:U('machine/gift_config')}">
-			<div class="gf_set_content">
-				<ul>
-					<li>
-						<span id="">格子游戏价格:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$game_price} 元</span>
-						<input type="hidden" name="machine_id" value="{$id}" />
-						<input type="hidden" name="location" value="{$location}" />
-					<li>
-						<span id="">格子商品价格:</span>
-						<input type="text" name="goods_price" id="ip2" value="{$room.goods_price}" />
+		<section class="ge_content" style="padding-bottom: 1rem;">
+			<div class="ge_cont">
+				<ul class="ge_ul">
+				<volist name="info" id="v">
+					<li class="ge_li">
+						<div class="ge_name">
+							<span id="">{$v.location}</span>
+						</div>
+						<div class="ge_ct1">
+							<ul>
+								<li>
+									<span id="ge_ct1_t1">名称:{$v.goods_name}</span>
+								</li>
+								<li>
+									<span id="ge_ct1_t2">{$game_price}/{$v.goods_price}/{$v.game_odds}</span>
+								</li>
+								<li>
+									<span id="ge_ct1_t3">游戏价格/商品价格/赔率</span>
+								</li>
+							</ul>
+						</div>
+						<div class="ge_btn">
+						<a href="{:U('machine/gift_config',array('id'=>$machine_id ,'location'=>$v.location))}">
+							<input type="button" name="" id="" value="编辑" />
+						</a>
+						</div>
 					</li>
-					<li>
-						<span id="">格子赔率:</span>
-						<input type="text" name="game_odds" id="ip3" value="{$room.game_odds}" />
-					</li>
+					<div id="np_line" style="width: 100%; height: 0.01rem; margin: 0 auto; margin-top: 0.05rem; background-color: #A9A9A9;"></div>
+				</volist>
 				</ul>
-				<button id="ip4">保&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存</button>
 			</div>
-		</form>
 		</section>
-
-
 
 	</body>
 	<script src="__NEW__/js/rem.js"></script>
 	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
 	<script>
-		<!--头部-->
+		//头部
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
-		})
-		$('#upper').click(function(){
-			history.back();
 		})
 	</script>
 </html>

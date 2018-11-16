@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" id="rootHTML">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
+		<link rel="stylesheet" href="__NEW__/css/common.css">
+		<link rel="stylesheet" href="__NEW__/css/bootstrap.min.css">
+		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
+		<link rel="stylesheet" href="__NEW__/css/util.css">
+		<link rel="stylesheet" type="text/css" href="__NEW__/css/index2.css"/>
+		<title>Document</title>
+	</head>
+	<body>
+		<header id="head">
+			<div class="top_bar">
+				<a class="fa fa-chevron-left" id="upper"></a>
+				<span class="title">
+					</i>设备库存</span>
+				<a class="no-addon" href="#"></a>
+			</div>
+		</header>
+		<section id="body">
+			<ul class="main list-group">
+				<volist name='machine' id='val'>
+				<li class="list-group-item toggler"
+						role='button'
+						data-open="false"
+						data-toggle="collapse"
+						data-target="#{$val.machine_id}"
+						aria-expanded="false"
+						aria-controls="{$val.machine_id}"
+				>
+				<span class="title textFlow">
+					<i class="fa fa-toggle-right"></i>
+					<span class="label label-primary">{$val.machine_name}</span>
+				</span>
+
+				<span class="title textFlow">
+					<span class="label label-default">{$val.address}</span>
+				</span>
+
+					<button id=" replenishment" class="btn btn-success" data-url="{:U('room/operate_room')}" data-id="{$val.machine_id}" onClick="supply(this)">一键补货</button>
+
+					<button id="clear" class="btn btn-danger" data-url="{:U('Goods/ajax_clear')}" data-id="{$val.machine_id}" onClick="supply2(this)">一键清货</button>
+
+					<!-- 折叠部分 -->
+				</li>
+
+				<li class="col_holder collapse table-responsive" id="{$val.machine_id}">
+					<table class="table table-bordered">
+					<thead>
+						<tr>
+							<td>
+								<span class="fa fa-star"></span>
+							</td>
+							<td>ID</td>
+							<td>位置</td>
+							<td>商品名称</td>
+							<td>当前库存/最大库存量</td>
+							<td>更新时间</td>
+						</tr>
+					</thead>
+					<tbody>
+					<volist name="$val.goods" id="v">
+						<tr>
+							<td>	<span class="fa fa-star"></span></td>
+							<td>{$key+1}</td>
+							<td>{$v.location}</td>
+							<if condition = " $v.goods_price == 0 ">
+							<td style="color:red">未配置</td>
+							<td style="color:red">0/0</td>
+							<else />
+							<td>{$v.goods_name}</td>
+							<td>{$v.goods_num}/{$v.stock_num}</td>
+							</if>
+							
+							<td>{$v.edittime}</td>
+						</tr>
+						<!-- <tr>
+							<td>	<span class="fa fa-star"></span></td>
+							<td>A2</td>
+							<td>玩具熊</td>
+							<td>{}/{}</td>
+							<td>无</td>
+						</tr> -->
+						</volist>
+					</tbody>
+					</table>
+				</li>
+			</volist>
+			</ul>
+		</section>
+	</body>
+	<script src="__NEW__/js/rem.js"></script>
+	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+	<script src="__NEW__/js/bootstrap.min.js"></script>
+	<script src="__NEW__/js/page_index2.js"></script>
+	<script src="__PUBLIC__/js/layer/layer.js"></script>
+
+<script>
+ function supply(obj) {
+        layer.confirm('确认补满？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function (index) {
+                    layer.close(index);
+                    // 确定
+                    $.ajax({
+                        type: 'post',
+                        url: $(obj).attr('data-url'),
+                        data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'open_room'},
+                        dataType: 'json',
+                        beforeSend:function(){ 
+		         		// 禁用按钮防止重复提交
+		        			$(":button").attr('disabled',true);
+		    			},
+                        success: function (v) {
+                            if (v.status == 1) {
+                                //layer.msg('操作成功', {icon: 1});
+                                //location.reload();
+                                //$(obj).parent().parent().parent().remove();
+                                $.ajax({
+                                	type: 'post',
+                                	url: '{:U('room/check_status')}',
+                                	data: {commandid:v.commandid},
+                                	dataType: 'json',
+                                	success: function(res){
+                                		if(res.status == 1){
+                                			layer.msg('操作成功', {icon: 1});
+                                			$(":button").attr('disabled',false);
+                                			//location.reload();
+                                		}else{
+                                			layer.msg(res.msg, {icon: 2, time: 2000});
+                                			$(":button").attr('disabled',false);
+                                		}
+                                	}
+                                })
+                            } else {
+                                layer.msg(v.msg, {icon: 2, time: 2000});
+                                $(":button").attr('disabled',false);
+                            }
+                        }
+                    })
+                }, function (index) {
+                    layer.close(index);
+                }
+        );
+    };
+ function supply2(obj) {
+        layer.confirm('确认重置？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function (index) {
+                    layer.close(index);
+                    // 确定
+                    $.ajax({
+                        type: 'post',
+                        url: $(obj).attr('data-url'),
+                        data: {act: '_DEL_', id: $(obj).attr('data-id')},
+                        dataType: 'json',
+                        success: function (v) {
+                            if (v.status == 1) {
+                                layer.msg('操作成功', {icon: 1});
+                                location.reload();
+                                //$(obj).parent().parent().parent().remove();
+                                
+                            } else {
+                                layer.msg(v.msg, {icon: 2, time: 2000});
+                            }
+                        }
+                    })
+                }, function (index) {
+                    layer.close(index);
+                }
+        );
+    };
+
+$('.tog').click(function(){
+		$('.slide_bar').slideToggle();
+	});
+
+$('#upper').click(function(){
+	history.back();
+})
+</script>
+</html>

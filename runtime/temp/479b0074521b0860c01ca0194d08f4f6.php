@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:44:"./template/phone/new/machine\goods_list.html";i:1537432057;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:44:"./template/phone/new/machine\goods_list.html";i:1540012757;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>

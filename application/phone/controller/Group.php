@@ -79,8 +79,8 @@ class Group extends Base{
 				}
 			}
 		}else{ //页面信息
-			$group_id = input('get.group_id');
-			$group_info = Db::name('machine_group')->field('group_name,game_price,odds,goods_price,group_machine')->wehre(['id'=>$group_id])->find();
+			$group_id = input('get.id');
+			$group_info = Db::name('machine_group')->field('group_name,game_price,odds,goods_price,group_machine')->where(['id'=>$group_id])->find();
 			$machine_list = Db::name('machine')->field('machine_id,machine_name')->where('machine_id','in',$group_info['group_machine'])->select();
 			$this->assign('name',$group_info['group_name']);
 			$this->assign('game_price',$group_info['game_price']);
