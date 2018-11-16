@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="__NEW__/css/common.css">
 	<link rel="stylesheet" href="__NEW__/css/index1.css">
 	<script src="__NEW__/js/echarts.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 	<title>设备管理系统</title>
 </head>
 <body>
@@ -14,13 +15,11 @@
 	<a href="{:U('Phone/statistics/index')}">
 		<div class="titlebar">
 			<div id="tit">
-				<a href="{:U('machine/mine')}" >
-				<img src="__NEW__/img/mine.png" id="me">
-				</a>
-				<p class="title">今日总收益（元）</p>
-				<a href="{:U('Phone/Msg/index')}">
-				<img src="__NEW__/img/message.png" id="msg" title="消息"><span class="badge">3</span>
-				</a>
+				<a id="me" href="{:U('machine/mine')}" ><span class="glyphicon glyphicon-user" ></span> </a>
+				
+				<p class="title" style="width:68%;float:left;">今日总收益（元）</p>
+
+				<a id="msg" ><span class="glyphicon glyphicon-envelope"><span class="badge">{$data.error_number}</span></span></a>
 			</div>
 			<p class="title_num">{$data.all_count}</p>
 		</div>
@@ -35,7 +34,7 @@
 			<div href="#"><span>礼品消耗</span><!-- <img src="img/gift.png" id="gt" > --><span>{$data.machine_count}台，{$data.gift_out_number}只</span></div>
 			<div href="#"><span>出奖率</span><p id="sp1">{$data.rate}%</p></div>
 		</div>
-		</a>
+	</a>
 	</header>
 	<section id="body">
 
@@ -253,10 +252,13 @@
 </body>
 <script src="__NEW__/js/rem.js"></script>
 <script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+ <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
 $(function(){
 	var getting = {
-                url:'__MODULE__/Msg/notReadMsg',
+                // url:'__CONTROLLER__/Msg/notReadMsg',
+                url : "{:U('Msg/notReadMsg')}",
                 dataType:'json',
                 success:function(res) {
                 	if(res.status==1001){

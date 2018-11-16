@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1541994079;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1542345555;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -70,9 +70,11 @@
 				<div id="map">
 					<div id="allmap"></div>
 				</div>
+				<a href="<?php echo U('group/store_list'); ?>">
 				<div id="btn_list">
 					<input type="button" id="b_l" value="群组列表" />
 				</div>
+				</a>
 			</div>
 		</div>
 

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542338257;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542339261;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="__NEW__/css/common.css">
 	<link rel="stylesheet" href="__NEW__/css/index1.css">
 	<script src="__NEW__/js/echarts.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 	<title>设备管理系统</title>
 </head>
 <body>
@@ -15,13 +16,11 @@
 	<a href="<?php echo U('Phone/statistics/index'); ?>">
 		<div class="titlebar">
 			<div id="tit">
-				<a href="<?php echo U('machine/mine'); ?>" >
-				<img src="__NEW__/img/mine.png" id="me">
-				</a>
-				<p class="title">今日总收益（元）</p>
-				<a href="<?php echo U('Phone/Msg/index'); ?>">
-				<img src="__NEW__/img/message.png" id="msg" title="消息"><span class="badge">3</span>
-				</a>
+				<a id="me" href="<?php echo U('machine/mine'); ?>" ><span class="glyphicon glyphicon-user" ></span> </a>
+				
+				<p class="title" style="width:68%;float:left;">今日总收益（元）</p>
+
+				<a id="msg" ><span class="glyphicon glyphicon-envelope"><span class="badge"><?php echo $data['error_number']; ?></span></span></a>
 			</div>
 			<p class="title_num"><?php echo $data['all_count']; ?></p>
 		</div>
@@ -36,7 +35,7 @@
 			<div href="#"><span>礼品消耗</span><!-- <img src="img/gift.png" id="gt" > --><span><?php echo $data['machine_count']; ?>台，<?php echo $data['gift_out_number']; ?>只</span></div>
 			<div href="#"><span>出奖率</span><p id="sp1"><?php echo $data['rate']; ?>%</p></div>
 		</div>
-		</a>
+	</a>
 	</header>
 	<section id="body">
 
@@ -254,10 +253,13 @@
 </body>
 <script src="__NEW__/js/rem.js"></script>
 <script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+ <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
 $(function(){
 	var getting = {
-                url:'__MODULE__/Msg/notReadMsg',
+                // url:'__CONTROLLER__/Msg/notReadMsg',
+                url : "<?php echo U('Msg/notReadMsg'); ?>",
                 dataType:'json',
                 success:function(res) {
                 	if(res.status==1001){

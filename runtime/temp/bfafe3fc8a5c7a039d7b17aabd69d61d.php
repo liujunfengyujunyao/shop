@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1542265032;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1542339945;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 
@@ -47,19 +47,22 @@
 					</div>
 				</form>
 			</div>
-		</header>
+		</header>		
+		<div>
+		<?php if(is_array($machine) || $machine instanceof \think\Collection || $machine instanceof \think\Paginator): if( count($machine)==0 ) : echo "" ;else: foreach($machine as $k=>$v): ?>
 		<div class="list">
+		
 			<ul id="list_content">
-			<?php if(is_array($machine) || $machine instanceof \think\Collection || $machine instanceof \think\Paginator): $i = 0; $__LIST__ = $machine;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
+			
 				<li>
-					<a href="" role="text" data-toggle="modal" data-target="#myModal">
+					<a href="<?php echo U('Phone/machine/modal',array('id'=>$v['machine_id'],'name'=>$v['machine_name'])); ?>" role="text" data-toggle="modal" data-target="#myModal" class="huoqu" mid="<?php echo $v['machine_id']; ?>">
 						<p class="list_p">
 							<span id="sp1"><?php echo $v['machine_name']; ?></span>
 							<span id="sp2"><?php echo $v['address']; ?></span>
 						</p>
 						<p class="list_p">
-							<span id="sp3"><?php echo $v['is_online']; ?></span>
-							<span id="sp4"><?php echo $v['priority']; ?></span>
+							<span id="sp3"><?php echo $v['priority']; ?></span>
+							<!-- <span id="sp4">平台策略</span> -->
 						</p>
 					</a>
 					<hr width="90%" color="#333333" size="1" align="center">
@@ -68,10 +71,10 @@
 						<div class="sb_hide">
 							<div id="s_h">
 								<table class="table">
-									<th><?php echo $v['machine']['machine_name']; ?></th>
-									<th><?php echo $v['is_online']; ?></th>
+									<th><?php echo $v['machine_name']; ?></th>
+									<th><?php echo $v['is_online']; ?> </th>
 									<tr>
-										<td>策略</td>
+										<td>设备策略</td>
 										<td><?php echo $v['priority']; ?></td>
 									</tr>
 									<tr>
@@ -95,57 +98,20 @@
 						</div>
 					</div>
 				</li>
-			<?php endforeach; endif; else: echo "" ;endif; ?>
-			</ul>
+			
+				
+			</ul>			
 		</div>
-
-
-
+		<?php endforeach; endif; else: echo "" ;endif; ?>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 
 				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">选择操作类型</h4>
-					</div>
-					<div class="modal-body">
-						<form action="#">
-							<a href="<?php echo U('machine/edit','machine_id=1'); ?>">
-								<div class="form-group">
-									<label for="addname">设备编辑</label>
-								</div>
-							</a>
-							<a href="<?php echo U('machine/machine_config'); ?>">
-								<div class="form-group">
-									<label for="addpassword">设备配置</label>
-								</div>
-							</a>
-							<a href="">
-								<div class="form-group">
-									<label for="addpassword1">经营日志</label>
-								</div>
-							</a>
-							<a href="<?php echo U('machine/unbind'); ?>">
-								<div class="form-group">
-									<label for="addemail">解绑设备</label>
-								</div>
-							</a>
-							<a href="">
-								<div class="form-group">
-									<label for="addyonghuzu">设备库存</label>
-								</div>
-							</a>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-						<!-- <button type="button" class="btn btn-primary">提交</button> -->
-					</div>
+					
 				</div>
 			</div>
 		</div>
+</div>
 	</body>
 	<script src="__NEW__/js/rem.js"></script>
 	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
@@ -189,6 +155,17 @@
 			console.log("编号为:" + $bianhao)
 		})
 
+		$("#list_content li a").click(function(e) {
+			e.preventDefault();
+			var $bianhao = $(this).parents("li").find(".bianhao").text();
+			console.log("编号为:" + $bianhao)
+		});
+		    $("#myModal").on("hidden.bs.modal", function() {
+		        $(this).removeData("bs.modal");
+		    });
+		    // var mid=$('.huoqu').attr('mid');
+		    // var href = "<?php echo U('Phone/machine/test',array('id'=>"+mid+")); ?>";
+		    // $('.addname').attr('href',href);
 	</script>
 
 </html>

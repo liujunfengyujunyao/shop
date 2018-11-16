@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:42:"./application/admin/view2/admin\login.html";i:1533876247;}*/ ?>
+=======
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:42:"./application/admin/view2/admin\login.html";i:1540012756;}*/ ?>
+>>>>>>> 56af8e7d155e3c724fc3349125c2e6717782a9b3
 <!doctype html>
 <meta name=”renderer” content=”webkit”>
 <meta http-equiv=”X-UA-Compatible” content=”IE=Edge,chrome=1″ >

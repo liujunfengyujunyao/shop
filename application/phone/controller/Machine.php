@@ -21,7 +21,7 @@ class Machine extends Base{
 			$machine[$k]['addtime'] = date('Y.m.d',$v['addtime']);
 			$machine[$k]['user_name'] = $user_name;
 		}
-		// halt($machine);
+
 		$this->assign('machine',$machine);
 		return $this->fetch();
 		
@@ -287,10 +287,14 @@ class Machine extends Base{
 
 		}else{
 			//$machine_id = I('post.machine_id');
-			$machine_id = 3;
+			$machine_id = input('get.id');
 			$info = DB::name('machine')
-			        ->where(['machine_id'=>$machine_id])
-			        ->find();
+				->alias('a')
+				->join('tfs_machine_group b','a.group_id=b.id','left')
+		        ->where(['a.machine_id'=>$machine_id])
+		        ->field('a.machine_name,b.group_name')
+		        ->find();
+		    $info['group_name'] = $info['group_name']?$info['group_name']:'无群组';
 			// halt($this->getRegion(0,1));
 			// halt($this->getRegion($info['province_id'],2));
 			// halt($this->getRegion($info['city_id'],3));
@@ -298,7 +302,7 @@ class Machine extends Base{
             $this->assign('city', $this->getRegion($info['province_id'], 2));
             $this->assign('district', $this->getRegion($info['city_id'], 3));
 			$this->assign('info',$info);
-			// halt($info);
+			//halt($info);
 			return $this->fetch();
 
 		}
@@ -613,5 +617,13 @@ class Machine extends Base{
 		halt($info);
 	}
 
-
+	public function test(){
+		halt(I('get.'));
+	}
+	//弹出层
+	public function modal(){
+		$this->assign('machine_id',$_GET['id']);
+		$this->assign('machine_name',$_GET['name']);
+		return $this->fetch();
+	}
 } 

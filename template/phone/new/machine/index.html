@@ -46,19 +46,22 @@
 					</div>
 				</form>
 			</div>
-		</header>
+		</header>		
+		<div>
+		<foreach name="machine" item="v" key="k">
 		<div class="list">
+		
 			<ul id="list_content">
-			<volist name="machine" id='v'>
+			
 				<li>
-					<a href="" role="text" data-toggle="modal" data-target="#myModal">
+					<a href="{:U('Phone/machine/modal',array('id'=>$v['machine_id'],'name'=>$v['machine_name']))}" role="text" data-toggle="modal" data-target="#myModal" class="huoqu" mid="{$v.machine_id}">
 						<p class="list_p">
 							<span id="sp1">{$v.machine_name}</span>
 							<span id="sp2">{$v.address}</span>
 						</p>
 						<p class="list_p">
-							<span id="sp3">{$v.is_online}</span>
-							<span id="sp4">{$v.priority}</span>
+							<span id="sp3">{$v.priority}</span>
+							<!-- <span id="sp4">平台策略</span> -->
 						</p>
 					</a>
 					<hr width="90%" color="#333333" size="1" align="center">
@@ -67,10 +70,10 @@
 						<div class="sb_hide">
 							<div id="s_h">
 								<table class="table">
-									<th>{$v.machine.machine_name}</th>
-									<th>{$v.is_online}</th>
+									<th>{$v.machine_name}</th>
+									<th>{$v.is_online} </th>
 									<tr>
-										<td>策略</td>
+										<td>设备策略</td>
 										<td>{$v.priority}</td>
 									</tr>
 									<tr>
@@ -94,57 +97,20 @@
 						</div>
 					</div>
 				</li>
-			</volist>
-			</ul>
+			
+				
+			</ul>			
 		</div>
-
-
-
+		</foreach>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 
 				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">选择操作类型</h4>
-					</div>
-					<div class="modal-body">
-						<form action="#">
-							<a href="{:U('machine/edit','machine_id=1')}">
-								<div class="form-group">
-									<label for="addname">设备编辑</label>
-								</div>
-							</a>
-							<a href="{:U('machine/machine_config')}">
-								<div class="form-group">
-									<label for="addpassword">设备配置</label>
-								</div>
-							</a>
-							<a href="">
-								<div class="form-group">
-									<label for="addpassword1">经营日志</label>
-								</div>
-							</a>
-							<a href="{:U('machine/unbind')}">
-								<div class="form-group">
-									<label for="addemail">解绑设备</label>
-								</div>
-							</a>
-							<a href="">
-								<div class="form-group">
-									<label for="addyonghuzu">设备库存</label>
-								</div>
-							</a>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-						<!-- <button type="button" class="btn btn-primary">提交</button> -->
-					</div>
+					
 				</div>
 			</div>
 		</div>
+</div>
 	</body>
 	<script src="__NEW__/js/rem.js"></script>
 	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
@@ -188,6 +154,17 @@
 			console.log("编号为:" + $bianhao)
 		})
 
+		$("#list_content li a").click(function(e) {
+			e.preventDefault();
+			var $bianhao = $(this).parents("li").find(".bianhao").text();
+			console.log("编号为:" + $bianhao)
+		});
+		    $("#myModal").on("hidden.bs.modal", function() {
+		        $(this).removeData("bs.modal");
+		    });
+		    // var mid=$('.huoqu').attr('mid');
+		    // var href = "{:U('Phone/machine/test',array('id'=>"+mid+"))}";
+		    // $('.addname').attr('href',href);
 	</script>
 
 </html>
