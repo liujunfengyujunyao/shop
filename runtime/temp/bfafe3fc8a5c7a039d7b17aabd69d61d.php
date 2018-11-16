@@ -1,6 +1,7 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1541999360;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1542265032;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
+
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -15,7 +16,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="#" class="fa fa-chevron-left"></a>
+				<a class="fa fa-chevron-left" id="upper"></a>
 				<span class="title">
 					</i>设备管理</span>
 				<a class="no-addon" href="#"></a>
@@ -47,9 +48,6 @@
 				</form>
 			</div>
 		</header>
-
-
-		
 		<div class="list">
 			<ul id="list_content">
 			<?php if(is_array($machine) || $machine instanceof \think\Collection || $machine instanceof \think\Paginator): $i = 0; $__LIST__ = $machine;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
@@ -66,8 +64,8 @@
 					</a>
 					<hr width="90%" color="#333333" size="1" align="center">
 					<div id="huo">
-						<div id="sb_show">显示详情信息</div>
-						<div id="sb_hide">
+						<div class="sb_show">显示详情信息</div>
+						<div class="sb_hide">
 							<div id="s_h">
 								<table class="table">
 									<th><?php echo $v['machine']['machine_name']; ?></th>
@@ -100,55 +98,54 @@
 			<?php endforeach; endif; else: echo "" ;endif; ?>
 			</ul>
 		</div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">选择操作类型</h4>
-            </div>
-            <div class="modal-body">
-                <form action="#">
-					<a href="<?php echo U('machine/edit'); ?>">
-						<div class="form-group">
-							<label for="addname">设备编辑</label>
-						</div>
-					</a>
-					<a href="<?php echo U('machine/machine_config'); ?>">
-						<div class="form-group">
-							<label for="addpassword">设备配置</label>
-						</div>
-					</a>
-					<a href="">
-						<div class="form-group">
-							<label for="addpassword1">经营日志</label>
-						</div>
-					</a>
-					<a href="">
-						<div class="form-group">
-							<label for="addemail">解绑设备</label>
-						</div>
-					</a>
-					<a href="">
-						<div class="form-group">
-							<label for="addyonghuzu">设备库存</label>
-						</div>
-					</a>                                                        
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <!-- <button type="button" class="btn btn-primary">提交</button> -->
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">选择操作类型</h4>
+					</div>
+					<div class="modal-body">
+						<form action="#">
+							<a href="<?php echo U('machine/edit','machine_id=1'); ?>">
+								<div class="form-group">
+									<label for="addname">设备编辑</label>
+								</div>
+							</a>
+							<a href="<?php echo U('machine/machine_config'); ?>">
+								<div class="form-group">
+									<label for="addpassword">设备配置</label>
+								</div>
+							</a>
+							<a href="">
+								<div class="form-group">
+									<label for="addpassword1">经营日志</label>
+								</div>
+							</a>
+							<a href="<?php echo U('machine/unbind'); ?>">
+								<div class="form-group">
+									<label for="addemail">解绑设备</label>
+								</div>
+							</a>
+							<a href="">
+								<div class="form-group">
+									<label for="addyonghuzu">设备库存</label>
+								</div>
+							</a>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						<!-- <button type="button" class="btn btn-primary">提交</button> -->
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 	<script src="__NEW__/js/rem.js"></script>
 	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
@@ -178,11 +175,19 @@
 
 		/*显示隐藏*/
 		$(document).ready(function() {
-			$("#sb_show").click(function() {
-				$("#sb_hide").slideToggle("slow");
-
+			$(".sb_show").click(function() {
+				$(this).siblings(".sb_hide").slideToggle("slow");
 			});
 		});
+		$('#upper').click(function(){
+			history.back();
+		})
+
+		$("#list_content li a").click(function(e) {
+			e.preventDefault();
+			var  = $(this).parents("li").find(".bianhao").text();
+			console.log("编号为:" + $bianhao)
+		})
 
 	</script>
 

@@ -33,7 +33,7 @@ class Room extends Base{
 		$machine_id = input('post.machine_id');
 		$roomid = input('post.roomid');
 		if($msgtype == 'open_room' && !$roomid){
-			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id,'goods_num'=>0])->select();
+			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id])->select();
 			foreach ($rooms as $k => $v) {
 				$roomid[$k] = $v['location'];
 			}

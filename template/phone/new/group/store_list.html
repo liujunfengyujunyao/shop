@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" id="rootHTML">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<title>Document</title>
+		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
+		<link rel="stylesheet" href="__NEW__/css/common.css">
+		<link rel="stylesheet" href="__NEW__/css/bootstrap.min.css">
+		<link rel="stylesheet" href="__NEW__/css/util.css">
+		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
+		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
+	</head>
+	<body>
+		<header id="head">
+			<div class="top_bar">
+				<a href="#" class="fa fa-chevron-left"></a>
+				<span class="title">店铺列表</span>
+				<a class="<n></n>o-addon" href="#"></a>
+			</div>
+			<ul class="slide_bar">
+				<li>
+					<a href="#">
+						<span class="fa fa-home"></span>
+						<!-- <span>首页</span> -->
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="fa fa-user"></span>
+						<!-- <span>我的</span> -->
+					</a>
+				</li>
+			</ul>
+		</header>
+		<section class="dp_content">
+			<div class="storeList">
+			<volist name="list" id="v">
+				<div class="store_item">
+					{$v.group_name}
+					<img class="store_icon" src="__NEW__/img/ui1.png" alt="">
+				</div>
+			</volist>	
+			</div>
+			<div style="height: 40px;"></div>
+			<a href="{:U('group/add_store')}">
+			<div class="addStoreBtn">
+				新增店铺  
+			</div>
+			</a>
+		</section>
+
+		
+		
+	</body>
+	<script src="__NEW__/js/rem.js"></script>
+	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+	<script>
+		<!--头部-->
+		$('.tog').click(function() {
+			$('.slide_bar').slideToggle();
+		})
+		// <!--增加列表-->
+		// $(".addStoreBtn").click(function(e){
+		// 	e.preventDefault();
+		// 	$(".storeList").append($(".store_item:last").clone())
+		// })
+
+	</script>
+</html>

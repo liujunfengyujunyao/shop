@@ -15,7 +15,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="#" class="fa fa-chevron-left"></a>
+				<a class="fa fa-chevron-left" id="upper"></a>
 				<span class="title">设备设置</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -51,31 +51,37 @@
 				</ul>
 				<div class="in_set_cont2">
 					<div id="is1">
-						<span id="">设备策略</span>
-						<div class="onoffswitch">
-						    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch1">
-						    <label class="onoffswitch-label" for="myonoffswitch1">
-						        <span class="onoffswitch-inner"></span>
-						        <span class="onoffswitch-switch"></span>
-						    </label>
-						</div>
+						<span id="">设备策略</span><input   type="radio"   value="值"    name="名称"   checked="checked"/>
+						<!-- <div id="" style="float: right;margin-right: 5%; padding-top: 0.15rem;">
+							<div class="onoffswitch">
+								<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch1">
+								<label class="onoffswitch-label" for="myonoffswitch1">
+									<span class="onoffswitch-inner"></span>
+									<span class="onoffswitch-switch"></span>
+								</label>
+							</div>
+						</div> -->
 					</div>
 					<div id="is2">
-						<span id="">平台策略</span>
-						<div class="onoffswitch">
-							<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch2">
-							<label class="onoffswitch-label" for="myonoffswitch2">
-								<span class="onoffswitch-inner"></span>
-								<span class="onoffswitch-switch"></span>
-							</label>
-						</div>
+						<span id="">平台策略</span><input   type="radio"   value="值"    name="名称"   checked="checked"/>
+						<!-- <div id="" style="float: right;margin-right: 5%;padding-top: 0.15rem;">
+							<div class="onoffswitch">
+								<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch2">
+								<label class="onoffswitch-label" for="myonoffswitch2">
+									<span class="onoffswitch-inner"></span>
+									<span class="onoffswitch-switch"></span>
+								</label>
+							</div>
+						</div> -->
 					</div>
 				</div>
 				<div id="in_ip6">
 					<input type="button" name="" id="in_ip4" value="保&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存" />
 				</div>
 				<div id="in_ip7">
+				<a href="{:U('machine/gift_config')}" >
 					<input type="button" name="" id="in_ip5" value="礼品格设置" />
+				</a>
 				</div>
 				
 			</div>
@@ -90,6 +96,9 @@
 		<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
+		})
+		$('#upper').click(function(){
+			history.back();
 		})
 	</script>
 </html>

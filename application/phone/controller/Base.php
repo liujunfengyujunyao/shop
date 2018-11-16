@@ -26,6 +26,15 @@ class Base extends controller{
 			//没有登录则跳转到登录页面
 			$this->redirect('logina/index');
 		}
+		//==========================权限管理================
+		// $nav = CONTROLLER_NAME.'-'.ACTION_NAME;
+		// if($nav != 'Index-index'){
+		// 	if(!in_array(strtolower($nav),explode(',',$_SESSION['think']['manager_info']['nav_list']))){
+		// 		$this->error('暂无权限',U('index/index'));
+		// 	}
+		// }
+		// 
+		// 
 		// //调用getnav获取菜单权限
 		// $this->getnav();
 

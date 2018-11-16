@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
+		<link rel="stylesheet" href="__NEW__/css/common.css">
+		<link rel="stylesheet" href="__NEW__/css/bootstrap.min.css">
+		<link rel="stylesheet" href="__NEW__/css/util.css">
+		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
+		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
+		<title>unbindFacility</title>
+	</head>
+
+	<body>
+		<header id="head">
+			<div class="top_bar">
+				<a class="fa fa-chevron-left" id="upper"></a>
+				<span class="title">解绑设备</span>
+				<a class="<n></n>o-addon" href="#"></a>
+			</div>
+			<ul class="slide_bar">
+				<li>
+					<a href="#">
+						<span class="fa fa-home"></span>
+						<!-- <span>首页</span> -->
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="fa fa-user"></span>
+						<!-- <span>我的</span> -->
+					</a>
+				</li>
+			</ul>
+		</header>
+		<section class="unbindFacility">
+		<form id="unbind" name="unbind" method="post" action="{:U('machine/unbind')}">
+		<volist name="list" id="v">
+			<div class="uf_item">
+				<div class="uf_tit">
+					<p class="txt">{$v.machine_name}</p>
+					<input type="checkbox" id="uf_item{$v.machine_id}" name="id[]" value="{$v.machine_id}">
+					<label for="uf_item{$v.machine_id}"></label>
+				</div>
+				<div class="uf_tit uf_more">
+					<span class="de_txt">查看详情</span>
+					<span class="soanjiao_border"></span>
+				</div>
+				<ul class="uf_conten">
+					<li>
+						<span class="ut_ctxt">在线状态</span>
+						<span class="ut_ctxt">{$v.is_online}</span>
+					</li>
+					<li>
+						<span class="ut_ctxt">绑定状态</span>
+						<span class="ut_ctxt">{$v.status}</span>
+					</li>
+					<li>
+						<span class="ut_ctxt">策略</span>
+						<span class="ut_ctxt">{$v.priority}</span>
+					</li>
+					<li>
+						<span class="ut_ctxt">设备地点</span>
+						<span class="ut_ctxt" style="color: #666;
+                    font-size: 13px;">{$v.address}</span>
+					</li>
+					<li>
+						<span class="ut_ctxt">设备编号</span>
+						<span class="ut_ctxt">{$v.machine_id}</span>
+					</li>
+					<li>
+						<span class="ut_ctxt">使用日期</span>
+						<span class="ut_ctxt">{$v.addtime}</span>
+					</li>
+				</ul>
+			</div>
+		</volist>
+			<div class="uf_footbtn">
+				<button class="uf_quxiao" type="button">取消</button>
+				<button class="uf_allcheckbox" type="button">全选</button>
+			</div>
+				<button class="addStoreBtn" id="np_keep" type="submit">确认解绑</button>			
+			</form>
+		</section>
+		<script src="__NEW__/js/rem.js"></script>
+		<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+
+		<script>
+// 			$(".uf_more").click(function(e) {
+// 				e.preventDefault();
+// 				$(".uf_more").find(".soanjiao_border").removeClass("soanjiao_border_on");
+// 				$(".uf_more").siblings(".uf_conten").removeClass("uf_conten_on");
+// 				$(this).find(".soanjiao_border").toggleClass("soanjiao_border_on");
+// 				$(this).siblings(".uf_conten").toggleClass("uf_conten_on");
+// 			})
+// 			$(".uf_allcheckbox").click(function(e) {
+// 				e.preventDefault();
+// 				$(".uf_tit input[type='checkbox']").prop("checked", true)
+// 			})
+// 			$(".uf_quxiao").click(function(e) {
+// 				e.preventDefault();
+// 				$(".uf_tit input[type='checkbox']").prop("checked", false)
+// 			})
+			
+			$("#upper").click(function(){
+				history.back();
+			})
+
+			$(".uf_more").click(function(e) {
+				e.preventDefault();
+				if ($(".uf_more").siblings(".uf_conten").hasClass("uf_conten_on")) {
+					if ($(this).siblings(".uf_conten").hasClass("uf_conten_on")) {
+						$(this).siblings(".uf_conten").removeClass("uf_conten_on");
+						$(this).find(".soanjiao_border").removeClass("soanjiao_border_on")
+					} else {
+						$(".uf_more").siblings(".uf_conten").removeClass("uf_conten_on")
+						$(".uf_more").find(".soanjiao_border").removeClass("soanjiao_border_on")
+					}
+				} else {
+					if ($(this).siblings(".uf_conten").hasClass("uf_conten_on")) {
+						$(this).find(".soanjiao_border").removeClass("soanjiao_border_on")
+						$(this).siblings(".uf_conten").removeClass("uf_conten_on");
+					} else {
+						$(this).find(".soanjiao_border").addClass("soanjiao_border_on")
+						$(this).siblings(".uf_conten").addClass("uf_conten_on");
+					}
+				}
+			})
+
+		</script>
+	</body>
+
+</html>

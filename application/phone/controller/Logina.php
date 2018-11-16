@@ -24,10 +24,11 @@ class Logina extends Controller{
 		}
 		$data['pass'] = md5($data['pass']);
 		$info = M('admin')->where(['phone'=>$data['tel']])->find();
-		$id = M('admin')->where(['phone'=>$data['tel']])->getField('admin_id');
+		$id = $info['admin_id'];
 		if($data['pass'] == $info['password']){
 			session('client_id',$id);
 			session("manager_info",$info);
+			Db::name('admin')->where(['phone'=>$data['tel']])->setField('last_login',time());
 			$this->success('登录成功',U('Phone/Index/index'));
 		}else{
 			$this->error("用户名密码错误或者账号未激活");
@@ -43,7 +44,7 @@ class Logina extends Controller{
 	//退出
 	public function logout(){
 	    	session(null);
-	    	$this->redirect("Phone/Login/index");
+	    	$this->success('退出登录成功',U('phone/logina/index'));
 	}
 
 }

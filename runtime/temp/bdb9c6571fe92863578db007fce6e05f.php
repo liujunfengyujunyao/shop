@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542001772;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542338257;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -15,7 +15,9 @@
 	<a href="<?php echo U('Phone/statistics/index'); ?>">
 		<div class="titlebar">
 			<div id="tit">
-				<img src="__NEW__/img/mine.png" id="me" href="<?php echo U('machine/mine'); ?>" >
+				<a href="<?php echo U('machine/mine'); ?>" >
+				<img src="__NEW__/img/mine.png" id="me">
+				</a>
 				<p class="title">今日总收益（元）</p>
 				<a href="<?php echo U('Phone/Msg/index'); ?>">
 				<img src="__NEW__/img/message.png" id="msg" title="消息"><span class="badge">3</span>
@@ -144,7 +146,7 @@
 				</a>
 			</div>
 			<ul class="short">
-				<li>
+				<li <?php if(!in_array('scan-index',$power) && $belong_id != 0) echo "style=display:none" ?> >
 					<a href="<?php echo U('Phone/Scan/index'); ?>">
 					<div class="icon fa fa-recycle" style="color:#4864ed;"></div>
 					<div class="text">
@@ -180,7 +182,7 @@
 					</div>
 					</a>
 				</li>
-			<!-- 	<li>
+				<li>
 					<a href="#">
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">
@@ -191,7 +193,7 @@
 						<div class="p2">礼品统计及管理</div>
 					</div>
 					</a>
-				</li> -->
+				</li>
 			</ul>
 		</div>
 
@@ -210,7 +212,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="#">
+					<a href="<?php echo U('staff/staff_manage'); ?>">
 					<div class="icon fa fa-money" style="color:#fe7b13;"></div>
 					<div class="text">
 						<div id="txt1">

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" id="rootHTML">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<title>Document</title>
+		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
+		<link rel="stylesheet" href="__NEW__/css/common.css">
+		<link rel="stylesheet" href="__NEW__/css/bootstrap.min.css">
+		<link rel="stylesheet" href="__NEW__/css/util.css">
+		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
+		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
+	</head>
+	<body>
+		<header id="head">
+			<div class="top_bar">
+				<a href="#" class="fa fa-chevron-left"></a>
+				<span class="title">设置店铺</span>
+				<a class="<n></n>o-addon" href="#"></a>
+			</div>
+			<ul class="slide_bar">
+				<li>
+					<a href="#">
+						<span class="fa fa-home"></span>
+						<!-- <span>首页</span> -->
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="fa fa-user"></span>
+						<!-- <span>我的</span> -->
+					</a>
+				</li>
+			</ul>
+		</header>
+		<section class="set_content">
+			<div class="set_ct1">
+				<ul>
+					<li>
+						<span id="">名称</span>
+						<input type="text" name="" id="it1" value="" />
+					</li>
+					<li>
+						<span id="">游戏价格</span>
+						<input type="text" name="" id="it2" value="" />
+					</li>
+					<li>
+						<span id="">商品价格</span>
+						<input type="text" name="" id="it3" value="" />
+					</li>
+					<li>
+						<span id="">赔率</span>
+						<input type="text" name="" id="it4" value="" />
+					</li>
+				</ul>
+			</div>
+			<div class="set_ct2">
+				<div id="set_ct2_title">
+					<span id="">店内机器</span>
+					<input type="button" name="" id="it5" value="添加机器" />
+				</div>
+				<ul class="machineUl">
+					<li id="m_item">
+						<span class="txt">口红机7号</span>
+						<span class="icon">-</span>
+						<span class="remove">删除</span>
+					</li>
+					<li id="m_item">
+						<span class="txt">口红机71号</span>
+						<span class="icon">-</span>
+						<span class="remove">删除</span>
+					</li>
+					<li id="m_item">
+						<span class="txt">口红机2号</span>
+						<span class="icon">-</span>
+						<span class="remove">删除</span>
+					</li>
+					<li id="m_item">
+						<span class="txt">口红机4号</span>
+						<span class="icon">-</span>
+						<span class="remove">删除</span>
+					</li>
+				</ul>
+
+			</div>
+		</section>
+
+
+	</body>
+	<script src="__NEW__/js/rem.js"></script>
+	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+	<script>
+		<!--头部-->
+		$('.tog').click(function() {
+			$('.slide_bar').slideToggle();
+		})
+		<!--删除列表-->
+		var $machineIcon = $(".machineUl li").find(".icon"),
+			$machineRemove = $(".machineUl li").find(".remove")
+		$machineIcon.click(function(e) {
+			e.preventDefault();
+			$(this).hide().siblings(".remove").addClass("move");
+		})
+		$machineRemove.click(function(e) {
+			e.preventDefault();
+			$(this).parent("li").remove();
+		})
+		$(".machineUl li .remove").click(function(e){  
+ e.preventDefault();  
+ $(this).parent("li").remove();  
+ })  
+		<!--增加列表-->
+		$("#it5").click(function(e){
+			e.preventDefault();
+			$(".machineUl").append($("#m_item:last").clone())
+		})
+	</script>
+</html>

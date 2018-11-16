@@ -131,7 +131,8 @@ class Index extends Base {
         
         $checkdate = json_encode($checkdate,true);
         session('checkdate',$checkdate);
-
+        $this->assign('power',explode(',',$manager_info['nav_list']));
+        $this->assign('belong_id',$manager_info['belong_id']);
         $this->assign('rate',$rate);
         $this->assign('checkdate',$checkdate);
         $this->assign('data',$data);

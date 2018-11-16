@@ -9,53 +9,45 @@ class Staff extends Base{
 	//新建人员
 	public function add_staff(){
 		if(IS_POST){
-			$user_name = '12号小弟';//input('post.user_name');//账户名称
-			$phone = '110';//input('post.phone');//手机
-			$pwd = '123456';//input('post.pwd');//密码
-			$power = array('machine-addscore_list','machine-unbind','group-create');//input('post.power')?input('post.power'):array();//权限
+			$user_name = input('post.username');//账户名称
+			$phone = input('post.phone');//手机
+			$pwd = input('post.password');//密码
+			$power = input('post.power/a')?input('post.power/a'):array();//权限
 			if(!$user_name || !$phone || !$pwd){
-				$error = array(
-					'status'=>0,
-					'msg'=>'参数不全'
-				);
-				return json($error);
+				return $this->error('参数不全');
 			}else{
-				$data = array(
-					'user_name'=>$user_name,
-					'password'=>md5($pwd),
-					'phone'=>$phone,
-					'nav_list'=>implode(',',$power),
-					'add_time'=>time(),
-					'belong_id'=>$_SESSION['think']['client_id'],
-					);
-				$res = Db::name('admin')->add($data);
-				if($res != false){
-					$suc = array(
-						'status'=>1,
-						'msg'=>'新建成功',
-						);
-					return json($suc);
+				$p = Db::name('admin')->field('admin_id')->where(['phone'=>$phone])->find();
+				if($p){
+					return $this->error('该手机已被注册');
 				}else{
-					$error = array(
-						'status'=>0,
-						'msg'=>'新建失败'
-					);
-					return json($error);
+					$data = array(
+						'user_name'=>$user_name,
+						'password'=>md5($pwd),
+						'phone'=>$phone,
+						'nav_list'=>implode(',',$power),
+						'add_time'=>time(),
+						'belong_id'=>$_SESSION['think']['client_id'],
+						);
+					$res = Db::name('admin')->add($data);
+					if($res != false){
+						return $this->success('新建成功',U('staff/staff_list'));
+					}else{
+						return $this->error('新建失败');
+					}
 				}
 			}
 		}else{
 			//权限列表
-			$p_power = DB::name('user_power')->field('id,name')->where(['pid'=>0])->select();
-			$c_power = Db::name('user_power')->field('pid,name,path')->where('pid','neq',0)->select();
-			foreach ($p_power as $k => $v) {
-				foreach ($c_power as $kk => $vv) {
-					if($vv['pid'] == $v['id']){
-						$p_power[$k]['power'][]=$vv;
-					}
-				}
-			}
-			halt($p_power);
-			$this->assign('power',$p_power);
+			// $p_power = DB::name('user_power')->field('id,name')->where(['pid'=>0])->select();
+			$c_power = Db::name('user_power')->field('pid,name,path,id')->where('pid','neq',0)->select();
+			// foreach ($p_power as $k => $v) {
+			// 	foreach ($c_power as $kk => $vv) {
+			// 		if($vv['pid'] == $v['id']){
+			// 			$p_power[$k]['power'][]=$vv;
+			// 		}
+			// 	}
+			// }
+			$this->assign('power',$c_power);
 			return $this->fetch();
 		}
 	}
@@ -63,22 +55,68 @@ class Staff extends Base{
 	//人员列表
 	public function staff_list(){
 		$user_id = $_SESSION['think']['client_id'];
-		$list  = Db::name('admin')->where(['belong_id'=>$user_id])->field('user_name,admin_id')->select();
+		$list  = Db::name('admin')->alias('a')->join('tfs_machine_group b','a.group_id=b.id','left')->where(['a.belong_id'=>$user_id])->field('a.user_name,a.admin_id,b.group_name')->select();
 		$this->assign('list',$list);
 		return $this->fetch();
 	}
 
 	//人员编辑
-	public function edit_staff(){
-		$a = DB::name('machine')->select();
-		halt($a);
+	public function edit_staff(){		
+		$admin_id = $_SESSION['think']['client_id'];
+		if(IS_POST){
+			$user_id = input('post.user_id');
+			$username = input('post.username');//账户名称
+			if(!$username){
+				return $this->error('名称不可为空');
+			}else{
+			//$pwd = input('post.password');//密码
+				$power = input('post.power/a')?input('post.power/a'):array();
+				$store = input('post.store');
+				$data = array(
+					'user_name'=>$username,
+					'nav_list'=>implode(',',$power),
+					'group_id'=>$store,
+					);
+				$res = Db::name('admin')->where(['admin_id'=>$user_id])->save($data);
+				$res = DB::name('admin')->getLastSql();
+				if($res !== false){
+					return $this->success('修改成功',U('staff/staff_list'));
+				}else{
+					return $this->error('修改失败');
+				}
+			}
+		}else{
+			$user_id = input('get.user_id');
+			$admin = Db::name('admin')->where(['admin_id'=>$user_id])->field('user_name,password,nav_list,group_id,admin_id')->find();
+			$store = Db::name('machine_group')->where(['user_id'=>$admin_id])->field('group_name,id')->select();
+			$power = Db::name('user_power')->field('pid,name,path,id')->where('pid','neq',0)->select();
+			$select_power = $admin['nav_list'];
+			$this->assign('store',$store);
+			$this->assign('power',$power);
+			$this->assign('spower',$select_power);
+			$this->assign('admin',$admin);
+			return $this->fetch();
+		}
 	}
 
 	//删除人员
 	public function delete_staff(){
-
+		$request=  \think\Request::instance();
+		dump(explode(',',$_SESSION['think']['manager_info']['nav_list']));
+		dump($request->action());
+		$nav = CONTROLLER_NAME.'-'.ACTION_NAME;
+		dump($nav);
+		if(in_array(strtolower($nav),explode(',',$_SESSION['think']['manager_info']['nav_list']))){
+			echo "1";
+		}
 	}
 
+
+	//人员管理
+	public function staff_manage(){
+
+		return $this->fetch();
+	}
 
 }
 

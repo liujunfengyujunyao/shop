@@ -164,38 +164,32 @@ class Machine extends Base{
 
 	//解绑设备
 	public function unbind(){
-		$machine_id = input('post.machine_id');
 		$user_id = $_SESSION['think']['client_id'];
-		if(!$machine_id || !$user_id){
-			$data = array(
-        		'status'=>0,
-        		'msg'=>'参数不全'
-        		);
-			return json($data);
-		}else{
-			$machine_user = Db::name('machine')->where(['machine_id'=>machine_id])->getField('user_id');
-			if($machine_user != $user_id){
-				$data = array(
-					'status'=>0,
-					'msg'=>'该机器由他人绑定'
-					);
-				return json($data);
+		if(IS_POST){
+			$machine_id = input('post.id/a');	
+			if(!$machine_id || !$user_id){
+				return $this->error('参数不全');
 			}else{
-				$res = Db::name('machine')->where(['machine_id'=>$machine_id])->setField('user_id',0);
+				$id = implode(',',$machine_id);
+				$res = Db::name('machine')->where('machine_id','in',$id)->setField('client_id',0);
 				if($res !== false){
-					$data = array(
-					'status'=>1,
-					'msg'=>'解绑成功'
-					);
-					return json($data);
+					return $this->success('解绑成功');
 				}else{
-					$data = array(
-					'status'=>0,
-					'msg'=>'解绑失败'
-					);
-					return json($data);
-				}
+					return $this->error('解绑失败');
+				}				
 			}
+		}else{
+			$online = array('0'=>'离线','1'=>'在线');
+			$priority = array('0'=>'设备策略','1'=>'平台策略');
+			$list = Db::name('machine')->where(['client_id'=>$user_id])->field('machine_name,machine_id,addtime,address,client_id,priority,is_online')->select();
+			foreach ($list as $k => $v) {
+				$list[$k]['is_online'] = $online[$v['is_online']];
+				$list[$k]['priority'] = $priority[$v['priority']];
+				$list[$k]['addtime'] = date('Y.m.d',$v['addtime']);
+				$list[$k]['status'] = $v['client_id']?'已绑定':'未绑定';
+			}
+			$this->assign('list',$list);
+			return $this->fetch();
 		}
 	}
 
@@ -326,7 +320,69 @@ class Machine extends Base{
 
 	//个人中心
 	public function mine(){
+		$user_id = $_SESSION['think']['client_id'];
+		$user = Db::name('admin')->where(['admin_id'=>$user_id])->field('user_name,last_login')->find();
+		$user['last_login'] = date('Y.m.d',$user['last_login']);
+		$this->assign('user',$user);
 		return $this->fetch();
+	}
+
+
+	//修改密码
+	public function reset_pwd(){
+		$user_id = $_SESSION['think']['client_id'];
+		if(IS_POST){
+			$old_pwd = md5(input('post.old_pwd'));
+			$new_pwd1 = md5(input('post.new_pwd1'));
+			$new_pwd2 = md5(input('post.new_pwd2'));
+			$password = Db::name('admin')->where(['admin_id'=>$user_id])->getField('password');
+			if($old_pwd != $password){//旧密码不匹配
+				$this->error('原密码错误');
+			}else{
+				if($new_pwd1 != $new_pwd2){//两次新密码不匹配
+					$this->error('两次新密码不匹配');
+				}else{
+					$res = DB::name('admin')->where(['admin_id'=>$user_id])->setField('password',$new_pwd1);
+					if($res != false){ //修改成功
+						$this->success('修改成功',U('machine/mine'));
+					}
+				}
+			}
+		}else{
+			$phone = Db::name('admin')->where(['admin_id'=>$user_id])->getField('phone');
+			$this->assign('phone',$phone);
+			return $this->fetch();
+		}
+	}
+
+
+	//礼品格设置
+	public function gift_config(){
+		if(IS_POST){
+			$machine_id = input('post.machine_id');
+			$location = input('post.location');
+			if(!$machine_id || !$location){
+				return $this->error('参数不全');
+			}else{
+				$data = array(
+					'goods_price'=>input('post.price'),
+					'game_odds'=>input('post.odds')
+					);
+				$res = Db::name('client_machine_conf')->where(['machine_id'=>$machine_id,'location'=>$location])->save($data);
+				if($res !== false){
+					return $this->success('修改成功',U('machine/gift_list'));
+				}else{
+					return $this->error('修改失败');
+				}
+			}
+		}else{
+			$machine_id = input('get.machine_id');
+			$location = input('get.location');
+			// $room = Db::name('client_machine_conf')->alias('a')->join('tfs_client_machine_stock b','a.id=b.stock_id','left')->where(['a.machine_id'=>$machine_id,'a.location'=>$location])->field('')->select();
+			$room = Db::name('client_machine_conf')->where(['machine_id'=>$machine_id,'location'=>$location])->field('goods_price,game_odds')->find();
+			$this->assign('room',$room);
+			return $this->fetch();
+		}
 	}
 
 
@@ -343,9 +399,6 @@ class Machine extends Base{
 	//商品列表
 	public function goods_list(){
 		$id = I('get.machine_id');
-		
-		
-
 		if (IS_POST) {
 			$data = I('post.');
 
@@ -360,97 +413,83 @@ class Machine extends Base{
 			$r = DB::name('client_machine_conf')->where(['machine_id'=>$id])->select();//原配置
 			if($r){
 				//非第一次配置
-				
-
-			foreach ($data['location'] as $key => $value) {
-						$edit_conf['goods_name'] = $value['goods_name'];
-						// $add_conf['goods_num'] = $value['max_stock'];
-						$edit_conf['goods_price'] = $value['goods_price'];
-						// $add_conf['machine_id'] = $id;
-						// $add_conf['addtime'] = time();
-						$edit_conf['edittime'] = time();
-						// $add_conf['location'] = $value['location'];
-						// $add_stock['machine_id'] = $id;
-						$edit_stock['goods_name'] = $value['goods_name'];
-						// $add_stock['goods_num'] = 0;			
-						$edit_stock['edittime'] = time();
-						// $add_stock['stock_num'] = $max_stock;
-						// $add_stock['location'] = $value['location'];
-						$res = DB::name("client_machine_conf")->where(['machine_id'=>$id,'location'=>$value['location']])->save($edit_conf);
-						$res2 = DB::name("client_machine_stock")->where(['machine_id'=>$id,'location'=>$value['location']])->save($edit_stock);
-
-			}
-
-			$this->redirect('Machine/goods_list',array('machine_id'=>$id));
-
+				foreach ($data['location'] as $key => $value) {
+					$edit_conf['goods_name'] = $value['goods_name'];
+					// $add_conf['goods_num'] = $value['max_stock'];
+					$edit_conf['goods_price'] = $value['goods_price'];
+					// $add_conf['machine_id'] = $id;
+					// $add_conf['addtime'] = time();
+					$edit_conf['edittime'] = time();
+					// $add_conf['location'] = $value['location'];
+					// $add_stock['machine_id'] = $id;
+					$edit_stock['goods_name'] = $value['goods_name'];
+					// $add_stock['goods_num'] = 0;			
+					$edit_stock['edittime'] = time();
+					// $add_stock['stock_num'] = $max_stock;
+					// $add_stock['location'] = $value['location'];
+					$res = DB::name("client_machine_conf")->where(['machine_id'=>$id,'location'=>$value['location']])->save($edit_conf);
+					$res2 = DB::name("client_machine_stock")->where(['machine_id'=>$id,'location'=>$value['location']])->save($edit_stock);
+				}
+				$this->redirect('Machine/goods_list',array('machine_id'=>$id));
 
 			}else{
 
 				//第一次配置
-			$new_location = array_column($data['location'],'location');
+				$new_location = array_column($data['location'],'location');
+				
+				$old_location = DB::name('machine')->where(['machine_id'=>$data['machine_id']])->getField('location');
+				
+				$old_location = explode(',',$old_location);
+				
+				$diff_location = array_diff($old_location,$new_location);
 			
-			$old_location = DB::name('machine')
-					->alias('m')
-					->join("__MACHINE_TYPE__ t","m.type_id = t.id",'LEFT')
-					->where(['m.machine_id'=>$data['machine_id']])
-					->getField('t.location');
-			
-			$old_location = explode(',',$old_location);
-			
-			$diff_location = array_diff($old_location,$new_location);
-		
-			if($diff_location){
+				if($diff_location){
 					foreach ($diff_location as $k => $v) {
-    				$conf = array(
-    					'goods_name' => '',
-    					'goods_num' => 0,
-    					'goods_price' => 0,
-    					'machine_id' => $id,
-    					'location' => $v,
-    					'addtime' => time(),
-    					'edittime' => time(),
-    					);
-    				$stock = array(
-    					'machine_id' => $id,
-    					'goods_name' => '',
-    					'goods_num' => 0,
-    					'edittime' => time(),
-    					'stock_num' => $max_stock,
-    					'location' => $v,
-    					);
-    				DB::name('client_machine_stock')->add($stock);
-    				DB::name('client_machine_conf')->add($conf);
+	    				$conf = array(
+	    					'goods_name' => '',
+	    					'goods_num' => 0,
+	    					'goods_price' => 0,
+	    					'machine_id' => $id,
+	    					'location' => $v,
+	    					'addtime' => time(),
+	    					'edittime' => time(),
+	    					);
+	    				$stock = array(
+	    					'machine_id' => $id,
+	    					'goods_name' => '',
+	    					'goods_num' => 0,
+	    					'edittime' => time(),
+	    					'stock_num' => $max_stock,
+	    					'location' => $v,
+	    					);
+	    				DB::name('client_machine_stock')->add($stock);
+	    				DB::name('client_machine_conf')->add($conf);
+					}		
+				}
+				foreach ($data['location'] as $key => $value) {
+					$add_conf['goods_name'] = $value['goods_name'];
+					$add_conf['goods_num'] = $value['max_stock'];
+					$add_conf['goods_price'] = $value['goods_price'];
+					$add_conf['machine_id'] = $id;
+					$add_conf['addtime'] = time();
+					$add_conf['edittime'] = time();
+					$add_conf['location'] = $value['location'];
 
+					$add_stock['machine_id'] = $id;
+					$add_stock['goods_name'] = $value['goods_name'];
+					$add_stock['goods_num'] = 0;
+					
+					$add_stock['edittime'] = time();
+					$add_stock['stock_num'] = $max_stock;
+					$add_stock['location'] = $value['location'];
+					DB::name("client_machine_conf")->add($add_conf);
+					DB::name("client_machine_stock")->add($add_stock);
+				}
 
-							}
-		
+				$this->redirect('Machine/goods_list',array('machine_id'=>$id));
 			}
-					foreach ($data['location'] as $key => $value) {
-						$add_conf['goods_name'] = $value['goods_name'];
-						$add_conf['goods_num'] = $value['max_stock'];
-						$add_conf['goods_price'] = $value['goods_price'];
-						$add_conf['machine_id'] = $id;
-						$add_conf['addtime'] = time();
-						$add_conf['edittime'] = time();
-						$add_conf['location'] = $value['location'];
-
-						$add_stock['machine_id'] = $id;
-						$add_stock['goods_name'] = $value['goods_name'];
-						$add_stock['goods_num'] = 0;
-						
-						$add_stock['edittime'] = time();
-						$add_stock['stock_num'] = $max_stock;
-						$add_stock['location'] = $value['location'];
-						DB::name("client_machine_conf")->add($add_conf);
-						DB::name("client_machine_stock")->add($add_stock);
-			}
-
-			$this->redirect('Machine/goods_list',array('machine_id'=>$id));
-
-
-		}
-	}else{
-					//   $goodsList = M('client_machine_stock')
+		}else{
+				//   $goodsList = M('client_machine_stock')
  				// ->alias('s')
  				// ->field("g.goods_id,g.goods_name,g.goods_sn,g.cat_id,g.shop_price,s.goods_num,s.machine_id,m.location")
  				// ->join('__GOODS__ g','s.goods_id = g.goods_id','LEFT')
@@ -459,44 +498,35 @@ class Machine extends Base{
  				// ->where(['s.machine_id'=>$machine_id,'m.machine_id'=>$machine_id])
  				// // ->where(['s.machine_id'=>$machine_id])
  				// ->limit($Page->firstRow.','.$Page->listRows)
-     //            ->select();
-     	
+                // ->select();
+     			
+			$location = DB::name('machine')
+	    			->where(['machine_id' => $id])
+	    			->getField('location');   
 		
-		$type_id = DB::name('machine')
-    			->where(['machine_id' => $id])
-    			->getField('type_id');
-		$max_stock = DB::name('machine_type')
-    			->where(['id'=>$type_id])
-    			->getField('goods_num');
-    	$location = DB::name('machine_type')
-    			->where(['id' => $type_id])
-    			->getField('location');
-    
-	
-    	$location = explode(',',$location);
-    	
-    	// $info = DB::name('client_machine_conf')
-    	// 		->alias('mc')
-    	// 		->field('mc.goods_name, mc.goods_num, mc.location, ms.stock_id, ms.goods_num as real_num,mc.goods_price')//real_num为本机当前库存
-    	// 		// ->join('__GOODS__ g', 'g.goods_id = mc.goods_id','LEFT')
-    	// 		->join('__CLIENT_MACHINE_STOCK__ ms', 'ms.machine_id = mc.machine_id','LEFT')
-    	// 		->where(['mc.machine_id'=>$id,'ms.machine_id'=>$id])
-    	// 		->select();
-    	$info = DB::name('client_machine_conf')
-    			->alias('mc')
-    			->field('mc.goods_name,ms.goods_num,mc.location,mc.goods_price,ms.stock_num')
-    			->join('__CLIENT_MACHINE_STOCK__ ms','ms.location = mc.location','LEFT')
-    			->where(['mc.machine_id'=>$id,'ms.machine_id'=>$id])
-    			->group('mc.id')
-    			->select();
-
+	    	$location = explode(',',$location);
+	    	
+	    	// $info = DB::name('client_machine_conf')
+	    	// 		->alias('mc')
+	    	// 		->field('mc.goods_name, mc.goods_num, mc.location, ms.stock_id, ms.goods_num as real_num,mc.goods_price')//real_num为本机当前库存
+	    	// 		->join('__GOODS__ g', 'g.goods_id = mc.goods_id','LEFT')
+	    	// 		->join('__CLIENT_MACHINE_STOCK__ ms', 'ms.machine_id = mc.machine_id','LEFT')
+	    	// 		->where(['mc.machine_id'=>$id,'ms.machine_id'=>$id])
+	    	// 		->select();
+	    	$info = DB::name('client_machine_conf')
+	    			->alias('mc')
+	    			->field('mc.goods_name,ms.goods_num,mc.location,mc.goods_price,ms.stock_num')
+	    			->join('__CLIENT_MACHINE_STOCK__ ms','ms.location = mc.location','LEFT')
+	    			->where(['mc.machine_id'=>$id,'ms.machine_id'=>$id])
+	    			->group('mc.id')
+	    			->select();
    
-    	$this->assign('machine_id',$id);
-    	$this->assign('max_stock',$max_stock);
-    	$this->assign('info',$info);
-    	$this->assign('location',$location);
-    	
-		return $this->fetch();
+	    	$this->assign('machine_id',$id);
+	    	$this->assign('max_stock',$max_stock);
+	    	$this->assign('info',$info);
+	    	$this->assign('location',$location);
+	    	
+			return $this->fetch();
 		}
 
 	}

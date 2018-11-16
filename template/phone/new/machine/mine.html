@@ -4,18 +4,18 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 		<title>Document</title>
-		<link rel="stylesheet" href="./css/fontawesome/font-awesome.min.css">
-		<link rel="stylesheet" href="./css/common.css">
-		<link rel="stylesheet" href="./css/bootstrap.min.css">
-		<link rel="stylesheet" href="./css/util.css">
-		<link rel="stylesheet" href="./css/top_frame.css">
-		<link rel="stylesheet" href="./css/iconfont.css" />
-		<link rel="stylesheet" type="text/css" href="css/index1.css" />
+		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
+		<link rel="stylesheet" href="__NEW__/css/common.css">
+		<link rel="stylesheet" href="__NEW__/css/bootstrap.min.css">
+		<link rel="stylesheet" href="__NEW__/css/util.css">
+		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
+		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
 	</head>
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="#" class="fa fa-chevron-left"></a>
+				<a class="fa fa-chevron-left" id="upper"></a>
 				<span class="title">个人中心</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -38,60 +38,60 @@
 			<div class="p_cont">
 				<div class="p_con_header">
 					<div id="p_img">
-						<img src="img/Personnel%20management.png">
+						<img src="__NEW__/img/Personnel%20management.png">
 					</div>
 					<div id="p_name">
-						<span id="p_n">管理员1</span>
-						<p id="p_time">上次登录&nbsp;2018.10.02</p>
+						<span id="p_n">{$user.user_name}</span>
+						<p id="p_time">上次登录&nbsp;{$user.last_login}</p>
 					</div>
 				</div>
 				<ul>
 					<li>
 						<a href="">
 							<span id="">系统通知</span>
-							<img src="img/rightjt.png">
+							<img src="__NEW__/img/rightjt.png">
 						</a>
 					</li>
 					<div id="line" style="width: 90%; height: 0.01rem; margin: 0 auto; background-color: #A9A9A9;"></div>
 					<li>
 						<a href="">
 							<span id="">操作日志</span>
-							<img src="img/rightjt.png">
+							<img src="__NEW__/img/rightjt.png">
 						</a>
 					</li>
 					<div id="line" style="width: 90%; height: 0.01rem; margin: 0 auto; background-color: #A9A9A9;"></div>
 					<li>
-						<a href="">
+						<a href="{:U('machine/reset_pwd')}">
 							<span id="">修改密码</span>
-							<img src="img/rightjt.png">
+							<img src="__NEW__/img/rightjt.png">
 						</a>
 					</li>
 					<div id="line" style="width: 90%; height: 0.01rem; margin: 0 auto; background-color: #A9A9A9;"></div>
 					<li>
 						<a href="">
 							<span id="">数据统计</span>
-							<img src="img/rightjt.png">
+							<img src="__NEW__/img/rightjt.png">
 						</a>
 					</li>
 					<div id="line" style="width: 90%; height: 0.01rem; margin: 0 auto; background-color: #A9A9A9;"></div>
 					<li>
-						<a href="">
+						<a href="{:U('staff/staff_list')}">
 							<span id="">人员管理</span>
-							<img src="img/rightjt.png">
+							<img src="__NEW__/img/rightjt.png">
 						</a>
 					</li>
 					<div id="line" style="width: 90%; height: 0.01rem; margin: 0 auto; background-color: #A9A9A9;"></div>
 					<li>
 						<a href="">
 							<span id="">设备统计</span>
-							<img src="img/rightjt.png">
+							<img src="__NEW__/img/rightjt.png">
 						</a>
 					</li>
 					<div id="line" style="width: 90%; height: 0.01rem; margin: 0 auto; background-color: #A9A9A9;"></div>
 					<li>
-						<a href="">
+						<a href="{:U('logina/logout')}">
 							<span id="">退出登录</span>
-							<img src="img/rightjt.png">
+							<img src="__NEW__/img/rightjt.png">
 						</a>
 					</li>
 					</ul>
@@ -100,12 +100,15 @@
 
 
 	</body>
-	<script src="./js/rem.js"></script>
-	<script src="js/jquery-2.1.4.min.js"></script>
+	<script src="__NEW__/js/rem.js"></script>
+	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
 	<script>
 		<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
+		})
+		$('#upper').click(function(){
+			history.back();
 		})
 	</script>
 </html>

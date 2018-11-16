@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" id="rootHTML">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<title>Document</title>
+		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
+		<link rel="stylesheet" href="__NEW__/css/common.css">
+		<link rel="stylesheet" href="__NEW__/css/bootstrap.min.css">
+		<link rel="stylesheet" href="__NEW__/css/util.css">
+		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
+		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
+	</head>
+	<body>
+		<header id="head">
+			<div class="top_bar">
+				<a class="fa fa-chevron-left" id="upper"></a>
+				<span class="title">人员管理</span>
+				<a class="<n></n>o-addon" href="#"></a>
+			</div>
+			<ul class="slide_bar">
+				<li>
+					<a href="#">
+						<span class="fa fa-home"></span>
+						<!-- <span>首页</span> -->
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="fa fa-user"></span>
+						<!-- <span>我的</span> -->
+					</a>
+				</li>
+			</ul>
+		</header>
+		<section class="pm_content">
+			<div class="pm_ct">
+				<ul>
+					<a href="{:U('staff/add_staff')}">
+						<li>
+							<span id="pm_new_people">新建人员</span>
+							<img src="__NEW__/img/sanjiao.png.png">
+						</li>
+					</a>
+					<a href="{:U('staff/staff_list')}">
+						<li>
+							<span id="pm_people_list">人员列表</span>
+							<img src="__NEW__/img/sanjiao.png.png">
+						</li>
+					</a>
+
+				</ul>
+			</div>
+		</section>
+
+
+
+
+
+	</body>
+	<script src="__NEW__/js/rem.js"></script>
+	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+	<script>
+		<!--头部-->
+		$('.tog').click(function() {
+			$('.slide_bar').slideToggle();
+		})
+		$('#upper').click(function(){
+			history.back();
+		})
+	</script>
+</html>
