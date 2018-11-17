@@ -287,11 +287,18 @@ class Machine extends Base{
 
 	public function edit(){
 		if (IS_POST) {
-			
-			$data = $_POST;
-			halt($data);
-			DB::name('machine')->where(['machine_id'=>$data['machine_id']])->save($data);
-			//$this->redirect('Machine/index');
+			$machine_id = input('post.machine_id');
+			$data = array(
+				'machine_name'=>input('post.machine_name'),
+				'group_id'=>input('post.store'),
+				'address'=>input('post.address').input('post.detail_address')
+				);
+			$res = DB::name('machine')->where(['machine_id'=>$machine_id])->save($data);
+			if($res !== false){
+				return $this->success('修改成功',U('machine/index'));
+			}else{
+				return $this->error('修改失败');
+			}
 
 		}else{
 			$admin_id = $_SESSION['think']['client_id'];
@@ -301,16 +308,18 @@ class Machine extends Base{
 				->alias('a')
 				->join('tfs_machine_group b','a.group_id=b.id','left')
 		        ->where(['a.machine_id'=>$machine_id])
-		        ->field('a.address,a.machine_name,b.group_name,a.group_id')
+		        ->field('a.address,a.machine_name,b.group_name,a.group_id,a.machine_id')
 		        ->find();
-		    $info['group_name'] = $info['group_name']?$info['group_name']:'无群组';
+		    //$info['group_name'] = $info['group_name']?$info['group_name']:'无群组';
 		    $store = Db::name('machine_group')->where(['user_id'=>$admin_id])->field('group_name,id')->select();
+		    //$detail_address = end(explode('|',$info['address']));
 			// halt($this->getRegion(0,1));
 			// halt($this->getRegion($info['province_id'],2));
 			// halt($this->getRegion($info['city_id'],3));
 			//$this->assign('province', $this->getRegion(0, 1)); 
             //$this->assign('city', $this->getRegion($info['province_id'], 2));
             //$this->assign('district', $this->getRegion($info['city_id'], 3));
+            //$this->assign('detail',$detail_address);
             $this->assign('store',$store);
 			$this->assign('info',$info);
 			//halt($info);
