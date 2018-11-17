@@ -898,6 +898,43 @@ body {
 	border: #FFFFFF;
 }
 
+.pop_box{
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, .4);
+	z-index: 1314;
+}
+.add_ct2{
+	z-index: 1000;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	width: calc(100% - 30px);
+	margin: 0 auto;
+	background-color: #fff;
+	border-radius: 3px;
+}
+.add_ct2 .addmachineUl{
+	overflow: hidden;
+	margin: 0;
+}
+.add_ct2 .addmachineUl li{
+    border-bottom: solid 1px #e4e4e4;
+    padding: 0 10px;
+    height: 35px;
+    line-height: 35px;
+}
+.add_ct2 .addmachineUl li:last-child{
+	border: none;
+}
+
 /*设备绑定*/
 .ib_content ul {
 	margin-top: 0.1rem;
@@ -978,7 +1015,7 @@ body {
 	top: 50%;
 	transform: translateY(-50%);
 	right: .15rem;
-	width: 14px;
+	width: 0.4rem;
 	height: auto;
 }
 

@@ -289,25 +289,29 @@ class Machine extends Base{
 		if (IS_POST) {
 			
 			$data = $_POST;
+			halt($data);
 			DB::name('machine')->where(['machine_id'=>$data['machine_id']])->save($data);
 			//$this->redirect('Machine/index');
 
 		}else{
+			$admin_id = $_SESSION['think']['client_id'];
 			//$machine_id = I('post.machine_id');
 			$machine_id = input('get.id');
 			$info = DB::name('machine')
 				->alias('a')
 				->join('tfs_machine_group b','a.group_id=b.id','left')
 		        ->where(['a.machine_id'=>$machine_id])
-		        ->field('a.machine_name,b.group_name')
+		        ->field('a.address,a.machine_name,b.group_name,a.group_id')
 		        ->find();
 		    $info['group_name'] = $info['group_name']?$info['group_name']:'无群组';
+		    $store = Db::name('machine_group')->where(['user_id'=>$admin_id])->field('group_name,id')->select();
 			// halt($this->getRegion(0,1));
 			// halt($this->getRegion($info['province_id'],2));
 			// halt($this->getRegion($info['city_id'],3));
-			$this->assign('province', $this->getRegion(0, 1)); 
-            $this->assign('city', $this->getRegion($info['province_id'], 2));
-            $this->assign('district', $this->getRegion($info['city_id'], 3));
+			//$this->assign('province', $this->getRegion(0, 1)); 
+            //$this->assign('city', $this->getRegion($info['province_id'], 2));
+            //$this->assign('district', $this->getRegion($info['city_id'], 3));
+            $this->assign('store',$store);
 			$this->assign('info',$info);
 			//halt($info);
 			return $this->fetch();
@@ -402,14 +406,29 @@ class Machine extends Base{
 				return $this->error('参数不全');
 			}else{
 				$data = array(
+					'goods_name'=>input('post.goods_name'),
 					'goods_price'=>input('post.goods_price'),
-					'game_odds'=>input('post.game_odds')
+					'game_odds'=>input('post.game_odds'),
+					'edittime'=>time()
 					);
-				$res = Db::name('client_machine_conf')->where(['machine_id'=>$machine_id,'location'=>$location])->save($data);
-				if($res !== false){
-					return $this->success('修改成功',U('machine/gift_select',array('id'=>$machine_id)));
+				$res = Db::name('client_machine_conf')->where(['machine_id'=>$machine_id,'location'=>$location])->getField('id');
+				if(!$res){//第一次编辑
+					$data['machine_id'] = $machine_id;
+					$data['addtime'] = time();
+					$data['location'] = $location;
+					$a = Db::name('client_machine_conf')->add($data);
+					if($a != false){
+						return $this->success('修改成功',U('machine/gift_select',array('id'=>$machine_id)));
+					}else{
+						return $this->error('修改失败');
+					}
 				}else{
-					return $this->error('修改失败');
+					$b = Db::name('client_machine_conf')->where(['machine_id'=>$machine_id,'location'=>$location])->save($data);
+					if($res !== false){
+						return $this->success('修改成功',U('machine/gift_select',array('id'=>$machine_id)));
+					}else{
+						return $this->error('修改失败');
+					}
 				}
 			}
 		}else{
@@ -430,10 +449,9 @@ class Machine extends Base{
 
 	//设备库存
 	public function stock(){
-		$client_id = session('client_id');
-		$test = M('machine')->where(['client_id'=>$client_id])->select();
-		
-		$count = DB::name('machine')->where(['client_id'=>$client_id])->count();
+		$client_id = $_SESSION['think']['client_id'];
+
+		//$count = DB::name('machine')->where(['client_id'=>$client_id])->count();
 		
 		$machine = DB::name('machine')
 				->field("machine_name,province_id,city_id,machine_id,district_id")
@@ -443,19 +461,19 @@ class Machine extends Base{
 		if ($machine) {
 			//查询名下设备
 			foreach ($machine as $key => &$value) {
-			$province = DB::name('region')->where(['id'=>$value['province_id']])->getField('name');
-			$city = DB::name('region')->where(['id'=>$value['city_id']])->getField('name');
-			$district = DB::name('region')->where(['id'=>$value['district_id']])->getField('name');
-			// $value['address'] = $province . $city . $district;
-			$value['address'] = $province . $district;
-			$goods = DB::name('client_machine_stock')
-					->alias('ms')
-					->field("ms.* , FROM_UNIXTIME(ms.edittime, '%Y-%m-%d %H:%i:%s') as edittime,mc.goods_price")
-					->join("__CLIENT_MACHINE_CONF__ mc","mc.location = ms.location",'LEFT')
-					->where(['ms.machine_id'=>$value['machine_id'],'mc.machine_id'=>$value['machine_id']])
-					->select();
-			$value['goods'] = $goods;
-		}
+				$province = DB::name('region')->where(['id'=>$value['province_id']])->getField('name');
+				$city = DB::name('region')->where(['id'=>$value['city_id']])->getField('name');
+				$district = DB::name('region')->where(['id'=>$value['district_id']])->getField('name');
+				// $value['address'] = $province . $city . $district;
+				$value['address'] = $province . $district;
+				$goods = DB::name('client_machine_stock')
+						->alias('ms')
+						->field("ms.* , FROM_UNIXTIME(ms.edittime, '%Y-%m-%d %H:%i:%s') as edittime,mc.goods_price")
+						->join("__CLIENT_MACHINE_CONF__ mc","mc.location = ms.location",'LEFT')
+						->where(['ms.machine_id'=>$value['machine_id'],'mc.machine_id'=>$value['machine_id']])
+						->select();
+				$value['goods'] = $goods;
+			}
 		}
 
 		$this->assign('machine',$machine);
@@ -467,11 +485,15 @@ class Machine extends Base{
 	//礼品格选择
 	public function gift_select(){
 		$machine_id = input('get.id');
-		$game_price = DB::name('machine')
+		$machine = DB::name('machine')
 			->where(['machine_id' => $machine_id])
-			->getField('game_price');
+			->field('game_price,location')
+			->find();
 	
-    	$location = explode(',',$location);
+    	$room = explode(',',$machine['location']);
+    	foreach ($room as $k => $v) {
+    		$location[]['location'] = $v;
+    	}
     	
     	// $info = DB::name('client_machine_conf')
     	// 		->alias('mc')
@@ -480,18 +502,35 @@ class Machine extends Base{
     	// 		->join('__CLIENT_MACHINE_STOCK__ ms', 'ms.machine_id = mc.machine_id','LEFT')
     	// 		->where(['mc.machine_id'=>$id,'ms.machine_id'=>$id])
     	// 		->select();
+    	// $info = DB::name('client_machine_conf')
+    	// 		->alias('mc')
+    	// 		->field('mc.goods_name,ms.goods_num,mc.location,mc.goods_price,mc.game_odds')
+    	// 		->join('__CLIENT_MACHINE_STOCK__ ms','ms.location = mc.location','LEFT')
+    	// 		->where(['mc.machine_id'=>$machine_id,'ms.machine_id'=>$machine_id])
+    	// 		->group('mc.id')
+    	// 		->select();
+
     	$info = DB::name('client_machine_conf')
-    			->alias('mc')
-    			->field('mc.goods_name,ms.goods_num,mc.location,mc.goods_price,mc.game_odds')
-    			->join('__CLIENT_MACHINE_STOCK__ ms','ms.location = mc.location','LEFT')
-    			->where(['mc.machine_id'=>$machine_id,'ms.machine_id'=>$machine_id])
-    			->group('mc.id')
+    			->field('goods_name,location,goods_price,game_odds')
+    			->where(['machine_id'=>$machine_id])
+    			->group('id')
     			->select();
 
+    	foreach ($location as $k => $v) {
+    		foreach ($info as $kk => $vv) {
+    			if($vv['location'] == $v['location']){
+    				$location[$k] = $vv;
+    			}
+    		}
+    		$location[$k]['goods_name'] = $location[$k]['goods_name']?$location[$k]['goods_name']:'未设置';
+    		$location[$k]['goods_price'] = $location[$k]['goods_price']?$location[$k]['goods_price']:'未设置';
+    		$location[$k]['game_odds'] = $location[$k]['game_odds']?$location[$k]['game_odds']:'未设置';
+    	}
+
+    	//halt($location);
     	$this->assign('machine_id',$machine_id);
-    	$this->assign('max_stock',$max_stock);
-    	$this->assign('info',$info);
-    	$this->assign('game_price',$game_price);
+    	$this->assign('info',$location);
+    	$this->assign('game_price',$machine['game_price']);
     	//halt($info);
 		return $this->fetch();
 	}

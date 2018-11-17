@@ -23,8 +23,11 @@ class Index extends Base {
 
 
         $client_arr = DB::name('machine')->where(['client_id'=>$manager_info['admin_id']])->getField('machine_id',true);    
-        $client_ids = implode($client_arr,',');
 
+        $client_ids = implode($client_arr,',');
+        if ($client_ids == "") {
+            $client_ids = "-1";
+        }
         // $data = DB::name('client_day_statistics')->where("machine_id in ({$client_ids})")->select();
         //出奖率 总收益 在线支付 礼品消耗数量 
         //总收入
@@ -101,8 +104,16 @@ class Index extends Base {
 
         $normal = DB::name('machine')->where(['client_id'=>$manager_info['admin_id'],'status'=>1])->getField("count(machine_id) as normal");
         $fault = DB::name('machine')->where(['client_id'=>$manager_info['admin_id'],'status'=>2])->getField("count(machine_id) as fault");
-        $normal_rate = $normal/$data['machine_count']*100;
-        $fault_rate = $fault/$data['machine_count']*100;
+
+        if ($data['machine_count'] == 0) {
+            $normal_rate = 0;
+            $fault_rate = 0;
+        }else{
+            $normal_rate = $normal/$data['machine_count']*100;
+            $fault_rate = $fault/$data['machine_count']*100;
+        }
+        
+        
         $data['normal'] = $normal;
         $data['fault'] = $fault;
         $data['normal_rate'] = $normal_rate;
@@ -111,7 +122,12 @@ class Index extends Base {
         $machine_ids = DB::name('machine')->where(['client_id'=>$manager_info['admin_id']])->getField('machine_id',true);
         $machine_ids = implode(",",$machine_ids);
         
-        $data['error_number'] = count(DB::name('error')->where("machine_id in ({$machine_ids}) and status = 0")->select());
+        if ($machine_ids == "") {
+            $data['error_number'] = "";
+        }else{
+             $data['error_number'] = count(DB::name('error')->where("machine_id in ({$machine_ids}) and status = 0")->select());
+        }
+       
         
         // $history = array(
         //     $six['success_number']/$six['game_count']*100,
