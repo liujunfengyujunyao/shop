@@ -1,42 +1,62 @@
 
-					<div class="modal-header">
-						<h4 class="modal-title" id="myModalLabel">选择操作类型{$machine_name}</h4>
-					</div>
-					<div class="modal-body">
+<div class="modal-header">
+	<h4 class="modal-title" id="myModalLabel">选择操作类型{$machine_name}</h4>
+</div>
+<div class="modal-body">
 
-							<a href="{:U('Phone/machine/edit',array('id'=>$machine_id))}" >
-								<div class="form-group">
-									<label for="addname">设备编辑</label>
-								</div>
-							</a>
-							<a href="{:U('Phone/machine/machine_config',array('id'=>$machine_id))}">
-								<div class="form-group">
-									<label for="addpassword">设备配置</label>
-								</div>
-							</a>
-							<a href="{:U('Phone/machine/test',array('id'=>$machine_id))}">
-								<div class="form-group">
-									<label for="addpassword1">经营日志</label>
-								</div>
-							</a>
-							<a href="{:U('Phone/machine/unbind')}">
-								<div class="form-group">
-									<label for="addemail">解绑设备</label>
-								</div>
-							</a>
-							<a href="{:U('Phone/machine/stock')}">
-								<div class="form-group">
-									<label for="addyonghuzu">设备库存</label>
-								</div>
-							</a>
-
-
+		<a href="{:U('Phone/machine/edit',array('id'=>$machine_id))}" >
+			<div class="form-group">
+				<label for="addname">设备编辑</label>
+			</div>
+		</a>
+		<a href="{:U('Phone/machine/machine_config',array('id'=>$machine_id))}">
+			<div class="form-group">
+				<label for="addpassword">设备配置</label>
+			</div>
+		</a>
+		<a href="{:U('Phone/machine/test',array('id'=>$machine_id))}">
+			<div class="form-group">
+				<label for="addpassword1">经营日志</label>
+			</div>
+		</a>
+		<a href="">
+			<div id="unbind" class="form-group">
+				<label for="addemail">解绑设备</label>
+			</div>
+		</a>
+		<a href="{:U('Phone/machine/stock')}">
+			<div class="form-group">
+				<label for="addyonghuzu">设备库存</label>
+			</div>
+		</a>
 
 
-						</div>
-				</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default btn-lg btn-block" data-dismiss="modal">取消</button>
-						<!-- <button type="button" class="btn btn-primary">提交</button> -->
-					</div>
+
+
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-default btn-lg btn-block" data-dismiss="modal">取消</button>
+	<!-- <button type="button" class="btn btn-primary">提交</button> -->
+</div>
+<script type="text/javascript">
+$("#unbind").click(function(){
+	var r = confirm('确认解绑吗？');
+	if(r == true){
+		$.ajax({
+			type: 'post',
+            url: "{:U('machine/unbind')}",
+            data: {id: {$machine_id}},
+            dataType: 'json',
+            success:function(v){
+            	if(v['status']==1){
+            		alert('解绑成功');
+            	}else{
+            		alert('解绑失败');
+            	}
+            }
+		})
+	}
+})
+</script>
 				

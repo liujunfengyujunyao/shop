@@ -27,12 +27,14 @@ class Base extends controller{
 			$this->redirect('logina/index');
 		}
 		//==========================权限管理================
-		// $nav = CONTROLLER_NAME.'-'.ACTION_NAME;
-		// if($nav != 'Index-index'){
-		// 	if(!in_array(strtolower($nav),explode(',',$_SESSION['think']['manager_info']['nav_list']))){
-		// 		$this->error('暂无权限',U('index/index'));
-		// 	}
-		// }
+		$nav = strtolower(CONTROLLER_NAME.'-'.ACTION_NAME);
+		//不做权限验证的页面
+		$ignore = array('index-index','logina-index','machine-mine');
+		if(!in_array($nav,$ignore) && $_SESSION['think']['manager_info']['belong_id'] != 0){
+			if(!in_array(strtolower($nav),explode(',',$_SESSION['think']['manager_info']['nav_list']))){
+				$this->error('暂无权限',U('index/index'));
+			}
+		}
 		// 
 		// 
 		// //调用getnav获取菜单权限

@@ -274,39 +274,37 @@ body {
 	background: url(../img/error.png) center;
 }
 
+#tit{
+	overflow: hidden;
+}
 #me {
+	display: block;
 	float: left;
-	width: 0.31rem;
-	height: 0.31rem;
-	margin-top: 0.1rem;
-	margin-left: 0.1rem;
+	width: 15%;
+	height: 0.41rem;
+	padding-top: 0.1rem;
+	padding-left: 5%;
 }
-.ic_new{
-	float: right;
-	width: 0.31rem;
-	height: 0.31rem;
-	margin-top: -0.38rem;
-	margin-right: -0.05rem;
+
+#msg {
+	display: block;
+	float: left;
+	width: 15%;
+	height: 0.41rem;
+	padding-top: 0.1rem;
+	padding-right: 5%;
 }
-.ic_new .ic_new2{
-	width: 0.1rem;
-	height: 0.1rem;
-	background-color: #FB060D;
-	border-radius: 0.5rem;
+.glyphicon{
+	color:white;
+	font-size: 30px;
 }
-.ic_new .ic_new2 span{
-	font-size: 0.03rem;
-	color: #FFFFFF;
-	text-align: center;
-	line-height: 0.1rem;
-}
-.msg {
-	float: right;
-	width: 0.31rem;
-	height: 0.31rem;
-	margin-top: -0.38rem;
-	margin-right: 0.2rem;
-}
+#msg .glyphicon .badge{
+	position: absolute;
+	top:-6px;
+	left:20px;
+	padding:3px 6px;
+	background-color: red;
+}s
 
 .lastbar #gtt {
 	width: 50%;
@@ -899,7 +897,42 @@ body {
 	border-radius: 0.05rem;
 	border: #FFFFFF;
 }
-
+.pop_box{
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, .4);
+	z-index: 1314;
+}
+.add_ct2{
+	z-index: 1000;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	width: calc(100% - 30px);
+	margin: 0 auto;
+	background-color: #fff;
+	border-radius: 3px;
+}
+.add_ct2 .addmachineUl{
+	overflow: hidden;
+	margin: 0;
+}
+.add_ct2 .addmachineUl li{
+    border-bottom: solid 1px #e4e4e4;
+    padding: 0 10px;
+    height: 35px;
+    line-height: 35px;
+}
+.add_ct2 .addmachineUl li:last-child{
+	border: none;
+}
 /*设备绑定*/
 .ib_content ul {
 	margin-top: 0.1rem;

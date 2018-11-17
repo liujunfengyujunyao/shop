@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1542346140;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1542360994;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 
@@ -116,6 +116,7 @@
 	<script src="__NEW__/js/rem.js"></script>
 	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
 	<script src="__NEW__/js/bootstrap.js"></script>
+	<script src="__PUBLIC__/js/layer/layer.js"></script>
 	<script>
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
@@ -149,23 +150,16 @@
 			history.back();
 		})
 
-		$("#list_content li a").click(function(e) {
-			e.preventDefault();
-			var  = $(this).parents("li").find(".bianhao").text();
-			console.log("编号为:" + $bianhao)
+		$("#unbind").click(function(){
+			alert(1);
 		})
 
-		$("#list_content li a").click(function(e) {
-			e.preventDefault();
-			var $bianhao = $(this).parents("li").find(".bianhao").text();
-			console.log("编号为:" + $bianhao)
-		});
-		    $("#myModal").on("hidden.bs.modal", function() {
-		        $(this).removeData("bs.modal");
-		    });
-		    // var mid=$('.huoqu').attr('mid');
-		    // var href = "<?php echo U('Phone/machine/test',array('id'=>"+mid+")); ?>";
-		    // $('.addname').attr('href',href);
+	    $("#myModal").on("hidden.bs.modal", function() {
+	        $(this).removeData("bs.modal");
+	    });
+	    // var mid=$('.huoqu').attr('mid');
+	    // var href = "<?php echo U('Phone/machine/test',array('id'=>"+mid+")); ?>";
+	    // $('.addname').attr('href',href);
 	</script>
 
 </html>

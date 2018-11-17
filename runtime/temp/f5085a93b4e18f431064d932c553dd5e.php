@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1542345614;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1542356345;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
 		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
 		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
-		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
+		<link rel="stylesheet" type="text/css" href="css/index1.css" />
 		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=sSelQoVi2L3KofLo1HOobonW"></script>
 	</head>
 	<body>
@@ -40,35 +40,28 @@
 			<div class="d_body">
 				<div id="d_name">
 					<span id="name">设备名称：</span>
-					<input type="text" value="" id="input1">
+					<input type="text" value="" id="input1" placeholder="请输入设备名称">
 				</div>
 				<div id="d_goup">
 					<span id="goup">所属群组：</span>
-					<input type="text" value="" id="input2">
+					<input type="text" value="" id="input2" placeholder="请输入所属群组">
 				</div>
-				<div id="d_city">
-					<span id="city">设备位置:</span>
-					<div id="city2">
-						<select id="cmbProvince" name="cmbProvince">
-							<?php if(is_array($province) || $province instanceof \think\Collection || $province instanceof \think\Paginator): $i = 0; $__LIST__ = $province;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
-								<option value ="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
-							<?php endforeach; endif; else: echo "" ;endif; ?>
-						</select>
-						<select id="cmbCity" name="cmbCity">
-							<?php if(is_array($city) || $city instanceof \think\Collection || $city instanceof \think\Paginator): $i = 0; $__LIST__ = $city;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
-								<option value ="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
-							<?php endforeach; endif; else: echo "" ;endif; ?>
-						</select>
-						<select id="cmbArea" name="cmbArea">
-							<?php if(is_array($district) || $district instanceof \think\Collection || $district instanceof \think\Paginator): $i = 0; $__LIST__ = $district;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
-								<option value ="<?php echo $v['id']; ?>"><?php echo $v['name']; ?></option>
-							<?php endforeach; endif; else: echo "" ;endif; ?>
-						</select>
-						<input type="text" id="cmb_d" placeholder="请输入详细地址" />
-					</div>
+				<div id="d_goup">
+					<span id="goup">设备位置:</span>
+					<input type="text" value="" id="input3" placeholder="请输入设备位置">
 				</div>
-				<div id="map">
-					<div id="allmap"></div>
+
+				<div class="demo_main">
+					<fieldset class="demo_content">
+						<div>
+							<select name="province"></select>
+							<select name="city"></select>
+							<select name="county"></select>
+						</div>
+						<div style=" min-height: 2.8rem; margin-top: 0.05rem; width: 100%;" id="map">
+						</div>
+					</fieldset>
+
 				</div>
 				<a href="<?php echo U('group/store_list'); ?>">
 				<div id="btn_list">
@@ -79,32 +72,58 @@
 		</div>
 
 
-
-
-
-
-
 	</body>
 	<script src="__NEW__/js/rem.js"></script>
-	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
 	<script src="__NEW__/js/index.js"></script>
+	<script src="__NEW__/js/area.js"></script>
+	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+	<script src="__NEW__/js/demo.js"></script>
 	<!--头部-->
 	<script>
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
 		})
 	</script>
-	<!--省市区三级联动-->
-	<script>
-		addressInit('cmbProvince', 'cmbCity', 'cmbArea');
-	</script>
-	<!--地图-->
 	<script type="text/javascript">
-		// 百度地图API功能
-		var map = new BMap.Map("allmap"); // 给allmap设置地图
-		map.centerAndZoom(new BMap.Point(116.4035, 39.915), 12); // 第二个参数为级别，数字越大，聚焦越清晰
-// 		setTimeout(function() {
-// 			map.panTo(new BMap.Point(113.262232, 23.154345)); //两秒后移动到广州
-// 		}, 2000);
+		//异步调用百度js  
+		function map_load() {
+			var load = document.createElement("script");
+			load.src = "http://api.map.baidu.com/api?v=2.0&ak=sSelQoVi2L3KofLo1HOobonW";
+			document.body.appendChild(load);
+		}
+		window.onload = map_load;
+
+
+		//根据经纬度显示地区
+		function loadPlace(longitude, latitude, level) {
+			if (parseFloat(longitude) > 0 || parseFloat(latitude) > 0) {
+				level = level || 13;
+				//绘制地图
+				var map = new BMap.Map("map"); // 创建Map实例  
+				var point = new BMap.Point(longitude, latitude); //地图中心点 
+				map.centerAndZoom(point, level); // 初始化地图,设置中心点坐标和地图级别。  
+				map.enableScrollWheelZoom(true); //启用滚轮放大缩小  
+				//向地图中添加缩放控件  
+				var ctrlNav = new window.BMap.NavigationControl({
+					anchor: BMAP_ANCHOR_TOP_LEFT,
+					type: BMAP_NAVIGATION_CONTROL_LARGE
+				});
+				map.addControl(ctrlNav);
+
+				//向地图中添加缩略图控件  
+				var ctrlOve = new window.BMap.OverviewMapControl({
+					anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+					isOpen: 1
+				});
+				map.addControl(ctrlOve);
+
+				//向地图中添加比例尺控件  
+				var ctrlSca = new window.BMap.ScaleControl({
+					anchor: BMAP_ANCHOR_BOTTOM_LEFT
+				});
+				map.addControl(ctrlSca);
+
+			}
+		}
 	</script>
 </html>

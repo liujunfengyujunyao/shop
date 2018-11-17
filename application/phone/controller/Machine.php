@@ -168,30 +168,30 @@ class Machine extends Base{
 	public function unbind(){
 		$user_id = $_SESSION['think']['client_id'];
 		if(IS_POST){
-			$machine_id = input('post.id/a');	
+			$machine_id = input('post.id');	
 			if(!$machine_id || !$user_id){
 				return $this->error('参数不全');
 			}else{
-				$id = implode(',',$machine_id);
-				$res = Db::name('machine')->where('machine_id','in',$id)->setField('client_id',0);
+				//$id = implode(',',$machine_id);
+				$res = Db::name('machine')->where('machine_id','eq',$machine_id)->setField('client_id',0);
 				if($res !== false){
-					return $this->success('解绑成功');
+					return json(['status'=>1]);
 				}else{
-					return $this->error('解绑失败');
+					return json(['status'=>0]);
 				}				
 			}
 		}else{
-			$online = array('0'=>'离线','1'=>'在线');
-			$priority = array('0'=>'设备策略','1'=>'平台策略');
-			$list = Db::name('machine')->where(['client_id'=>$user_id])->field('machine_name,machine_id,addtime,address,client_id,priority,is_online')->select();
-			foreach ($list as $k => $v) {
-				$list[$k]['is_online'] = $online[$v['is_online']];
-				$list[$k]['priority'] = $priority[$v['priority']];
-				$list[$k]['addtime'] = date('Y.m.d',$v['addtime']);
-				$list[$k]['status'] = $v['client_id']?'已绑定':'未绑定';
-			}
-			$this->assign('list',$list);
-			return $this->fetch();
+			// $online = array('0'=>'离线','1'=>'在线');
+			// $priority = array('0'=>'设备策略','1'=>'平台策略');
+			// $list = Db::name('machine')->where(['client_id'=>$user_id])->field('machine_name,machine_id,addtime,address,client_id,priority,is_online')->select();
+			// foreach ($list as $k => $v) {
+			// 	$list[$k]['is_online'] = $online[$v['is_online']];
+			// 	$list[$k]['priority'] = $priority[$v['priority']];
+			// 	$list[$k]['addtime'] = date('Y.m.d',$v['addtime']);
+			// 	$list[$k]['status'] = $v['client_id']?'已绑定':'未绑定';
+			// }
+			// $this->assign('list',$list);
+			// return $this->fetch();
 		}
 	}
 

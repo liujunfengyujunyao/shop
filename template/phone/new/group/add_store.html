@@ -15,7 +15,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="#" class="fa fa-chevron-left"></a>
+				<a class="fa fa-chevron-left" id="upper"></a>
 				<span class="title">新增店铺</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -35,87 +35,81 @@
 			</ul>
 		</header>
 		<section class="set_content">
-		<form name="add_store" method="post" action="{:U('group/add_store')}"
-			<div class="set_ct1">
-				<ul>
-					<li>
-						<span id="">名称</span>
-						<input type="text" name="" id="it1" value="" />
-					</li>
-					<li>
-						<span id="">游戏价格</span>
-						<input type="text" name="" id="it2" value="" />
-					</li>
-					<li>
-						<span id="">商品价格</span>
-						<input type="text" name="" id="it3" value="" />
-					</li>
-					<li>
-						<span id="">赔率</span>
-						<input type="text" name="" id="it4" value="" />
-					</li>
-				</ul>
-			</div>
-			<div class="set_ct2">
-				<div id="set_ct2_title">
-					<span id="">店内机器</span>
-					<input type="button" name="" id="it5" value="添加机器" />
+			<form name="add_store" method="post" action="{:U('group/add_store')}">
+				<div class="set_ct1">
+					<ul>
+						<li>
+							<span id="">名称</span>
+							<input type="text" name="group_name" id="it1" value="" />
+						</li>
+						<li>
+							<span id="">游戏价格</span>
+							<input type="text" name="game_price" id="it2" value="" />
+						</li>
+						<li>
+							<span id="">商品价格</span>
+							<input type="text" name="goods_price" id="it3" value="" />
+						</li>
+						<li>
+							<span id="">赔率</span>
+							<input type="text" name="odds" id="it4" value="" />
+						</li>
+					</ul>
 				</div>
-				<ul class="machineUl">
-					<li id="m_item">
-						<span class="txt">口红机7号</span>
-						<span class="icon">-</span>
-						<span class="remove">删除</span>
-					</li>
-					<li id="m_item">
-						<span class="txt">口红机71号</span>
-						<span class="icon">-</span>
-						<span class="remove">删除</span>
-					</li>
-					<li id="m_item">
-						<span class="txt">口红机2号</span>
-						<span class="icon">-</span>
-						<span class="remove">删除</span>
-					</li>
-					<li id="m_item">
-						<span class="txt">口红机4号</span>
-						<span class="icon">-</span>
-						<span class="remove">删除</span>
-					</li>
+				<div class="set_ct2">
+					<div id="set_ct2_title">
+						<span id="">店内机器</span>
+						<input type="button" name="" id="it5" value="添加机器" />
+					</div>
+					<ul class="machineUl">
+					</ul>
+				</div>
+			<button class="addStoreBtn">保存</button>
+			</form>
+		</section>
+		<div class="pop_box">
+			<div class="add_ct2">
+				<ul class="addmachineUl">
+				<volist name="list" id="v">
+					<li value="{$v.machine_id}">{$v.machine_name}</li>
+				</volist>
 				</ul>
 			</div>
-			<button class="addStoreBtn">提交</button>
-		</form>
-		</section>
-
-
+		</div>
 	</body>
 	<script src="__NEW__/js/rem.js"></script>
 	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
 	<script>
-		<!--头部-->
+		//<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
 		})
-		<!--删除列表-->
-		var $machineIcon = $(".machineUl li").find(".icon"),
-			$machineRemove = $(".machineUl li").find(".remove")
-		$machineIcon.click(function(e) {
+		$('#upper').click(function(){
+			history.back();
+		})
+		//<!--删除列表-->
+		$(document).on("click", ".machineUl .icon", function(e) {
 			e.preventDefault();
 			$(this).hide().siblings(".remove").addClass("move");
 		})
-		$machineRemove.click(function(e) {
+
+		$(document).on("click", ".machineUl li .remove", function(e) {
 			e.preventDefault();
 			$(this).parent("li").remove();
 		})
-		$(".machineUl li .remove").click(function(e){  
- e.preventDefault();  
- $(this).parent("li").remove();  
- })  
-		<!--增加列表-->
-		$("#it5").click(function(e){
+		//<!--增加列表-->
+		$("#it5").click(function(e) {
 			e.preventDefault();
-			$(".machineUl").append($("#m_item:last").clone())
+			$(".pop_box").show();
+		})
+		$(".addmachineUl li").click(function(e) {
+			e.preventDefault();
+			$(".pop_box").hide();
+			var itemText = $(this).text();
+			var id = $(this).val();
+			var item = "<li id='m_item'><span class='txt'>" + itemText +
+				"</span><span class='icon'>-</span><span class='remove'>删除</span><input type='hidden' name='machine_id[]' value="+ id +" /></li>"
+			$(".machineUl").append(item)
 		})
 	</script>
 </html>
