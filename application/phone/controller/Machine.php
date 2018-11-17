@@ -10,18 +10,23 @@ class Machine extends Base{
     }
 
 	public function index(){
-		$client_id = $_SESSION['think']['client_id'];
-		$user_name = Db::name('admin')->where(['admin_id'=>$client_id])->getField('user_name');
 		$priority = array('0'=>'设备策略','1'=>'平台策略');
 		$online = array('0'=>'离线','1'=>'在线');
-		$machine = DB::name('machine')->where(['client_id'=>$client_id])->select();
+		$client_id = $_SESSION['think']['client_id'];
+		$user_name = Db::name('admin')->where(['admin_id'=>$client_id])->getField('user_name');
+		if($_SESSION['think']['manager_info']['belong_id'] != 0){
+			$group_id = $_SESSION['think']['manager_info']['group_id'];
+			$machine_list = Db::name('machine_group')->where(['id'=>$group_id])->getField('group_machine');
+			$machine = DB::name('machine')->where('machine_id','in',$machine_list)->select();
+		}else{						
+			$machine = DB::name('machine')->where(['client_id'=>$client_id])->select();			
+		}
 		foreach ($machine as $k => $v) {
 			$machine[$k]['is_online'] = $online[$v['is_online']];
 			$machine[$k]['priority'] = $priority[$v['priority']];
 			$machine[$k]['addtime'] = date('Y.m.d',$v['addtime']);
 			$machine[$k]['user_name'] = $user_name;
 		}
-
 		$this->assign('machine',$machine);
 		return $this->fetch();
 		
@@ -316,7 +321,7 @@ class Machine extends Base{
 		$machine_id = I('post.id');
 		//修改设备配置
 		if(IS_POST){
-			//修改游戏价格 , 修改单独格子的赔率 , 更换游戏
+
 			$machine_id = input('post.machine_id');
 			$priority=input('post.priority');
 			$data = array(

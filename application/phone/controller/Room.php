@@ -143,7 +143,7 @@ class Room extends Base{
 		$machine_id = 1;//input('post.machine_id');
 		$msgtype = 'update_firmware';
 		$version = '1.0.1';
-		$dladdr = 'https://www.goldenbrother.cn/base.apk';
+		$dladdr = 'https://www.goldenbrother.cn/rouge.apk';
 		$file = file_get_contents($dladdr,FALSE,NULL,0,9999*9999);
 		$md5 = md5($file);
 		if(!$dladdr){

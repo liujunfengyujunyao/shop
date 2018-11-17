@@ -17,6 +17,11 @@ class Group extends Base{
 			if(!user_id || !$group_name || !$game_price || !$goods_price || !$odds){
 				return $this->error('参数不全');
 			}else{
+				if(empty($machine_id)){
+					$machine_id = array();
+				}else{
+					$machine_id = array_unique($machine_id);
+				}
 				$data = array(
 					'user_id'=>$user_id,
 					'group_name'=>$group_name,
@@ -54,30 +59,29 @@ class Group extends Base{
 			$goods_price = input('post.goods_price');//群组统一商品价格
 			$odds = input('post.odds');//群组统一赔率
 			$machine_id = input('post.machine_id/a');
-			$data = array();
-			$data['group_id'] = $group_id;
+			
 			$old_machine = explode(',',input('post.old_machine'));
-			if($group_name){
-				$data['group_name'] = $group_name;
+
+			if(!$group_name || !$game_price || !$goods_price || !$odds){
+				return $this->error('参数不全');
 			}
-			if(game_price){
-				$data['game_price'] = $game_price;
+			if(empty($machine_id)){
+				$machine_id = array();
+			}else{
+				$machine_id = array_unique($machine_id);
 			}
-			if(goods_price){
-				$data['goods_price'] = $goods_price;
-			}
-			if($odds){
-				$data['odds'] = $odds;
-			}
-			if($machine_id){
-				$data['group_machine'] = implode(',',$machine_id);
-			}
+			$data = array();
+			$data['group_name'] = $group_name;
+			$data['game_price'] = $game_price;
+			$data['goods_price'] = $goods_price;
+			$data['odds'] = $odds;
+			$data['group_machine'] = implode(',',$machine_id);
 			//halt($data);
 			if(empty($data)){
 				return $this->error('参数错误');
 			}else{
 				$res = Db::name('machine_group')->where(['id'=>$group_id])->save($data);
-				if($res != false){
+				if($res !== false){
 					foreach ($old_machine as $k => $v) {//删除的机器
 						if(!in_array($v,$machine_id)){
 							Db::name('machine')->where(['machine_id'=>$v])->setField('group_id',0);
@@ -88,7 +92,7 @@ class Group extends Base{
 							Db::name('machine')->where(['machine_id'=>$v])->setField('group_id',$group_id);
 						}
 					}
-					return $this->success('修改成功');
+					return $this->success('修改成功',U('group/store_list'));
 				}else{
 					return $this->error('修改失败');
 				}

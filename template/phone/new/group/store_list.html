@@ -15,7 +15,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="#" class="fa fa-chevron-left"></a>
+				<a class="fa fa-chevron-left" id="upper"></a>
 				<span class="title">店铺列表</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -62,6 +62,9 @@
 		<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
+		})
+		$('#upper').click(function(){
+			history.back();
 		})
 		// <!--增加列表-->
 		// $(".addStoreBtn").click(function(e){

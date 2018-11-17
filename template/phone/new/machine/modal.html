@@ -5,34 +5,33 @@
 	</div>
 	<div class="modal-body">
 		<div class="container">
-		<a href="{:U('Phone/machine/test',array('id'=>$machine_id))}" >
-		 <div class="col-xs-3 col-sm-3" >
-		 设备编辑
-		 </div>
-		</a>
-		<a href="{:U('Phone/machine/test',array('id'=>$machine_id))}" >
-		 <div class="col-xs-3 col-sm-3" >
-		 设备配置
-		 </div>
-		 </a>
-		 <a href="{:U('Phone/machine/statistics_today',array('machine_id'=>$machine_id))}" >
-		 <div class="col-xs-3 col-sm-3" >
-		经营日志
-		 </div>
-		 </a>
-		 <a href="{:U('Phone/machine/test',array('id'=>$machine_id))}" >
-		 <div class="col-xs-3 col-sm-3" >
-		解绑设备
-		 </div>
-		 </a>
-		 <a href="{:U('Phone/machine/test',array('id'=>$machine_id))}" >
-		 <div class="col-xs-3 col-sm-3" >
-		设备库存
-		 </div>
-		 </a>
-
-
-		<a href="{:U('Phone/machine/edit',array('id'=>$machine_id))}" >
+			<a href="{:U('Phone/machine/edit',array('id'=>$machine_id))}" >
+				<div class="col-xs-3 col-sm-3" >
+				 	设备编辑
+				</div>
+			</a>
+			<a href="{:U('Phone/machine/machine_config',array('id'=>$machine_id))}" >
+				<div class="col-xs-3 col-sm-3" >
+				 	设备配置
+				</div>
+			</a>
+			<a href="{:U('Phone/machine/statistics_today',array('machine_id'=>$machine_id))}" >
+				<div class="col-xs-3 col-sm-3" >
+					经营日志
+				</div>
+			</a>
+			<a>
+				<div id="unbind" class="col-xs-3 col-sm-3" >
+					解绑设备
+				</div>
+			</a>
+			<a href="{:U('Phone/machine/stock')}" >
+				<div class="col-xs-3 col-sm-3" >
+					设备库存
+				</div>
+			</a>	
+		</div>
+		<!-- <a href="{:U('Phone/machine/edit',array('id'=>$machine_id))}" >
 			<div class="form-group">
 				<label for="addname">设备编辑</label>
 			</div>
@@ -56,7 +55,7 @@
 			<div class="form-group">
 				<label for="addyonghuzu">设备库存</label>
 			</div>
-		</a>
+		</a> -->
 
 
 
