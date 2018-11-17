@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:35:"./template/phone/new/msg\index.html";i:1542367385;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:35:"./template/phone/new/msg\index.html";i:1542425785;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -54,7 +54,7 @@
 
 							<div id="if_pic2">
 								<!-- <img src="__NEW__/img/rightjt.png"> -->
-									<?php if($v['status'] == 1): ?>
+									<?php if($v['status'] == 0): ?>
 								<img src="__NEW__/img/error.png" style="width: 0.1rem;height: 0.1rem; margin-right: 1%;" class="dot">
 									<?php endif; ?>
 							</div>
@@ -76,7 +76,7 @@
 
 							<div id="if_pic2">
 								<!-- <img src="__NEW__/img/rightjt.png"> -->
-									<?php if($v['status'] == 1): ?>
+									<?php if($v['status'] == 0): ?>
 								<img src="__NEW__/img/error.png" style="width: 0.1rem;height: 0.1rem; margin-right: 1%;" class="dot">
 									<?php endif; ?>
 							</div>
