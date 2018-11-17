@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:35:"./template/phone/new/msg\index.html";i:1542001771;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:35:"./template/phone/new/msg\index.html";i:1542425785;}*/ ?>
+>>>>>>> 03146efacad0494a698036823f56cb259123f024
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -38,9 +42,9 @@
 		<section class="ifm_content">
 			<div class="ifm_cont">
 				<ul>
-				<?php if(is_array($msg) || $msg instanceof \think\Collection || $msg instanceof \think\Paginator): if( count($msg)==0 ) : echo "" ;else: foreach($msg as $key=>$v): ?>
-					<li>
-						<a href="">
+				<?php if(is_array($msg) || $msg instanceof \think\Collection || $msg instanceof \think\Paginator): if( count($msg)==0 ) : echo "" ;else: foreach($msg as $key=>$v): if($v['errid']==2): ?>
+					<li class="do">
+						<a href="<?php echo U('Phone/Goods/stock_index'); ?>">
 							<div id="if_pic1">
 								<img src="__NEW__/img/ui16.png" id="">
 							</div>
@@ -53,14 +57,35 @@
 							</div>
 
 							<div id="if_pic2">
-								<img src="__NEW__/img/rightjt.png">
+								<!-- <img src="__NEW__/img/rightjt.png"> -->
 									<?php if($v['status'] == 0): ?>
-								<img src="__NEW__/img/error.png" style="width: 0.1rem;height: 0.1rem; margin-right: 1%;" onclick="">
+								<img src="__NEW__/img/error.png" style="width: 0.1rem;height: 0.1rem; margin-right: 1%;" class="dot">
 									<?php endif; ?>
 							</div>
 						</a>
 					</li>
-					<?php endforeach; endif; else: echo "" ;endif; ?>
+					<?php else: ?>
+						<li class="do">
+						
+							<div id="if_pic1">
+								<img src="__NEW__/img/ui16.png" id="">
+							</div>
+							<div id="if_ct1">
+								<span id=""><?php echo $v['errmsg']; ?></span>
+							</div>
+							<div id="if_ct2">
+								<span id=""><?php echo $v['machine_name']; ?></span>
+								<span id=""><?php echo date('Y-m-d',$v['time']); ?></span>
+							</div>
+
+							<div id="if_pic2">
+								<!-- <img src="__NEW__/img/rightjt.png"> -->
+									<?php if($v['status'] == 0): ?>
+								<img src="__NEW__/img/error.png" style="width: 0.1rem;height: 0.1rem; margin-right: 1%;" class="dot">
+									<?php endif; ?>
+							</div>
+						</li>
+					<?php endif; endforeach; endif; else: echo "" ;endif; ?>
 					<!-- <li>
 						<a href="">
 							<div id="if_pic1">
@@ -124,6 +149,9 @@
 		<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
-		})
+		});
+		$('.do').click(function(){
+		 	$(this).find('.dot').hide();
+		});
 	</script>
 </html>

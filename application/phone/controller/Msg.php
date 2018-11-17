@@ -24,6 +24,7 @@ class Msg extends Base{
 			}
 			// halt($msg);
 			$this->assign('msg',$msg);
+			DB::name('error')->where("machine_id in ($machineids) and status = 0")->save(['status'=>1]);
 			return $this->fetch();
 		}
 

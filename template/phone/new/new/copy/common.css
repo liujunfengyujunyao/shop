@@ -1,0 +1,65 @@
+* {
+	padding: 0;
+	margin: 0;
+	font-size: .12rem;
+	list-style: none;
+}
+
+a, a:visited, a:hover, a:focus{
+	text-decoration: none!important;
+	color: #000!important;
+}
+/*设备管理-弹出层*/
+.machine-list #myModal .modal-dialog{
+	margin: 0px;
+	position: absolute;
+  	left: 0px;
+  	bottom:0.4rem;
+  	width:100%;
+}
+.machine-list #myModal .modal-content{
+	border-radius: 0px;
+	background-color:#f0f0f0;
+	border:0px; 
+}
+.machine-list #myModal .modal-header{
+	border-bottom:5px solid #d5d5d5;
+	padding :10px;
+	width: 100%;
+	text-align: center;
+}
+.machine-list #myModal .modal-title{
+	margin: 0 auto;
+}
+.machine-list #myModal .modal-body{
+	border-bottom:5px solid #d5d5d5;
+}
+.machine-list #myModal .container{
+	padding:0;
+	
+}
+.machine-list #myModal .col-xs-3 {
+	background-color: #fff;
+	margin: 2% 3.5%; 
+	height:10%;
+	font-size:17px;
+	padding:4% 2%;
+	text-align: center;
+	border-radius: 6px;
+}
+.machine-list #myModal .col-xs-3:hover{
+	background-color: #CB297C;
+	color:#fff;
+} 
+.machine-list #myModal .modal-footer{
+	padding:0 ;
+	height:20%;
+	background: #fff;
+	
+}
+.machine-list #myModal .btn{
+	width: 100%;
+	background: #fff;
+	border-radius: 0px;
+	border:0px;
+}

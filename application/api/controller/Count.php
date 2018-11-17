@@ -36,7 +36,7 @@ class Count extends Controller {//入库存储过程
 	        $morningTime= mktime(0,0,0,$m,$d,$y);//当天00:00点的时间戳
 	        $end = $morningTime-1;//前一天23:59:59的时间戳
 	        $star = $morningTime-60*60*24;//前一天0点的时间戳
-	       	
+
 	       	$machine_all = DB::name('machine')
 	       		->field("client_id,machine_id")
 	       		->select();
@@ -118,16 +118,18 @@ class Count extends Controller {//入库存储过程
 	       		->where("sell_time between $star and $end && usetype=1 && paytype=2")
 	       		->Group("machine_id")
 	       		->select();
+
 	       	$all7 = $this->inspirit($all6,$data_ali_sell,'alipay_goods_count');
       	 
 
 	       	//卖出的商品数量
 
 	       	$data_sell_count = DB::name('sell_log')
-	       		->field("count(id) count,machine_id")
+	       		->field("count(id) goods_out_count,machine_id")
 	       		->where("sell_time between $star and $end && usetype=1")
 	       		->Group('machine_id')
 	       		->select();
+	       		// halt($data_sell_count);
 	       	$all8 = $this->inspirit($all7,$data_sell_count,'goods_out_count');
 	       
 	       	
@@ -276,12 +278,14 @@ class Count extends Controller {//入库存储过程
       				$returnarr[$val['client_id']]['money_count'] += $val['money_count'];
       				$returnarr[$val['client_id']]['gift_out_count'] += $val['gift_out_count'];
       				$returnarr[$val['client_id']]['online_count'] += $val['online_count'];
+
       				if ($returnarr[$val['client_id']]['game_count'] == 0) {
       					
       					$returnarr[$val['client_id']]['rate'] = 0;
       				}else{
       					
       					$returnarr[$val['client_id']]['rate'] = $returnarr[$val['client_id']]['success_number']/$returnarr[$val['client_id']]['game_count']*100;
+      					$returnarr[$val['client_id']]['rate'] = sprintf("%.2f",$returnarr[$val['client_id']]['rate']);
       				}
       		
       				$returnarr[$val['client_id']]['create_time'] = time();
@@ -307,12 +311,13 @@ class Count extends Controller {//入库存储过程
       				}else{
       					
       					$returnarr[$val['client_id']]['rate'] = $returnarr[$val['client_id']]['success_number']/$returnarr[$val['client_id']]['game_count']*100;
+      					$returnarr[$val['client_id']]['rate'] = sprintf("%.2f",$returnarr[$val['client_id']]['rate']);
       				}
       				$returnarr[$val['client_id']]['create_time'] = time();
       				$returnarr[$val['client_id']]['client_id'] = $val['pid'];
       			}
       		}
-      		
+      	
       	
       		DB::name('client_day_statistics')->insertAll($returnarr);
       		echo "操作已完成 请关闭页面";

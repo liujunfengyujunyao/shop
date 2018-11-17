@@ -38,8 +38,9 @@
 			<div class="ifm_cont">
 				<ul>
 				<foreach name="msg" item="v" key="key">
-					<li>
-						<a href="">
+				<if condition=" $v['errid']==2 ">
+					<li class="do">
+						<a href="{:U('Phone/Goods/stock_index')}">
 							<div id="if_pic1">
 								<img src="__NEW__/img/ui16.png" id="">
 							</div>
@@ -52,13 +53,35 @@
 							</div>
 
 							<div id="if_pic2">
-								<img src="__NEW__/img/rightjt.png">
+								<!-- <img src="__NEW__/img/rightjt.png"> -->
 									<if condition = " $v['status'] == 0 ">
-								<img src="__NEW__/img/error.png" style="width: 0.1rem;height: 0.1rem; margin-right: 1%;" onclick="">
+								<img src="__NEW__/img/error.png" style="width: 0.1rem;height: 0.1rem; margin-right: 1%;" class="dot">
 									</if>
 							</div>
 						</a>
 					</li>
+					<else/>
+						<li class="do">
+						
+							<div id="if_pic1">
+								<img src="__NEW__/img/ui16.png" id="">
+							</div>
+							<div id="if_ct1">
+								<span id="">{$v.errmsg}</span>
+							</div>
+							<div id="if_ct2">
+								<span id="">{$v.machine_name}</span>
+								<span id="">{$v.time|date='Y-m-d',###}</span>
+							</div>
+
+							<div id="if_pic2">
+								<!-- <img src="__NEW__/img/rightjt.png"> -->
+									<if condition = " $v['status'] == 0 ">
+								<img src="__NEW__/img/error.png" style="width: 0.1rem;height: 0.1rem; margin-right: 1%;" class="dot">
+									</if>
+							</div>
+						</li>
+					</if>
 					</foreach>
 					<!-- <li>
 						<a href="">
@@ -123,6 +146,9 @@
 		<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
-		})
+		});
+		$('.do').click(function(){
+		 	$(this).find('.dot').hide();
+		});
 	</script>
 </html>
