@@ -645,7 +645,7 @@ class Machine extends Base{
 				$data['rate'] = $data['success_number']/$data['game_count']*100;
 			}
 
-			
+			$data['rate'] = sprintf("%.2f",$data['rate']);
 			
 			//直接购买
 			$sell_number = DB::name('sell_log')->where("machine_id = $machine_id && sell_time between $start and $end && usetype = 1")->getField("count(id) as sell_number");
@@ -690,6 +690,7 @@ class Machine extends Base{
 	            $six,$five,$four,$three,$two,$one
 	            );
 	        $charts = json_encode($rate,true);
+
 			//前七天的日期
 			$checkdate = $_SESSION['think']['checkdate'];
 			$this->assign('machine_id',$machine_id);
@@ -704,7 +705,7 @@ class Machine extends Base{
 	public function statistics_list(){
 
 			$machine_id = I('get.machine_id');
-			$statistics = DB::name('machine_day_statistics')->where("machine_id = $machine_id")->select();
+			$statistics = DB::name('machine_day_statistics')->where("machine_id = $machine_id")->order('statistics_date')->select();
 			foreach ($statistics as $key => $value) {
 				// $value['statistics_date'] = date('Y-m-d',$value['statistics_date']);
 				$data[$key]['count'] = $value['online_count'] + $value['money_count'];
@@ -721,6 +722,7 @@ class Machine extends Base{
 	public function statistics_detail(){
 			$machine_id = I('get.machine_id');
 			$date = I('get.statistics_date');
+		
 			$end = $date+60*60*24-1;
 			$data = DB::name('machine_day_statistics')->where("machine_id = $machine_id && statistics_date = $date")->find();
 			//总收入
@@ -758,9 +760,12 @@ class Machine extends Base{
             $six,$five,$four,$three,$two,$one
             );
         $rate = json_encode($rate,true);
-
-
-
+        if($data['game_count'] == 0){
+				$data['rate'] = 0;
+			}else{
+				$data['rate'] = $data['success_number']/$data['game_count']*100;
+			}
+			$data['rate'] = sprintf("%.2f",$data['rate']);
 
 
         	$date = date('Y-m-d',$date);
@@ -781,7 +786,7 @@ class Machine extends Base{
 			
 			$this->assign('date',$date);
 			$this->assign('data',$data);
-			halt($data);
+		
 			return $this->fetch();
 			
 		}

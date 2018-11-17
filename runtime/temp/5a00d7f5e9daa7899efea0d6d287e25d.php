@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:51:"./application/admin/view2/public\dispatch_jump.html";i:1534215725;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:51:"./application/admin/view2/public\dispatch_jump.html";i:1540012756;}*/ ?>
->>>>>>> 56af8e7d155e3c724fc3349125c2e6717782a9b3
 <!DOCTYPE html>
 <html>
 	<head>

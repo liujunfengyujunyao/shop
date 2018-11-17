@@ -82,7 +82,7 @@ class Statistics extends Base {
 		public function list_index(){
 
 			$client_id = $_SESSION['think']['client_id'];
-			$statistics = DB::name('client_day_statistics')->where("client_id = $client_id")->select();
+			$statistics = DB::name('client_day_statistics')->where("client_id = $client_id")->order("statistics_date")->select();
 			foreach ($statistics as $key => $value) {
 				// $value['statistics_date'] = date('Y-m-d',$value['statistics_date']);
 				$data[$key]['count'] = $value['online_count'] + $value['money_count'];

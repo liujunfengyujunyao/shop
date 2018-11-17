@@ -1879,3 +1879,14 @@ log_time:2018-11-17 11:27:59{"msgtype":"receive_message","msg":{"msgtype":"OK"},
 log_time:2018-11-17 11:29:10{"msgtype":"receive_message","msg":{"msgtype":"login","sn":12,"poslong":"39.91488908","poslat":"116.40387397","version":"\u53EF\u4E50","timestamp":1542425357,"signature":"352283B84CC05CF9AE431A7E4A35AD5B721A7A36"},"ip":"43.254.90.98:51217"}
 log_time:2018-11-17 11:29:10{"msgtype":"receive_message","msg":{"msgtype":"rooms_status","rooms":[{"roomid":"A2","status":1},{"roomid":"A3","status":2},{"roomid":"A4","status":1}]},"machinesn":12}
 log_time:2018-11-17 11:29:11{"msgtype":"receive_message","msg":{"msgtype":"OK"},"machinesn":12}
+log_time:2018-11-17 11:43:30{"msgtype":"receive_message","msg":{"msgtype":"login","sn":12,"poslong":"39.91488908","poslat":"116.40387397","version":"\u53EF\u4E50","timestamp":1542426219,"signature":"8AE49A11B94B7AA30B64CEA7FD756A0CA19DAFD8"},"ip":"43.254.90.98:37298"}
+log_time:2018-11-17 11:43:30{"msgtype":"receive_message","msg":{"msgtype":"rooms_status","rooms":[{"roomid":"A2","status":1},{"roomid":"A3","status":2},{"roomid":"A4","status":1}]},"machinesn":12}
+log_time:2018-11-17 11:43:31{"msgtype":"receive_message","msg":{"msgtype":"OK"},"machinesn":12}
+log_time:2018-11-17 11:45:14{"msgtype":"receive_message","msg":{"msgtype":"login","sn":12,"poslong":"39.91488908","poslat":"116.40387397","version":"\u53EF\u4E50","timestamp":1542426323,"signature":"98B56EA40287CE4DAD3F5B61CD17B9E2776BF438"},"ip":"43.254.90.98:35106"}
+log_time:2018-11-17 11:45:14{"msgtype":"receive_message","msg":{"msgtype":"rooms_status","rooms":[{"roomid":"A2","status":1},{"roomid":"A3","status":2},{"roomid":"A4","status":1}]},"machinesn":12}
+log_time:2018-11-17 11:45:15{"msgtype":"receive_message","msg":{"msgtype":"OK"},"machinesn":12}
+log_time:2018-11-17 11:45:26{"msgtype":"receive_message","msg":{"commandid":0,"errid":10001},"machinesn":12}
+log_time:2018-11-17 11:45:26{"msgtype":"receive_message","msg":{"commandid":0,"errid":10001},"machinesn":12}
+log_time:2018-11-17 11:45:27{"msgtype":"receive_message","msg":{"msgtype":"login","sn":12,"poslong":"39.91488908","poslat":"116.40387397","version":"\u53EF\u4E50","timestamp":1542426336,"signature":"FAAF0EEE0D815FAF8660C6B92D519BC23BFB291F"},"machinesn":12}
+log_time:2018-11-17 11:45:28{"msgtype":"receive_message","msg":{"msgtype":"rooms_status","rooms":[{"roomid":"A2","status":1},{"roomid":"A3","status":2},{"roomid":"A4","status":1}]},"machinesn":12}
+log_time:2018-11-17 11:45:28{"msgtype":"receive_message","msg":{"msgtype":"OK"},"machinesn":12}
