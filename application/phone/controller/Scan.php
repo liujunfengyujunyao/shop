@@ -41,16 +41,17 @@ class Scan extends Base{
 
 	public function add(){
 		if(IS_POST){
-			$id = session('weixin_id');
+			$id = $_SESSION['think']['client_id'];
 		
 			$data = I('post.');
 			if($data['sn'] == NULL){
 				$this->error('sn是机台识别不能为空');
 			}elseif($data['machine_name']== NULL){
 				$this->error('机台名称不能为空');
-			}elseif ($data['type_id'] == NULL) {
-				$this->error('请选择机台类型');
 			}
+			// elseif ($data['type_id'] == NULL) {
+			// 	$this->error('请选择机台类型');
+			// }
 			$Machine = M('machine')->where(['sn'=>$data['sn']])->find();
 			if(!$Machine){
 				$this->error('请检查SN号！平台没有此机台。');
@@ -59,6 +60,7 @@ class Scan extends Base{
 			}elseif($Machine['client_id'] != 0){
 				$this->error('机台已注冊。');
 			}else{
+				halt($data);
 				// dump('tiao');die;
 				$data['addtime'] = time();
 				$data['client_id'] =$id;

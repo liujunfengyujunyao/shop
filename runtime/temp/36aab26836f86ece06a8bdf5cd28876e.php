@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:34:"./template/phone/new/scan\add.html";i:1542003314;s:37:"./template/phone/new/public\tion.html";i:1540012757;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:34:"./template/phone/new/scan\add.html";i:1542192554;s:37:"./template/phone/new/public\tion.html";i:1542192554;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542433643;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542546511;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -13,7 +13,7 @@
 </head>
 <body>
 	<header id="head">
-	<a href="<?php echo U('Phone/statistics/index'); ?>">
+	
 		<div class="titlebar">
 			<div id="tit">
 				<a id="me" href="<?php echo U('machine/mine'); ?>" ><span class="glyphicon glyphicon-user" ></span> </a>
@@ -24,7 +24,7 @@
 			</div>
 			<p class="title_num"><?php echo $data['all_count']; ?></p>
 		</div>
-
+	<a href="<?php echo U('Phone/statistics/index'); ?>">
 		<ul class="foobar">
 			<li class="foo_item"><span>在线支付</span><span><?php echo $data['online_count']; ?>元</span></li>
 			<li class="foo_item"><span>现金支付</span><span><?php echo $data['offline_count']; ?>元</span></li>
@@ -127,7 +127,7 @@
 		</div>
 		<div class="module">
 			<div class="long">
-				<a href="<?php echo U('machine/machine_list'); ?>">
+				<a href="<?php echo U('machine/index'); ?>">
 				<div class="icon fa fa-tachometer">
 					<!-- <span class=""></span> -->
 				</div>

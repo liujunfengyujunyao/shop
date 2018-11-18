@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:36:"./template/phone/new/scan\index.html";i:1542001771;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:36:"./template/phone/new/scan\index.html";i:1542544259;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -21,7 +21,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="#" class="fa fa-chevron-left"></a>
+				<a href="#" class="fa fa-chevron-left" id="upper"></a>
 				<span class="title">设备绑定</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -144,5 +144,9 @@
 			var r = location.href.match(reg);
 			if (r != null) return unescape(r[1]);
 		}
+
+		$('#upper').click(function(){
+			history.back();
+		})
 	</script>
 </html>
