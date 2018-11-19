@@ -11,7 +11,7 @@
  * $Author: IT宇宙人 2015-08-10 $
  *
  */ 
-namespace app\mobile\controller; 
+namespace app\phone\controller; 
 use think\Controller;
 use think\Url;
 use think\Config;
@@ -89,4 +89,38 @@ class Test extends Controller {
         //{$Think.lang.where}
         //return $this->fetch();
     }
+
+    public function create(){
+      if (IS_POST) {
+        $data = I('post.');
+        $add['sn'] = $data['sn'];
+        $add['access_token'] = $data['access_token'];
+        $add['version_id'] = $data['version'];
+        $add['px'] = $data['px'];
+        $add['type_id'] = $data['type'];
+        if($data['type'] == 1){
+            $add['type_name'] = "口红机";
+          }elseif($data['type'] == 2){
+            $add['type_name'] = "福袋机";
+          }elseif($data['type'] == 3){
+            $add['type_name'] = "售币机";
+          }else{
+            $add['type_name'] = "娃娃机";
+          }
+          $time = time();
+          $add['machine_name'] = $add['type_name'];
+          $add['uuid'] = md5($time . $add);
+          $res = DB::name('machine')->add($add);
+          if($res){
+            
+             QRcode($add['uuid']);
+          }else{
+            echo "error";
+          }
+      }else{
+        return $this->fetch();
+      }
+   
+    
+  }
 }

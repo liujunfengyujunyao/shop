@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1542454982;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1542597764;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -23,13 +23,13 @@
 			</div>
 			<ul class="slide_bar">
 				<li>
-					<a href="#">
+					<a href="<?php echo U('Phone/index/index'); ?>">
 						<span class="fa fa-home"></span>
 						<!-- <span>首页</span> -->
 					</a>
 				</li>
 				<li>
-					<a href="#">
+					<a href="<?php echo U('Phone/machine/mine'); ?>">
 						<span class="fa fa-user"></span>
 						<!-- <span>我的</span> -->
 					</a>

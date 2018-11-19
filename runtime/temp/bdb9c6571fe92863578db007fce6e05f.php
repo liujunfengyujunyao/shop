@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542546511;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542626634;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -235,12 +235,12 @@
 					</a>
 				</li>
 				<li>
-					<a href="#">
+					<a href="<?php echo U('Phone/test/create'); ?>">
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">
 						<div id="txt1">
 							<img src="__NEW__/img/binding.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
-							<p class="p1">设备绑定</p>
+							<p class="p1">生成设备</p>
 						</div>
 					</div>
 					</a>
