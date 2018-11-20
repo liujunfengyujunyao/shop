@@ -1,1 +1,0 @@
-{"msgtype":"send_message","machinesn":"12","msg":{"msgtype":"netpay_ack","commandid":"6","paytype":"alipay","amount":"3","paysn":"2625151540287438"}}

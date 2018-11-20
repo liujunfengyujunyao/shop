@@ -93,10 +93,19 @@ class Test extends Controller {
     public function create(){
       if (IS_POST) {
         $data = I('post.');
+
         $add['sn'] = $data['sn'];
-        $add['access_token'] = $data['access_token'];
+        $error = DB::name('machine')->where(['sn'=>$data['sn']])->find();
+        if ($error) {
+          $this->error('重复添加');
+        }elseif($data['sn']==""){
+          $this->error("sn为空");
+        }elseif($data['token'] == ""){
+          $this->error("缺少参数");
+        }
+        $add['access_token'] = $data['token'];
         $add['version_id'] = $data['version'];
-        $add['px'] = $data['px'];
+        $add['px'] = $data['bili'];
         $add['type_id'] = $data['type'];
         if($data['type'] == 1){
             $add['type_name'] = "口红机";
@@ -110,6 +119,7 @@ class Test extends Controller {
           $time = time();
           $add['machine_name'] = $add['type_name'];
           $add['uuid'] = md5($time . $add);
+          // halt($add);
           $res = DB::name('machine')->add($add);
           if($res){
             
@@ -122,5 +132,31 @@ class Test extends Controller {
       }
    
     
+  }
+
+  public function access(){
+    // {"msgtype":"login_auth","sn":123456789,"timestamp":1542696956,"poslong":"39.91488908","poslat":"116.40387397","version":"12345","signature":"FF369FACBAE7C57B8582C40AE3778F9106189A92"}
+    $arr = array(
+      "msgtype" => "login_auth",
+      "sn" => "123456789",
+      "timestamp" => 1542699016,
+      // "poslong" => "39.91488908",
+      // "poslat" => "116.40387397",
+      // "version" => "12345",
+      "access_token" => "12345",
+      );
+    $arr = json_encode($arr,true);
+    dump($arr);
+    $s = sha1($arr);
+    halt($s);
+  }
+
+  public function shijian(){
+      $y = date("Y");
+          $m = date("m");
+          $d = date("d");
+
+      $start = mktime(0,0,0,$m,$d,$y);
+      halt($start);
   }
 }

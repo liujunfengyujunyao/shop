@@ -475,14 +475,16 @@ class Machine extends Base{
 				$district = DB::name('region')->where(['id'=>$value['district_id']])->getField('name');
 				// $value['address'] = $province . $city . $district;
 				$value['address'] = $province . $district;
-				$goods = DB::name('client_machine_stock')
+				$goods = DB::name('client_machine_conf')
 						->alias('ms')
 						->field("ms.* , FROM_UNIXTIME(ms.edittime, '%Y-%m-%d %H:%i:%s') as edittime,mc.goods_price")
 						->join("__CLIENT_MACHINE_CONF__ mc","mc.location = ms.location",'LEFT')
 						->where(['ms.machine_id'=>$value['machine_id'],'mc.machine_id'=>$value['machine_id']])
+						->order("ms.id")
 						->select();
 				$value['goods'] = $goods;
 			}
+			
 		}
 
 		$this->assign('machine',$machine);
