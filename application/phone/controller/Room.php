@@ -32,6 +32,7 @@ class Room extends Base{
 		$msgtype = input('post.msgtype');//锁定传lock_room,解锁传unlock_room
 		$machine_id = input('post.machine_id');
 		$roomid = input('post.roomid');
+		$num = input('post.num')
 		if($msgtype == 'open_room' && !$roomid){
 			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id])->select();
 			foreach ($rooms as $k => $v) {
@@ -43,7 +44,7 @@ class Room extends Base{
 			return json(['status'=>0,'msg'=>'参数错误']);
 		}else{			
 			$str_room = implode(',',$roomid);
-			$commandid = $this->get_command($msgtype,$machine_id,$str_room);
+			$commandid = $this->get_command($msgtype,$machine_id,$str_room,$num);
 			$data = array(
 				'msgtype'=>$msgtype,
 				'commandid'=>intval($commandid),

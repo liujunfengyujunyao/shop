@@ -463,7 +463,7 @@ class Machine extends Base{
 		//$count = DB::name('machine')->where(['client_id'=>$client_id])->count();
 		
 		$machine = DB::name('machine')
-				->field("machine_name,province_id,city_id,machine_id,district_id")
+				->field("machine_name,province_id,city_id,machine_id,district_id,type_id")
 		        ->where(['client_id'=>$client_id])
 		        ->select();
 		        // halt($machine);
