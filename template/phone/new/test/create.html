@@ -5,12 +5,24 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 		<title>Document</title>
 		<link rel="stylesheet" href="__NEW__/css/common.css">
-		<!-- <link rel="stylesheet" href="./css/bootstrap.min.css"> -->
+		<link rel="stylesheet" href="__NEW__/css/bootstrap.min.css">
 		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
 		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
 		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
-		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=zDOttlXWVz6hDfeLsTHWi2Eo"></script>
+		<style>
+			.form-control{
+				width:50%;
+			}
+			.control-label,.form-control{
+				float:left;
+
+			}
+			.control-label{
+				text-align: right;
+				width:35%;
+			}
+		</style>
 	</head>
 	<body>
 		<header id="head">
@@ -35,82 +47,45 @@
 				</li>
 			</ul>
 		</header>
-		<section class="dd_body" style="padding-bottom:0.8rem;">
-			<div class="device_body">
-			<form name="sn" method="post" action="{:U('test/create')}">
-				<div class="d_body">
-					<div id="d_name">
-						<span id="name">SN：</span>
-						<input type="text" id="input1" name="sn" placeholder="请输入设备SN" value="">
-						<!-- <input type="hidden" name="machine_id" value="{$info.machine_id}"> -->
-					</div>
-					<div id="d_name">
-						<span id="name">ACCESS_TOKEN：</span>
-						<input type="text" id="input2" name="access_token" placeholder="请输入设备密钥" value="">
-						
-					</div>
-					<div id="d_goup">
-                    <span id="goup">版本：</span>             
-	                    <select contenteditable="true" name="version">
-							<option contenteditable="contenteditable" value="1.3">1.3</option>		
-							<option contenteditable="contenteditable" value="1.4">1.4</option>		
-							
-						</select>
-                	</div>
-                	 <span id="goup">屏幕比例：</span>             
-	                    <select contenteditable="true" name="px">
-							<option contenteditable="contenteditable" value="16:9">16:9</option>		
-							<option contenteditable="contenteditable" value="4:3">4:3</option>		
-							
-						</select>
-                	</div>
-                	 <span id="goup">设备类型：</span>             
-	                    <select contenteditable="true" name="type">
-							<option contenteditable="contenteditable" value="1">口红机</option>		
-							<option contenteditable="contenteditable" value="2">福袋机</option>		
-							<option contenteditable="contenteditable" value="3">售币机</option>		
-							<option contenteditable="contenteditable" value="4">娃娃机</option>		
-							<!-- <option contenteditable="contenteditable" value="5">口红机</option>		 -->
-							
-						</select>
-                	</div>
-                	<input type="submit" name="ll">
-				<!-- 	<div id="d_goup">
-
-                    <span id="goup">当前位置:</span>
-                    <input  type="text" name="address"  style="border: 0px;outline:none;cursor: pointer;" id="txtposition" value="正在定位..."/><br/>
-                    <span id="goup">详细地址:</span>
-                    <input type="text" hidden="true" id="suggestId" placeholder="请输入地址" value="" />
-                    <input type="text" name="detail_address" placeholder="请输入地址"><button>提交</button>
-                    <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>                   
-
-                </div> -->
-				<!-- 	<fieldset class="demo_content" style="height:300px;width: 85%; margin-left: 8%;margin-top: 0.2rem;">
-						<div style=" min-height: 2.5rem; margin-top: 0.05rem; width: 100%;height:100%;" id="allmap">
-						</div>
-					</fieldset> -->
-					<!-- <div class="demo_main">
-						<fieldset class="demo_content">
-							<div>
-								<select name="province"></select>
-								<select name="city"></select>
-								<select name="county"></select>
-
-							</div>
-							<div style=" min-height: 2.8rem; margin-top: 0.05rem; width: 100%;" id="map">
-							</div>
-						</fieldset>
-
-					</div> -->
-					<!-- <div id="btn_list">
-						<a href="{:U('group/store_list')}"><input type="button" id="b_l" value="群组列表" /></a>
-					</div> -->
-
-				</div>
-			</form>
-			</div>
+		<section class="dd_body" style="padding:20px 20px;">
+		<form role="form"  name="sn" method="post" action="{:U('test/create')}" class="form-horizontal" style="width:100%;">
+		  <div class="form-group">
+		    <label for="name" class="col-sm-2 control-label">SN：</label>
+		  
+		    <input type="text" class="form-control" name="sn" placeholder="请输入设备SN">
+		  </div>
+		  <div class="form-group">
+		    <label for="name" class="col-sm-2 control-label">ACCESS_TOKEN：</label>
+		    <input type="text" class="form-control" name="token" placeholder="请输入设备SN">
+		  </div>
+		  <div class="form-group">
+		    <label for="name" class="col-sm-2 control-label">版本：</label>
+			<select class="form-control" name="version">
+			    <option value="1.3">1.3</option>
+			    <option value="1.4">1.4</option>
+			</select>
+		  </div>
+		  <div class="form-group">
+		    <label for="name" class="col-sm-2 control-label">屏幕比例：</label>
+			<select class="form-control" name="bili">
+			    <option value="16:9">16:9</option>
+			    <option value="4:3">4:3</option>
+			</select>
+		  </div>
+		  <div class="form-group">
+		    <label for="name" class="col-sm-2 control-label">设备类型：</label>
+			<select class="form-control" name="type">
+			    <option value="1">口红机</option>
+			    <option value="2">福袋机</option>
+			    <option value="3">售币机</option>		
+				<option value="4">娃娃机</option>	
+			</select>
+		  </div>
+		   <div class="form-group"  style="padding-left:13%;">
+		  	<input type="submit" class="btn btn-default"  value="提交" style="width: 85%;background-color: #CB297C;color:#fff;"/>
+		  </div>
+		</form>
 		</section>
-
 	</body>
 	<script src="__NEW__/js/rem.js"></script>
 	<script src="__NEW__/js/index.js"></script>
