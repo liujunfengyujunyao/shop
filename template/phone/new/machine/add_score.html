@@ -80,7 +80,7 @@
             			$.ajax({                     	
                         	type: 'post',
                         	url: "{:U('machine/check_status')}",
-                        	data: {commandid:res.commandid},
+                        	data: {commandid:res.commandid,type:1},
                         	dataType: 'json',                       	 
                         	success: function(res){
                         		if(res.status == 1){

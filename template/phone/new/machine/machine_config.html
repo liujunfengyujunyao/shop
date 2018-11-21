@@ -35,25 +35,25 @@
 			</ul>
 		</header>
 		<section class="in_set">
-		<form name="machine_config" method="post" action="{:U('machine/machine_config')}">
+		<form id="config" name="machine_config" method="post" action="{:U('machine/machine_config')}">
 			<div class="in_set_content">
 				<ul>
 					<li>
 						<span id="">统一游戏价格:</span>
-						<input type="text" name="game_price" id="in_ip1" value="{$machine.game_price}" />
-						<input type="hidden" name="machine_id" id="in_ip1" value="{$machine.machine_id}" />
+						<input id="data" type="text" name="game_price" id="in_ip1" value="{$machine.game_price}" />
+						<input id="" type="hidden" name="machine_id" id="in_ip1" value="{$machine.machine_id}" />
 					<li>
 						<span id="">统一商品价格:</span>
-						<input type="text" name="goods_price" id="in_ip2" value="{$machine.goods_price}" />
+						<input id="data" type="text" name="goods_price" id="in_ip2" value="{$machine.goods_price}" />
 					</li>
 					<li>
 						<span id="">统一赔率:</span>
-						<input type="text" name="odds" id="in_ip3" value="{$machine.odds}" />
+						<input id="data" type="text" name="odds" id="in_ip3" value="{$machine.odds}" />
 					</li>
 				</ul>
 				<div class="in_set_cont2">
 					<div id="is1">
-						<span id="">设备策略</span><input   type="radio"   value="0"    name="priority" <if condition="$machine.priority eq 0" >checked</if> />
+						<span id="">设备策略</span><input id="sb"  type="radio"   value="0"    name="priority" <if condition="$machine.priority eq 0" >checked</if> />
 						<!-- <div id="" style="float: right;margin-right: 5%; padding-top: 0.15rem;">
 							<div class="onoffswitch">
 								<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch1">
@@ -65,7 +65,7 @@
 						</div> -->
 					</div>
 					<div id="is2">
-						<span id="">平台策略</span><input   type="radio"   value="1"    name="priority" <if condition="$machine.priority eq 1" >checked</if>/>
+						<span id="">平台策略</span><input id="pt"  type="radio"   value="1"    name="priority" <if condition="$machine.priority eq 1" >checked</if>/>
 						<!-- <div id="" style="float: right;margin-right: 5%;padding-top: 0.15rem;">
 							<div class="onoffswitch">
 								<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch2">
@@ -78,12 +78,9 @@
 					</div>
 				</div>
 				<div id="in_ip6">
-					<input type="submit" name="" id="in_ip4" value="保&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存" />
+					<input type="submit" name="" id="in_ip4" value="保&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存" onClick="sub(this)" />
 				</div>
 				<div id="in_ip7">
-				<a href="{:U('machine/gift_select',array('id'=>$machine.machine_id))}" >
-					<input type="button" name="" id="in_ip5" value="礼品格设置" />
-				</a>
 				</div>
 				
 			</div>
@@ -103,5 +100,21 @@
 		$('#upper').click(function(){
 			history.back();
 		})
+		if($('#sb').attr('checked')){
+			$('input[id=data]').attr('disabled',true);
+		}
+		$('#pt').click(function(){
+			$('input[id=data]').attr('disabled',false);
+		})
+		$('#sb').click(function(){
+			$('input[id=data]').attr('disabled',true);
+		})
+
+		function sub(obj)
+		{
+			obj.disabled = true;
+			obj.value = '正在提交...';
+			document.getElementById("config").submit();
+		}
 	</script>
 </html>

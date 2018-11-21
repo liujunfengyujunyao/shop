@@ -29,8 +29,8 @@ class Base extends controller{
 		//==========================权限管理================
 		$nav = strtolower(CONTROLLER_NAME.'-'.ACTION_NAME);
 		//不做权限验证的页面
-		$ignore = array('index-index','logina-index','machine-mine','machine-modal');
-		
+		$ignore = array('index-index','logina-index','machine-mine','machine-modal','machine-index','msg-index','machine-change_priority','machine-check_status','room-operate_room','room-check_status');
+		$a = in_array($nav,$ignore);
 		if(!in_array($nav,$ignore) && $_SESSION['think']['manager_info']['belong_id'] != 0){
 			if(!in_array(strtolower($nav),explode(',',$_SESSION['think']['manager_info']['nav_list']))){
 				$this->error('暂无权限',U('index/index'));

@@ -71,11 +71,11 @@ class Staff extends Base{
 			}else{
 			//$pwd = input('post.password');//密码
 				$power = input('post.power/a')?input('post.power/a'):array();
-				$store = input('post.store');
+				$store = input('post.store/a')?input('post.store/a'):array();
 				$data = array(
 					'user_name'=>$username,
 					'nav_list'=>implode(',',$power),
-					'group_id'=>$store,
+					'group_id'=>implode(',',$store),
 					);
 				$res = Db::name('admin')->where(['admin_id'=>$user_id])->save($data);
 				$res = DB::name('admin')->getLastSql();
@@ -90,6 +90,10 @@ class Staff extends Base{
 			$admin = Db::name('admin')->where(['admin_id'=>$user_id])->field('user_name,password,nav_list,group_id,admin_id')->find();
 			$store = Db::name('machine_group')->where(['user_id'=>$admin_id])->field('group_name,id')->select();
 			$power = Db::name('user_power')->field('pid,name,path,id')->where('pid','neq',0)->select();
+			foreach ($power as $k => $v) { //权限path有多个的情况下，用第一个元素进行比对
+				$a = explode(',',$v['path']);
+				$power[$k]['check'] = $a[0];
+			}
 			$select_power = $admin['nav_list'];
 			$this->assign('store',$store);
 			$this->assign('power',$power);
