@@ -40,8 +40,8 @@
 					<span class="label label-default">{$val.address}</span>
 				</span>
 
-					<button id=" replenishment" class="btn btn-success" data-url="{:U('room/operate_room')}" data-id="{$val.machine_id}" data-type="{$val.type_id}" onClick="supply(this)">一键补货</button>
 
+					<button id=" replenishment" class="btn btn-success" data-url="{:U('room/operate_room')}" data-id="{$val.machine_id}" data-type="{$val.type_id}" onClick="supply(this)">一键补货</button>
 					<button id="clear" class="btn btn-danger" data-url="{:U('Goods/ajax_clear')}" data-id="{$val.machine_id}" onClick="supply2(this)">一键清货</button>
 
 					<!-- 折叠部分 -->
@@ -54,10 +54,10 @@
 							<td>
 								<span class="fa fa-star"></span>
 							</td>
-							<td>ID</td>
+							<!-- <td>ID</td> -->
 							<td>位置</td>
 							<td>商品名称</td>
-							<td>当前库存/最大库存量</td>
+							<td>当前库存</td>
 							<td>更新时间</td>
 						</tr>
 					</thead>
@@ -65,25 +65,18 @@
 					<volist name="$val.goods" id="v">
 						<tr>
 							<td>	<span class="fa fa-star"></span></td>
-							<td>{$key+1}</td>
+							<!-- <td>{$key+1}</td> -->
 							<td>{$v.location}</td>
 							<if condition = " $v.goods_price == 0 ">
 							<td style="color:red">未配置</td>
-							<td style="color:red">0/0</td>
+							<td style="color:red">0</td>
 							<else />
 							<td>{$v.goods_name}</td>
-							<td>{$v.goods_num}/{$v.stock_num}</td>
+							<td>{$v.goods_num}</td>
 							</if>
 							
 							<td>{$v.edittime}</td>
 						</tr>
-						<!-- <tr>
-							<td>	<span class="fa fa-star"></span></td>
-							<td>A2</td>
-							<td>玩具熊</td>
-							<td>{}/{}</td>
-							<td>无</td>
-						</tr> -->
 						</volist>
 					</tbody>
 					</table>
@@ -107,14 +100,50 @@ layer.use('extend/layer.ext.js', function(){
 
  function supply(obj) {
  	var type = $(obj).attr('data-type');
- 	var num = 1;
+ 	
  	if(type==1){
  		layer.confirm('确认补满？', {
                     btn: ['确定', '取消'] //按钮
                 }, function (index) {
                     layer.close(index);
                     // 确定
-                    $.ajax(ajaxing);
+                    $.ajax({
+				       	type: 'post',
+				       	url: $(obj).attr('data-url'),
+				        data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'kh_stock',num:1},
+				        dataType: 'json',
+				        beforeSend:function(){ 
+				 		// 禁用按钮防止重复提交
+							$(":button").attr('disabled',true);
+						},
+				        success: function (v) {
+				            if (v.status == 1) {
+				                //layer.msg('操作成功', {icon: 1});
+				                //location.reload();
+				                //$(obj).parent().parent().parent().remove();
+				                $.ajax({
+				                	type: 'post',
+				                	url: '{:U("room/check_status")}',
+				                	data: {commandid:v.commandid},
+				                	dataType: 'json',
+				                	success: function(res){
+				                		if(res.status == 1){
+				                			layer.msg('操作成功', {icon: 1});
+				                			$(":button").attr('disabled',false);
+				                			//location.reload();
+				                		}else{
+				                			layer.msg(res.msg, {icon: 2, time: 2000});
+				                			$(":button").attr('disabled',false);
+				                		}
+				                	}
+				                })
+				            } else {
+				                layer.msg(v.msg, {icon: 2, time: 2000});
+				                $(":button").attr('disabled',false);
+				            }
+				        }
+					});
+
                 }, function (index) {
                     layer.close(index);
                 }
@@ -130,8 +159,42 @@ layer.use('extend/layer.ext.js', function(){
 				alert("请输入数字！");
         		return;
 			}else{
-				num = value;
-				$.ajax(ajaxing);
+				$.ajax({
+			       	type: 'post',
+			       	url: $(obj).attr('data-url'),
+			        data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'kh_stock',num:value},
+			        dataType: 'json',
+			        beforeSend:function(){ 
+			 		// 禁用按钮防止重复提交
+						$(":button").attr('disabled',true);
+					},
+			        success: function (v) {
+			            if (v.status == 1) {
+			                //layer.msg('操作成功', {icon: 1});
+			                //location.reload();
+			                //$(obj).parent().parent().parent().remove();
+			                $.ajax({
+			                	type: 'post',
+			                	url: '{:U("room/check_status")}',
+			                	data: {commandid:v.commandid},
+			                	dataType: 'json',
+			                	success: function(res){
+			                		if(res.status == 1){
+			                			layer.msg('操作成功', {icon: 1});
+			                			$(":button").attr('disabled',false);
+			                			//location.reload();
+			                		}else{
+			                			layer.msg(res.msg, {icon: 2, time: 2000});
+			                			$(":button").attr('disabled',false);
+			                		}
+			                	}
+			                })
+			            } else {
+			                layer.msg(v.msg, {icon: 2, time: 2000});
+			                $(":button").attr('disabled',false);
+			            }
+			        }
+				});
 			}
 			
 		  	
@@ -139,42 +202,7 @@ layer.use('extend/layer.ext.js', function(){
                     layer.close(index);
         });
  	}
-        var ajaxing =  {
-               	type: 'post',
-               	url: $(obj).attr('data-url'),
-                data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'open_room',num:num},
-                dataType: 'json',
-                beforeSend:function(){ 
-         		// 禁用按钮防止重复提交
-        			$(":button").attr('disabled',true);
-    			},
-                success: function (v) {
-                    if (v.status == 1) {
-                        //layer.msg('操作成功', {icon: 1});
-                        //location.reload();
-                        //$(obj).parent().parent().parent().remove();
-                        $.ajax({
-                        	type: 'post',
-                        	url: '{:U("room/check_status")}',
-                        	data: {commandid:v.commandid},
-                        	dataType: 'json',
-                        	success: function(res){
-                        		if(res.status == 1){
-                        			layer.msg('操作成功', {icon: 1});
-                        			$(":button").attr('disabled',false);
-                        			//location.reload();
-                        		}else{
-                        			layer.msg(res.msg, {icon: 2, time: 2000});
-                        			$(":button").attr('disabled',false);
-                        		}
-                        	}
-                        })
-                    } else {
-                        layer.msg(v.msg, {icon: 2, time: 2000});
-                        $(":button").attr('disabled',false);
-                    }
-                }
-	};
+        
     };
  function supply2(obj) {
         layer.confirm('确认重置？', {

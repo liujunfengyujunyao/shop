@@ -4,24 +4,24 @@
 		<h4 class="modal-title" id="myModalLabel">选择操作类型{$machine_name}</h4>
 	</div>
 	<div class="modal-body">
-		<div class="container">
-			<a href="{:U('Phone/machine/edit',array('id'=>$machine_id))}" >
+		<div id="config" class="container">
+			<a href="{:U('Phone/machine/edit',array('id'=>$machine_id))}" <?php if(!in_array('machine-edit',$power) && $belong_id != 0) echo "style=display:none" ?> >
 				<div class="col-xs-3 col-sm-3" >
 				 	设备编辑
 				</div>
 			</a>
-			<a href="{:U('Phone/machine/machine_config',array('id'=>$machine_id))}" >
+			<a href="{:U('Phone/machine/machine_config',array('id'=>$machine_id))}"  <?php if(!in_array('machine-machine_config',$power) && $belong_id != 0) echo "style=display:none"?> >
 				<div class="col-xs-3 col-sm-3" >
 				 	设备配置
 				</div>
 			</a>
-			<a href="{:U('Phone/machine/statistics_today',array('machine_id'=>$machine_id))}" >
+			<a href="{:U('Phone/machine/statistics_today',array('machine_id'=>$machine_id))}" <?php if(!in_array('machine-statistics_today',$power) && $belong_id != 0) echo "style=display:none" ?> >
 				<div class="col-xs-3 col-sm-3" >
 					经营日志
 				</div>
 			</a>
 			<a>
-				<div id="unbind" class="col-xs-3 col-sm-3" >
+				<div id="unbind" class="col-xs-3 col-sm-3" <?php if(!in_array('machine-unbind',$power) && $belong_id != 0) echo "style=display:none" ?> >
 					解绑设备
 				</div>
 			</a>
@@ -29,38 +29,15 @@
 				<div class="col-xs-3 col-sm-3" >
 					设备库存
 				</div>
-			</a>	
+			</a>
+			<a <?php if(!in_array('machine-wifi',$power) && $belong_id != 0) echo "style=display:none" ?> >
+				<div id="wifi" class="col-xs-3 col-sm-3" >
+					网络配置
+				</div>
+			</a>
 		</div>
-		<!-- <a href="{:U('Phone/machine/edit',array('id'=>$machine_id))}" >
-			<div class="form-group">
-				<label for="addname">设备编辑</label>
-			</div>
-		</a>
-		<a href="{:U('Phone/machine/machine_config',array('id'=>$machine_id))}">
-			<div class="form-group">
-				<label for="addpassword">设备配置</label>
-			</div>
-		</a>
-		<a href="{:U('Phone/machine/test',array('id'=>$machine_id))}">
-			<div class="form-group">
-				<label for="addpassword1">经营日志</label>
-			</div>
-		</a>
-		<a href="">
-			<div id="unbind" class="form-group">
-				<label for="addemail">解绑设备</label>
-			</div>
-		</a>
-		<a href="{:U('Phone/machine/stock')}">
-			<div class="form-group">
-				<label for="addyonghuzu">设备库存</label>
-			</div>
-		</a> -->
 
-
-
-
-</div>
+	</div>
 
 <div class="modal-footer">
 	<button type="button" class="btn btn-default btn-lg btn-block" data-dismiss="modal">取消</button>
@@ -83,6 +60,48 @@ $("#unbind").click(function(){
             	}
             }
 		})
+	}
+})
+
+$("#wifi").click(function() {	
+	var r = confirm('是否开启设备网络配置界面？');
+	if( r == true){
+		$.ajax({				
+	    	type: 'post',
+	    	url: "{:U('machine/wifi')}",
+	    	data: {machine_id:{$machine_id}},
+	    	dataType: 'json',
+	    	beforeSend:function(){ 
+	 		// 禁用按钮防止重复提交
+				$("#wifi").text('开启中...');
+				$('#config').css('pointer-events','none');
+			},
+	    	success: function(res){
+	    		if(res.status == 1){
+	    			$.ajax({                     	
+	                	type: 'post',
+	                	url: "{:U('machine/check_status')}",
+	                	data: {commandid:res.commandid, type:1},
+	                	dataType: 'json',                       	 
+	                	success: function(res){
+	                		if(res.status == 1){
+	                			alert("开启成功，请在设备上查看");
+	                			$("#wifi").text('网络配置');
+								$('#config').css('pointer-events','');
+	                		}else{
+	                			$("#wifi").text('网络配置');
+								$('#config').css('pointer-events','');
+	                			alert("开启失败");
+	                		}
+	                	}
+	                })
+	    		}else{
+	    			$("#wifi").val('网络配置');
+					$('#config').css('pointer-events','');
+	    			alert("通信失败");
+	    		}
+	    	}
+	    })
 	}
 })
 </script>

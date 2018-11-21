@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:34:"./template/phone/new/scan\add.html";i:1542192554;s:37:"./template/phone/new/public\tion.html";i:1542192554;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:34:"./template/phone/new/scan\add.html";i:1542792139;s:37:"./template/phone/new/public\tion.html";i:1537152658;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -19,18 +19,18 @@
 <link rel="stylesheet" href="__PUBLIC__/css/csss/power_edit.css">
 <body>
 
-	<h1 style='margin-top:0px'><a class="back" href="javascript:history.back();"  title="返回列表"><i class="fa fa-arrow-circle-o-left" style="font-size: .35rem;"></i></a>&nbsp;&nbsp;编辑管理员<small><?php echo $username['user_name']; ?></small></h1>
+	<h1 style='margin-top:0px'><a class="back" href="javascript:history.back();"  title="返回列表"><i class="fa fa-arrow-circle-o-left" style="font-size: .35rem;"></i></a>&nbsp;&nbsp;绑定设备<small><?php echo $username['user_name']; ?></small></h1>
 	<form action="<?php echo U('Phone/Scan/add'); ?>" method="post">
 		<div class="form-group">
 			<label for="username" >
 				<span>*</span>
-				<span class="label label-primary">SN</span>
+				<span class="label label-primary">UUID</span>
 			</label>
 			<input type="text" name="sn" class="form-control" id="username"  placeholder="请填写SN号">
 		</div>
 		<div class="form-group">
 			<label for="username" >
-				<span>*</span>
+				<span></span>
 				<span class="label label-primary">机台名称</span>
 			</label>
 			<input type="text" name="machine_name" class="form-control" id="username"  placeholder="机台名称">
