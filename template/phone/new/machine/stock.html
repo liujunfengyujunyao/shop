@@ -39,7 +39,7 @@
 				<span class="title textFlow">
 					<span class="label label-default">{$val.address}</span>
 				</span>
-
+					
 					<button id=" replenishment" class="btn btn-success" data-url="{:U('room/operate_room')}" data-id="{$val.machine_id}" onClick="supply(this)">一键补货</button>
 
 					<button id="clear" class="btn btn-danger" data-url="{:U('Goods/ajax_clear')}" data-id="{$val.machine_id}" onClick="supply2(this)">一键清货</button>
@@ -101,7 +101,7 @@
                     $.ajax({
                         type: 'post',
                         url: $(obj).attr('data-url'),
-                        data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'open_room'},
+                        data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'kh_stock'},
                         dataType: 'json',
                         beforeSend:function(){ 
 		         		// 禁用按钮防止重复提交

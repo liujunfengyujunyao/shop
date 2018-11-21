@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542704626;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542629518;}*/ ?>
->>>>>>> 9dc0eb2dd287dbe989fa14e846981f954b61ee89
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542767757;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -28,19 +24,15 @@
 			</div>
 			<p class="title_num" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?>><?php echo $data['all_count']; ?></p>
 		</div>
-<<<<<<< HEAD
 
-		<ul class="foobar" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?>>
-=======
-	<a href="<?php echo U('Phone/statistics/index'); ?>">
+	<a href="<?php echo U('Phone/statistics/index'); ?>" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?> >
 		<ul class="foobar">
->>>>>>> 9dc0eb2dd287dbe989fa14e846981f954b61ee89
 			<li class="foo_item"><span>在线支付</span><span><?php echo $data['online_count']; ?>元</span></li>
 			<li class="foo_item"><span>现金支付</span><span><?php echo $data['offline_count']; ?>元</span></li>
 			<li class="foo_item"><span>霸屏收入</span><span>0元</span></li>
 		</ul>
 
-		<div class="lastbar" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?>>
+		<div class="lastbar">
 			<div href="#"><span>礼品消耗</span><!-- <img src="img/gift.png" id="gt" > --><span><?php echo $data['machine_count']; ?>台，<?php echo $data['gift_out_number']; ?>只</span></div>
 			<div href="#"><span>出奖率</span><p id="sp1"><?php echo $data['rate']; ?>%</p></div>
 		</div>
@@ -243,23 +235,14 @@
 					</div>
 					</a>
 				</li>
-<<<<<<< HEAD
 				<li <?php if($belong_id != 0) echo "style=display:none" ?>>
 					<a href="<?php echo U('group/store_list'); ?>">
-=======
-				<li>
-					<a href="<?php echo U('Phone/test/create'); ?>">
->>>>>>> 9dc0eb2dd287dbe989fa14e846981f954b61ee89
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">
 						<div id="txt1">
 							<img src="__NEW__/img/binding.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
-<<<<<<< HEAD
 							<p class="p1">群组管理</p>
 							<div class="p2">编辑群组信息</div>
-=======
-							<p class="p1">生成设备</p>
->>>>>>> 9dc0eb2dd287dbe989fa14e846981f954b61ee89
 						</div>
 					</div>
 					</a>

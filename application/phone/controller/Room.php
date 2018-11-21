@@ -32,20 +32,20 @@ class Room extends Base{
 		$msgtype = input('post.msgtype');//锁定传lock_room,解锁传unlock_room
 		$machine_id = input('post.machine_id');
 		$roomid = input('post.roomid');
-		if($msgtype == 'open_room' && !$roomid){
-			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id])->select();
+		if($msgtype == 'kh_stock' && !$roomid){
+			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id,'goods_num'=>0])->select();
 			foreach ($rooms as $k => $v) {
-				$roomid[$k] = $v['location'];
+				$roomid[$k] = intval($v['location']);
 			}
 		}
-		if(!in_array($msgtype,['lock_room','unlock_room','open_room']) || !$machine_id || !is_array($roomid))
+		if(!$msgtype || !$machine_id || !is_array($roomid))
 		{
 			return json(['status'=>0,'msg'=>'参数错误']);
 		}else{			
 			$str_room = implode(',',$roomid);
 			$commandid = $this->get_command($msgtype,$machine_id,$str_room);
 			$data = array(
-				'msgtype'=>$msgtype,
+				'msgtype'=>'open_room',
 				'commandid'=>intval($commandid),
 				'roomid'=>$roomid
 				);
@@ -128,15 +128,15 @@ class Room extends Base{
             if ($command['status'] == 1) {
                 //status=1为执行成功
                 //对应数据库操作
-                // switch ($caommand) {
-                // 	case 'value':
-                // 		# code...
-                // 		break;
+                switch ($command['msgtype']) {
+                	case 'kh_stock':
+                		Db::name('client_machine_conf')->where('machine_id','=',$command['machine_id'])->where('location','in',$command['content'])->setField('goods_num',1);
+                		break;
                 	
-                // 	default:
-                // 		# code...
-                // 		break;
-                // }
+                	default:
+                		# code...
+                		break;
+                }
                 
 
                 $data = ['status'=>1,'msg'=>'操作成功'];
