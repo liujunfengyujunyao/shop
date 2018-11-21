@@ -54,7 +54,7 @@
 							<td>
 								<span class="fa fa-star"></span>
 							</td>
-							<td>ID</td>
+							<!-- <td>ID</td> -->
 							<td>位置</td>
 							<td>商品名称</td>
 							<td>当前库存/最大库存量</td>
@@ -65,7 +65,7 @@
 					<volist name="$val.goods" id="v">
 						<tr>
 							<td>	<span class="fa fa-star"></span></td>
-							<td>{$key+1}</td>
+							<!-- <td>{$key+1}</td> -->
 							<td>{$v.location}</td>
 							<if condition = " $v.goods_price == 0 ">
 							<td style="color:red">未配置</td>

@@ -370,7 +370,10 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 		halt($new);
 		halt(json_encode($data));
 	}
-	
+	public function y(){
+		$data = DB::name('client_machine_conf')->where(['machine_id'=>1])->select();
+		halt($data);
+	}
 
 	
 }

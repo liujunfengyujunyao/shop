@@ -113,6 +113,8 @@ class Test extends Controller {
             $add['type_name'] = "福袋机";
           }elseif($data['type'] == 3){
             $add['type_name'] = "售币机";
+          }elseif($data['type'] == 4){
+            $add['type_name'] = "彩票机";
           }else{
             $add['type_name'] = "娃娃机";
           }
@@ -158,5 +160,18 @@ class Test extends Controller {
 
       $start = mktime(0,0,0,$m,$d,$y);
       halt($start);
+  }
+
+  public function config(){
+    $machine_id = 1;
+    $x = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->delete();
+    halt($x);
+  }
+
+  public function time(){
+    $post = $GLOBALS['HTTP_RAW_POST_DATA'];
+    dump($post);
+    $time = time();
+    halt($time);
   }
 }
