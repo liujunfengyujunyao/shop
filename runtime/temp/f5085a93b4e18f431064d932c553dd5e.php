@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1542454982;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1542686157;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -16,7 +16,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="#" class="fa fa-chevron-left"></a>
+				<a class="fa fa-chevron-left" id="upper"></a>
 				<span class="title">
 					</i>设备编辑</span>
 				<a class="no-addon" href="#"></a>
@@ -57,10 +57,10 @@
 					<div id="d_goup">
 
                     <span id="goup">当前位置:</span>
-                    <input  type="text" name="address"  style="border: 0px;outline:none;cursor: pointer;" id="txtposition" value="正在定位..."/><br/>
+                    <input  type="text"  name="address" readonly="true" style="border: 0px;outline:none;cursor: pointer;" id="txtposition" value="正在定位..."/><br/>
                     <span id="goup">详细地址:</span>
                     <input type="text" hidden="true" id="suggestId" placeholder="请输入地址" value="" />
-                    <input type="text" name="detail_address" placeholder="请输入地址"><button>提交</button>
+                    <input type="text" name="detail_address" placeholder="请输入地址">
                     <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>                   
 
                 </div>
@@ -82,7 +82,7 @@
 
 					</div> -->
 					<div id="btn_list">
-						<a href="<?php echo U('group/store_list'); ?>"><input type="button" id="b_l" value="群组列表" /></a>
+						<button>提交</button>
 					</div>
 
 				</div>
@@ -103,6 +103,10 @@
 		})
 	</script>
 	<script type="text/javascript">
+	$('#upper').click(function(){
+		history.back();
+	})
+
 	    // 百度地图API功能
 	    var map = new BMap.Map("allmap");
 	    var point = new BMap.Point(118.778, 32.05);

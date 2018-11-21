@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542433643;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542704626;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -18,20 +18,20 @@
 			<div id="tit">
 				<a id="me" href="<?php echo U('machine/mine'); ?>" ><span class="glyphicon glyphicon-user" ></span> </a>
 				
-				<p class="title" style="width:68%;float:left;">今日总收益（元）</p>
+				<p class="title" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?> style="width:68%;float:left;">今日总收益（元）</p>
 
-				<a id="msg" href="<?php echo U('Phone/Msg/index'); ?>"><span class="glyphicon glyphicon-envelope"><span class="badge"><?php echo $data['error_number']; ?></span></span></a>
+				<a id="msg" style="float: right" href="<?php echo U('Phone/Msg/index'); ?>"><span class="glyphicon glyphicon-envelope"><span class="badge"><?php echo $data['error_number']; ?></span></span></a>
 			</div>
-			<p class="title_num"><?php echo $data['all_count']; ?></p>
+			<p class="title_num" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?>><?php echo $data['all_count']; ?></p>
 		</div>
 
-		<ul class="foobar">
+		<ul class="foobar" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?>>
 			<li class="foo_item"><span>在线支付</span><span><?php echo $data['online_count']; ?>元</span></li>
 			<li class="foo_item"><span>现金支付</span><span><?php echo $data['offline_count']; ?>元</span></li>
 			<li class="foo_item"><span>霸屏收入</span><span>0元</span></li>
 		</ul>
 
-		<div class="lastbar">
+		<div class="lastbar" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?>>
 			<div href="#"><span>礼品消耗</span><!-- <img src="img/gift.png" id="gt" > --><span><?php echo $data['machine_count']; ?>台，<?php echo $data['gift_out_number']; ?>只</span></div>
 			<div href="#"><span>出奖率</span><p id="sp1"><?php echo $data['rate']; ?>%</p></div>
 		</div>
@@ -39,7 +39,7 @@
 	</header>
 	<section id="body">
 
-		<div id="echarts" style="height: 200px;background-color: white;">
+		<div id="echarts" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?> style="height: 200px;background-color: white;">
 
 		</div>
 		<script>
@@ -169,7 +169,7 @@
 					</div>
 					</a>
 				</li>
-				<li>
+				<li <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?>>
 					<a href="<?php echo U('Phone/Statistics/index'); ?>">
 					<div class="icon fa fa-line-chart" style="color:#ff524c;"></div>
 					<div class="text">
@@ -181,8 +181,8 @@
 					</div>
 					</a>
 				</li>
-				<li>
-					<a href="#">
+				<li <?php if(!in_array('machine-stock',$power) && $belong_id != 0) echo "style=display:none" ?> >
+					<a href="<?php echo U('machine/stock'); ?>" >
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">
 						<div id="txt1">
@@ -198,7 +198,7 @@
 
 		<div class="module">
 			<ul class="short">
-				<li>
+				<li <?php if(!in_array('statistics-list_index',$power) && $belong_id != 0) echo "style=display:none" ?>>
 					<a href="<?php echo U('Phone/statistics/list_index'); ?>">
 					<div class="icon fa fa-recycle" style="color:#4864ed;"></div>
 					<div class="text">
@@ -210,7 +210,7 @@
 					</div>
 					</a>
 				</li>
-				<li>
+				<li <?php if($belong_id != 0) echo "style=display:none" ?>>
 					<a href="<?php echo U('staff/staff_manage'); ?>">
 					<div class="icon fa fa-money" style="color:#fe7b13;"></div>
 					<div class="text">
@@ -222,7 +222,7 @@
 					</div>
 					</a>
 				</li>
-				<li>
+				<li <?php if(!in_array('machine-addscore_list',$power) && $belong_id != 0) echo "style=display:none" ?>>
 					<a href="<?php echo U('Phone/machine/addscore_list'); ?>">
 					<div class="icon fa fa-line-chart" style="color:#ff524c;"></div>
 					<div class="text">
@@ -234,13 +234,14 @@
 					</div>
 					</a>
 				</li>
-				<li>
-					<a href="#">
+				<li <?php if($belong_id != 0) echo "style=display:none" ?>>
+					<a href="<?php echo U('group/store_list'); ?>">
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">
 						<div id="txt1">
 							<img src="__NEW__/img/binding.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
-							<p class="p1">设备绑定</p>
+							<p class="p1">群组管理</p>
+							<div class="p2">编辑群组信息</div>
 						</div>
 					</div>
 					</a>

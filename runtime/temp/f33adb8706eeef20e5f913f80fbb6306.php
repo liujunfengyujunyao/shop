@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/machine\add_score.html";i:1541820980;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/machine\add_score.html";i:1542618469;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -81,7 +81,7 @@
             			$.ajax({                     	
                         	type: 'post',
                         	url: "<?php echo U('machine/check_status'); ?>",
-                        	data: {commandid:res.commandid},
+                        	data: {commandid:res.commandid,type:1},
                         	dataType: 'json',                       	 
                         	success: function(res){
                         		if(res.status == 1){

@@ -167,7 +167,7 @@ class Index extends Controller {
 		// return json_encode($machine['machine_id'],JSON_UNESCAPED_UNICODE);
 		foreach ($rooms as $key => $value) {
 			
-			DB::name('client_machine_stock')->where(['machine_id'=>$machine['machine_id'],'location'=>$value['roomid']])->save(['status'=>$value['status']]);
+			DB::name('client_machine_conf')->where(['machine_id'=>$machine['machine_id'],'location'=>$value['roomid']])->save(['status'=>$value['status'],'goods_num'=>$value['stocks']]);
 		}
 
 

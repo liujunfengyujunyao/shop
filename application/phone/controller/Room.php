@@ -128,6 +128,15 @@ class Room extends Base{
             if ($command['status'] == 1) {
                 //status=1为执行成功
                 //对应数据库操作
+                // switch ($caommand) {
+                // 	case 'value':
+                // 		# code...
+                // 		break;
+                	
+                // 	default:
+                // 		# code...
+                // 		break;
+                // }
                 
 
                 $data = ['status'=>1,'msg'=>'操作成功'];

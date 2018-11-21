@@ -57,7 +57,7 @@
 							<td>ID</td>
 							<td>位置</td>
 							<td>商品名称</td>
-							<td>当前库存/最大库存量</td>
+							<td>当前库存</td>
 							<td>更新时间</td>
 						</tr>
 					</thead>
@@ -69,21 +69,14 @@
 							<td>{$v.location}</td>
 							<if condition = " $v.goods_price == 0 ">
 							<td style="color:red">未配置</td>
-							<td style="color:red">0/0</td>
+							<td style="color:red">0</td>
 							<else />
 							<td>{$v.goods_name}</td>
-							<td>{$v.goods_num}/{$v.stock_num}</td>
+							<td>{$v.goods_num}</td>
 							</if>
 							
 							<td>{$v.edittime}</td>
 						</tr>
-						<!-- <tr>
-							<td>	<span class="fa fa-star"></span></td>
-							<td>A2</td>
-							<td>玩具熊</td>
-							<td>{}/{}</td>
-							<td>无</td>
-						</tr> -->
 						</volist>
 					</tbody>
 					</table>
