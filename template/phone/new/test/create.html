@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" id="rootHTML">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<title>Document</title>
+		<link rel="stylesheet" href="__NEW__/css/common.css">
+		<link rel="stylesheet" href="__NEW__/css/bootstrap.min.css">
+		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
+		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
+		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
+		<style>
+			.form-control{
+				width:50%;
+			}
+			.control-label,.form-control{
+				float:left;
+
+			}
+			.control-label{
+				text-align: right;
+				width:35%;
+			}
+		</style>
+	</head>
+	<body>
+		<header id="head">
+			<div class="top_bar">
+				<a href="#" class="fa fa-chevron-left"></a>
+				<span class="title">
+					</i>生成设备</span>
+				<a class="no-addon" href="#"></a>
+			</div>
+			<ul class="slide_bar">
+				<li>
+					<a href="{:U('Phone/index/index')}">
+						<span class="fa fa-home"></span>
+						<!-- <span>首页</span> -->
+					</a>
+				</li>
+				<li>
+					<a href="{:U('Phone/machine/mine')}">
+						<span class="fa fa-user"></span>
+						<!-- <span>我的</span> -->
+					</a>
+				</li>
+			</ul>
+		</header>
+		<section class="dd_body" style="padding:20px 20px;">
+		<form role="form"  name="sn" method="post" action="{:U('test/create')}" class="form-horizontal" style="width:100%;">
+		  <div class="form-group">
+		    <label for="name" class="col-sm-2 control-label">SN：</label>
+		  
+		    <input type="text" class="form-control" name="sn" placeholder="请输入设备SN">
+		  </div>
+		  <div class="form-group">
+		    <label for="name" class="col-sm-2 control-label">ACCESS_TOKEN：</label>
+		    <input type="text" class="form-control" name="token" placeholder="请输入设备SN">
+		  </div>
+		  <div class="form-group">
+		    <label for="name" class="col-sm-2 control-label">版本：</label>
+			<select class="form-control" name="version">
+			    <option value="1.3">1.3</option>
+			    <option value="1.4">1.4</option>
+			</select>
+		  </div>
+		  <div class="form-group">
+		    <label for="name" class="col-sm-2 control-label">屏幕比例：</label>
+			<select class="form-control" name="bili">
+			    <option value="16:9">16:9</option>
+			    <option value="4:3">4:3</option>
+			</select>
+		  </div>
+		  <div class="form-group">
+		    <label for="name" class="col-sm-2 control-label">设备类型：</label>
+			<select class="form-control" name="type">
+			    <option value="1">口红机</option>
+			    <option value="2">福袋机</option>
+			    <option value="3">售币机</option>		
+				<option value="4">娃娃机</option>	
+			</select>
+		  </div>
+		   <div class="form-group"  style="padding-left:13%;">
+		  	<input type="submit" class="btn btn-default"  value="提交" style="width: 85%;background-color: #CB297C;color:#fff;"/>
+		  </div>
+		</form>
+		</section>
+	</body>
+	<script src="__NEW__/js/rem.js"></script>
+	<script src="__NEW__/js/index.js"></script>
+	<!-- <script src="js/area.js"></script> -->
+	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+	<!-- <script src="js/demo.js"></script> -->
+	<!--头部-->
+	<script>
+		$('.tog').click(function() {
+			$('.slide_bar').slideToggle();
+		})
+	</script>
+	
+	  
+</html>

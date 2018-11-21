@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <script src="../../jss/jquery-1.9.1.min.js"></script> -->
+    <script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+ <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=zDOttlXWVz6hDfeLsTHWi2Eo"></script>
+    <!-- <script type="text/javascript" src="http://api.map.baidu.com/geocoder/v2/?address=天津市南开区&output=json&ak=zDOttlXWVz6hDfeLsTHWi2Eo&callback=showLocation"></script> -->
+
+    <title>百度地图的定位</title>
+    <style type="text/css">
+        input{border:1px solid #dddee1;border-radius:5px;height:30px; width:90%;}
+    </style>
+</head>
+<body>
+    当前位置：<input  type="text"   id="txtposition" value="正在定位..."/>
+
+    <br /><br />
+    <div id="r-result">请输入:<input type="text" id="suggestId" size="20" value="" style="width:350px;" /></div>
+    <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+    <br /><br />
+    <div id="allmap" style="width: 100%;height: 500px;"></div>
+    <div id="r-result"></div>
+
+    <script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(118.778, 32.05);
+    map.centerAndZoom(point,12);
+    map.enableScrollWheelZoom();                            // 启用滚轮放大缩小
+    map.addControl(new BMap.NavigationControl());           // 启用放大缩小 尺
+    var geolocation = new BMap.Geolocation();
+        //自动定位
+    geolocation.getCurrentPosition(function (r) {
+        console.log(r.point);
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            var mk = new BMap.Marker(r.point);
+            map.addOverlay(mk);//标出所在地
+            map.panTo(r.point);//地图中心移动
+            mk.addEventListener("dragend", showInfo);
+            mk.enableDragging();    //可拖拽
+            var point = new BMap.Point(r.point.lng,r.point.lat);//用所定位的经纬度查找所在地省市街道等信息
+            var gc = new BMap.Geocoder();
+            gc.getLocation(point, function (rs) {
+                console.log(rs);
+
+                var addComp = rs.addressComponents;
+                console.log(rs.address);//地址信息
+                document.getElementById("txtposition").value = rs.address;
+                // alert(rs.address);//弹出所在地址
+                var label = new BMap.Label(rs.address, { offset: new BMap.Size(20, -10) });
+                map.removeOverlay(mk.getLabel());//删除之前的label
+
+                mk.setLabel(label);
+            });
+            function showInfo(e) {
+                var gc = new BMap.Geocoder();
+                gc.getLocation(e.point, function (rs) {
+                    var addComp = rs.addressComponents;
+                    var address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;//获取地址
+                    document.getElementById("txtposition").value = rs.address;
+                    //画图 ---》显示地址信息
+                    var label = new BMap.Label(address, { offset: new BMap.Size(20, -10) });
+                    map.removeOverlay(mk.getLabel());//删除之前的label
+
+                    mk.setLabel(label);
+
+                });
+            }
+        }else {
+            alert('failed'+this.getStatus());
+        }
+    }, { enableHighAccuracy: true })
+   
+    // 百度地图API功能
+    function G(id) {
+     
+        return document.getElementById(id)
+    }
+
+    var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+        {"input" : "suggestId"
+        ,"location" : map
+        });
+
+    ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+        var str = "";
+        var _value = e.fromitem.value;
+        var value = "";
+        if (e.fromitem.index > -1) {
+            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }    
+        str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+        
+        value = "";
+        if (e.toitem.index > -1) {
+            _value = e.toitem.value;
+            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }    
+        str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+        G("searchResultPanel").innerHTML = str;
+    });
+
+    var myValue;
+    ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+        var _value = e.item.value;
+        myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+        
+        setPlace();
+    });
+
+    function setPlace() {
+        map.clearOverlays();    //清除地图上所有覆盖物
+        function myFun() {
+            var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+            map.centerAndZoom(pp, 18);
+            map.addOverlay(new BMap.Marker(pp));    //添加标注
+        }
+        var local = new BMap.LocalSearch(map, { //智能搜索
+            onSearchComplete: myFun
+        });
+        local.search(myValue);
+    }
+  
+    </script>
+
+
+</body>
+</html>

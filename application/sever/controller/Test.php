@@ -308,7 +308,9 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 		$params = json_decode($params,true);
 		
 		$layout = $params['m_frame'];
-		
+		if(!$layout){
+			echo "m_frame is null";die;
+		}
 		$layout = array_filter($layout);
 		$layout = implode(',',$layout);
 		
@@ -340,13 +342,35 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 
 	public function test_add(){
 		$data['m_frame'] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,0,50,0,51,0,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78];
-		$data['sn'] = "22";
-		$data['type'] = 1;
+		$data['msgtype'] = "room_config";
 		halt(json_encode($data,true));
+		$data['sn'] = "testmachine1";
+		$data['type'] = 1;
+		// halt(json_encode($data,true));
 
 		$url = "http://192.168.1.164/Sever/test/add";
 		$res = json_curl($url,$data);
 		halt($res);
 	}
+
+	public function x(){
+		$data = array(
+			'0' => 0,
+			'1' => 1,
+			'2' => 1,
+			'3' => 1,
+			'4' => 0,
+			'5' => 0,
+			'6' => 1,
+			'7' => 1,
+			);
+
+		$new = array_filter($data);
+		// dump($data);
+		halt($new);
+		halt(json_encode($data));
+	}
+	
+
 	
 }

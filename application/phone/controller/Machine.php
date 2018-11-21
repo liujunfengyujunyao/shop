@@ -517,9 +517,9 @@ class Machine extends Base{
 				// $value['address'] = $province . $city . $district;
 				$value['address'] = $province . $district;
 				$goods = DB::name('client_machine_conf')
-						->field("FROM_UNIXTIME(edittime, '%Y-%m-%d %H:%i:%s') as edittime,goods_price,goods_num,goods_name,location,id")
-						->where(['machine_id'=>$value['machine_id']])
-						->select();
+					->field("FROM_UNIXTIME(edittime, '%Y-%m-%d %H:%i:%s') as edittime,goods_price,goods_num,goods_name,location,id")
+					->where(['machine_id'=>$value['machine_id']])
+					->select();
 				$value['goods'] = $goods;
 			}
 		}

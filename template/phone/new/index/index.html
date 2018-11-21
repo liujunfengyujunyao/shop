@@ -12,7 +12,7 @@
 </head>
 <body>
 	<header id="head">
-	<a href="{:U('Phone/statistics/index')}">
+	
 		<div class="titlebar">
 			<div id="tit">
 				<a id="me" href="{:U('machine/mine')}" ><span class="glyphicon glyphicon-user" ></span> </a>
@@ -24,13 +24,14 @@
 			<p class="title_num" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?>>{$data.all_count}</p>
 		</div>
 
-		<ul class="foobar" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?>>
+	<a href="{:U('Phone/statistics/index')}" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?> >
+		<ul class="foobar">
 			<li class="foo_item"><span>在线支付</span><span>{$data.online_count}元</span></li>
 			<li class="foo_item"><span>现金支付</span><span>{$data.offline_count}元</span></li>
 			<li class="foo_item"><span>霸屏收入</span><span>0元</span></li>
 		</ul>
 
-		<div class="lastbar" <?php if(!in_array('statistics-index',$power) && $belong_id != 0) echo "style=display:none" ?>>
+		<div class="lastbar">
 			<div href="#"><span>礼品消耗</span><!-- <img src="img/gift.png" id="gt" > --><span>{$data.machine_count}台，{$data.gift_out_number}只</span></div>
 			<div href="#"><span>出奖率</span><p id="sp1">{$data.rate}%</p></div>
 		</div>
@@ -126,7 +127,7 @@
 		</div>
 		<div class="module">
 			<div class="long">
-				<a href="{:U('machine/machine_list')}">
+				<a href="{:U('machine/index')}">
 				<div class="icon fa fa-tachometer">
 					<!-- <span class=""></span> -->
 				</div>

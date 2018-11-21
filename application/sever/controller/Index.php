@@ -16,7 +16,7 @@ class Index extends Controller {
 		file_put_contents('./sever_log.txt', $newLog.PHP_EOL, FILE_APPEND);
 		$params = json_decode($params,true);
 
-
+		
 	
 
 
@@ -32,6 +32,23 @@ class Index extends Controller {
 		// }
 		switch ($type) {
 			case 'login'://登陆
+		// $signature['msgtype'] = $params['msgtype'];
+		// $signature['sn'] = $params['sn'];
+		// $signature['timestamp'] = $params['timestamp'];
+		// $signature['access_token'] = DB::name('machine')->where(['sn'=>$params['sn']])->getField("access_token");
+		// $signature = json_encode($signature,true);
+		// $signature = sha1($signature);
+		// if ($signature != $params['signature']) {
+		// 	$data = array(
+		// 		'msgtype' => 'error',
+		// 		'params' => array(
+		// 			'errid' => 10002,
+		// 			'errmsg' => "signature error",
+		// 			),
+		// 		);
+		// 	$data = json_encode($data,JSON_UNESCAPED_UNICODE);
+		// 	echo $data;die;
+		// }
 				echo $this->login($params);
 				break;
 			case 'disconnect'://断开连接
@@ -58,6 +75,9 @@ class Index extends Controller {
 		    case 'OK'://退款
 		        echo $this->change_priority($params);
 		        break;
+		    case 'room_config':
+		    	echo $this->room_config($params);
+		    	break;
 			default:
 				$data = array(
 					'msgtype' => 'error',
@@ -205,7 +225,7 @@ class Index extends Controller {
 			return json_encode($result,JSON_UNESCAPED_UNICODE);
 		}
 		$machine_conf = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->select();//平台机器conf
-		$offline_machine = DB::name('offline_machine_conf')->where(['machine_id'=>$machine_id])->select();
+		$offline_machine = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->select();
 
 		$time = time();
 		$price = $params['msg']['prices'];
@@ -214,15 +234,15 @@ class Index extends Controller {
 		//存在添加.不存在修改
 		if ($offline_machine) {//修改
 
-				DB::name('machine')->where(['machine_id'=>$machine_id])->save(['offline_game_price'=>$data['gameprice']]);	
+				DB::name('machine')->where(['machine_id'=>$machine_id])->save(['game_price'=>$data['gameprice']]);	
 
 			foreach ($price as $key => $value) {
 		
-				DB::name('offline_machine_conf')->where(['location'=>$value['roomid'],'machine_id'=>$machine_id])->save(['goods_price'=>$value['goodsprice'],'game_odds'=>$value['gameodds'],'edittime'=>$time]);
+				DB::name('machine_conf')->where(['location'=>$value['roomid'],'machine_id'=>$machine_id])->save(['goods_price'=>$value['goodsprice'],'game_odds'=>$value['gameodds'],'edittime'=>$time]);
 			}
 		}else{//添加
 		
-				DB::name('machine')->where(['machine_id'=>$machine_id])->save(['offline_game_price'=>$data['gameprice']]);//修改设备赔率
+				DB::name('machine')->where(['machine_id'=>$machine_id])->save(['game_price'=>$data['gameprice']]);//修改设备赔率
 			
 
 			foreach ($price as $key => $value) {
@@ -294,7 +314,7 @@ class Index extends Controller {
 			'game_log_id' => $this->get_log_id(),
 			);
 		if($data['result'] == 1){//游戏成功 ,减库存 client_machine_stock
-			DB::name('client_machine_stock')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
+			DB::name('client_machine_conf')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
 
 		}
 		
@@ -318,7 +338,7 @@ class Index extends Controller {
 			'sell_log_id' => $this->get_log_id(),//生成logid
 			);
 		if ($data['usetype'] == 1) {
-			DB::name('client_machine_stock')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
+			DB::name('client_machine_conf')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
 		}
 		DB::name('sell_log')->add($add);
 	}
@@ -397,7 +417,38 @@ class Index extends Controller {
 		    }
 		}
         
+	public function room_config($params){
+		$msg = $params['msg'];
 
+		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
+		$layout = $msg['roomlist'];
+
+		if(!$layout){
+			echo "roomlist is null";die;
+		}
+		$layout_arr = array_filter($layout);
+		$layout = implode(',',$layout_arr);
+		// halt($layout);
+		//测试用
+		foreach ($layout_arr as $key => $value) {
+			$add[$key]['goods_price'] = 300;
+			$add[$key]['machine_id'] = $machine_id;
+			$add[$key]['game_odds'] = 30;
+			$add[$key]['addtime'] = time();
+			$add[$key]['location'] = $value;
+		}
+		// halt($add);
+		$x = DB::name('client_machine_conf')->insertAll($add);
+		// halt($x);
+		//
+		
+		$res = DB::name('machine')->where(['machine_id'=>$machine_id])->save(['location'=>$layout]);
+		if($res){
+			echo 'OK';
+		}else{
+			echo 'error';
+		}
+	}
 	
 
 
@@ -464,4 +515,5 @@ class Index extends Controller {
      	$data = json_encode($data,JSON_UNESCAPED_UNICODE);
      	halt($data);
      }
+     // {"msgtype":"receive_message","msg":{"roomlist":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,0,50,0,51,0,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78],"msgtype":"room_config"},"machinesn":12}
 }

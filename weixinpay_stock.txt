@@ -1,1 +1,0 @@
-{"stock_id":3,"machine_id":1,"goods_name":"c","goods_num":5,"edittime":1537346091,"stock_num":5,"location":"A4","lock_num":0}
