@@ -34,6 +34,16 @@ class Room extends Base{
 		$roomid = input('post.roomid');
 		if($msgtype == 'kh_stock' && !$roomid){
 			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id,'goods_num'=>0])->select();
+			if(empty($rooms)){
+				return json(['status'=>0,'msg'=>'没有空仓位']);
+			}else{
+				foreach ($rooms as $k => $v) {
+					$roomid[$k] = intval($v['location']);
+				}
+			}
+		}
+		if($msgtype == 'test' && !$roomid){
+			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id])->select();
 			foreach ($rooms as $k => $v) {
 				$roomid[$k] = intval($v['location']);
 			}
