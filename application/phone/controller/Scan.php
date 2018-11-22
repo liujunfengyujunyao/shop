@@ -18,7 +18,7 @@ class Scan extends Base{
 			$id = session('client_id');
 			$data = I('post.');
 			// dump($data);die;
-			$machine = M('machine')->where(['sn'=>$data['sn']])->find();
+			$machine = M('machine')->where(['uuid'=>$data['sn']])->find();
 			// dump($machine);die;
 			if(!$machine){
 				return json(['info' => 'SN号不存在', 'error_code' => '1']);
@@ -29,7 +29,7 @@ class Scan extends Base{
 					return json(['info' => '机台已注冊。', 'error_code' => '3']);
 				
 				}else{
-					$machine = M('machine')->where(['sn'=>$data['sn']])->save(['client_id'=>$id]);
+					$machine = M('machine')->where(['uuid'=>$data['sn']])->save(['client_id'=>$id]);
 					return json(['info' => '注册成功。', 'error_code' => '4']);
 				}
 			}

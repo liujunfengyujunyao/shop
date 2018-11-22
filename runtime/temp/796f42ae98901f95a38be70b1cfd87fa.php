@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1534753044;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1542864783;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -225,6 +225,7 @@
       </div>
       <div style="clear:both"></div>
     </div>
+    <!--ajaxMachineList-->
     <div class="bDiv" style="height: auto;" id="ajax_return">
       
     </div>

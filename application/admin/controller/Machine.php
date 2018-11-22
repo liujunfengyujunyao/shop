@@ -84,7 +84,7 @@ class Machine extends Base
 				->join('__USERS__ u1','u1.user_id = m.user_id','LEFT')
 				->where($machine_where)
 				->count();
-		// halt($count);
+	
 		$Page = new AjaxPage($count,10);
 		$show = $Page->show();
 
@@ -124,7 +124,13 @@ class Machine extends Base
 				->order('m.machine_id')
 				->limit($Page->firstRow . ',' . $Page->listRows)
 				->select();
-		
+				// halt($list);
+		// $new = DB::name('machine')
+		//         ->alias('m')
+		//         ->join('__ADMIN__ a','a.admin_id = m.client_id','LEFT')
+		//         ->where()
+		// 	->select();
+		// halt($new);
 
 		$this->assign('list',$list);
 		$this->assign('page',$show); //赋值 分页输出

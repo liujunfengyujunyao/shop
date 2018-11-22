@@ -81,6 +81,9 @@ class Index extends Controller {
 		   	case 'leave_factory_mode'://设备出场
 		   		echo $this->leave_factory_mode($parmas);
 		   		break;
+		   	case 'machine_mode'://修改设备模式
+		   		echo $this->machine_mode($parmas);
+		   		break;
 			default:
 				$data = array(
 					'msgtype' => 'error',
@@ -328,12 +331,20 @@ class Index extends Controller {
 	//本地售卖日志(7.2)
 	public function sell_log($params){
 		$data = $params['msg'];
+		$type = is_array($data['roomid']);
+		if($type !== false){
+			$location = implode(',',$data['roomid']);
+		}else{
+			$location = $data['roomid'];
+		}
+		// halt($location);
 		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
-
+		// halt($machine_id);
 		$add = array(
 			'machine_id' => $machine_id,
 			'goods_name' => $data['goodsname'],
-			'location' => $data['roomid'],
+			// 'location' => $data['roomid'],
+			'location' => $location,
 			'sell_time' => $data['selltime'],
 			'paytype' => $data['paytype'],//0为现金,1为网络支付
 			'amount' => $data['amount'],
@@ -341,8 +352,22 @@ class Index extends Controller {
 			'usetype' => $data['usetype'],//0为游戏 1为售卖
 			'sell_log_id' => $this->get_log_id(),//生成logid
 			);
+
 		if ($data['usetype'] == 1) {
-			DB::name('client_machine_conf')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
+
+
+		
+		$count = count($data['roomid']);
+		// halt($count);
+		if ($count == 1) {//单独购买
+			$res = DB::name('client_machine_conf')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
+		}else{//批量购买
+			foreach ($data['roomid'] as $key => $value) {
+			$res = DB::name('client_machine_conf')->where(['location'=>$value,'machine_id'=>$machine_id])->setDec('goods_num',1);
+			}
+		}
+
+			// DB::name('client_machine_conf')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
 		}
 		DB::name('sell_log')->add($add);
 	}
@@ -472,8 +497,16 @@ class Index extends Controller {
 		}
 	}
 
-
-	
+	//修改设备模式
+	public function machine_mode($params){
+		$msg = $params['msg'];
+		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->save(['model'=>$msg['mode']]);
+		if ($machine !== false) {
+			echo 'OK';
+		}else{
+			echo 'error';
+		}
+	}
 
 
 

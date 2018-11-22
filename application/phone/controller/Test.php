@@ -174,4 +174,7 @@ class Test extends Controller {
     $time = time();
     halt($time);
   }
+  public function a(){
+    halt(time());
+  }
 }
