@@ -16,7 +16,8 @@ use think\AjaxPage;
 use think\Page;
 use think\Db;
 use think\Loader;
-
+header("Content-type:text/html;charset=utf-8");
+header("Content-Type:image/png"); 
 class Machine extends Base
 {
 
@@ -79,12 +80,13 @@ class Machine extends Base
 		}
 		$machine_where['m.status'] = 1;
 
-		$count = DB::name('machine')
-				->alias('m')
-				->join('__USERS__ u1','u1.user_id = m.user_id','LEFT')
-				->where($machine_where)
-				->count();
-	
+		// $count = DB::name('machine')
+		// 		->alias('m')
+		// 		->join('__USERS__ u1','u1.user_id = m.user_id','LEFT')
+		// 		->where($machine_where)
+		// 		->count();
+		$count = DB::name('machine')->count();
+		// halt($count);
 		$Page = new AjaxPage($count,10);
 		$show = $Page->show();
 
@@ -130,7 +132,18 @@ class Machine extends Base
 		        ->join('__ADMIN__ a','a.admin_id = m.client_id','LEFT')
 		        ->where($machine_where)
 			->select();
-	
+		$test = array();
+		foreach ($list as $key => &$value) {
+			if ($value['model'] == 1) {
+				$value['model'] = "工厂模式";
+			}elseif($value['model'] == 2){
+				$value['model'] = "中间模式";
+			}else{
+				$value['model'] = "运营模式";
+			}
+		}
+
+		// halt($list);
 		$this->assign('list',$list);
 		$this->assign('page',$show); //赋值 分页输出
 		$this->assign('pager',$Page);
@@ -283,13 +296,16 @@ class Machine extends Base
 
 		if ($act == '_EDIT_') {
 			$info = array(
-				'province_id' => $data['province'],
-				'city_id' => $data['city'],
-				'district_id' => $data['district'],
+				// 'province_id' => $data['province'],
+				// 'city_id' => $data['city'],
+				// 'district_id' => $data['district'],
 				'machine_name' => $data['machine_name'],
-				'type_id' => $data['type_id'],
-				'machine_admin' => $data['machine_admin'],
-				'partner_id' => $data['partner_id'],
+				'sn' => $data['sn'],
+				'access_token' => $data['access_token'],
+				'uuid' => $data['uuiid'],
+				// 'type_id' => $data['type_id'],
+				// 'machine_admin' => $data['machine_admin'],
+				// 'partner_id' => $data['partner_id'],
 				);
 			$r = DB::name('machine')->where(['machine_id'=>$data['machine_id']])->save($info);
 			if ($r !== fasle) {
@@ -989,6 +1005,151 @@ class Machine extends Base
     	$data = I('get.');
     	$data =  json_encode($data);
     	$log = logger($data);
+    }
+
+
+    /*生成二维码*/
+    public function luck_code(){//暂时生成乱码
+    	$machine_id = I('get.id');//获取福袋机的id
+    	//查询这个福袋机最后生成二维码的递增编号
+    	// $client_id = DB::name('machine')->where([''])
+    	$numLen=16;
+		$pwdLen=10;
+		$c=10;//生成100组卡号密码
+		$sNumArr=range(0,9);
+		$sPwdArr=array_merge($sNumArr,range('A','Z'));
+		$star = 19;//开始的编号
+		$cards=array();
+		for($x=$star;$x< $star+$c;$x++){
+		
+		 $tempPwdStr=array();
+		 for($i=0;$i< $pwdLen;$i++){
+		  $tempPwdStr[]=$sPwdArr[array_rand($sPwdArr)];  
+		 }
+		
+		 $cards[$x]=implode('',$tempPwdStr);
+		}
+		array_unique($cards);
+		foreach ($cards as $key => &$value) {
+			$value = $key.":".$value;
+		}
+		// $arr = [1,2,3,4];
+		// foreach ($arr as $key => $value) {
+		// 	QRcode($value);
+		// }
+		// QRcode($arr);
+		$this->code($cards);
+    }
+
+    public function txt(){
+    	$ua = $_SERVER["HTTP_USER_AGENT"];  halt($ua);
+		$filename = "二维码导出.txt";  
+		$encoded_filename = urlencode($filename);  
+		$encoded_filename = str_replace("+", "%20", $encoded_filename); 
+    }
+
+
+    //TXT形式下载
+    public function code($cards){
+    	// $id=array(
+    	// 	array('1','qicbnoqicnqoincqoa'),
+    	// 	array('2','ccc'),
+    	// 	);
+    	// halt($id);
+		header("Content-type:application/octet-stream");
+
+		header("Accept-Ranges:bytes");
+
+		header("Content-Disposition:attachment;filename=".'二维码列表_'.date("YmdHis").".txt");
+
+		header("Expires: 0");
+
+		header("Cache-Control:must-revalidate,post-check=0,pre-check=0");
+
+		header("Pragma:public");
+
+		echo implode(",",$cards);
+    }
+
+    //二维码中间加LOGO
+    public function logo(){
+    	vendor('phpqrcode.phpqrcode');
+    	$object=new \QRcode();
+		$value = 'http://192.168.1.164/phone';//二维码数据
+		$errorCorrectionLevel = 'L';//纠错级别：L、M、Q、H
+		$matrixPointSize = 10;//二维码点的大小：1到10
+		// $object->png( $value, ROOT_PATH . 'public' . DS . 'eeeeeee', $errorCorrectionLevel, $matrixPointSize, 2 ,ROOT_PATH . 'public' . DS . 'eeeeeee');
+		//不带Logo二维码的文件名
+		echo "二维码已生成" . "<br />";
+		$logo = 'http://192.168.1.164/public/upload/logo/2018/11-21/07532f10aac67e0348c209363678e4fc.png';//需要显示在二维码中的Logo图像
+		$QR = 'ewm.png';
+		if ($logo !== FALSE) {
+		 $QR = imagecreatefromstring ( file_get_contents ( $QR ) );
+		 $logo = imagecreatefromstring ( file_get_contents ( $logo ) );
+		 $QR_width = imagesx ( $QR );
+		 $QR_height = imagesy ( $QR );
+		 $logo_width = imagesx ( $logo );
+		 $logo_height = imagesy ( $logo );
+		 $logo_qr_width = $QR_width / 5;
+		 $scale = $logo_width / $logo_qr_width;
+		 $logo_qr_height = $logo_height / $scale;
+		 $from_width = ($QR_width - $logo_qr_width) / 2;
+		 imagecopyresampled ( $QR, $logo, $from_width, $from_width, 0, 0, $logo_qr_width, $logo_qr_height, $logo_width, $logo_height );
+		}
+		imagepng ( $QR,  ROOT_PATH . 'public' . DS . '129999' );//带Logo二维码的文件名
+    }
+
+
+    //乱码
+    public function font(){
+    	$image = imagecreatefrompng( ROOT_PATH . 'public' . DS . '123.jpg' );
+    	$color = imagecolorallocate($image,0,0,0);
+    	$font = ROOT_PATH.'public/static/fonts/long.ttf';
+    	// halt($font);
+    	$code= "TP0129";
+    	$x = imagettftext($image, 20, 0, 80, 292, $color, $font, $code);
+
+    
+imagepng($image);
+
+    }
+
+    
+    public function mark_photo($background,$text,$filename){
+    	vendor('topthink.think-image.src.Image');
+        $image = imagecreatefrompng($background);
+        $font = ROOT_PATH.'public/static/fonts/long.ttf'; // 字体文件
+        $color = imagecolorallocate($image,0,0,0); // 文字颜色
+        imagettftext($image, 10, 0, 8, 135, $color, $font, $text); // 创建文字
+        header("Content-Type:image/png");
+        ImagePng($image, $filename);//保存新生成的
+        imagedestroy($image);//删除原来的图片
+        // imagepng($image);//输出图片
+    }
+
+    public function pin(){
+    	vendor('topthink.think-image.src.Image');
+       	vendor('phpqrcode.phpqrcode');
+		$object=new \QRcode();
+        error_reporting(E_ERROR);
+        $vam = "TP";
+        $qr_code_path = $_SERVER['HTTP_HOST'].'/public/upload/qr_code/'.date("Y-m-d").'/';
+        
+        // halt($qr_code_path);
+        if (!file_exists($qr_code_path)) {
+       
+              mkdir($qr_code_path);
+         }
+         halt(213131);
+          /* 生成二维码 */
+         $qr_code_file = $qr_code_path.$vam.'_'.rand(1, 100).'.png';
+         $object->png($url, $qr_code_file,QR_ECLEVEL_M);
+           //把生成的二维码存入数据库
+             //  .........................根据自己需要存入...........................
+
+          // $image = $this->mark_photo('图片路径','要显示的名字','保存的路径');//在图片中添加文字
+          $this->mark_photo($qr_code_file,$vam,$qr_code_file);//在图片中添加文字拼接图片
+
     }
 
  

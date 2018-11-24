@@ -2,7 +2,7 @@
 
 namespace app\phone\controller;
 use think\Db;
-use think\Image
+use think\Image;
 class Machine extends Base{
 	   public function getRegion($pid, $level)
     {

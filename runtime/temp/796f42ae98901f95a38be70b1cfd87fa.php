@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1542943182;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1543032445;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -206,6 +206,9 @@
             </th>
             <th align="center" abbr="phone" axis="col5" class="">
               <div style="text-align: left; width: 100px;" class="">在线状态</div>
+            </th>
+             <th align="center" abbr="model" axis="col5" class="">
+              <div style="text-align: left; width: 100px;" class="">当前模式</div>
             </th>
             <th align="center" axis="col1" class="handle">
               <div style="text-align: left; width: 150px;">操作</div>

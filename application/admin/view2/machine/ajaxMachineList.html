@@ -30,8 +30,15 @@
                 <td align="left" class="">
                     <div style="text-align: left; width: 100px;">{$vo.is_online}</div>
                 </td>
+                <td align="left" class="">
+                    <div style="text-align: left; width: 100px;">{$vo.model}</div>
+                </td>
                 <td align="center" class="handle">
                     <div style="text-align: center; width: 150px; max-width:170px;">
+                    <if condition = " $vo.type_id == 2 ">
+                         <a href="{:U('Machine/luck_code',array('id'=>$vo['machine_id']))}"
+                               class="btn blue"><i class="fa fa-pencil-square-o"></i>生成二维码</a>
+                    </if>
                         <a href="{:U('Machine/optionMachine',array('act'=>'_OPTION_','id'=>$vo['machine_id']))}"
                            class="btn blue"><i class="fa fa-pencil-square-o"></i>配置</a>
                         <a href="{:U('Machine/addEditMachine',array('act'=>'_EDIT_','id'=>$vo['machine_id']))}"
