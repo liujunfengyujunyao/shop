@@ -2,6 +2,7 @@
 
 namespace app\phone\controller;
 use think\Db;
+use think\Image
 class Machine extends Base{
 	   public function getRegion($pid, $level)
     {
@@ -851,9 +852,7 @@ class Machine extends Base{
 		halt($info);
 	}
 
-	public function test(){
-		halt(I('get.'));
-	}
+	
 	//弹出层
 	public function modal(){
 		$power = $_SESSION['think']['manager_info']['nav_list'];
@@ -1060,4 +1059,40 @@ class Machine extends Base{
 			return $this->fetch();
 			
 		}
+
+	// public function luck_index(){
+	// 	return $this->fetch();
+		
+	// }
+	
+	//  // 图片上传处理
+ //    public function picture()
+ //    {
+
+ //        // 获取表单上传文件 例如上传了001.jpg
+ //        $file = request()->file('image');
+ //        //校验器，判断图片格式是否正确
+ //        if (true !== $this->validate(['image' => $file], ['image' => 'require|image'])) {
+ //            $this->error('请选择图像文件');
+ //        } else {
+ //            // 移动到框架应用根目录/public/uploads/ 目录下
+ //            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+ //            if ($info) {
+ //                // 成功上传后 获取上传信息
+
+ //                //存入相对路径/upload/日期/文件名
+ //                $data = DS . 'uploads' . DS . $info->getSaveName();
+ //                //模板变量赋值
+ //                $this->assign('image', $data);
+ //                return $this->fetch('index');
+ //            } else {
+ //                // 上传失败获取错误信息
+ //                echo $file->getError();
+ //            }
+ //        }
+ //    }
+
+
+
+
 } 

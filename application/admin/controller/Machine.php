@@ -114,24 +114,23 @@ class Machine extends Base
 		// }
 		// halt($list);
 
-		$list = DB::name('machine')
-				->alias('m')
-				->field("m.*, mt.type_name,u.nickname,u.mobile")
-				->join('__PARTNER__ p','p.partner_id = m.partner_id', 'LEFT')
-				->join('__MACHINE_TYPE__ mt','mt.id = m.type_id', 'LEFT')
-				->join('__USERS__ u','u.user_id = p.user_id','LEFT')
-				->where($machine_where)
-				->order('m.machine_id')
-				->limit($Page->firstRow . ',' . $Page->listRows)
-				->select();
+		// $list = DB::name('machine')
+		// 		->alias('m')
+		// 		->field("m.*, mt.type_name,u.nickname,u.mobile")
+		// 		->join('__PARTNER__ p','p.partner_id = m.partner_id', 'LEFT')
+		// 		->join('__MACHINE_TYPE__ mt','mt.id = m.type_id', 'LEFT')
+		// 		->join('__USERS__ u','u.user_id = p.user_id','LEFT')
+		// 		->where($machine_where)
+		// 		->order('m.machine_id')
+		// 		->limit($Page->firstRow . ',' . $Page->listRows)
+		// 		->select();
 				// halt($list);
-		// $new = DB::name('machine')
-		//         ->alias('m')
-		//         ->join('__ADMIN__ a','a.admin_id = m.client_id','LEFT')
-		//         ->where()
-		// 	->select();
-		// halt($new);
-
+		$list = DB::name('machine')
+		        ->alias('m')
+		        ->join('__ADMIN__ a','a.admin_id = m.client_id','LEFT')
+		        ->where($machine_where)
+			->select();
+	
 		$this->assign('list',$list);
 		$this->assign('page',$show); //赋值 分页输出
 		$this->assign('pager',$Page);

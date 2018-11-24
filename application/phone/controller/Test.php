@@ -175,6 +175,13 @@ class Test extends Controller {
     halt($time);
   }
   public function a(){
-    halt(time());
+    $id = 11;
+    $add = array(
+              'client_id' => $id,
+              );
+            for ($i=0; $i <9 ; $i++) { 
+              DB::name('client_luck_conf')->add($add);
+            }
+            
   }
 }

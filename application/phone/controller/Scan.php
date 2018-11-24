@@ -29,7 +29,24 @@ class Scan extends Base{
 					return json(['info' => '机台已注冊。', 'error_code' => '3']);
 				
 				}else{
-					$machine = M('machine')->where(['uuid'=>$data['sn']])->save(['client_id'=>$id]);
+					M('machine')->where(['uuid'=>$data['sn']])->save(['client_id'=>$id]);
+
+					//如果绑定的设备为福袋机 增加client_luck_conf数据
+					if($machine['type_id'] == 2){
+						$luck = DB::name('client_luck_conf')->where(['client_id'=>$id])->find();
+						if ($luck) {
+							return json(['info' => '注册成功。', 'error_code' => '4']);
+						}
+						$add = array(
+							'client_id' => $id,
+							);
+						for ($i=0; $i <9 ; $i++) { 
+							DB::name('client_luck_conf')->add($add);
+						}
+					}
+
+
+
 					return json(['info' => '注册成功。', 'error_code' => '4']);
 				}
 			}

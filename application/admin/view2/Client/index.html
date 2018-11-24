@@ -6,8 +6,8 @@
   <div class="fixed-bar">
     <div class="item-title">
       <div class="subject">
-        <h3>贩卖机管理</h3>
-        <h5>贩卖机列表与管理</h5>
+        <h3>人员管理</h3>
+        <h5>人员列表与管理</h5>
       </div>
     </div>
   </div>
@@ -18,19 +18,19 @@
       <span title="收起提示" id="explanationZoom" style="display: block;"></span>
     </div>
     <ul>
-      <li>操作时请仔细核对贩卖机信息！</li>
+      <li>操作时请仔细核对人员信息！</li>
     </ul>
   </div>
   <div class="flexigrid">
     <div class="mDiv">
       <div class="ftitle">
-        <h3>贩卖机列表</h3>
+        <h3>人员列表</h3>
         <h5>(共<span id="count"></span>条记录)</h5>
       </div>
       <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
       <form class="navbar-form form-inline" id="search-form2" method="get" onsubmit="return false" action="{:U('/Admin/Store/ajaxStoreList')}">
                 <div class="sDiv">
-                    <div class="sDiv2" style="margin-right: 10px;border: none;">
+                    <!-- <div class="sDiv2" style="margin-right: 10px;border: none;">
                         <select name="province_id" id="province_id" onChange="get_city(this)">
                             <option value="">所有省</option>
                             <foreach name="province" item="v" key="k" >
@@ -53,9 +53,9 @@
                                 <option value="{$v['id']}">{$v['name']}</option>
                             </foreach>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="sDiv2">
-                        <input size="30" name="key_word" value="{$Request.param.key_word}" placeholder="贩卖机名称" class="qsbox" type="text">
+                        <input size="30" name="key_word" value="{$Request.param.key_word}" placeholder="人员名称" class="qsbox" type="text">
                         <input class="btn" value="搜索" onclick="ajax_get_table('search-form2',1)" type="submit">
                     </div>
                 </div>
@@ -73,7 +73,7 @@
               <div style="text-align: left; width: 30px;" class="">ID</div>
             </th>
             <th align="left" abbr="store_name" axis="col3" class="">
-              <div style="text-align: left; width: 200px;" class="">贩卖机名称</div>
+              <div style="text-align: left; width: 200px;" class="">人员名称</div>
             </th>
            <!--  <th align="left" abbr="user_money" axis="col3" class="">
               <div style="text-align: left; width: 100px;" class="">账户余额</div>
@@ -82,17 +82,17 @@
               <div style="text-align: left; width: 100px;" class="">管理员</div>
             </th> -->
               <th align="left" abbr="user" axis="col3" class="">
-              <div style="text-align: left; width: 100px;" class="">所属人</div>
+              <div style="text-align: left; width: 100px;" class="">所属</div>
             </th>
            <!--  <th align="left" abbr="partner" axis="col3" class="">
               <div style="text-align: left; width: 100px;" class="">合伙人</div>
             </th> -->
             <th align="left" abbr="type_name" axis="col4" class="">
-              <div style="text-align: left; width: 150px;" class="">类型</div>
+              <div style="text-align: left; width: 150px;" class="">注册手机号</div>
             </th>
-            <th align="center" abbr="phone" axis="col5" class="">
+            <!-- <th align="center" abbr="phone" axis="col5" class="">
               <div style="text-align: left; width: 100px;" class="">在线状态</div>
-            </th>
+            </th> -->
             <th align="center" axis="col1" class="handle">
               <div style="text-align: left; width: 150px;">操作</div>
             </th>
@@ -103,15 +103,15 @@
     </div>
     <div class="tDiv">
       <div class="tDiv2">
-        <div class="fbutton"> <a href="{:U('Machine/addEditMachine',array('act'=>'_ADD_'))}">
-          <div class="add" title="新增贩卖机分类">
-            <span><i class="fa fa-plus"></i>新增贩卖机</span>
+        <div class="fbutton"> <a href="{:U('Client/addEditClient',array('act'=>'_ADD_'))}">
+          <div class="add" title="新增人员分类">
+            <span><i class="fa fa-plus"></i>新增人员</span>
           </div>
         </a> </div>
       </div>
       <div style="clear:both"></div>
     </div>
-    <!--ajaxMachineList-->
+    <!--ajaxClientList-->
     <div class="bDiv" style="height: auto;" id="ajax_return">
       
     </div>
@@ -133,7 +133,7 @@
         cur_page = page; //当前页面 保存为全局变量
         $.ajax({
             type: "POST",
-            url: "/index.php?m=Admin&c=Machine&a=ajaxMachineList&p="+page,
+            url: "/index.php?m=Admin&c=Client&a=ajaxClientList&p="+page,
             data: $('#'+form).serialize(),// 你的formid
             success: function(data){
                 $("#ajax_return").html('');

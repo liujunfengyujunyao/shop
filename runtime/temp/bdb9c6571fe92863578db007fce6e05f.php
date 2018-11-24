@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542877338;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542965224;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -255,6 +255,19 @@
 							<img src="__NEW__/img/binding.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
 							<p class="p1">新增设备</p>
 							<div class="p2">新增设备</div>
+						</div>
+					</div>
+					</a>
+				</li>
+
+				<li>
+					<a href="<?php echo U('Luck/index'); ?>">
+					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
+					<div class="text">
+						<div id="txt1">
+							<img src="__NEW__/img/binding.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
+							<p class="p1">福袋抽奖</p>
+							<div class="p2">设置福袋机奖池</div>
 						</div>
 					</div>
 					</a>

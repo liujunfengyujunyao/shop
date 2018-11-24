@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1542864783;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1542943182;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -196,7 +196,7 @@
               <div style="text-align: left; width: 100px;" class="">管理员</div>
             </th> -->
               <th align="left" abbr="user" axis="col3" class="">
-              <div style="text-align: left; width: 100px;" class="">配货员</div>
+              <div style="text-align: left; width: 100px;" class="">所属人</div>
             </th>
            <!--  <th align="left" abbr="partner" axis="col3" class="">
               <div style="text-align: left; width: 100px;" class="">合伙人</div>
@@ -205,7 +205,7 @@
               <div style="text-align: left; width: 150px;" class="">类型</div>
             </th>
             <th align="center" abbr="phone" axis="col5" class="">
-              <div style="text-align: left; width: 100px;" class="">联系方式</div>
+              <div style="text-align: left; width: 100px;" class="">在线状态</div>
             </th>
             <th align="center" axis="col1" class="handle">
               <div style="text-align: left; width: 150px;">操作</div>
