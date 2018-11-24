@@ -188,7 +188,7 @@ class Room extends Base{
 		Db::name('user_power')->add($data);
 	}
 
-	function httpRequest_get($url, $method="GET", $postfields = null, $headers = array(), $debug = false) {
+	public function httpRequest_get($url, $method="GET", $postfields = null, $headers = array(), $debug = false) {
     $method = strtoupper($method);
     $ci = curl_init();
     /* Curl settings */
