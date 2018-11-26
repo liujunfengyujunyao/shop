@@ -75,9 +75,12 @@ class Index extends Controller {
 		    case 'OK'://退款
 		        echo $this->change_priority($params);
 		        break;
-		    case 'room_config':
+		    case 'room_config'://工厂配置布局
 		    	echo $this->room_config($params);
 		    	break;
+		   	case 'leave_factory_mode'://设备出场
+		   		echo $this->leave_factory_mode($parmas);
+		   		break;
 			default:
 				$data = array(
 					'msgtype' => 'error',
@@ -238,26 +241,27 @@ class Index extends Controller {
 
 			foreach ($price as $key => $value) {
 		
-				DB::name('machine_conf')->where(['location'=>$value['roomid'],'machine_id'=>$machine_id])->save(['goods_price'=>$value['goodsprice'],'game_odds'=>$value['gameodds'],'edittime'=>$time]);
+				DB::name('client_machine_conf')->where(['location'=>$value['roomid'],'machine_id'=>$machine_id])->save(['goods_price'=>$value['goodsprice'],'game_odds'=>$value['gameodds'],'edittime'=>$time]);
 			}
-		}else{//添加
-		
-				DB::name('machine')->where(['machine_id'=>$machine_id])->save(['game_price'=>$data['gameprice']]);//修改设备赔率
-			
-
-			foreach ($price as $key => $value) {
-				$new[$key]['location'] = $value['roomid'];
-				$new[$key]['goods_price'] = $value['goodsprice'];
-				$new[$key]['game_odds'] = $value['gameodds'];
-				$new[$key]['machine_id'] = $machine_id;
-				$new[$key]['addtime'] = time();
-			}
-
-			
-
-			
-		    $add = DB::name('offline_machine_conf')->insertAll($new);
 		}
+		// else{//添加
+		
+		// 		DB::name('machine')->where(['machine_id'=>$machine_id])->save(['game_price'=>$data['gameprice']]);//修改设备赔率
+			
+
+		// 	foreach ($price as $key => $value) {
+		// 		$new[$key]['location'] = $value['roomid'];
+		// 		$new[$key]['goods_price'] = $value['goodsprice'];
+		// 		$new[$key]['game_odds'] = $value['gameodds'];
+		// 		$new[$key]['machine_id'] = $machine_id;
+		// 		$new[$key]['addtime'] = time();
+		// 	}
+
+			
+
+			
+		//     $add = DB::name('offline_machine_conf')->insertAll($new);
+		// }
 		// return json_encode($data,JSON_UNESCAPED_UNICODE);
 		DB::name('machine')->where(['machine_id'=>$machine_id])->save(['offline_odds'=>$data['singleodds'],'offline_game_price'=>$data['gameprice'],'offline_goods_prices'=>$data['singleprice']]);
 
@@ -417,18 +421,24 @@ class Index extends Controller {
 		    }
 		}
         
+
+        //仓位配置
 	public function room_config($params){
 		$msg = $params['msg'];
 
 		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
 		$layout = $msg['roomlist'];
-
+		$conf = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->find();
+		
 		if(!$layout){
 			echo "roomlist is null";die;
 		}
+		if ($conf) {
+			DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->delete();
+		}
 		$layout_arr = array_filter($layout);
 		$layout = implode(',',$layout_arr);
-		// halt($layout);
+		
 		//测试用
 		foreach ($layout_arr as $key => $value) {
 			$add[$key]['goods_price'] = 300;
@@ -438,17 +448,31 @@ class Index extends Controller {
 			$add[$key]['location'] = $value;
 		}
 		// halt($add);
+		// halt($add);
 		$x = DB::name('client_machine_conf')->insertAll($add);
 		// halt($x);
 		//
 		
-		$res = DB::name('machine')->where(['machine_id'=>$machine_id])->save(['location'=>$layout]);
-		if($res){
+		$res = DB::name('machine')->where(['machine_id'=>$machine_id])->save(['location'=>$layout,'model'=>2]);//修改设备的布局和模式为中间模式 工厂模式->中间模式
+		if($res !== false){
 			echo 'OK';
 		}else{
 			echo 'error';
 		}
 	}
+
+
+	//设备出厂
+	public function leave_factory_mode($params){
+		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->save(['model'=>2]);//0默认预生产  1工厂模式 2工厂模式 3中间模式 4运营模式
+		if($machine !== false){
+			echo 'OK';
+		}else{
+			echo 'error';
+		}
+	}
+
+
 	
 
 

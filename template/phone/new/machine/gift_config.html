@@ -15,7 +15,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a class="fa fa-chevron-left" id="upper"></a>
+				<a href="{:U('machine/gift_select',array('id'=>$id))}" class="fa fa-chevron-left"></a>
 				<span class="title">礼品格设置</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -70,8 +70,6 @@
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
 		})
-		$('#upper').click(function(){
-			history.back();
-		})
+
 	</script>
 </html>

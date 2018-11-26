@@ -15,7 +15,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a class="fa fa-chevron-left" id="upper"></a>
+				<a href="{:U('machine/index')}" class="fa fa-chevron-left"></a>
 				<span class="title">设备设置</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -96,9 +96,6 @@
 		<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
-		})
-		$('#upper').click(function(){
-			history.back();
 		})
 		if($('#sb').attr('checked')){
 			$('input[id=data]').attr('disabled',true);

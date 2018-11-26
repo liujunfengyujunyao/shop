@@ -32,7 +32,9 @@ class Room extends Base{
 		$msgtype = input('post.msgtype');//锁定传lock_room,解锁传unlock_room
 		$machine_id = input('post.machine_id');
 		$roomid = input('post.roomid');
-		if($msgtype == 'kh_stock' && !$roomid){
+		$num = input('post.num');
+
+		if($msgtype == 'kh_stock' && !$roomid){ //口红机一键补货，只开空仓，数量补至1
 			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id,'goods_num'=>0])->select();
 			if(empty($rooms)){
 				return json(['status'=>0,'msg'=>'没有空仓位']);
@@ -42,7 +44,7 @@ class Room extends Base{
 				}
 			}
 		}
-		if($msgtype == 'test' && !$roomid){
+		if(in_array($msgtype,array('test','fd_stock','clear')) && !$roomid){ //测试开舱门，福袋机补货，一键清货，都是打开所有仓门
 			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id])->select();
 			foreach ($rooms as $k => $v) {
 				$roomid[$k] = intval($v['location']);
@@ -51,9 +53,13 @@ class Room extends Base{
 		if(!$msgtype || !$machine_id || !is_array($roomid))
 		{
 			return json(['status'=>0,'msg'=>'参数错误']);
-		}else{			
-			$str_room = implode(',',$roomid);
-			$commandid = $this->get_command($msgtype,$machine_id,$str_room);
+		}else{
+			if($msgtype == 'kh_stock' || $msgtype == 'test' || $msgtype == 'clear'){
+				$str_room = implode(',',$roomid);
+				$commandid = $this->get_command($msgtype,$machine_id,$str_room);
+			}else{
+				$commandid = $this->get_command($msgtype,$machine_id,$num);
+			}
 			$data = array(
 				'msgtype'=>'open_room',
 				'commandid'=>intval($commandid),
@@ -142,7 +148,12 @@ class Room extends Base{
                 	case 'kh_stock':
                 		Db::name('client_machine_conf')->where('machine_id','=',$command['machine_id'])->where('location','in',$command['content'])->setField('goods_num',1);
                 		break;
-                	
+                	case 'fd_stock':
+                		Db::name('client_machine_conf')->where('machine_id','=',$command['machine_id'])->setField('goods_num',$command['content']);
+                		break;
+                	case 'clear':
+                		Db::name('client_machine_conf')->where('machine_id','=',$command['machine_id'])->setField('goods_num',0);
+                		break;
                 	default:
                 		# code...
                 		break;
@@ -183,14 +194,5 @@ class Room extends Base{
 		}
 	}
 
-	public function add_power(){
-		$data = array(
-		'name'=>'编辑群组',
-		'pid'=>5,
-		'controller'=>'group',
-		'function'=>'edit',
-		'create_time'=>time()
-		);
-		Db::name('user_power')->add($data);
-	}
+
 }

@@ -25,9 +25,9 @@
 					解绑设备
 				</div>
 			</a>
-			<a href="{:U('Phone/machine/stock')}" >
+			<a href="{:U('Phone/machine/gift_detail',array('machine_id'=>$machine_id))}" >
 				<div class="col-xs-3 col-sm-3" >
-					设备库存
+					礼品配置
 				</div>
 			</a>
 			<a <?php if(!in_array('machine-wifi',$power) && $belong_id != 0) echo "style=display:none" ?> >

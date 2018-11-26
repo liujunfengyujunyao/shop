@@ -15,51 +15,55 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="{:U('staff/staff_manage')}" class="fa fa-chevron-left"></a>
-				<span class="title">人员列表</span>
+				<a href="{:U('machine/index')}" class="fa fa-chevron-left"></a>
+				<span class="title">礼品配置</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
 			<ul class="slide_bar">
 				<li>
-					<a href="{:U('Phone/index/index')}">
+					<a href="#">
 						<span class="fa fa-home"></span>
 						<!-- <span>首页</span> -->
 					</a>
 				</li>
 				<li>
-					<a href="{:U('Phone/machine/mine')}">
+					<a href="#">
 						<span class="fa fa-user"></span>
 						<!-- <span>我的</span> -->
 					</a>
 				</li>
 			</ul>
 		</header>
-		<section class="pl_content">
-			<div class="pl_ct">
-				<ul>
-				<volist name="list" id="v">
-					<li>
-						<span id="pl_name">{$v.user_name}</span>
-						<p id="pl_group">{$v.group_name}</p>
-						<a href="{:U('staff/edit_staff','user_id='.$v.admin_id)}"><img src="__NEW__/img/write.png.png" ></a>
-					</li>
-				</volist>
-				</ul>
+		<section class="is_content" style="padding-bottom: 0.5rem;">
+			<div class="is_cont">
+				<div id="is_head">
+					<span>位置</span>
+					<span>商品名称</span>
+					<span>商品价格</span>
+					<span>赔率</span>
+					<span>更新日期</span>
+
+				</div>
+				<div id="is_list">
+					<ul>
+					<volist name="img" id="v">
+						<li>
+							<div class="gs2_list_s1">
+								<img src="{$v.image_url}">
+							</div>
+						</li>
+					</volist>
+					</ul>
+				</div>
 			</div>
 		</section>
-
-
-
-
-
 	</body>
 	<script src="__NEW__/js/rem.js"></script>
 	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
 	<script>
-		<!--头部-->
+		//<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
 		})
-
 	</script>
 </html>

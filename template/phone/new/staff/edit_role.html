@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" id="rootHTML">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<title>权限列表</title>
+		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
+		<link rel="stylesheet" href="__NEW__/css/common.css">
+		<link rel="stylesheet" href="__NEW__/css/bootstrap.min.css">
+		<link rel="stylesheet" href="__NEW__/css/util.css">
+		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
+		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
+	</head>
+	<body>
+		<header id="head">
+			<div class="top_bar">
+				<a href="{:U('staff/staff_manage')}" class="fa fa-chevron-left"></a>
+				<span class="title">编辑角色</span>
+				<a class="<n></n>o-addon" href="#"></a>
+			</div>
+			<ul class="slide_bar">
+				<li>
+					<a href="#">
+						<span class="fa fa-home"></span>
+						<!-- <span>首页</span> -->
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="fa fa-user"></span>
+						<!-- <span>我的</span> -->
+					</a>
+				</li>
+			</ul>
+		</header>
+		<section class="al_content" style="padding-bottom: 0.8rem;">
+			<div class="al_cont">
+				<div class="al_cont_head">
+					<span id="al_cont_role">职位名称 </span>
+					<select id="role" name="sel" contenteditable="true">
+						<option contenteditable="contenteditable">请选择</option>
+						<volist name="role" id="v">
+							<option contenteditable="contenteditable" value="{$v.act_list}">{$v.role_name}</option>
+						</volist>
+					</select>
+				</div>
+				<div class="np_ct2">
+					<div id="np_head">
+						<span id="">职位权限</span>
+					</div>
+					<div id="np_line" style="width: 90%; height: 0.01rem; margin: 0 auto; background-color: #FFE9F5;"></div>
+					<ul>
+
+					<volist name="power" id="v">
+						<div id="np_line" style="width: 100%; height: 0.01rem; margin: 0 auto; background-color: #A9A9A9;"></div>
+						<li>					
+							<span id="">{$v.name}</span>
+							<div id="off">
+								<div class="onoffswitch2">
+									<input type="checkbox" name="power[]" class="onoffswitch-checkbox" id="myonoffswitch{$v.id}" value="{$v.id}">
+									<label class="onoffswitch-label" for="myonoffswitch{$v.id}">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+						</li>
+						
+					</volist>
+
+					</ul>
+					<div class="addStoreBtn" id="np_keep">
+						<a href="">保存</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+
+	</body>
+	<script src="__NEW__/js/rem.js"></script>
+	<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
+	<script>
+		//<!--头部-->
+		$('.tog').click(function() {
+			$('.slide_bar').slideToggle();
+		})
+
+	</script>
+</html>

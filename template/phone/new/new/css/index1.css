@@ -34,7 +34,7 @@ a:focus {
 }
 
 body {
-	background: #efeff4;
+	background: #FFE9F5;
 }
 
 #head .titlebar {
@@ -274,9 +274,10 @@ body {
 	background: url(../img/error.png) center;
 }
 
-#tit{
+#tit {
 	overflow: hidden;
 }
+
 #me {
 	display: block;
 	float: left;
@@ -294,19 +295,21 @@ body {
 	padding-top: 0.1rem;
 	padding-right: 5%;
 }
-.glyphicon{
-	color:white;
+
+.glyphicon {
+	color: white;
 	font-size: 30px;
 }
-#msg .glyphicon .badge{
-	position: absolute;
-	top:-6px;
-	left:20px;
-	padding:3px 6px;
-	background-color: red;
-}s
 
-.lastbar #gtt {
+#msg .glyphicon .badge {
+	position: absolute;
+	top: -6px;
+	left: 20px;
+	padding: 3px 6px;
+	background-color: red;
+}
+
+s .lastbar #gtt {
 	width: 50%;
 }
 
@@ -471,6 +474,7 @@ body {
 	margin-left: 1.5rem;
 	color: #000000;
 }
+
 /*设备编辑*/
 .d_body {
 	width: 100%;
@@ -497,22 +501,50 @@ body {
 }
 
 .d_body #d_name #input1 {
-	width: 1.5rem;
+	width: 40%;
 	height: 0.3rem;
 	border-radius: 0.05rem;
+	border: 0;
+}
+
+.d_body #d_goup #suggestId {
+	width: 40%;
+	height: 0.3rem;
+	border-radius: 0.05rem;
+	border: 0;
+	margin-left: 0.14rem;
 }
 
 .d_body #d_goup #input2 {
-	width: 1.5rem;
+	width: 40%;
 	height: 0.3rem;
+	border: 0;
 	border-radius: 0.05rem;
 }
-.d_body #d_goup #input3 {
-	width: 1.5rem;
+
+.d_body #d_goup #txtposition {
+	width: 40%;
 	height: 0.3rem;
 	border-radius: 0.05rem;
+	border: 0;
 	margin-left: 4.5%;
 }
+
+.d_body #d_goup select {
+	width: 40%;
+	height: 0.3rem;
+	border-radius: 0.05rem;
+	border: 0;
+	margin-top: 0.05rem;
+	/* margin-right: 10%; */
+	/* padding-left: 0.5rem; */
+}
+
+.d_body #d_goup .zd {
+	font-size: 0.15rem;
+	color: #333333;
+}
+
 .demo_main {
 	padding: 20px;
 	padding-top: 10px;
@@ -535,13 +567,15 @@ body {
 	border: solid 1px gray;
 	border-radius: 0.05rem;
 }
-#btn_list{
+
+#btn_list {
 	width: 50%;
 	height: 0.3rem;
 	float: left;
 	margin-left: 70%;
 }
-#btn_list input{
+
+#btn_list input {
 	width: 40%;
 	height: 0.3rem;
 	color: #FFFFFF;
@@ -549,12 +583,14 @@ body {
 	border-radius: 0.05rem;
 	border: #FFFFFF;
 }
-.demo_content select{
+
+.demo_content select {
 	width: 0.85rem;
 	height: 0.2rem;
 	font-size: 0.1rem;
 	color: #333333;
 }
+
 /*peilv  赔率列表*/
 #body_pl ul li {
 	margin: 0.15rem 0.05rem;
@@ -787,7 +823,7 @@ body {
 .sytj .sy_list li #sy_time1 {
 	width: 33.3333333%;
 	height: 0.2rem;
-	background-color: #BDBDBD;
+	background-color: #F29DC7;
 	border-radius: 0.05rem;
 	margin: 0 auto;
 }
@@ -898,7 +934,7 @@ body {
 	border: #FFFFFF;
 }
 
-.pop_box{
+.pop_box {
 	display: none;
 	position: fixed;
 	width: 100%;
@@ -910,7 +946,8 @@ body {
 	background-color: rgba(0, 0, 0, .4);
 	z-index: 1314;
 }
-.add_ct2{
+
+.add_ct2 {
 	z-index: 1000;
 	position: absolute;
 	left: 50%;
@@ -921,17 +958,20 @@ body {
 	background-color: #fff;
 	border-radius: 3px;
 }
-.add_ct2 .addmachineUl{
+
+.add_ct2 .addmachineUl {
 	overflow: hidden;
 	margin: 0;
 }
-.add_ct2 .addmachineUl li{
-    border-bottom: solid 1px #e4e4e4;
-    padding: 0 10px;
-    height: 35px;
-    line-height: 35px;
+
+.add_ct2 .addmachineUl li {
+	border-bottom: solid 1px #e4e4e4;
+	padding: 0 10px;
+	height: 35px;
+	line-height: 35px;
 }
-.add_ct2 .addmachineUl li:last-child{
+
+.add_ct2 .addmachineUl li:last-child {
 	border: none;
 }
 
@@ -968,6 +1008,7 @@ body {
 .ib_content ul li button {
 	width: 1rem;
 	height: 0.3rem;
+	background-color: #EB7CB1;
 	border-radius: 0.05rem;
 }
 
@@ -1015,7 +1056,7 @@ body {
 	top: 50%;
 	transform: translateY(-50%);
 	right: .15rem;
-	width: 0.4rem;
+	width: 0.3rem;
 	height: auto;
 }
 
@@ -1031,12 +1072,14 @@ body {
 	bottom: .4rem;
 	background-color: #eb7cb1;
 }
-.addStoreBtn a{
+
+.addStoreBtn a {
 	line-height: 40px;
 	text-align: center;
 	color: #FFFFFF !important;
 	font-size: 0.2rem;
 }
+
 /*machineUl*/
 .machineUl {
 	margin: 15px;
@@ -1232,12 +1275,15 @@ body {
 	text-align: center;
 	line-height: 0.5rem;
 }
-.in_set .in_set_content .in_set_cont2 #is1 input{
+
+.in_set .in_set_content .in_set_cont2 #is1 input {
 	margin-left: 50%;
 }
-.in_set .in_set_content .in_set_cont2 #is2 input{
+
+.in_set .in_set_content .in_set_cont2 #is2 input {
 	margin-left: 50%;
 }
+
 .in_set .in_set_content .in_set_cont2 #is2 {
 	width: 80%;
 	height: 0.5rem;
@@ -1471,47 +1517,55 @@ body {
 	float: right;
 
 }
-.p_hide{
+
+.p_hide {
 	width: 100%;
 	height: 0;
 	position: absolute;
 	bottom: 0;
 	transition: height 1s;
 }
-.p_hide #p_h_cont{
+
+.p_hide #p_h_cont {
 	height: 0.3rem;
 	margin-top: 0.35rem;
 	background-color: #FFFFFF;
 }
-.p_hide #p_h_cont span{
+
+.p_hide #p_h_cont span {
 	font-size: 0.01rem;
 	color: #333333;
 	text-align: center;
 	line-height: 0.3rem;
 	margin-left: 5%;
 	padding-top: 0.1rem;
-	
+
 }
-.p_hide #p_h_btn1{
+
+.p_hide #p_h_btn1 {
 	height: 0.3rem;
 	background-color: #FFFFFF;
-	overflow: hidden;color: red;
+	overflow: hidden;
+	color: red;
 }
-.p_hide #p_h_btn1 a{
+
+.p_hide #p_h_btn1 a {
 	font-size: 0.15rem;
-	
+
 	text-align: center;
 	line-height: 0.3rem;
 	margin: 0 auto;
 	margin-left: 43%;
 }
-.p_hide #p_h_btn2{
+
+.p_hide #p_h_btn2 {
 	margin-top: 0.1rem;
 	height: 0.3rem;
 	background-color: #FFFFFF;
 	overflow: hidden;
 }
-.p_hide #p_h_btn2 a{
+
+.p_hide #p_h_btn2 a {
 	font-size: 0.15rem;
 	text-align: center;
 	line-height: 0.3rem;
@@ -1599,7 +1653,7 @@ body {
 .pw_content .pw_ct ul li {
 	width: 90%;
 	height: 0.4rem;
-	margin-top: 0.15rem;
+	/* margin-top: 0.15rem; */
 }
 
 .pw_content .pw_ct ul li span {
@@ -1626,6 +1680,7 @@ body {
 	width: 1.5rem;
 	height: 0.3rem;
 	float: right;
+	border: 0;
 	border-radius: 0.05rem;
 	margin-top: 0.05rem;
 	margin-right: 10%;
@@ -1641,6 +1696,52 @@ body {
 	margin-top: 0.05rem;
 	margin-right: 10%;
 	padding-left: 0.5rem;
+}
+
+.MultiProvincesHide {
+	width: 282px;
+	height: 145px;
+	border: 1px solid #ccc;
+	background-color: white;
+	overflow: auto;
+	
+}
+
+.MultiProvincesHide>ul {
+	width: 100%;
+	height: 100%;
+	list-style: none;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.MultiProvincesHide>ul>li {
+	cursor: pointer;
+	display: inline-block;
+	float: left;
+	width: 130px;
+}
+
+.recalBox0 {
+	display: inline-block;
+	width: 16px;
+	height: 18px;
+	vertical-align: top;
+	overflow: hidden;
+	background: url(img/tree_icons.png) no-repeat -208px -18px;
+}
+
+.recalBox1 {
+	display: inline-block;
+	width: 16px;
+	height: 18px;
+	vertical-align: top;
+	overflow: hidden;
+	background: url(img/tree_icons.png) no-repeat -224px -18px;
+}
+
+.hide {
+	display: none;
 }
 
 /*新建人员*/
@@ -1669,11 +1770,12 @@ body {
 	width: 1.5rem;
 	height: 0.3rem;
 	float: right;
+	border: 0;
 	border-radius: 0.05rem;
 	margin-top: 0.05rem;
 	margin-right: 10%;
 	color: #333333;
-	background-color: #CCCCCC;
+	background-color: #FFE9F5;
 	padding-left: 0.1rem;
 }
 
@@ -1688,6 +1790,10 @@ body {
 	padding-left: 0.5rem;
 }
 
+.np_ct2 {
+	background-color: #FFFFFF;
+}
+
 .np_ct2 #np_head {
 	width: 100%;
 	height: 0.4rem;
@@ -1697,6 +1803,8 @@ body {
 .np_ct2 #np_head span {
 	font-size: 0.18rem;
 	color: #333333;
+	text-align: center;
+	line-height: 0.4rem;
 }
 
 .np_ct2 ul {
@@ -1839,7 +1947,7 @@ body {
 .ni_content .ni_cont #ni_bt1 {
 	width: 100%;
 	height: 0.2rem;
-	background-color: #D8D8D8;
+	background-color: #EFA9CD;
 }
 
 .ni_content .ni_cont #ni_bt1 span {
@@ -1873,14 +1981,14 @@ body {
 	height: 0.3rem;
 	border-radius: 0.05rem;
 	border: #FFFFFF;
-	background-color: #D8D8D8;
+	background-color: #EFA9CD;
 	float: right;
 }
 
 .ni_content .ni_cont #ni_xt1 {
 	width: 100%;
 	height: 0.2rem;
-	background-color: #D8D8D8;
+	background-color: #EFA9CD;
 	margin-top: 0.15rem;
 }
 
@@ -1915,7 +2023,7 @@ body {
 	height: 0.3rem;
 	border-radius: 0.05rem;
 	border: #FFFFFF;
-	background-color: #D8D8D8;
+	background-color: #EFA9CD;
 	float: right;
 }
 
@@ -1960,7 +2068,7 @@ body {
 	display: -ms-flexbox;
 	display: flex;
 	padding: .1rem .3rem;
-	background-color: #e8e8e8;
+	/* background-color: #e8e8e8; */
 	-webkit-box-align: center;
 	-ms-flex-align: center;
 	align-items: center;
@@ -2106,102 +2214,121 @@ body {
 	color: #4c4c4c;
 	font-size: 14px;
 }
+
 /*修改密码*/
-.psw_contnet .psw_cont{
+.psw_contnet .psw_cont {
 	width: 100%;
-	
+
 }
-.psw_contnet .psw_cont #psw_head{
+
+.psw_contnet .psw_cont #psw_head {
 	height: 0.2rem;
 	margin: 0 auto;
 	margin-top: 0.05rem;
 	text-align: center;
 	line-height: 0.2rem;
 }
-.psw_contnet .psw_cont #psw_head span{
+
+.psw_contnet .psw_cont #psw_head span {
 	font-size: 0.1%;
 	color: #8A8A8A;
 	text-align: center;
 	line-height: 0.2rem;
 }
-.psw_contnet .psw_cont .psw_ccc{
+
+.psw_contnet .psw_cont .psw_ccc {
 	width: 100%;
 	background-color: #FFFFFF;
 	margin-top: 0.05rem;
 	padding-top: 0.2rem;
 	padding-bottom: 0.2rem;
 }
-.psw_contnet .psw_cont .psw_ccc ul{
+
+.psw_contnet .psw_cont .psw_ccc ul {
 	width: 80%;
 	margin: 0 auto;
 }
-.psw_contnet .psw_cont .psw_ccc ul li{
+
+.psw_contnet .psw_cont .psw_ccc ul li {
 	height: 0.3rem;
 	margin-top: 0.15rem;
 }
 
-.psw_contnet .psw_cont .psw_ccc ul li span{
+.psw_contnet .psw_cont .psw_ccc ul li span {
 	font-size: 0.15rem;
 	color: #333333;
 }
-.psw_contnet .psw_cont .psw_ccc ul li input{
+
+.psw_contnet .psw_cont .psw_ccc ul li input {
 	width: 60%;
 	height: 0.3rem;
 	margin-left: 15%;
 	border: #FFFFFF;
 }
-.psw_contnet .psw_cont .psw_ccc ul li #psw_i4{
+
+.psw_contnet .psw_cont .psw_ccc ul li #psw_i4 {
 	margin-left: 10% !important;
 }
+
 /*礼品格编辑*/
-.ge_content .ge_cont{
+.ge_content .ge_cont {
 	width: 100%;
 }
-.ge_content .ge_cont .ge_ul{
+
+.ge_content .ge_cont .ge_ul {
 	width: 100%;
 	margin: 0 auto;
 }
-.ge_content .ge_cont .ge_ul .ge_li{
+
+.ge_content .ge_cont .ge_ul .ge_li {
 	height: 0.6rem;
 	margin-top: 0.15rem;
 }
-.ge_content .ge_cont .ge_ul .ge_li .ge_name{
+
+.ge_content .ge_cont .ge_ul .ge_li .ge_name {
 	width: 20%;
 	height: 0.6rem;
 	float: left;
 }
-.ge_content .ge_cont .ge_ul .ge_li .ge_name span{
+
+.ge_content .ge_cont .ge_ul .ge_li .ge_name span {
 	font-size: 0.3rem;
 	color: #333333;
 	margin-left: 20%;
 }
-.ge_content .ge_cont .ge_ul .ge_li .ge_ct1{
+
+.ge_content .ge_cont .ge_ul .ge_li .ge_ct1 {
 	width: 50%;
 	height: 0.6rem;
 	float: left;
 }
-.ge_content .ge_cont .ge_ul .ge_li .ge_ct1 ul li{
+
+.ge_content .ge_cont .ge_ul .ge_li .ge_ct1 ul li {
 	margin-top: 0.03rem;
 }
-.ge_content .ge_cont .ge_ul .ge_li .ge_ct1 ul li #ge_ct1_t1{
+
+.ge_content .ge_cont .ge_ul .ge_li .ge_ct1 ul li #ge_ct1_t1 {
 	font-size: 0.15rem;
 	color: #333333;
 }
-.ge_content .ge_cont .ge_ul .ge_li .ge_ct1 ul li #ge_ct1_t2{
-	font-size: 0.12rem;
-	color: #333333;
-}
-.ge_content .ge_cont .ge_ul .ge_li .ge_ct1 ul li #ge_ct1_t3{
+
+.ge_content .ge_cont .ge_ul .ge_li .ge_ct1 ul li #ge_ct1_t2 {
 	font-size: 0.12rem;
 	color: #333333;
 }
 
-.ge_content .ge_cont .ge_ul .ge_li .ge_btn{
+.ge_content .ge_cont .ge_ul .ge_li .ge_ct1 ul li #ge_ct1_t3 {
+	font-size: 0.12rem;
+	color: #333333;
+}
+
+.ge_content .ge_cont .ge_ul .ge_li .ge_btn {
 	width: 30%;
 	height: 0.6rem;
 	float: left;
 }
-.ge_content .ge_cont .ge_ul .ge_li .ge_btn input{
+
+.ge_content .ge_cont .ge_ul .ge_li .ge_btn input {
 	width: 60%;
 	height: 0.3rem;
 	margin-top: 0.1rem;
@@ -2210,24 +2337,201 @@ body {
 	border: #FFFFFF;
 	font-size: 0.15rem;
 	color: #FFFFFF;
-	background-color: #B5B5B5;
+	background-color: #FFE9F5;
 }
 
+/*单个设备库存*/
+.is_content .is_cont {
+	width: 100%;
+}
 
+.is_content .is_cont #is_head {
+	width: 100%;
+	height: 0.4rem;
+	background-color: #EB7CB1;
+}
 
+.is_content .is_cont #is_head span {
+	font-size: 0.15rem;
+	color: #FFFFFF;
+	text-align: center;
+	width: 1rem;
+	line-height: 0.4rem;
+	margin-left: 5%;
+}
 
+.is_content .is_cont #is_list {
+	width: 100%;
+}
 
+.is_content .is_cont #is_list ul li {
+	height: 0.3rem;
+	background-color: #FFFFFF;
+	margin-top: 0.01rem;
+}
 
+.is_content .is_cont #is_list ul li .is_list_s1 {
+	width: 5%;
+	height: 0.3rem;
+	float: left;
+	margin-left: 5%;
+}
 
+.is_content .is_cont #is_list ul li .is_list_s2 {
+	width: 5%;
+	height: 0.3rem;
+	float: left;
+	margin-left: 6%;
+}
 
+.is_content .is_cont #is_list ul li .is_list_s3 {
+	width: 25%;
+	height: 0.3rem;
+	float: left;
+	margin-left: 8%;
+}
 
+.is_content .is_cont #is_list ul li .is_list_s4 {
+	width: 15%;
+	height: 0.3rem;
+	float: left;
+	margin-left: 5%;
+}
 
+.is_content .is_cont #is_list ul li .is_list_s5 {
+	width: 25%;
+	height: 0.3rem;
+	float: left;
+	margin-left: 1%;
+}
 
+.is_content .is_cont #is_list ul li span {
+	font-size: 0.13rem;
+	color: #333333;
+	text-align: center;
+	line-height: 0.3rem;
+	margin-left: 6%;
+}
 
+/*权限列表*/
+.al_content .al_cont {
+	width: 100%;
+}
 
+.al_content .al_cont .al_cont_head {
+	height: 0.4rem;
+	background-color: #FFFFFF;
+	margin-top: 0.1rem;
+	margin-bottom: 0.3rem;
+}
 
+.al_content .al_cont .al_cont_head span {
+	font-size: 0.18rem;
+	color: #333333;
+	text-align: center;
+	line-height: 0.4rem;
+	margin-left: 5%;
+}
 
+.al_content .al_cont .al_cont_head select {
+	width: 1.5rem;
+	height: 0.28rem;
+	margin-left: 10%;
+	border-radius: 0.05rem;
+	border: 0;
+	background-color: #FFE9F5;
+}
 
+.al_content .al_cont .np_ct2 {
+	background-color: #FFFFFF;
+}
+/*新建角色*/
+.al_content .al_cont .al_cont_head #nr_name{
+	width: 50%;
+	height: 0.3rem;
+	border-radius:0.05rem;
+	border: 0;
+	background-color: #FFE9F5;
+	margin-left: 5%;
+}
+
+/*礼品设置*/
+.gs2_content .gs2_cont {
+	width: 100%;
+}
+
+.gs2_content .gs2_cont #gs2_head {
+	width: 100%;
+	height: 0.4rem;
+	background-color: #EB7CB1;
+}
+
+.gs2_content .gs2_cont #gs2_head span {
+	font-size: 0.15rem;
+	color: #FFFFFF;
+	text-align: center;
+	width: 1rem;
+	line-height: 0.4rem;
+	margin-left:8%;
+}
+
+.gs2_content .gs2_cont #gs2_list {
+	width: 100%;
+}
+
+.gs2_content .gs2_cont #gs2_list ul li {
+	height: 0.4rem;
+	background-color: #FFFFFF;
+	margin-top: 0.01rem;
+}
+
+.gs2_content .gs2_cont #gs2_list ul li .gs2_list_s1 {
+	width: 10%;
+	height: 0.4rem;
+	float: left;
+	margin-left: 8%;
+}
+
+.gs2_content .gs2_cont #gs2_list ul li .gs2_list_s2 {
+	width: 10%;
+	height: 0.4rem;
+	float: left;
+	margin-left: 9%;
+}
+
+.gs2_content .gs2_cont #gs2_list ul li .gs2_list_s3 {
+	width: 20%;
+	height: 0.4rem;
+	float: left;
+	margin-left: 8%;
+}
+
+.gs2_content .gs2_cont #gs2_list ul li .gs2_list_s4 {
+	width: 10%;
+	height: 0.4rem;
+	float: left;
+	margin-left: 5%;
+}
+
+.gs2_content .gs2_cont #gs2_list ul li .gs2_list_s5 {
+	width: 10%;
+	height: 0.4rem;
+	float: left;
+	margin-left: 5%;
+}
+
+.gs2_content .gs2_cont #gs2_list ul li span {
+	font-size: 0.13rem;
+	color: #333333;
+	text-align: center;
+	line-height: 0.4rem;
+	margin-left: 6%;
+}
+.gs2_content .gs2_cont #gs2_list ul li img{
+	width: 0.3rem;
+	height: 0.3rem;
+	margin-top: 0.05rem;
+}
 
 
 

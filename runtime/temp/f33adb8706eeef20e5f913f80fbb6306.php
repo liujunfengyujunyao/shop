@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/machine\add_score.html";i:1542767433;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:43:"./template/phone/new/machine\add_score.html";i:1542881419;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -16,7 +16,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a href="#" class="fa fa-chevron-left" id="upper"></a>
+				<a href="<?php echo U('machine/addscore_list'); ?>" class="fa fa-chevron-left"></a>
 				<span class="title">远程上分</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -102,8 +102,5 @@
             })
 		})
 
-		$('#upper').click(function(){
-			history.back();
-		})
 	</script>
 </html>

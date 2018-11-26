@@ -113,6 +113,8 @@ class Test extends Controller {
             $add['type_name'] = "福袋机";
           }elseif($data['type'] == 3){
             $add['type_name'] = "售币机";
+          }elseif($data['type'] == 4){
+            $add['type_name'] = "彩票机";
           }else{
             $add['type_name'] = "娃娃机";
           }
@@ -159,4 +161,50 @@ class Test extends Controller {
       $start = mktime(0,0,0,$m,$d,$y);
       halt($start);
   }
+
+  public function config(){
+    $machine_id = 1;
+    $x = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->delete();
+    halt($x);
+  }
+
+  public function time(){
+    $post = $GLOBALS['HTTP_RAW_POST_DATA'];
+    dump($post);
+    $time = time();
+    halt($time);
+  }
+
+  public function a(){
+    
+  }
+
+  public function add_power(){
+    $data = array(
+    'name'=>'编辑群组',
+    'pid'=>5,
+    'controller'=>'group',
+    'function'=>'edit',
+    'create_time'=>time()
+    );
+    Db::name('user_power')->add($data);
+  }
+
+  public function add_room(){
+    $array = explode(',','1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42');
+    foreach ($array as $k => $v) {
+      $data = array(
+        'location'=>$v,
+        'goods_name'=>'口红'.$v,
+        'goods_num'=>0,
+        'goods_price'=>300,
+        'game_odds'=>50,
+        'machine_id'=>1,
+        'add_time'=>time(),
+        'status'=>1
+        );
+      Db::name('client_machine_conf')->add($data);
+    }
+  }
+
 }

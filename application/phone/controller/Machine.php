@@ -67,8 +67,8 @@ class Machine extends Base{
 	        	}elseif ($priority == 1) {
 	        		$machine = DB::name('machine')->where(['machine_id'=>$machine_id])->find();
 	        		$rooms = Db::name('client_machine_conf')->field('id,location,goods_price,game_odds')->where(['machine_id'=>$machine_id])->select();
+	        		array_multisort(array_column($rooms, 'location'), SORT_ASC, $rooms);//按照仓位号大小从小到大排序
 	        		foreach ($rooms as $k => $v) {
-	        			$prices[$k]['goodsid'] = strval($v['id']);
 	        			$prices[$k]['roomid'] = $v['location'];
 	        			$prices[$k]['goodsprice'] = $v['goods_price'];
 	        			$prices[$k]['gameodds'] = $v['game_odds'];
@@ -127,14 +127,8 @@ class Machine extends Base{
                 //status=1为执行成功
             	//成功之后操作
                 switch ($command['msgtype']) {
-                	case 'lock_room':
-                		# code...
-                		break;
-                	case 'unlock_room':
-                		# code...
-                		break;
                 	case 'change_priority':
-                		# code...
+                		Db::name('machine')->where(['machine_id'=>$command['machine_id']])->setField('priority',$command['content']);
                 		break;
                 	case 'open_room':
                 		# code...
@@ -313,11 +307,20 @@ class Machine extends Base{
 	public function edit(){
 		if (IS_POST) {
 			$machine_id = input('post.machine_id');
+			$is_group = input('post.is_group');
+			$group_id = input('post.store');
+
 			$data = array(
 				'machine_name'=>input('post.machine_name'),
-				'group_id'=>input('post.store'),
+				'group_id'=>$group_id,
 				'address'=>input('post.address').input('post.detail_address')
 				);
+			if($is_group == 1 && !empty($group_id)){
+				$group = Db::name('machine_group')->where(['id'=>$group_id])->field('game_price,goods_price,odds')->find();
+				$data['game_price'] = $group['game_price'];
+				$data['goods_price'] = $group['goods_price'];
+				$data['odds'] = $group['odds'];
+			}
 			$res = DB::name('machine')->where(['machine_id'=>$machine_id])->save($data);
 			if($res !== false){
 				return $this->success('修改成功',U('machine/index'));
@@ -337,14 +340,6 @@ class Machine extends Base{
 		        ->find();
 		    //$info['group_name'] = $info['group_name']?$info['group_name']:'无群组';
 		    $store = Db::name('machine_group')->where(['user_id'=>$admin_id])->field('group_name,id')->select();
-		    //$detail_address = end(explode('|',$info['address']));
-			// halt($this->getRegion(0,1));
-			// halt($this->getRegion($info['province_id'],2));
-			// halt($this->getRegion($info['city_id'],3));
-			//$this->assign('province', $this->getRegion(0, 1)); 
-            //$this->assign('city', $this->getRegion($info['province_id'], 2));
-            //$this->assign('district', $this->getRegion($info['city_id'], 3));
-            //$this->assign('detail',$detail_address);
             $this->assign('store',$store);
 			$this->assign('info',$info);
 			//halt($info);
@@ -358,27 +353,27 @@ class Machine extends Base{
 	public function machine_config(){
 		//修改设备配置
 		if(IS_POST){
-			//halt($_POST);
+			
 			$machine_id = input('post.machine_id');
 			$priority=input('post.priority');
 			
 			if($priority == 0){
-				$res = Db::name('machine')->where(['machine_id'=>$machine_id])->setField('priority',$priority);
-				if($res !== false){
+				//$res = Db::name('machine')->where(['machine_id'=>$machine_id])->setField('priority',$priority);
+				//if($res !== false){
 					$commandid = $this->change_priority($machine_id,$priority);
 					if($commandid){
 						$check = $this->check_status($commandid);
 						if($check['status']==1){
-							return $this->success('修改成功');
+							return $this->success('修改成功',U('machine/index'));
 						}else{
 							return $this->error('修改失败');
 						}
 					}else{
 						return $this->error('通信失败');
 					}
-				}else{
-					return $this->error('编辑失败');
-				}
+				//}else{
+				//	return $this->error('编辑失败');
+				//}
 			}elseif($priority == 1){
 				$goods_price = input('post.goods_price');
 				$game_price = input('post.game_price');
@@ -388,14 +383,14 @@ class Machine extends Base{
 					'game_price'=>$game_price,
 					'goods_price'=>$goods_price,
 					'odds'=>$odds,
-					'priority'=>input('post.priority')
+					//'priority'=>input('post.priority')
 					);
 				//halt($data);
 
 				$res = Db::name('machine')->where(['machine_id'=>$machine_id])->save($data);
-				$res1 = Db::name('client_machine_conf')->where(['machine_id'=>$machine_id])->setField(['goods_price'=>$goods_price,'game_odds'=>$odds]);
+				$res1 = Db::name('client_machine_conf')->where(['machine_id'=>$machine_id])->setField(['goods_price'=>$goods_price,'game_odds'=>$odds,'edittime'=>time()]);
 				if($res !== false && $res1 !== false){
-					return $this->success('保存成功，现在跳转至礼品格配置页面，如无需单独配置请直接提交',U('machine/gift_select',array('id'=>$machine_id)));
+					return $this->success('保存成功，现在跳转至礼品格配置页面，如无需单独配置请直接提交',U('machine/gift_select',array('id'=>$machine_id,'priority'=>$priority)));
 				}else{
 					return $this->error('编辑失败');
 				}
@@ -471,7 +466,7 @@ class Machine extends Base{
 					$a = Db::name('client_machine_conf')->add($data);
 
 					if($a != false){
-						return $this->success('修改成功',U('machine/gift_select',array('id'=>$machine_id)));
+						return $this->success('修改成功',U('machine/gift_select',array('id'=>$machine_id,'priority'=>1)));
 					}else{
 						return $this->error('修改失败');
 					}
@@ -479,7 +474,7 @@ class Machine extends Base{
 					$c = Db::name('client_machine_conf')->where(['machine_id'=>$machine_id,'location'=>$location])->save($data);
 
 					if($c !== false){
-						return $this->success('修改成功',U('machine/gift_select',array('id'=>$machine_id)));
+						return $this->success('修改成功',U('machine/gift_select',array('id'=>$machine_id,'priority'=>1)));
 					}else{
 						return $this->error('修改失败');
 					}
@@ -501,14 +496,24 @@ class Machine extends Base{
 		}
 	}
 
-	//设备库存
-	public function stock(){
-		$client_id = $_SESSION['think']['client_id'];
+	public function gift_detail(){
+		$machine_id = input('get.machine_id');
+		$rooms = DB::name('client_machine_conf')
+			->field("FROM_UNIXTIME(edittime, '%Y-%m-%d') as edittime,goods_price,game_odds,goods_name,location")
+			->where(['machine_id'=>$machine_id])
+			->select();
+		$image = Db::name('goods_images')->field('image_url')->select();
 
-		//$count = DB::name('machine')->where(['client_id'=>$client_id])->count();
-		
+		$this->assign('img',$image);
+		$this->assign('rooms',$rooms);
+		return $this->fetch();
+	}
+
+	//设备库存列表
+	public function stock_list(){
+		$client_id = $_SESSION['think']['client_id'];		
 		$machine = DB::name('machine')
-				->field("machine_name,province_id,city_id,machine_id,district_id")
+				->field("machine_name,province_id,city_id,machine_id,district_id,type_id")
 		        ->where(['client_id'=>$client_id])
 		        ->select();
 		        // halt($machine);
@@ -544,7 +549,7 @@ class Machine extends Base{
 			if($commandid){
 				$check = $this->check_status($commandid);
 				if($check['status']==1){
-					return $this->success('修改成功',U('machine/index'));
+					return $this->success('修改成功',U('machine/gift_detail',array('machine_id'=>$machine_id)));
 				}else{
 					return $this->error('修改失败');
 				}
@@ -553,13 +558,10 @@ class Machine extends Base{
 			}
 		}else{
 			$machine_id = input('get.id');
-			$machine = DB::name('machine')
+			$priority = input('get.priority');
+			$game_price = DB::name('machine')
 				->where(['machine_id' => $machine_id])
-				->field('priority,game_price,location')
-				->find();
-			if($machine['priority'] != 1){
-				return $this->error('当前机器价格政策以设备为准，无需配置礼品格',U('machine/machine_config',array('id'=>$machine_id)));
-			}
+				->getField('game_price');
 
 	    	$info = DB::name('client_machine_conf')
 	    			->field('location,goods_name,location,goods_price,game_odds')
@@ -574,10 +576,10 @@ class Machine extends Base{
 	    	}
 
 	    	//halt($location);
-	    	$this->assign('priority',$machine['priority']);
+	    	$this->assign('priority',$priority);
 	    	$this->assign('machine_id',$machine_id);
 	    	$this->assign('info',$info);
-	    	$this->assign('game_price',$machine['game_price']);
+	    	$this->assign('game_price',$game_price);
 	    	//halt($info);
 			return $this->fetch();
 		}

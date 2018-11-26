@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1542767433;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:39:"./template/phone/new/machine\index.html";i:1542882057;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 
@@ -16,7 +16,7 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a class="fa fa-chevron-left" id="upper"></a>
+				<a href="<?php echo U('index/index'); ?>" class="fa fa-chevron-left"></a>
 				<span class="title">
 					</i>设备管理</span>
 				<a class="no-addon" href="#"></a>
@@ -146,9 +146,6 @@
 				$(this).siblings(".sb_hide").slideToggle("slow");
 			});
 		});
-		$('#upper').click(function(){
-			history.back();
-		})
 
 		$("#unbind").click(function(){
 			alert(1);

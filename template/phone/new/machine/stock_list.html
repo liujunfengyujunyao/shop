@@ -14,9 +14,9 @@
 	<body>
 		<header id="head">
 			<div class="top_bar">
-				<a class="fa fa-chevron-left" id="upper"></a>
+				<a href="{:U('index/index')}" class="fa fa-chevron-left"></a>
 				<span class="title">
-					</i>设备库存</span>
+					</i>库存管理</span>
 				<a class="no-addon" href="#"></a>
 			</div>
 		</header>
@@ -39,9 +39,9 @@
 				<span class="title textFlow">
 					<span class="label label-default">{$val.address}</span>
 				</span>
-					
-					<button id=" replenishment" class="btn btn-success" data-url="{:U('room/operate_room')}" data-id="{$val.machine_id}" onClick="supply(this)">一键补货</button>
 
+
+					<button id=" replenishment" class="btn btn-success" data-url="{:U('room/operate_room')}" data-id="{$val.machine_id}" data-type="{$val.type_id}" onClick="supply(this)">一键补货</button>
 					<button id="clear" class="btn btn-danger" data-url="{:U('Goods/ajax_clear')}" data-id="{$val.machine_id}" onClick="supply2(this)">一键清货</button>
 					
 					<button id="test" class="btn btn-success" data-url="{:U('room/operate_room')}" data-id="{$val.machine_id}" onClick="supply3(this)">测试开门</button>
@@ -55,7 +55,7 @@
 							<td>
 								<span class="fa fa-star"></span>
 							</td>
-							<td>ID</td>
+							<!-- <td>ID</td> -->
 							<td>位置</td>
 							<td>商品名称</td>
 							<td>当前库存</td>
@@ -66,7 +66,7 @@
 					<volist name="$val.goods" id="v">
 						<tr>
 							<td>	<span class="fa fa-star"></span></td>
-							<td>{$key+1}</td>
+							<!-- <td>{$key+1}</td> -->
 							<td>{$v.location}</td>
 							<if condition = " $v.goods_price == 0 ">
 							<td style="color:red">未配置</td>
@@ -93,8 +93,120 @@
 	<script src="__PUBLIC__/js/layer/layer.js"></script>
 
 <script>
+layer.use('extend/layer.ext.js', function(){
+    layer.ext = function(){
+        layer.prompt({})
+    };
+});
+
  function supply(obj) {
-        layer.confirm('确认补满？', {
+ 	var type = $(obj).attr('data-type');
+ 	
+ 	if(type==1){
+ 		layer.confirm('确认补满？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function (index) {
+                    layer.close(index);
+                    // 确定
+                    $.ajax({
+				       	type: 'post',
+				       	url: $(obj).attr('data-url'),
+				        data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'kh_stock',num:1},
+				        dataType: 'json',
+				        beforeSend:function(){ 
+				 		// 禁用按钮防止重复提交
+							$(":button").attr('disabled',true);
+						},
+				        success: function (v) {
+				            if (v.status == 1) {
+				                //layer.msg('操作成功', {icon: 1});
+				                //location.reload();
+				                //$(obj).parent().parent().parent().remove();
+				                $.ajax({
+				                	type: 'post',
+				                	url: '{:U("room/check_status")}',
+				                	data: {commandid:v.commandid},
+				                	dataType: 'json',
+				                	success: function(res){
+				                		if(res.status == 1){
+				                			layer.msg('操作成功', {icon: 1});
+				                			$(":button").attr('disabled',false);
+				                			//location.reload();
+				                		}else{
+				                			layer.msg(res.msg, {icon: 2, time: 2000});
+				                			$(":button").attr('disabled',false);
+				                		}
+				                	}
+				                })
+				            } else {
+				                layer.msg(v.msg, {icon: 2, time: 2000});
+				                $(":button").attr('disabled',false);
+				            }
+				        }
+					});
+
+                }, function (index) {
+                    layer.close(index);
+                }
+        );
+ 	}else{
+ 		layer.prompt({
+			formType: 0,
+		  	value: '',
+		  	title: '请输入补货数量'
+		}, function(value,index){
+			layer.close(index);
+			if(isNaN(value)){
+				alert("请输入数字！");
+        		return;
+			}else{
+				$.ajax({
+			       	type: 'post',
+			       	url: $(obj).attr('data-url'),
+			        data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'fd_stock',num:value},
+			        dataType: 'json',
+			        beforeSend:function(){ 
+			 		// 禁用按钮防止重复提交
+						$(":button").attr('disabled',true);
+					},
+			        success: function (v) {
+			            if (v.status == 1) {
+			                //layer.msg('操作成功', {icon: 1});
+			                //location.reload();
+			                //$(obj).parent().parent().parent().remove();
+			                $.ajax({
+			                	type: 'post',
+			                	url: '{:U("room/check_status")}',
+			                	data: {commandid:v.commandid},
+			                	dataType: 'json',
+			                	success: function(res){
+			                		if(res.status == 1){
+			                			layer.msg('操作成功', {icon: 1});
+			                			$(":button").attr('disabled',false);
+			                			//location.reload();
+			                		}else{
+			                			layer.msg(res.msg, {icon: 2, time: 2000});
+			                			$(":button").attr('disabled',false);
+			                		}
+			                	}
+			                })
+			            } else {
+			                layer.msg(v.msg, {icon: 2, time: 2000});
+			                $(":button").attr('disabled',false);
+			            }
+			        }
+				});
+			}
+			
+		  	
+		},function (index) {
+                    layer.close(index);
+        });
+ 	}
+        
+    };
+ function supply2(obj) {
+        layer.confirm('确认打开所有仓门？', {
                     btn: ['确定', '取消'] //按钮
                 }, function (index) {
                     layer.close(index);
@@ -102,7 +214,7 @@
                     $.ajax({
                         type: 'post',
                         url: $(obj).attr('data-url'),
-                        data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'kh_stock'},
+                        data: {act: '_ADD_', machine_id: $(obj).attr('data-id'), msgtype:'clear'},
                         dataType: 'json',
                         beforeSend:function(){ 
 		         		// 禁用按钮防止重复提交
@@ -132,33 +244,6 @@
                             } else {
                                 layer.msg(v.msg, {icon: 2, time: 2000});
                                 $(":button").attr('disabled',false);
-                            }
-                        }
-                    })
-                }, function (index) {
-                    layer.close(index);
-                }
-        );
-    };
- function supply2(obj) {
-        layer.confirm('确认重置？', {
-                    btn: ['确定', '取消'] //按钮
-                }, function (index) {
-                    layer.close(index);
-                    // 确定
-                    $.ajax({
-                        type: 'post',
-                        url: $(obj).attr('data-url'),
-                        data: {act: '_DEL_', id: $(obj).attr('data-id')},
-                        dataType: 'json',
-                        success: function (v) {
-                            if (v.status == 1) {
-                                layer.msg('操作成功', {icon: 1});
-                                location.reload();
-                                //$(obj).parent().parent().parent().remove();
-                                
-                            } else {
-                                layer.msg(v.msg, {icon: 2, time: 2000});
                             }
                         }
                     })
@@ -221,8 +306,5 @@ $('.tog').click(function(){
 		$('.slide_bar').slideToggle();
 	});
 
-$('#upper').click(function(){
-	history.back();
-})
 </script>
 </html>

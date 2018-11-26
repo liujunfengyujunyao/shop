@@ -9,31 +9,36 @@ class Staff extends Base{
 	//新建人员
 	public function add_staff(){
 		if(IS_POST){
-			$user_name = input('post.username');//账户名称
-			$phone = input('post.phone');//手机
-			$pwd = input('post.password');//密码
+			$user_name = trim(input('post.username'));//账户名称
+			$phone = trim(input('post.phone'));//手机
+			$pwd = trim(input('post.password'));
+			$pwd1 = trim(input('post.password1'));//密码
 			$power = input('post.power/a')?input('post.power/a'):array();//权限
-			if(!$user_name || !$phone || !$pwd){
+			if(!$user_name || !$phone || !$pwd || !$pwd1){
 				return $this->error('参数不全');
 			}else{
-				$p = Db::name('admin')->field('admin_id')->where(['phone'=>$phone])->find();
-				if($p){
-					return $this->error('该手机已被注册');
-				}else{
-					$data = array(
-						'user_name'=>$user_name,
-						'password'=>md5($pwd),
-						'phone'=>$phone,
-						'nav_list'=>implode(',',$power),
-						'add_time'=>time(),
-						'belong_id'=>$_SESSION['think']['client_id'],
-						);
-					$res = Db::name('admin')->add($data);
-					if($res != false){
-						return $this->success('新建成功',U('staff/staff_list'));
+				if($pwd == $pwd1){
+					$id = Db::name('admin')->field('admin_id')->where(['phone'=>$phone])->getField('admin_id');
+					if($id){
+						return $this->error('该手机已被注册');
 					}else{
-						return $this->error('新建失败');
+						$data = array(
+							'user_name'=>$user_name,
+							'password'=>md5($pwd),
+							'phone'=>$phone,
+							'nav_list'=>implode(',',$power),
+							'add_time'=>time(),
+							'belong_id'=>$_SESSION['think']['client_id'],
+							);
+						$res = Db::name('admin')->add($data);
+						if($res != false){
+							return $this->success('新建成功,前往编辑权限',U('staff/edit_staff',array('user_id'=>$res)));
+						}else{
+							return $this->error('新建失败');
+						}
 					}
+				}else{
+					return $this->error('两次密码不匹配');
 				}
 			}
 		}else{
@@ -118,8 +123,72 @@ class Staff extends Base{
 
 	//人员管理
 	public function staff_manage(){
-
 		return $this->fetch();
+	}
+
+	//新建角色
+	public function add_role(){
+		$user_id = $_SESSION['think']['client_id'];
+		if(IS_POST){
+			$role_name = trim(input('post.name'));
+			$power = input('post.power/a')?input('post.power/a'):array();
+			if(!$role_name){
+				return $this->error('角色名称不能为空');
+			}else{
+				$name = Db::name('admin_role')->where(['role_name'=>$role_name,'user_id'=>$user_id])->getField('role_id');
+				if(!empty($name)){
+					return $this->error('角色名称已存在');
+				}
+				$data = array(
+					'role_name'=>$role_name,
+					'act_list'=>implode(',',$power),
+					'user_id'=>$user_id
+					);
+				$res = Db::name('admin_role')->add($data);
+				if($res != false){
+					return $this->success('角色新建成功',U('staff/staff_manage'));
+				}else{
+					return $this->error('角色新建失败');
+				}
+			}
+		}else{
+			$power = Db::name('user_power')->field('pid,name,path,id')->where('pid','neq',0)->select();
+			$this->assign('power',$power);
+			return $this->fetch();
+		}
+	}
+
+	public function edit_role(){
+		$user_id = $_SESSION['think']['client_id'];
+		if(IS_POST){
+			$role_name = trim(input('post.name'));
+			$role_id = input('post.id');
+			$power = input('post.power/a')?input('post.power/a'):array();
+			if(!$role_name || !$role_id){
+				return $this->error('参数错误');
+			}else{
+				$name = Db::name('admin_role')->where(['role_name'=>$role_name,'user_id'=>$user_id])->getField('role_id');
+				if(!empty($name)){
+					return $this->error('角色名称已存在');
+				}
+				$data = array(
+					'role_name'=>$role_name,
+					'act_list'=>implode(',',$power),
+					);
+				$res = Db::name('admin_role')->where(['user_id'=>$user_id,'role_id'=>$role_id])->save($data);
+				if($res !== false){
+					return $this->success('编辑成功',U('staff/staff_manage'));
+				}else{
+					return $this->error('编辑失败');
+				}
+			}
+		}else{
+			$role = Db::name('admin_role')->where('user_id=0 or user_id=:id')->bind(['id'=>$user_id])->field('role_id,role_name,act_list')->select();
+			$power = Db::name('user_power')->field('pid,name,path,id')->where('pid','neq',0)->select();
+			$this->assign('power',$power);
+			$this->assign('role',$role);
+			return $this->fetch();
+		}
 	}
 
 }

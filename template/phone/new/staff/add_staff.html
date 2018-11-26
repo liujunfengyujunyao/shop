@@ -15,7 +15,7 @@
 	<body style="background-color: #ffffff;">
 		<header id="head">
 			<div class="top_bar">
-				<a class="fa fa-chevron-left" id="upper"></a>
+				<a href="{:U('staff/staff_manage')}" class="fa fa-chevron-left"></a>
 				<span class="title">新建人员</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -61,10 +61,13 @@
 						<span id="np_password">密码</span>
 						<input type="password" name="password" id="np_user_pw" value="" placeholder="请输入密码 	" />
 					</li>
-
+					<li>
+						<span id="np_password">确认密码</span>
+						<input type="password" name="password1" id="np_user_pw" value="" placeholder="请输入密码 	" />
+					</li>
 				</ul>
 			</div>
-			<div class="np_ct2">
+			<!-- <div class="np_ct2">
 				<div id="np_head">
 					<span id="">职位权限</span>
 				</div>
@@ -85,9 +88,9 @@
 					</li>
 					<div id="np_line" style="width: 100%; height: 0.01rem; margin: 0 auto; background-color: #A9A9A9;"></div>
 				</volist>
-				</ul>
+				</ul> -->
 				<button class="addStoreBtn" id="np_keep">保存</button>
-			</div>
+			<!-- </div> -->
 		</form>
 		</section>
 
@@ -102,9 +105,6 @@
 		<!--头部-->
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
-		})
-		$("#upper").click(function(){
-			history.back();
 		})
 	</script>
 </html>

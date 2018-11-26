@@ -15,7 +15,7 @@
 	<body style="background-color:#FFFFFF !important;">
 		<header id="head">
 			<div class="top_bar">
-				<a class="fa fa-chevron-left" id="upper"></a>
+				<a href="{:U('machine/machine_config',array('id'=>$machine_id))}" class="fa fa-chevron-left"></a>
 				<span class="title">礼品格编辑</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
@@ -79,9 +79,6 @@
 		//头部
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
-		})
-		$('#upper').click(function(){
-			history.back();
 		})
 		function sub(obj)
 		{

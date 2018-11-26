@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542767757;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542868164;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -182,13 +182,13 @@
 					</div>
 					</a>
 				</li>
-				<li <?php if(!in_array('machine-stock',$power) && $belong_id != 0) echo "style=display:none" ?> >
-					<a href="<?php echo U('machine/stock'); ?>" >
+				<li <?php if(!in_array('machine-stock_list',$power) && $belong_id != 0) echo "style=display:none" ?> >
+					<a href="<?php echo U('machine/stock_list'); ?>" >
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">
 						<div id="txt1">
 							<img src="__NEW__/img/gift.png" alt="" style="width: 0.31rem;height: 0.3rem; float: left;">
-							<p class="p1">礼品管理</p>
+							<p class="p1">库存管理</p>
 						</div>
 						<div class="p2">礼品统计及管理</div>
 					</div>
