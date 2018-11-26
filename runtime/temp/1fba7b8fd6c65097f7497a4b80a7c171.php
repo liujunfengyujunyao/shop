@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:54:"./application/admin/view2/machine\ajaxMachineList.html";i:1534843007;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:54:"./application/admin/view2/machine\ajaxMachineList.html";i:1543036854;}*/ ?>
 <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
     <table width="100%">
         <tbody>
@@ -20,7 +20,7 @@
                     <div style="text-align: left; width: 100px;"><?php echo $vo['machine_admin']; ?></div>
                 </td> -->
                 <td align="left" class="">
-                    <div style="text-align: left; width: 100px;"><?php echo $vo['nickname']; ?></div>
+                    <div style="text-align: left; width: 100px;"><?php echo $vo['user_name']; ?></div>
                 </td>
                <!--  <td align="left" class="">
                     <div style="text-align: left; width: 100px;"><?php echo $vo['partner']; ?></div>
@@ -29,10 +29,17 @@
                     <div style="text-align: left; width: 150px;"><?php echo $vo['type_name']; ?></div>
                 </td>
                 <td align="left" class="">
-                    <div style="text-align: left; width: 100px;"><?php echo $vo['mobile']; ?></div>
+                    <div style="text-align: left; width: 100px;"><?php echo $vo['is_online']; ?></div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: left; width: 100px;"><?php echo $vo['model']; ?></div>
                 </td>
                 <td align="center" class="handle">
                     <div style="text-align: center; width: 150px; max-width:170px;">
+                    <?php if($vo['type_id'] == 2): ?>
+                         <a href="<?php echo U('Machine/luck_code',array('id'=>$vo['machine_id'])); ?>"
+                               class="btn blue"><i class="fa fa-pencil-square-o"></i>生成二维码</a>
+                    <?php endif; ?>
                         <a href="<?php echo U('Machine/optionMachine',array('act'=>'_OPTION_','id'=>$vo['machine_id'])); ?>"
                            class="btn blue"><i class="fa fa-pencil-square-o"></i>配置</a>
                         <a href="<?php echo U('Machine/addEditMachine',array('act'=>'_EDIT_','id'=>$vo['machine_id'])); ?>"

@@ -710,7 +710,10 @@ function QRcode($url){
     ob_end_clean();
     $object->png($url,false,3,10,2);
     exit();
+    
 }
+
+
 
  function httpGet($url) {
         $curl = curl_init();

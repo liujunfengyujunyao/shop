@@ -375,5 +375,37 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 		halt($data);
 	}
 
-	
+	public function dudai(){
+		$data['roomid'] = [10];
+		// $x = is_array($data['roomid']);
+		$type = is_array($data['roomid']);
+		if($type !== false){
+			$location = implode(',',$data['roomid']);
+		}else{
+			$location = $data['roomid'];
+		}
+		halt($location);
+		
+		$im = implode(',',$data['roomid']);
+		halt($im);
+		$machine_id = 1;
+		$count = count($data['roomid']);
+		if ($count == 1) {
+			$res = DB::name('client_machine_conf')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
+		}else{
+			foreach ($data['roomid'] as $key => $value) {
+			$res = DB::name('client_machine_conf')->where(['location'=>$value,'machine_id'=>$machine_id])->setDec('goods_num',1);
+			}
+		}
+		
+		
+		
+		if ($res !== false) {
+			echo 1;
+		}else{
+			echo 2;
+		}
+	}
+
+	public function 
 }

@@ -17,7 +17,11 @@ class Statistics extends Base {
 			$end = $start+60*60*24-1;
 			//销售日志
 			$manager_info= $_SESSION['think']['manager_info'];
-			$machine_arr = DB::name('machine')->where(['client_id'=>$manager_info['admin_id']])->getField('machine_id',true);    
+			$machine_arr = DB::name('machine')->where(['client_id'=>$manager_info['admin_id']])->getField('machine_id',true);  
+			// halt($machine_arr);
+			if (!$machine_arr) {
+			  	$this->error('无设备');
+			  }  
         	$machine_ids = implode($machine_arr,',');
         	//总营收
 			$all_count = DB::name('sell_log')->where("machine_id in ({$machine_ids}) && sell_time between $start and $end")->getField("sum(amount) as all_count");

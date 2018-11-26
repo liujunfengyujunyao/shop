@@ -200,7 +200,20 @@ return	array(
 	)),
 
 	/*
-	增加员工模块
+	增加人员模块
+	 @author Junfeng
+	 date 2018-11-23
+	*/
+	'client'=>array('name'=>'人员','child'=>array(
+			array('name'=>'基础管理','child'=>array(
+				array('name'=>'人员列表','act'=>'index','op'=>'Client'),
+				array('name'=>'权限列表','act'=>'role','op'=>'client'),
+				)),
+
+		)),
+
+	/*
+	增加仓库配货模块
 	 @author Junfeng
 	 date 2018-8-14
 	*/

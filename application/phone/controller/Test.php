@@ -175,10 +175,6 @@ class Test extends Controller {
     halt($time);
   }
 
-  public function a(){
-    
-  }
-
   public function add_power(){
     $data = array(
     'name'=>'编辑群组',
@@ -205,6 +201,18 @@ class Test extends Controller {
         );
       Db::name('client_machine_conf')->add($data);
     }
+  }
+
+
+  public function a(){
+    $id = 11;
+    $add = array(
+              'client_id' => $id,
+              );
+            for ($i=0; $i <9 ; $i++) { 
+              DB::name('client_luck_conf')->add($add);
+            }
+            
   }
 
 }

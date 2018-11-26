@@ -880,4 +880,14 @@ class Goods extends Base {
         $searchWordLogic = new SearchWordLogic();
         $searchWordLogic->initGoodsSearchWord();
     }
+
+    public function img(){
+        $id = I('get.id');
+
+        $goods = DB::name('goods')->where(['goods_id'=>$id])->getField('original_img');
+        $img = $_SERVER['HTTP_HOST']  . $goods;
+        
+        $this->redirect("http://".$img);
+
+    }
 }

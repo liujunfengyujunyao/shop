@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:47:"./template/phone/new/machine\addscore_list.html";i:1542881443;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:47:"./template/phone/new/machine\addscore_list.html";i:1542597764;}*/ ?>
+>>>>>>> 7a2d49f2de4b8f3d673eafd7b24a0ee12bdcda53
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
