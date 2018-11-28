@@ -66,7 +66,7 @@ class Staff extends Base{
 	}
 
 	//人员编辑
-	public function edit_staff(){		
+	public function edit_staff(){	
 		$admin_id = $_SESSION['think']['client_id'];
 		if(IS_POST){
 			$user_id = input('post.user_id');
