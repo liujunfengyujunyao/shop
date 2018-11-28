@@ -454,7 +454,7 @@ class Index extends Controller {
 		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
 		$layout = $msg['roomlist'];
 		$conf = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->find();
-		
+		$type_id = DB::name('machine')->where(['sn'=>$parmas['machinesn']])->getField('type_id');
 		if(!$layout){
 			echo "roomlist is null";die;
 		}
@@ -463,7 +463,13 @@ class Index extends Controller {
 		}
 		$layout_arr = array_filter($layout);
 		$layout = implode(',',$layout_arr);
-		
+		if ($type_id == 1) {
+			//口红机max_stock==1
+			$max_stock = 1;
+		}elseif($type_id == 2){
+			//福袋机max_stock==2
+			$max_stock = 4;
+		}
 		//测试用
 		foreach ($layout_arr as $key => $value) {
 			$add[$key]['goods_price'] = 300;
@@ -471,6 +477,7 @@ class Index extends Controller {
 			$add[$key]['game_odds'] = 30;
 			$add[$key]['addtime'] = time();
 			$add[$key]['location'] = $value;
+			$add[$key]['max_stock'] = $max_stock;
 		}
 		// halt($add);
 		// halt($add);
