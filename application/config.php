@@ -389,6 +389,16 @@ return [
     // 'NOTIFY_URL'         => 'http://192.168.1.3/index.php/Home/Weixinpay/notify',
     'NOTIFY_URL'         => 'http://liujunfeng.imwork.net:41413/API/weixinpay/notify',
     ),
+      'wx_oauth'=>array(
+        //公众平台
+        'appId'     =>  'wx9e8c63f03cbd36aa',
+        'appSecret' =>  'aa30b7860f3247a789fff62b08681b7e',
+        ),
+      'wx_test'=>array(
+        //公众平台
+        'appId'     =>  'wx7d93e0114cc3453a',
+        'appSecret' =>  'e64bda5d1006894a4f3cfb1b908dca19',
+        ),
 
 
      //微信正式号

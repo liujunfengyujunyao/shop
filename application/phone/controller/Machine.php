@@ -11,6 +11,7 @@ class Machine extends Base{
     }
 
 	public function index(){
+		// halt(222);
 		$priority = array('0'=>'设备策略','1'=>'平台策略');
 		$online = array('0'=>'离线','1'=>'在线');
 		$client_id = $_SESSION['think']['client_id'];

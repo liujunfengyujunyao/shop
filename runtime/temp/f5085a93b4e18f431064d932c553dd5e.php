@@ -1,21 +1,20 @@
-<<<<<<< HEAD
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1542686157;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1542597764;}*/ ?>
->>>>>>> 9dc0eb2dd287dbe989fa14e846981f954b61ee89
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1543396790;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 		<title>Document</title>
+		
 		<link rel="stylesheet" href="__NEW__/css/common.css">
 		<!-- <link rel="stylesheet" href="./css/bootstrap.min.css"> -->
 		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
 		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
 		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="__NEW__/css/index1.css" />
-		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=zDOttlXWVz6hDfeLsTHWi2Eo"></script>
+		<!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=zDOttlXWVz6hDfeLsTHWi2Eo"></script> -->
+		
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=uCfRKGGyT37VtYzkMx5qKY8Wgzlxsoaj"></script>
 	</head>
 	<body>
 		<header id="head">
