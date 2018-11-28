@@ -26,7 +26,7 @@ class Index extends Base {
             header("Location: ".U('Mobile/Index/index'));
             exit;
         }
-
+        $this->error('暂未开通,敬请期待');
         //获取公告信息文章分类列表 by DH 2017-11-4
         $notice = M('Article')->field('article_id, title')->where(array('cat_id'=>13, 'is_open'=>1))->order('add_time desc, click desc, cat_id desc')->select();
         $this->assign('notice', $notice);

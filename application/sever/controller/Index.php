@@ -454,7 +454,7 @@ class Index extends Controller {
 		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
 		$layout = $msg['roomlist'];
 		$conf = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->find();
-		$type_id = DB::name('machine')->where(['sn'=>$parmas['machinesn']])->getField('type_id');
+		$type_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('type_id');
 		if(!$layout){
 			echo "roomlist is null";die;
 		}
@@ -479,8 +479,7 @@ class Index extends Controller {
 			$add[$key]['location'] = $value;
 			$add[$key]['max_stock'] = $max_stock;
 		}
-		// halt($add);
-		// halt($add);
+		
 		$x = DB::name('client_machine_conf')->insertAll($add);
 		// halt($x);
 		//

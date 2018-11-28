@@ -77,19 +77,19 @@ class Luck extends Controller
             $files = request()->file('image');
      
             $info="";
-            foreach($files as $picFile){
-     
+          
+     foreach ($files as $key => $picFile) {
+    
                 // 移动到框架应用根目录/public/uploads/ 目录下
                 $info = $picFile->move(ROOT_PATH . 'public' . DS . 'uploads'.DS.'images');
                 
      
                 /*获取存储路径，以便插入数据库*/
-               // $path= $_SEVER['HTTP_HOST'] . "/uploads/images/".$info->getSaveName();
+               $path[$key]= $_SEVER['HTTP_HOST'] . "/uploads/images/".$info->getSaveName();
 
      
             }
-
-     
+        
 
         if($info!==""){
                 return $this->success('上传成功！');

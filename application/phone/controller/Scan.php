@@ -12,13 +12,13 @@ use think\Request;
 use think\Db;
 use think\Session;
 class Scan extends Base{
-
+  
 	public function index(){
 		if(IS_POST){
 			$id = session('client_id');
 			$data = I('post.');
-			// dump($data);die;
 			$machine = M('machine')->where(['uuid'=>$data['sn']])->find();
+			
 			// dump($machine);die;
 			if(!$machine){
 				return json(['info' => 'SN号不存在', 'error_code' => '1']);
@@ -68,7 +68,7 @@ class Scan extends Base{
 			// elseif ($data['type_id'] == NULL) {
 			// 	$this->error('请选择机台类型');
 			// }
-			$Machine = M('machine')->where(['sn'=>$data['sn']])->find();
+			$Machine = M('machine')->where(['uuid'=>$data['sn']])->find();
 			if(!$Machine){
 				$this->error('请检查SN号！平台没有此机台。');
 			}elseif ($Machine['status'] == 0) {
@@ -76,11 +76,22 @@ class Scan extends Base{
 			}elseif($Machine['client_id'] != 0){
 				$this->error('机台已注冊。');
 			}else{
-				halt($data);
-				// dump('tiao');die;
+				if($Machine['type_id']==2){
+					$luck = DB::name('client_luck_conf')->where(['client_id'=>$id])->find();
+					if ($luck=="") {
+						$add = array(
+							'client_id' => $id,
+							);
+						for ($i=0; $i <9 ; $i++) { 
+							DB::name('client_luck_conf')->add($add);
+						}
+					}
+				} 
+				
 				$data['addtime'] = time();
 				$data['client_id'] =$id;
 				$data['status'] = 1;
+				$data['model'] = 3;
 				$Machine_id = M('machine')->where(['machine_id'=>$Machine['machine_id']])->save($data);
 
 			}

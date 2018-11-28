@@ -1146,10 +1146,12 @@ imagepng($image);
      	// halt($key);
      	$vam = $i;
         // $url = "http://".$_SERVER['HTTP_HOST']."/home/luck/index?device_secret=".$key;
-        $url = "http://192.168.1.133/home/lottery/index?device_secret=".$key;
+        // $url = "http://192.168.1.133/home/lottery/index?device_secret=".$key;
+       	$url = "http://www.12202.com.cn/tp/index.php/home/Luck/login?device_secret=".$key;
+
         $url = urldecode($url);
      
-        $qr_code_path = $_SERVER['DOCUMENT_ROOT'].'/public/upload/qr_code/'.date("Y-m-d").$phone.'/';
+        $qr_code_path = $_SERVER['DOCUMENT_ROOT'].'/public/upload/qr_code/'.date("Y-m-d")."-".$phone.'/';
         
         
         if (!file_exists($qr_code_path)) {
@@ -1179,10 +1181,15 @@ imagepng($image);
     }
 
 
+    //批量生成二维码 根据传入的生成数量和所生成设备
     public function piliang(){
     	$number = 100;//生成二维码的数量
-    	$machine_id = 1;
+    	$machine_id = 2;//生成二维码的机器  **必须已经被绑定client_id**
     	$client_id = DB::name('machine')->where(['machine_id'=>$machine_id])->getField("client_id");
+    	// halt($client_id);
+    	if(is_null($client_id)){
+    		$this->error('此设备尚未被绑定');
+    	}
     	$res = DB::name('client_luck_key')->where(['client_id'=>$client_id])->find();
     	$phone = DB::name('admin')->where(['admin_id'=>$client_id])->getField('phone');
     	if ($res) {
@@ -1200,11 +1207,15 @@ imagepng($image);
    
 }
 
-public function aaa(){
-	$res = DB::name('client_luck_key')->select();
-	halt($res);
-}
+	public function aaa(){
+			$res = DB::name('client_luck_key')->select();
+			$a = 1+5+20+50+100+149+180+210+185;
+			halt($a);
+			halt($res);
+	}
 
+
+	
  
 
     

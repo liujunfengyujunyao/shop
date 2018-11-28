@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:36:"./template/phone/new/scan\index.html";i:1542767433;}*/ ?>
+=======
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:36:"./template/phone/new/scan\index.html";i:1543291910;}*/ ?>
+>>>>>>> 71f72e36254ea1e5019fa2f980107cf2aed10328
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 	<head>
@@ -106,7 +110,7 @@
 						data: data,
 						success: function(e) {
 							if (e.error_code == 1) {
-								alert('SN号不存在');
+								alert('SN号不存在!!!');
 							} else if (e.error_code == 2) {
 								alert('机台已删除');
 							} else if (e.error_code == 3) {
