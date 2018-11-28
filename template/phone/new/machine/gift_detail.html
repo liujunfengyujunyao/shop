@@ -16,7 +16,7 @@
 		<header id="head">
 			<div class="top_bar">
 				<a href="{:U('machine/index')}" class="fa fa-chevron-left"></a>
-				<span class="title">礼品配置</span>
+				<span class="title">礼品设置</span>
 				<a class="<n></n>o-addon" href="#"></a>
 			</div>
 			<ul class="slide_bar">
@@ -34,26 +34,49 @@
 				</li>
 			</ul>
 		</header>
-		<section class="is_content" style="padding-bottom: 0.5rem;">
-			<div class="is_cont">
-				<div id="is_head">
+		<section class="gs2_content" style="padding-bottom: 0.5rem;">
+			<div class="gs2_cont">
+				<div id="gs2_head">
+					<span>图片</span>
 					<span>位置</span>
 					<span>商品名称</span>
-					<span>商品价格</span>
+					<span>价格</span>
 					<span>赔率</span>
-					<span>更新日期</span>
-
 				</div>
-				<div id="is_list">
+				<div id="gs2_list">
+				<form name="gift" method="post" action="{:U('machine/gift_detail')}">
 					<ul>
-					<volist name="img" id="v">
+					<volist name="rooms" id="r">
 						<li>
 							<div class="gs2_list_s1">
-								<img src="{$v.image_url}">
+								<if condition="$r['img'] neq '' "> <img id="ge_pic{$r.id}" src={$r.img}>
+								<else/> <img id="ge_pic{$r.id}" src="__NEW__/img/tj.png">
+								</if>								
+							</div>
+							<div class="gs2_list_s2">
+								<span>{$r.location}</span>
+							</div>
+							<div class="gs2_list_s3">
+								<select id="{$r.id}" name="goods[{$r.id}]" contenteditable="true">
+									<if condition="$r['goods_name'] neq '' "> <option contenteditable="contenteditable" img="{$r.img}" value="0">{$r.goods_name}</option>	
+									<else/> <option contenteditable="contenteditable" img="" value="">请选择</option>
+									</if>										
+									<volist name="goods" id="v">
+										<option contenteditable="contenteditable" img="{$v.original_img}" value="{$v.goods_id}">{$v.goods_name}</option>
+									</volist>
+								</select>
+							</div>
+							<div class="gs2_list_s4">
+								<span>{$r.goods_price}</span>
+							</div>
+							<div class="gs2_list_s5">
+								<span>{$r.game_odds}</span>
 							</div>
 						</li>
 					</volist>
 					</ul>
+					<button class="addStoreBtn">提交</button>
+				</form>
 				</div>
 			</div>
 		</section>
@@ -65,5 +88,9 @@
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
 		})
+		$("select").change(function () {
+			var id = $(this).attr('id');
+			$("#ge_pic"+id).attr("src", $('#'+id+' option:selected').attr('img'));
+		});
 	</script>
 </html>

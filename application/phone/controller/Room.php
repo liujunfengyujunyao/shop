@@ -6,6 +6,19 @@ set_time_limit(0);
 class Room extends Base{
 
 
+	public function v(){
+		$addr = 'http://192.168.1.3/luckybag.apk';
+		$file1 = file_get_contents($addr,FALSE,NULL,0,9999*9999);
+		$md51 = md5($file1);
+		// $file2 = $this->httpRequest_get($addr);
+		// //halt($file2);
+		// $md52 = md5($file2);
+		$md53 = md5_file('public/luckybag.apk');		
+		echo 'get_con:'.$md51.'</br>';
+		echo 'curl:'.$md52.'</br>';
+		echo 'local:'.$md53;
+	}
+
 	//测试
 	public function a(){
 		//$a = file_get_contents('https://www.goldenbrother.cn/rouge.apk',FALSE,NULL,0,9999*9999);
@@ -14,10 +27,13 @@ class Room extends Base{
 		// $a = ob_get_contents();
 		// ob_end_clean();
 		$ch = curl_init();
-		$timeout = 5;
-		curl_setopt ($ch, CURLOPT_URL, 'https://www.goldenbrother.cn/rouge.apk');
+		curl_setopt ($ch, CURLOPT_URL, 'http://192.168.1.3/luckybag.apk');
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+    	curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0");
+    	curl_setopt($ch, CURLOPT_TIMEOUT,30);
 		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 60);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$a = curl_exec($ch);
 		//dump(curl_error($ch));
@@ -46,7 +62,7 @@ class Room extends Base{
 			}
 		}
 		if(in_array($msgtype,array('test','fd_stock','clear')) && !$roomid){ //测试开舱门，福袋机补货，一键清货，都是打开所有仓门
-			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id])->select();
+			$rooms = DB::name('client_machine_conf')->field('location')->where(['machine_id'=>$machine_id])->field('location')->group('location asc')->select();
 			foreach ($rooms as $k => $v) {
 				$roomid[$k] = intval($v['location']);
 			}
@@ -66,6 +82,7 @@ class Room extends Base{
 				'commandid'=>intval($commandid),
 				'roomid'=>$roomid
 				);
+			//halt($data);
 			$res = $this->post_to_server($data,$machine_id);
 			//halt($res);
 			if($res === ''){//请求连接服务器成功
@@ -108,6 +125,7 @@ class Room extends Base{
     		'machinesn'=>intval($machinesn),
     		);
 		$url = 'https://www.goldenbrother.cn:23232/account_server';
+		//halt($data);
 		$res = post_curls($url,$data);
 		return $res;
 	}
@@ -153,7 +171,7 @@ class Room extends Base{
                 		Db::name('client_machine_conf')->where('machine_id','=',$command['machine_id'])->setField('goods_num',$command['content']);
                 		break;
                 	case 'clear':
-                		Db::name('client_machine_conf')->where('machine_id','=',$command['machine_id'])->setField('goods_num',0);
+                		Db::name('client_machine_conf')->where('machine_id','=',$command['machine_id'])->setField(['goods_num'=>0,'goods_name'=>'','img'=>'']);
                 		break;
                 	default:
                 		# code...
@@ -174,9 +192,9 @@ class Room extends Base{
 		$machine_id = 1;//input('post.machine_id');
 		$msgtype = 'update_firmware';
 		$version = '1.0.1';
-		$dladdr = 'https://www.goldenbrother.cn/rouge.apk';
-		// $file = file_get_contents($dladdr,FALSE,NULL,0,9999*9999);
-		$file = $this->httpRequest_get($dladdr);
+		$dladdr = 'https://www.goldenbrother.cn/rouge.apk';//'https://www.goldenbrother.cn/rouge.apk';
+		$file = file_get_contents($dladdr,FALSE,NULL,0,9999*9999);
+		//$file = $this->httpRequest_get($dladdr);
 		$md5 = md5($file);
 		if(!$dladdr){
 			return json(['errid'=>10000,'msg'=>'参数错误']);
@@ -192,7 +210,7 @@ class Room extends Base{
 				);
 			//halt($data);
 			$res = $this->post_to_server($data,$machine_id);
-			halt($res);
+			halt($md5);
 		}
 	}
 

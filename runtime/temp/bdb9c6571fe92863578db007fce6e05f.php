@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542868164;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1542965224;}*/ ?>
->>>>>>> 7a2d49f2de4b8f3d673eafd7b24a0ee12bdcda53
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1543198389;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>

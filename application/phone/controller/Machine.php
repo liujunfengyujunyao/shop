@@ -67,8 +67,8 @@ class Machine extends Base{
 						);
 	        	}elseif ($priority == 1) {
 	        		$machine = DB::name('machine')->where(['machine_id'=>$machine_id])->find();
-	        		$rooms = Db::name('client_machine_conf')->field('id,location,goods_price,game_odds')->where(['machine_id'=>$machine_id])->select();
-	        		array_multisort(array_column($rooms, 'location'), SORT_ASC, $rooms);//按照仓位号大小从小到大排序
+	        		$rooms = Db::name('client_machine_conf')->field('id,location,goods_price,game_odds')->where(['machine_id'=>$machine_id])->group('location asc')->select();
+	        		//array_multisort(array_column($rooms, 'location'), SORT_ASC, $rooms);//按照仓位号大小从小到大排序
 	        		foreach ($rooms as $k => $v) {
 	        			$prices[$k]['roomid'] = $v['location'];
 	        			$prices[$k]['goodsprice'] = $v['goods_price'];
@@ -498,16 +498,32 @@ class Machine extends Base{
 	}
 
 	public function gift_detail(){
-		$machine_id = input('get.machine_id');
-		$rooms = DB::name('client_machine_conf')
-			->field("FROM_UNIXTIME(edittime, '%Y-%m-%d') as edittime,goods_price,game_odds,goods_name,location")
-			->where(['machine_id'=>$machine_id])
-			->select();
-		$image = Db::name('goods_images')->field('image_url')->select();
+		if(IS_POST){
+			$gift = input('post.goods/a');			
+			foreach ($gift as $k => $v) {				
+				if(!empty($v)){
+					$goods = Db::name('goods')->where(['goods_id'=>$v])->field('goods_name,original_img')->find();
+					$location = Db::name('client_machine_conf')->where(['id'=>$k])->getField('location');
+					$res = Db::name('client_machine_conf')->where(['id'=>$k])->setField(['goods_name'=>$goods['goods_name'],'img'=>$goods['original_img']]);
+					if($res === false){
+						return $this->error($location.'仓更新失败,已终止');
+					}
+				}
+			}
+			return $this->success('更新成功');
+		}else{
+			$machine_id = input('get.machine_id');
+			$rooms = DB::name('client_machine_conf')
+				->field("id,goods_price,game_odds,goods_name,location,img")
+				->where(['machine_id'=>$machine_id])
+				->group('location asc')
+				->select();
+			$goods = Db::name('goods')->field('goods_id,original_img,goods_name')->select();
 
-		$this->assign('img',$image);
-		$this->assign('rooms',$rooms);
-		return $this->fetch();
+			$this->assign('goods',$goods);
+			$this->assign('rooms',$rooms);
+			return $this->fetch();
+		}
 	}
 
 	//设备库存列表

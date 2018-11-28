@@ -197,7 +197,8 @@ class Test extends Controller {
         'game_odds'=>50,
         'machine_id'=>1,
         'add_time'=>time(),
-        'status'=>1
+        'status'=>1,
+        'max_stock'=>1
         );
       Db::name('client_machine_conf')->add($data);
     }
@@ -213,6 +214,18 @@ class Test extends Controller {
               DB::name('client_luck_conf')->add($add);
             }
             
+  }
+
+  public function edit_stock(){
+    $machine = Db::name('machine')->field('type_id,machine_id')->select();
+    foreach ($machine as $k => $v) {
+      if($v['type_id'] == 1){
+        Db::name('client_machine_conf')->where(['machine_id'=>$v['machine_id']])->setField('max_stock',1);
+      }
+      if($v['type_id'] == 2){
+        Db::name('client_machine_conf')->where(['machine_id'=>$v['machine_id']])->setField('max_stock',4);
+      }
+    }
   }
 
 }

@@ -2478,46 +2478,49 @@ s .lastbar #gtt {
 .gs2_content .gs2_cont #gs2_list {
 	width: 100%;
 }
-
+.gs2_content .gs2_cont #gs2_list ul{
+	
+}
 .gs2_content .gs2_cont #gs2_list ul li {
 	height: 0.4rem;
 	background-color: #FFFFFF;
 	margin-top: 0.01rem;
+	overflow: hidden;
 }
-
 .gs2_content .gs2_cont #gs2_list ul li .gs2_list_s1 {
 	width: 10%;
-	height: 0.4rem;
+	height: 0.38rem;
 	float: left;
 	margin-left: 8%;
 }
 
 .gs2_content .gs2_cont #gs2_list ul li .gs2_list_s2 {
 	width: 10%;
-	height: 0.4rem;
+	height: 0.38rem;
 	float: left;
 	margin-left: 9%;
 }
 
 .gs2_content .gs2_cont #gs2_list ul li .gs2_list_s3 {
 	width: 20%;
-	height: 0.4rem;
+	height: 0.38rem;
 	float: left;
-	margin-left: 8%;
+	margin-left: 5%;
+	margin-top: 0.05rem;
 }
 
 .gs2_content .gs2_cont #gs2_list ul li .gs2_list_s4 {
 	width: 10%;
-	height: 0.4rem;
+	height: 0.38rem;
 	float: left;
-	margin-left: 5%;
+	margin-left: 7%;
 }
 
 .gs2_content .gs2_cont #gs2_list ul li .gs2_list_s5 {
 	width: 10%;
-	height: 0.4rem;
+	height: 0.38rem;
 	float: left;
-	margin-left: 5%;
+	margin-left: 6.8%;
 }
 
 .gs2_content .gs2_cont #gs2_list ul li span {
@@ -2532,6 +2535,12 @@ s .lastbar #gtt {
 	height: 0.3rem;
 	margin-top: 0.05rem;
 }
-
+.gs2_content .gs2_cont #gs2_list ul li select {
+	width: 0.7rem;
+	height: 0.28rem;
+	border-radius: 0.05rem;
+	border: 0;
+	background-color: #FFE9F5;
+}
 
 

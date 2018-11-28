@@ -39,7 +39,7 @@
 				<div class="al_cont_head">
 					<span id="al_cont_role">职位名称 </span>
 					<select id="role" name="sel" contenteditable="true">
-						<option contenteditable="contenteditable">请选择</option>
+						<option contenteditable="contenteditable" value="">请选择</option>
 						<volist name="role" id="v">
 							<option contenteditable="contenteditable" value="{$v.act_list}">{$v.role_name}</option>
 						</volist>
@@ -87,6 +87,24 @@
 		$('.tog').click(function() {
 			$('.slide_bar').slideToggle();
 		})
+
+		$("select").change(function () {
+
+			var a = $("select option:selected").val();
+			var aa = a.split(",")
+			console.log(aa);
+			$("input:checkbox").each(function(){
+				var b = $(this).val();
+				if($.inArray(b,aa) != -1 ){
+					$(this).attr('checked',true);
+
+					//console.log(b);
+				}else{
+					$(this).attr('checked',false);
+					console.log(b);
+				}
+			})
+		});
 
 	</script>
 </html>
