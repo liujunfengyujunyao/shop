@@ -92,6 +92,7 @@ class Luck extends Controller
         
 
         if($info!==""){
+            halt($path);
                 return $this->success('上传成功！');
                 // 成功上传后 获取上传信息
                 // 输出 jpg
