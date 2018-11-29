@@ -42,7 +42,7 @@
 
 
 					<button id=" replenishment" class="btn btn-success" data-url="{:U('room/operate_room')}" data-id="{$val.machine_id}" data-type="{$val.type_id}" onClick="supply(this)">一键补货</button>
-					<button id="clear" class="btn btn-danger" data-url="{:U('Goods/ajax_clear')}" data-id="{$val.machine_id}" onClick="supply2(this)">一键清货</button>
+					<button id="clear" class="btn btn-danger" data-url="{:U('Goods/operate_room')}" data-id="{$val.machine_id}" onClick="supply2(this)">一键清货</button>
 					
 					<button id="test" class="btn btn-success" data-url="{:U('room/operate_room')}" data-id="{$val.machine_id}" onClick="supply3(this)">测试开门</button>
 					<!-- 折叠部分 -->

@@ -115,38 +115,6 @@ class Room extends Base{
 	}
 
 
-
-	//向服务器发送数据
-	public function post_to_server($msg,$machine_id){
-		$machinesn = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('sn');
-		$data = array(
-    		'msg'=>$msg,
-    		'msgtype'=>'send_message',
-    		'machinesn'=>intval($machinesn),
-    		);
-		$url = 'https://www.goldenbrother.cn:23232/account_server';
-		//halt($data);
-		$res = post_curls($url,$data);
-		return $res;
-	}
-
-
-	//生成command
-	public function get_command($msgtype,$machine_id,$content=''){
-		$change = array(
-            'msgtype' => $msgtype,
-            'machine_id' => $machine_id,
-            'send_time' => time(),
-            'content'=>$content
-            );
-        $commandid = DB::name('command')->add($change);
-        if($commandid > 0){
-        	return $commandid;
-        }else{
-        	return ['command生成失败'];
-        }
-	}
-
 	//轮训指令结果
 	public function check_status(){
 		$commandid = input('post.commandid');

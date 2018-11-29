@@ -29,6 +29,7 @@ class Staff extends Base{
 							'nav_list'=>implode(',',$power),
 							'add_time'=>time(),
 							'belong_id'=>$_SESSION['think']['client_id'],
+							'machine_pwd'=>rand(1,9).substr(time(),2).rand(10,99),
 							);
 						$res = Db::name('admin')->add($data);
 						if($res != false){
@@ -76,14 +77,31 @@ class Staff extends Base{
 			}else{
 			//$pwd = input('post.password');//密码
 				$power = input('post.power/a')?input('post.power/a'):array();
+				$str_power = implode(',',$power);
 				$store = input('post.store/a')?input('post.store/a'):array();
+				$str_store = implode(',',$store);
 				$data = array(
 					'user_name'=>$username,
-					'nav_list'=>implode(',',$power),
-					'group_id'=>implode(',',$store),
+					'nav_list'=>$str_power,
+					'group_id'=>$str_store,
 					);
 				$res = Db::name('admin')->where(['admin_id'=>$user_id])->save($data);
-				$res = DB::name('admin')->getLastSql();
+
+				$password =  Db::name('admin')->where(['admin_id'=>$user_id])->getField('machine_pwd');
+				$msg['msgtype'] = 'user_permissions';
+				$msg['managers'] = array(
+					'userid'=>$user_id,
+					'permissions'=>$str_power,
+					'password'=> $password
+					);
+
+				$machine_list = Db::name('machine')->where('group_id','in',$str_store)->field('machine_id')->select();
+				foreach ($machine_list as $k => $v) {
+					$commandid = $this->get_command('user_permissions',$v['machine_id']);
+					$msg['commandid'] = intval($commandid);
+					$this->post_to_server($msg,$v['machine_id']);
+				}
+
 				if($res !== false){
 					return $this->success('修改成功',U('staff/staff_list'));
 				}else{
@@ -190,6 +208,37 @@ class Staff extends Base{
 			return $this->fetch();
 		}
 	}
+
+	//向服务器发送数据
+	public function post_to_server($msg,$machine_id){
+		$machinesn = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('sn');
+		$data = array(
+    		'msg'=>$msg,
+    		'msgtype'=>'send_message',
+    		'machinesn'=>intval($machinesn),
+    		);
+		$url = 'https://www.goldenbrother.cn:23232/account_server';
+		//halt($data);
+		$res = post_curls($url,$data);
+		return $res;
+	}
+
+	//生成command
+	public function get_command($msgtype,$machine_id,$content=''){
+		$change = array(
+            'msgtype' => $msgtype,
+            'machine_id' => $machine_id,
+            'send_time' => time(),
+            'content'=>$content
+            );
+        $commandid = DB::name('command')->add($change);
+        if($commandid > 0){
+        	return $commandid;
+        }else{
+        	return ['command生成失败'];
+        }
+	}
+
 
 }
 

@@ -52,13 +52,7 @@ class Machine extends Base{
         		);
 			return $msg;
 		}else{
-			$change = array(
-	            'msgtype' => 'change_priority',
-	            'machine_id' => $machine_id,
-	            'send_time' => time(),
-	            'content'=>$priority
-	            );
-	        $commandid = DB::name('command')->add($change);
+	        $commandid = $this->get_command('change_priority',$machine_id,$priority);
 	        if($commandid > 0){
 	        	if ($priority == 0){
 	        		$msg = array(
@@ -85,14 +79,8 @@ class Machine extends Base{
 						'prices'=>$prices,
 						);
 	        	}
-	        	$machinesn = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('sn');
-	        	$data = array(
-	        		'msg'=>$msg,
-	        		'msgtype'=>'send_message',
-	        		'machinesn'=>intval($machinesn),
-	        		);
-	        	$url = 'https://www.goldenbrother.cn:23232/account_server';
-				$res = post_curls($url,$data);
+	        	
+				$res = $this->post_to_server($msg,$machine_id);
 				if($res === ''){
 					return intval($commandid);
 				}
@@ -254,15 +242,8 @@ class Machine extends Base{
 					'commandid'=>intval($commandid),
 					'amount'=>$amount
 					);
-				$machinesn = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('sn');
-	        	$data = array(
-	        		'msg'=>$data,
-	        		'msgtype'=>'send_message',
-	        		'machinesn'=>intval($machinesn),
-	        		);
-	        	//dump($data);die;
-	        	$url = 'https://www.goldenbrother.cn:23232/account_server';
-				$res = post_curls($url,$data);
+
+				$res = $this->post_to_server($data,$machine_id);
 				if($res === ''){//请求连接服务器成功
 					return json (['status'=>1,'commandid'=>$commandid]);
 				}
@@ -290,21 +271,6 @@ class Machine extends Base{
 		return $this->fetch();
 	}
 
-	//生成command
-	public function get_command($msgtype,$machine_id,$content=''){
-		$change = array(
-            'msgtype' => $msgtype,
-            'machine_id' => $machine_id,
-            'send_time' => time(),
-            'content'=>$content
-            );
-        $commandid = DB::name('command')->add($change);
-        if($commandid > 0){
-        	return $commandid;
-        }else{
-        	return ['command生成失败'];
-        }
-	}
 
 	public function edit(){
 		if (IS_POST) {
@@ -609,25 +575,14 @@ class Machine extends Base{
 		if(!$machine_id){
 			return $this->error('参数错误');
 		}else{
-			$change = array(
-	            'msgtype' => 'wifi',
-	            'machine_id' => $machine_id,
-	            'send_time' => time(),
-	            );
-	        $commandid = DB::name('command')->add($change);
+
+	        $commandid = $this->get_command('wifi',$machine_id);
 			$msg = array(
 				'msgtype'=>'wifi',
 				'commandid'=>intval($commandid)
 				);
-			$machinesn = DB::name('machine')->where(['machine_id'=>$machine_id])->getField('sn');
-        	$data = array(
-        		'msg'=>$msg,
-        		'msgtype'=>'send_message',
-        		'machinesn'=>intval($machinesn),
-        		);
-        	$url = 'https://www.goldenbrother.cn:23232/account_server';
-        	//halt($data);
-			$res = post_curls($url,$data);
+			
+			$res = $this->post_to_server($msg,$machine_id);
 			if($res !== false){
 				return json(['commandid'=>$commandid,'status'=>1]);
 				// $check = $this->check_status($commandid);

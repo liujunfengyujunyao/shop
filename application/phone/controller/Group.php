@@ -81,15 +81,37 @@ class Group extends Base{
 				return $this->error('参数错误');
 			}else{
 				$res = Db::name('machine_group')->where(['id'=>$group_id])->save($data);
+				$admin = Db::name('admin')->where('FIND_IN_SET(:id,group_id)',['id'=>$group_id])->field('admin_id,nav_list,machine_pwd')->select();
 				if($res !== false){
 					foreach ($old_machine as $k => $v) {//删除的机器
 						if(!in_array($v,$machine_id)){
 							Db::name('machine')->where(['machine_id'=>$v])->setField('group_id',0);
+							foreach ($admin as $kk => $vv) {
+						        $commandid = $this->get_command('delete_user',$v,$vv['admin_id']);
+								$msg = array(
+									'msgtype'=>'delete_user',
+									'commandid'=>intval($commandid),
+									'user_id'=>$vv['admin_id']
+									);
+								$this->post_to_server($msg,$v);
+							}
 						}
 					}
 					foreach ($machine_id as $k => $v) {//新增的机器
 						if(!in_array($v,$old_machine)){
 							Db::name('machine')->where(['machine_id'=>$v])->setField('group_id',$group_id);
+							foreach ($admin as $kk => $vv) {
+						       	$msg['msgtype'] = 'user_permissions';
+								$msg['managers'] = array(
+									'userid'=>$vv['admin_id'],
+									'permissions'=>$vv['nav_list'],
+									'password'=> $vv['machine_pwd']
+									);
+								$commandid = $this->get_command('user_permissions',$v);
+								$msg['commandid'] = intval($commandid);
+								$this->post_to_server($msg,$v);
+							}
+
 						}
 					}
 					return $this->success('修改成功',U('group/store_list'));
