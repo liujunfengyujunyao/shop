@@ -3,16 +3,92 @@ namespace app\phone\controller;
 use think\Image;
 use think\Controller;
 use think\Request; 
+use think\Db;
 header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-class Luck extends Controller
+class Luck extends Base
 {
 
     // 文件上传表单
     public function index()
     {
-        return $this->fetch();
+        if(IS_POST){
+            $data = input('post.conf/a');
+            foreach ($data as $k => $v) {
+                $file = request()->file($k);
+                $conf = array(
+                    'goods_name'=>$data[$k]['goods_name'],
+                    'odds'=>$data[$k]['odds']
+                    );
+                //halt($file);
+                if(!empty($file)){
+                    $info = $file->move(ROOT_PATH . 'public' . DS . 'upload'. DS . 'luck_goods');
+                    $conf['img'] = DS . 'public' .DS . 'upload' . DS . 'luck_goods'. DS . $info->getSaveName();
+                }
+                Db::name('client_luck_conf')->where(['id'=>$k])->save($conf);
+            }
+            return $this->success('配置成功');
+        }else{
+            $keywords = input('get.keywords');
+            $status = array('0'=>'未激活','1'=>'已激活','2'=>'已中奖','3'=>'未中奖');
+            $admin_id = $_SESSION['think']['client_id'];
+            if(!$keywords){
+                $keys = Db::name('client_luck_key')->where(['client_id'=>$admin_id])->field('id,key_id,status')->select();
+            }else{
+                $keys = Db::name('client_luck_key')->where(['client_id'=>$admin_id,'key_id'=>$keywords])->field('id,key_id,status')->select();
+            }
+            foreach ($keys as $k => $v) {
+                $keys[$k]['status_name'] = $status[$v['status']];
+            }
+            $win = Db::name('client_luck_key')->where(['status'=>2])->field('id,name,address,phone')->select();
+            $key_conf = Db::name('client_luck_conf')->where(['client_id'=>$admin_id])->field('id,img,goods_name,odds')->select();
+            $this->assign('win',$win);
+            $this->assign('conf',$key_conf);
+            $this->assign('keys',$keys);
+            return $this->fetch();
+        }
+        
     }
+
+    //激活二维码
+    public function jihuo(){
+        $id = input('post.id');
+        if(!$id||!is_numeric($id)){
+            return json(['status'=>0,'msg'=>'参数错误']);
+        }
+        $status = Db::name('client_luck_key')->where(['id'=>$id])->getField('status');
+
+        if($status === 0){
+            $res = Db::name('client_luck_key')->where(['id'=>$id])->setField('status',1);
+            return json(['status'=>1,'msg'=>'激活成功']);
+        }else{
+            return json(['status'=>0,'msg'=>'激活失败']);
+        }
+    }
+
+    public function yulan(){
+        $id = input('get.id');
+        if(!$id||!is_numeric($id)){
+            return json(['status'=>0,'msg'=>'参数错误']);
+        }else{
+            $secret = Db::name('client_luck_key')->where(['id'=>$id])->getField('device_secret');
+            if(!$secret){
+                return json(['status'=>0,'msg'=>'secret错误']);
+            }else{
+                qrcode('http://www.12202.com.cn/tp/index.php/home/luck/login?device_secret='.$secret);
+            }
+        }
+
+    }
+
+    public function detail(){
+
+        $id = input('get.id');
+        
+        return $this->fetch();
+
+    }
+
 
     // 图片上传处理
     public function picture2()
@@ -46,10 +122,6 @@ class Luck extends Controller
         }
     }
 
-    public function index1(){
-        return $this->fetch();
-
-    }
 
     public function picture1(){
         if (request()->isPost()) {

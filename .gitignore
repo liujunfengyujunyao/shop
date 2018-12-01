@@ -4,3 +4,4 @@ composer.lock
 thinkphp
 Application/Runtime/
 /runtime/
+Application/home/controller/Insert.php

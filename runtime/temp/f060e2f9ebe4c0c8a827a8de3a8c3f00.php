@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/logina\login.html";i:1542192554;s:37:"./template/phone/new/public\tion.html";i:1542192554;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/logina\login.html";i:1543570504;s:37:"./template/phone/new/public\tion.html";i:1540012757;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -42,7 +42,7 @@
 			
 		登陆
 	</button>
-		<button class="btn regist"><a href = "<?php echo U('Phone/Register/index'); ?>">注册</a></button>
+		<a href = "<?php echo U('Phone/Register/index'); ?>"><button type="button" class="btn regist">注册</button></a>
 	</form>
 
 	<section id="foot">

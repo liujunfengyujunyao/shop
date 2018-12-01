@@ -1,0 +1,617 @@
+body,
+ul,
+ol,
+li,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+fieldset,
+table,
+td,
+img,
+div {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	color: #333;
+	font-size: 12px;
+	font-family: "Microsoft YaHei"
+}
+
+ul,
+ol {
+	list-style-type: none;
+}
+
+select,
+input,
+img,
+select {
+	vertical-align: middle;
+}
+
+input {
+	font-size: 12px;
+}
+
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+a:hover {
+	color: #c00;
+	text-decoration: none;
+}
+
+.clear {
+	clear: both;
+}
+
+/* 大转盘样式 */
+
+.banner {
+	display: block;
+	width: 95%;
+	/* margin-top: 50%; */
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+}
+
+.banner .turnplate {
+	display: block;
+	width: 100%;
+	margin-top: 6rem;
+	margin-bottom: 3rem;
+	position: relative;
+}
+
+.banner .turnplate canvas.item {
+	width: 100%;
+}
+
+.banner .turnplate img.pointer {
+	position: absolute;
+	width: 31.5%;
+	height: 50%;
+	left: 34.6%;
+	top: 15%;
+}
+
+/*保存*/
+.addStoreBtn {
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	color: #fff;
+	font-size: 25px;
+	position: fixed;
+	left: 0;
+	bottom: .4rem;
+	background-color: #ED706A;
+}
+
+.addStoreBtn a {
+	line-height: 40px;
+	text-align: center;
+	color: #FFFFFF !important;
+	font-size: 0.2rem;
+}
+
+/*选项卡*/
+#content {
+	width: 100%;
+}
+
+#ttab_bar {
+	width: 100%;
+	height: 0.3rem;
+	float: left;
+}
+
+#tab_bar ul {
+	padding: 0px;
+	margin: 0px;
+	height: 0.4rem;
+	text-align: center;
+	background: url(../img/background13.png)
+}
+
+#tab_bar li {
+	list-style-type: none;
+	float: left;
+	width: 33.3%;
+	height: 0.4rem;
+	background-color: #FFFFFF;
+}
+
+#tab_bar li span {
+	font-size: 0.18rem;
+	color: #C8A0A1;
+	text-align: center;
+	line-height: 0.4rem;
+}
+
+#tab_bar li span:hover {
+	color: #A03A3A;
+}
+
+.tab_css {
+	width: 100%;
+	background-color: #EA5244;
+	display: none;
+	float: left;
+}
+
+.t1_head {
+	width: 100%;
+	height: 0.3rem;
+	margin-top: 0.1rem;
+}
+
+.t1_head span {
+	font-size: 0.16rem;
+	color: #FFFFFF;
+	text-align: center;
+	line-height: 0.3rem;
+	margin-left: 30%;
+}
+
+.t1_head #t1_head1 {
+	width: 33.3%;
+	height: 0.3rem;
+	float: left;
+}
+
+.t1_head #t1_head2 {
+	width: 33.3%;
+	height: 0.3rem;
+	float: left;
+}
+
+.t1_head #t1_head3 {
+	width: 33.3%;
+	height: 0.3rem;
+	float: left;
+}
+
+.t1_body {
+	width: 100%;
+	height: 0.3rem;
+	margin-top: 0.2rem;
+}
+
+.t1_body ul {
+	width: 100%;
+	background-color: #EA5244;
+	padding-bottom: 0.8rem;
+}
+
+.t1_body ul li {
+	width: 100%;
+	height: 0.3rem;
+	background-color: #EA5244;
+	overflow: hidden;
+	margin-top: 0.1rem;
+}
+
+.t1_body ul li .t1_b1 {
+	width: 33.3%;
+	height: 0.3rem;
+	float: left;
+}
+
+.t1_body ul li .t1_b2 {
+	width: 33.3%;
+	height: 0.3rem;
+	float: left;
+}
+
+.t1_body ul li .t1_b3 {
+	width: 33.3%;
+	height: 0.3rem;
+	float: left;
+}
+
+.t1_body ul li .id {
+	font-size: 0.15rem;
+	color: #FFFFFF;
+	text-align: center;
+	line-height: 0.3rem;
+	margin-left: 33.3%;
+}
+
+.t1_body ul li .zt {
+	font-size: 0.15rem;
+	color: #FFFFFF;
+	text-align: center;
+	line-height: 0.3rem;
+	margin-left: 27%;
+}
+
+.t1_body ul li .t1_b3 #tb_btn1 {
+	width: 40%;
+	height: 0.22rem;
+	border-radius: 0.05rem;
+	border: 0;
+	color: #FFFFFF;
+	background-color: #F86F80;
+	margin-top: 0.05rem;
+}
+
+.t1_body ul li .t1_b3 #tb_btn3 {
+	width: 85%;
+	height: 0.22rem;
+	border-radius: 0.05rem;
+	border: 0;
+	color: #FFFFFF;
+	background-color: #F86F80;
+	margin-top: 0.05rem;
+}
+
+.t1_body ul li .t1_b3 #tb_btn2 {
+	width: 40%;
+	height: 0.22rem;
+	border-radius: 0.05rem;
+	border: 0;
+	color: #FFFFFF;
+	background-color: #F86F80;
+	margin-top: 0.05rem;
+	margin-left: 2%;
+}
+
+.t1_body ul li img {
+	width: 40%;
+	height: 0.25rem;
+	margin-top: 0.05rem;
+}
+
+
+.t2_head {
+	width: 100%;
+	height: 0.3rem;
+	margin-top: 0.2rem;
+}
+
+.t2_head span {
+	font-size: 0.15rem;
+	color: #FFFFFF;
+	text-align: center;
+	line-height: 0.3rem;
+	margin-left: 30%;
+}
+
+.t2_head #t2_head1 {
+	width: 33.3%;
+	height: 0.3rem;
+	float: left;
+}
+
+.t2_head #t2_head2 {
+	width: 33.3%;
+	height: 0.3rem;
+	float: left;
+}
+
+.t2_head #t2_head3 {
+	width: 33.3%;
+	height: 0.3rem;
+	float: left;
+}
+
+.t2_body {
+	width: 100%;
+	height: 0.8rem;
+	margin-top: 0.2rem;
+}
+
+.t2_body ul {
+	width: 100%;
+	padding-bottom: 0.8rem;
+	background-color: #EA5244;
+}
+
+.t2_body ul li {
+	overflow: hidden;
+}
+
+.t2_body #t2_body1 {
+	width: 22%;
+	height: 0.8rem;
+	float: left;
+	margin-left: 3%;
+	position: relative;
+}
+
+#t2_body1 .filesss {
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 123;
+}
+
+#t2_body1 img {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: calc(100% - .2rem);
+	height: calc(100% - .2rem);
+	margin: .1rem
+}
+
+.t2_body #t2_body2 {
+	width: 33.3%;
+	height: 0.3rem;
+	float: left;
+	margin-left: 8%;
+	margin-top: 0.25rem;
+}
+
+.t2_body #t2_body3 {
+	width: 33.3%;
+	height: 0.3rem;
+	float: left;
+	margin-top: 0.25rem;
+}
+
+.t2_body #t2_body2 #t2_b_name {
+	width: 80%;
+	height: 0.25rem;
+	border-radius: 0.05rem;
+	border: 0;
+	background-color: #E1493B;
+}
+
+.t2_body #t2_body3 #t2_b_peilv {
+	width: 80%;
+	height: 0.25rem;
+	border-radius: 0.05rem;
+	border: 0;
+	background-color: #E1493B;
+	padding-left: 30%;
+}
+
+.search_box2 {
+	width: 80%;
+	height: 0.25rem;
+	background-color: #E1493B;
+	;
+	border: 0;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+}
+
+.search_box2 i {
+	width: 0.2rem;
+	height: 0.2rem;
+	color: #FFFFFF;
+}
+
+.search_box2 input {
+	outline: none;
+	width: 100%;
+	background-color: #E1493B;
+	/* height: 0.33rem; */
+	border: 0;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.t3_head {
+	width: 100%;
+	height: 0.3rem;
+	margin-top: 0.2rem;
+}
+
+.t3_head span {
+	font-size: 0.15rem;
+	color: #FFFFFF;
+	text-align: center;
+	line-height: 0.3rem;
+	margin-left: 10%;
+}
+
+.t3_head #t3_head1 {
+	width: 20%;
+	height: 0.3rem;
+	float: left;
+	margin-left: 5%;
+}
+
+.t3_head #t3_head2 {
+	width: 25%;
+	height: 0.3rem;
+	float: left;
+	margin-left: 5%;
+}
+
+.t3_head #t3_head3 {
+	width: 40%;
+	height: 0.3rem;
+	float: left;
+	margin-left: 5%;
+}
+
+.t3_body {
+	width: 100%;
+	height: 0.4rem;
+	margin-top: 0.2rem;
+}
+
+.t3_body ul {
+	width: 100%;
+	background-color: #EA5244;
+	padding-bottom: 0.8rem;
+}
+
+.t3_body ul li {
+	width: 100%;
+	height: 0.4rem;
+	background-color: #EA5244;
+	overflow: hidden;
+	margin-top: 0.1rem;
+}
+
+.t3_body .tb1 {
+	font-size: 0.13rem;
+	color: #FFFFFF;
+	text-align: center;
+	line-height: 0.4rem;
+	margin-left: 10%;
+}
+
+.t3_body .tb2 {
+	font-size: 0.13rem;
+	color: #FFFFFF;
+	text-align: center;
+	line-height: 0.4rem;
+	margin-left: 15%;
+}
+
+.t3_body .tb3 {
+	font-size: 0.13rem;
+	color: #FFFFFF;
+	position: absolute;
+	padding-top: 0.1rem;
+
+}
+
+.t3_body .t3_b1 {
+	width: 20%;
+	height: 0.4rem;
+	float: left;
+	margin-left: 5%;
+}
+
+.t3_body .t3_b2 {
+	width: 30%;
+	height: 0.4rem;
+	float: left;
+}
+
+.t3_body .t3_b3 {
+	width: 40%;
+	height: 0.4rem;
+	float: left;
+	margin-left: 3%;
+}
+/*弹出框*/
+.box .editInfos{
+	margin: 0 auto;
+}
+.box .editInfos li{
+	width: 90%;
+	height: 0.2rem;
+	margin-top: 0.05rem;
+	/* background-color: #0BA4DA; */
+}
+.box .editInfos li span{
+	font-size: 0.18rem;
+	color: #FFFFFF;
+	float: left;
+	margin-left: 5%;
+}
+.box .editInfos li p{
+	overflow: hidden;
+	font-size: 0.15rem;
+	color: #FFFFFF;
+	 /* word-wrap: break-word; word-break: normal; */
+	float: left;
+	margin-left: 10%;
+}
+.box .dialogTop a span{
+	color: #FFFFFF;
+}
+.box .dialogIco{
+	border-radius: 0.5rem;
+}
+
+/*xxxx*/
+.xx_content{
+	width: 100%;
+	background-color: #EA5244;
+}
+.top_bar2 {
+  background: #FFFFFF;
+  padding: 0.2rem 0.1rem 0.1rem 0.1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.xx_content .xx_cont{
+	width: 90%;
+	margin: 0 auto;
+}
+.xx_content .xx_cont .xx_head{
+	width: 30%;
+	height: 1rem;
+	margin: 0 auto;
+	margin-top: 0.8rem;
+}
+.xx_content .xx_cont .xx_head img{
+	width: 100%;
+	height: 1rem;
+	border-radius: 1rem;
+	
+}
+.xx_content .xx_cont .xx_body ul{
+	width: 90%;
+	height: 2.8rem;
+	margin: 0 auto;
+	margin-top: 0.3rem;
+	background-color: #F45C4E;
+	border-radius: 0.05rem;
+	border: 0;
+	position: absolute;
+}
+.xx_content .xx_cont .xx_body ul li{
+	width: 100%;
+	height: 0.2rem;
+	position: relative;
+	margin-top: 0.2rem;
+	margin-left: 5%;
+}
+.xx_content .xx_cont .xx_body ul li span{
+	font-size: 0.18rem;
+	color: #FFFFFF;
+	float: left;
+}
+.xx_content .xx_cont .xx_body ul li p{
+	font-size: 0.15rem;
+	color: #FFFFFF;
+	float: left;
+	margin-left: 10%;
+}
+
+
+

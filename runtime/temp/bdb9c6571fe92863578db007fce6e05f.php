@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1543198389;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1543648068;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -247,7 +247,7 @@
 					</div>
 					</a>
 				</li>
-				<li>
+				<li <?php if($belong_id != 0) echo "style=display:none" ?>>
 					<a href="<?php echo U('Test/create'); ?>">
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">
@@ -260,7 +260,7 @@
 					</a>
 				</li>
 
-				<li>
+				<li <?php if($belong_id != 0) echo "style=display:none" ?>>
 					<a href="<?php echo U('Luck/index'); ?>">
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">

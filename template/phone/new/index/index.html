@@ -246,7 +246,7 @@
 					</div>
 					</a>
 				</li>
-				<li>
+				<li <?php if($belong_id != 0) echo "style=display:none" ?>>
 					<a href="{:U('Test/create')}">
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">
@@ -259,7 +259,7 @@
 					</a>
 				</li>
 
-				<li>
+				<li <?php if($belong_id != 0) echo "style=display:none" ?>>
 					<a href="{:U('Luck/index')}">
 					<div class="icon fa fa-gift" style="color:#3d7ce8;"></div>
 					<div class="text">

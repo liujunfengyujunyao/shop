@@ -53,6 +53,7 @@
   flex-grow: 1;
   height: 100%;
   box-sizing: border-box;
+	background-color: #CB3B2A;
 }
 #head .slide_bar li a {
   height: 100%;
@@ -96,7 +97,8 @@
 .search_box input{
   outline: none;
   width: 100%;
-	height: 0.33rem;
+	/* height: 0.33rem; */
+	border: 0;
 }
 .search-row input[type=search] {
   position: absolute; top: 7px;
@@ -137,7 +139,7 @@
 #find{
 	width: 100%;
 	height: 0.5rem;
-	background-color: #F27AB7;
+	/* background-color: #F27AB7; */
 }
 /*设备管理列表*/
 body{

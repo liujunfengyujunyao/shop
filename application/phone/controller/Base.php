@@ -77,6 +77,17 @@ class Base extends controller{
 	}
 
 
+	//机器未接收到的指令写入数据库
+	public function fail_log($machine_id,$msg=""){
+		$data = array(
+			'machine_id'=>$machine_id,
+			'add_time'=>time(),
+			'msg'=>json_encode($msg)
+			);
+		$res = Db::name('send_fail_log')->add($data);
+	}
+
+
 	//封装一个获取菜单权限的方法
 	// public function getnav(){
 	

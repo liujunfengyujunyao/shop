@@ -82,6 +82,7 @@ class Group extends Base{
 			}else{
 				$res = Db::name('machine_group')->where(['id'=>$group_id])->save($data);
 				$admin = Db::name('admin')->where('FIND_IN_SET(:id,group_id)',['id'=>$group_id])->field('admin_id,nav_list,machine_pwd')->select();
+				$fail = array();
 				if($res !== false){
 					foreach ($old_machine as $k => $v) {//删除的机器
 						if(!in_array($v,$machine_id)){
@@ -94,6 +95,13 @@ class Group extends Base{
 									'user_id'=>$vv['admin_id']
 									);
 								$this->post_to_server($msg,$v);
+								
+								$status = $this->check_status($commandid);
+								if($status['status'] == 0){
+									$this->fail_log($v,json_encode($msg));
+									array_push($fail,$v);
+								}
+								
 							}
 						}
 					}
@@ -107,14 +115,25 @@ class Group extends Base{
 									'permissions'=>$vv['nav_list'],
 									'password'=> $vv['machine_pwd']
 									);
-								$commandid = $this->get_command('user_permissions',$v);
+								$commandid = $this->get_command('user_permissions',$v,$vv['admin_id']);
 								$msg['commandid'] = intval($commandid);
 								$this->post_to_server($msg,$v);
+
+								$status = $this->check_status($commandid);
+								if($status['status'] == 0){
+									$this->fail_log($v,json_encode($msg));
+									array_push($fail,$v);
+								}
 							}
 
 						}
 					}
-					return $this->success('修改成功',U('group/store_list'));
+					$fail = implode(',',$fail);
+					if(empty($fail)){
+						return $this->success('修改完成',U('group/store_list'));
+					}else{
+						return $this->success('修改完成，其中'.$fail.'号机更新失败',U('group/store_list'));
+					}
 				}else{
 					return $this->error('修改失败');
 				}
@@ -146,6 +165,35 @@ class Group extends Base{
 		$this->assign('list',$list);
 		return $this->fetch();
 	}
+
+
+	public function check_status($commandid){
+		if(!$commandid){
+			$error = array(
+				'status'=>0,
+				'msg'=>'参数错误',
+				);
+			return $error;
+		}
+		$data = array(
+			'status'=>0,
+			'msg'=>'操作失败'
+			);
+		for($x=0; $x<=2; $x++){//轮询查找是否返回成功
+            //查询出对应的command 
+            $command = DB::name('command')->where(['commandid'=>$commandid])->find();
+            if ($command['status'] == 1) {
+                //status=1为执行成功
+            	//成功之后操作
+                
+             	$data = ['status'=>1,'msg'=>'操作成功'];
+            }elseif($command['status'] == 0){
+                sleep(2);//延迟2s
+            }           
+        }        
+    	return $data;       
+	}
+
 
 
 

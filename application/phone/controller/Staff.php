@@ -126,6 +126,15 @@ class Staff extends Base{
 		}
 	}
 
+	//人员编辑页面店铺列表ajax接口
+	public function ajax_store(){
+		if(IS_POST){
+			$user_id = $_SESSION['think']['client_id'];
+			$store = Db::name('machine_group')->where(['user_id'=>$user_id])->field('id,group_name')->select();
+			return json($store);
+		}
+	}
+
 	//删除人员
 	public function delete_staff(){
 		$request=  \think\Request::instance();

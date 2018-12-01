@@ -1,251 +1,321 @@
-<!doctype html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>图像上传和处理示例</title>
-    <style>
-      
- 
-        /*表单标签*/
-        #box{
-            margin:50px auto;
-            width:600px;
-            padding-bottom: 10px;
-            min-height:400px;
-            background:#FF9;
-        }
- 
-        /*点击添加图片按钮div包裹*/
-        .addbtn_wrap{
-            position: relative;
-        }
- 
-        /*添加图片按钮*/
-        .addbtn{
-            position: absolute;
-        }
-        input[type=file]{
-            width: 100px;
-            position: absolute;
-            top: 5px;
-            opacity: 0;
-        }
- 
-        /*提交按钮*/
-        input[type=submit]{
-            margin: 0 auto;
-            display: none;
-        }
- 
-        /*所有图片div包裹*/
-        .img_wrap{
-            width:600px;
-            margin-top: 40px;
-            float: left;
-            margin-bottom: 40px;
-        }
- 
- 
-        .pic_wrap{
-            width: 180px;
-            height: 160px;
-            float: left;
-            position: relative;
-            margin: 5px;
-        }
- 
- 
-        .img{
-            width: 180px;
-            height: 160px;
-           float: left;
-        }
- 
-        .delete{
-            width: 180px;
-            height: 160px;
-            position: absolute;
-            display: none;
-            border-radius: 6px;
-        }
- 
-        .delete img{
-            float: right;
-        }
- 
-    </style>
-</head>
-<body>
-<form  method="post" enctype="multipart/form-data" action="{:url('doUpload')}"  id="box">
- 
- 
-    <!--file包裹-->
-    <div class="addbtn_wrap">
-        <input type="button" class="btn btn-primary addbtn" value="点击添加图片">
-        <input type="file" name="image[]" id="file1" style="z-index: 1" onchange="getPhoto(this)">
-    </div>
- 
- 
-    <!--图片包裹-->
-    <div class="img_wrap">
- 
-    </div>
- 
-    <input type="submit" value="开始上传" class=" btn btn-primary ">
-    
-    
- 
-</form>
+<!DOCTYPE html>
+<html lang="en" id="rootHTML">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<title>配置页面</title>
+		<link rel="stylesheet" href="__NEW__/css/fontawesome/font-awesome.min.css">
+		<link rel="stylesheet" href="__NEW__/css/common.css">
+		<link rel="stylesheet" href="__NEW__/css/common2.css">
+		<!-- <link rel="stylesheet" href="./css/bootstrap.min.css"> -->
+		<link rel="stylesheet" href="__NEW__/css/top_frame.css">
+		<link rel="stylesheet" href="__NEW__/css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="__NEW__/css/style.css" />
+	</head>
+	<body style="background-color: #EA5244">
+		<header id="head">
+			<ul class="slide_bar">
+				<li>
+					<a href="{:U('index/index')}">
+						<span class="fa fa-home"></span>
+						<!-- <span>首页</span> -->
+					</a>
+				</li>
+				<li>
+					<a href="{:U('machine/mine')}">
+						<span class="fa fa-user"></span>
+						<!-- <span>我的</span> -->
+					</a>
+				</li>
+			</ul>
+		</header>
+		<section class="dp_content">
+			<div class="dp_cont">
+				<div id="content">
+					<div id="tab_bar">
+						<ul>
+							<li id="tab1" onclick="myclick(1)">
+								<span>配置页面</span>
+							</li>
+							<li id="tab2" onclick="myclick(2)">
+								<span>Key</span>
+							</li>
+							<li id="tab3" onclick="myclick(3)">
+								<span>中奖记录</span>
+							</li>
+						</ul>
+					</div>
+					<div class="tab_css" id="tab1_content" style="display: block">
+						<!-- 搜索 -->
+						<div id="find">
+							<form name="search" class="search" id="search" action="{:U('luck/index')}">
+								<div class="search-row">
+									<div class="search_box">
+										<i class="icon"><img src="__NEW__/img/sousuo.png"></i>
+										<!-- 搜索图标  嫌弃搜索框小调试高度就行-->
+										<input type="text" name="keywords" id="" value="" placeholder="搜索" />
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="t1_head">
+							<div id="t1_head1">
+								<span>ID</span>
+							</div>
+							<div id="t1_head2">
+								<span>状态</span>
+							</div>
+							<div id="t1_head3">
+								<span>操作</span>
+							</div>
+						</div>
+						<div class="t1_body">
+							<ul>
+							<volist name="keys" id="v">
+								<li>
+									<div class="t1_b1">
+										<span class="id">{$v.key_id}</span>
+									</div>
+									<div class="t1_b2">
+										<span class="zt">{$v.status_name}</span>
+									</div>
+									<div class="t1_b3">
+									<switch $v.status>
+										<case 0>
+											<a href="javascript:;" id="{$v.id}" class="t1_tck1">
+												<input type="button" name="" id="tb_btn1" value="预览" data-id='{$v.id}' />
+											</a>
+											<input type="button" name="" id="tb_btn2" data-id='{$v.id}' value="启用" onClick="jihuo(this)" />
+										</case>
+										<case 1>
+											<a href="javascript:;" id="{$v.id}" class="t1_tck1">
+												<input type="button" name="" id="tb_btn3" value="预览" data-id='{$v.id}' />
+											</a>
+										</case>
+										<case 3>
+											<img src="__NEW__/img/break%20heart.png" id="no">
+											<a href="{:U('luck/detail',array('id'=>$v.id))}"><input type="button" name="" id="tb_btn2" value="查看" /></a>
+										</case>
+										<case 2>
+											<img src="__NEW__/img/heart.png" id="yes">
+											<a href="{:U('luck/detail',array('id'=>$v.id))}"><input type="button" name="" id="tb_btn2" value="查看" /></a>
+										</case>
+									</switch>	
+									</div>
+								</li>
+							</volist>
 
-</body>
-<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="__NEW__/js/jquery-2.1.4.min.js"></script>
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
- 
- 
-    /*预览*/
-    var count=1;
-    function getPhoto(node) {
- 
-        var imgURL = "";
-        try{
-            var file = null;
-            if(node.files && node.files[0] ){
-                file = node.files[0];
-            }else if(node.files && node.files.item(0)) {
-                file = node.files.item(0);
-            }
- 
-            try{
-                imgURL =  file.getAsDataURL();
-            }catch(e){
-                imgRUL = window.URL.createObjectURL(file);
-            }
-        }catch(e){
-            if (node.files && node.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    imgURL = e.target.result;
-                };
-                reader.readAsDataURL(node.files[0]);
-            }
-        }
- 
-        /*动态添加file和对应的图片预览*/
-        createPic();
-        createFile();
- 
-        count++;
-        return imgURL;
-    }
- 
-    /*创建图片预览元素*/
-    function createPic() {
-        var picText='<div class="pic_wrap" id=" showPic'+count+'" onmouseover="overDelete(this)" onmouseleave="leaveDelete(this)">'+
-                '<img  src="'+imgRUL+'"" class="img img-rounded">'+
-                '<div class="delete"><img src="/public/html/images/x_alt.png" onclick="deletePic(this)"></div>'+
-                '</div>';
- 
-        /*遍历除去最新一个file的所有file，如果有file的值与最后一个file的值相等，不插入预览图*/
- 
-        for(var i=0;i< $('input[type=file]').length-1;i++){
-            var val= $('input[type=file]').eq(i).val();
- 
- 
-            if($('input[type=file]').last().val()==val){
- 
-                /*此处不插入图片，就让count回到之前那一步，否则id=file和id=showPic的数据后缀对不上，导致file和图片对应错乱*/
-                count=count-1;
-                return;
-            }
-        }
- 
-        $('.img_wrap').append(picText);
- 
-    }
- 
- 
- 
-    /*创建新的file元素*/
-    function createFile() {
- 
-        var flieText='<input type="file" name="image[]" id="file'+(count+1)+'" style="z-index: '+(count+1)+'" onchange="getPhoto(this)">';
- 
-        /*遍历除去最新一个file的所有file，如果有file的值与最后一个file的值相等，提示图片已存在，清空最后一个file*/
- 
-        for(var i=0;i< $('input[type=file]').length-1;i++){
-            var val= $('input[type=file]').eq(i).val();
- 
-            if($('input[type=file]').last().val()==val){
-                var file = $('input[type=file]').last();
-                file.after(file.clone().val(""));
-                file.remove();
-                alert("图片已存在！");
-                return;
-            }
-        }
- 
- 
-        $('.addbtn_wrap').append(flieText);
- 
- 
-        /*图片数量大于1，显示提交按钮，添加一次判断一次*/
-        if($('.pic_wrap').length<=0){
- 
-            $('input[type=submit]').css('display','none');
-        }else {
-            $('input[type=submit]').css('display','block');
-        }
-    }
- 
- 
- 
-    /*移入移出，删除遮罩层显示隐藏*/
-    function overDelete(obj) {
-        $(obj).children('div').show();
-    }
- 
-    function leaveDelete(obj) {
-        $(obj).children('div').hide();
-    }
- 
- 
- 
-    /*删除图片和对应的file*/
-    function deletePic(obj) {
- 
-        /*提取图片的id的数字部分*/
-        var picId=$(obj).parent().parent().attr('id');
- 
-        var picVal= picId.replace(/[^0-9]/ig,"");
- 
-        var fileArr=$('input[type=file]');
- 
-        /*遍历file，如果图片id的数字部分和file的id的数字部分相同，那么文件与图片是对应的，删除图片的同时删除对应的file*/
- 
-        fileArr.each(function () {
- 
-            /*提取file的id的数字部分*/
-            var fileId=$(this).attr('id');
-            var fileVal = fileId.replace(/[^0-9]/ig,"");
-            if(fileVal==picVal){
-                $(this).remove();
-                $(obj).parent().parent().remove();
-            }
-        });
- 
-        /*图片数量大于1，显示提交按钮,删除一次判断一次*/
- 
-        if($('.pic_wrap').length<=0){
- 
-            $('input[type=submit]').css('display','none');
- 
-        }else {
-            $('input[type=submit]').css('display','block');
-        }
-    }
- 
- 
-</script>
+							</ul>
+						</div>
+					</div>
+
+					<div class="tab_css" id="tab2_content">
+						<div class="t2_head">
+							<div id="t2_head1">
+								<span>图片</span>
+							</div>
+							<div id="t2_head2">
+								<span>名称</span>
+							</div>
+							<div id="t2_head3">
+								<span>赔率</span>
+							</div>
+						</div>
+						<div class="t2_body">
+						<form name="conf" enctype="multipart/form-data" method="post" action="{:U('luck/index')}">
+							<ul>
+							<volist name="conf" id="v">
+								<li>
+									<div id="t2_body1">
+										<input type="file" name="{$v.id}" class="filesss">
+										<if condition="$v['img'] neq '' "> <img id="" name="" src={$v.img}>
+										<else/><img name="" src="__NEW__/img/gift.png" />
+										</if>
+									</div>
+									<div id="t2_body2">
+										<input type="text" name="conf[{$v.id}][goods_name]" id="t2_b_name" value="{$v.goods_name}" />
+									</div>
+									<div id="t2_body3">
+										<div class="search_box2">
+											<input type="text" name="conf[{$v.id}][odds]" id="" value="{$v.odds}" />
+											<i class="icon">%</i>
+										</div>
+									</div>
+								</li>
+								</volist>
+							</ul>
+
+							<button class="addStoreBtn">保存</button>
+	
+						</form>
+						</div>
+					</div>
+
+					<div class="tab_css" id="tab3_content">
+						<div class="t3_head">
+							<div id="t3_head1">
+								<span>姓名</span>
+							</div>
+							<div id="t3_head2">
+								<span>联系方式</span>
+							</div>
+							<div id="t3_head3">
+								<span>联系地址</span>
+							</div>
+						</div>
+						<div class="t3_body">
+							<ul>
+							<volist name="win" id="w">
+								<li>
+								<a href="{:U('luck/detail',array('id'=>$w.id))}">
+									<div class="t3_b1">
+										<span class="tb1">{$w.name}</span>
+									</div>
+									<div class="t3_b2">
+										<span class="tb2">{$w.phone}</span>
+									</div>
+									<div class="t3_b3">
+										<span class="tb3">{$w.address}</span>
+									</div>
+								</a>
+								</li>
+							</volist>
+
+							</ul>
+						</div>
+					</div>
+
+
+					<!--弹出框t1-->
+					<div class="box_t1">
+						<div id="dialogBg_t1"></div>
+						<div id="dialog_t1" class="animated_t1">
+							<div class="dialogTop_t1">
+								<a href="javascript:;" class="claseDialogBtn_t1"><span>关闭</span></a>
+							</div>
+							<form action="" method="post" id="editForm_t1">
+								<div class="editInfos_t1">
+									<img id="img1">
+								</div>
+							</form>
+						</div>
+					</div>
+
+				</div>
+		</section>
+
+
+
+
+
+	</body>
+	<script src="__NEW__/js/rem.js"></script>
+	<script src="__NEW__/js/jquery-1.10.2.js"></script>
+
+	<script>
+		//<!--头部-->
+		$('.tog').click(function() {
+			$('.slide_bar').slideToggle();
+		})
+	</script>
+	<script type="text/javascript">
+		var myclick = function(v) {
+			var llis = document.getElementsByTagName("li");
+			// 			for (var i = 0; i < llis.length; i++) {
+			// 				var lli = llis[i];
+			// 				if (lli == document.getElementById("tab" + v)) {
+			// 					lli.style.backgroundColor = "#FFFFFF";
+			// 				} else {
+			// 					lli.style.backgroundColor = "#FFFFFF";
+			// 				}
+			// 			}
+
+			var divs = document.getElementsByClassName("tab_css");
+			for (var i = 0; i < divs.length; i++) {
+
+				var divv = divs[i];
+
+				if (divv == document.getElementById("tab" + v + "_content")) {
+					divv.style.display = "block";
+				} else {
+					divv.style.display = "none";
+				}
+			}
+
+		}
+		$(".filesss").change(function(e) {
+			e.preventDefault();
+			var filePath = $(this).val(),
+				fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase(),
+				src = window.URL.createObjectURL(this.files[0]);
+			$(this).siblings("img").attr("src", src)
+		})
+		
+		function jihuo(obj){
+			$.ajax({
+				type : 'post',
+				url : '{:U("luck/jihuo")}',
+				data: {id:$(obj).attr('data-id')},
+				dataType: 'json',
+				success: function(res){
+					window.location.reload();
+				}
+			})
+		}
+
+		function yulan(obj){
+			$.ajax({
+				type : 'post',
+				url : '{:U("luck/yulan")}',
+				data: {id:$(obj).attr('data-id')},
+				dataType: 'json',
+				success: function(res){
+					
+				}
+			})
+		}
+
+	</script>
+	<!--弹出框-->
+	<script type="text/javascript">
+		var w, h, className;
+
+		function getSrceenWH() {
+			w = $(window).width();
+			h = $(window).height();
+			$('#dialogBg').width(w).height(h);
+			$('#dialogBg_t1').width(w).height(h);
+		}
+
+		window.onresize = function() {
+			getSrceenWH();
+		}
+		$(window).resize();
+
+		$(function() {
+			getSrceenWH();
+
+			//关闭弹窗
+			$('.claseDialogBtn').click(function() {
+				$('#dialogBg').fadeOut(300, function() {
+					$('#dialog').addClass('bounceOutUp').fadeOut();
+				});
+			});
+			//显示弹框
+			$('.t1_tck1').click(function() {
+				className = $(this).attr('class');
+				$('#dialogBg_t1').fadeIn(300);
+				$('#dialog_t1').removeAttr('class').addClass('animated_t1 ' + className + '').fadeIn();
+				var id = $(this).attr('id');
+				$('#img1').attr('src','/phone/luck/yulan?id='+id);
+			});
+
+			//关闭弹窗
+			$('.claseDialogBtn_t1').click(function() {
+				$('#dialogBg_t1').fadeOut(300, function() {
+					$('#dialog_t1 ').addClass('bounceOutUp').fadeOut();
+				});
+			});
+		});
+	</script>
 </html>
