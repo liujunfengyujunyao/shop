@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/logina\login.html";i:1542192554;s:37:"./template/phone/new/public\tion.html";i:1542192554;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/logina\login.html";i:1543569466;s:37:"./template/phone/new/public\tion.html";i:1537152658;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -46,7 +46,7 @@
 	</form>
 
 	<section id="foot">
-		登陆即代表阅读并同意
+		登陆即代表阅读并同意13070132093
 		<a href="#">服务条款</a>
 	</section>
 </body>

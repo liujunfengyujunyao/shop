@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1543032445;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1543637181;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -222,7 +222,7 @@
       <div class="tDiv2">
         <div class="fbutton"> <a href="<?php echo U('Machine/addEditMachine',array('act'=>'_ADD_')); ?>">
           <div class="add" title="新增贩卖机分类">
-            <span><i class="fa fa-plus"></i>新增贩卖机</span>
+            <span><i class="fa fa-plus"></i>注册设备</span>
           </div>
         </a> </div>
       </div>

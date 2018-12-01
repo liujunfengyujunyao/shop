@@ -306,6 +306,7 @@ class Machine extends Base{
 		        ->where(['a.machine_id'=>$machine_id])
 		        ->field('a.address,a.machine_name,b.group_name,a.group_id,a.machine_id')
 		        ->find();
+		
 		    //$info['group_name'] = $info['group_name']?$info['group_name']:'无群组';
 		    $store = Db::name('machine_group')->where(['user_id'=>$admin_id])->field('group_name,id')->select();
             $this->assign('store',$store);
