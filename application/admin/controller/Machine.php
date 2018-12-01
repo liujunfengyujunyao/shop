@@ -334,7 +334,10 @@ class Machine extends Base
 				'machine_name' => $data['machine_name'],
 				'sn' => $data['sn'],
 				'access_token' => $data['access_token'],
-				'uuid' => $data['uuiid'],
+				'type_id' = $data['type'],
+		        'version_id' = $data['version'];
+		        'px' = $data['bili'];
+				// 'uuid' => $data['uuiid'],
 				// 'type_id' => $data['type_id'],
 				// 'machine_admin' => $data['machine_admin'],
 				// 'partner_id' => $data['partner_id'],
