@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1543397095;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:38:"./template/phone/new/machine\edit.html";i:1543635920;}*/ ?>
 
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
@@ -16,6 +16,7 @@
 		<!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=zDOttlXWVz6hDfeLsTHWi2Eo"></script> -->
 		
 		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=uCfRKGGyT37VtYzkMx5qKY8Wgzlxsoaj"></script>
+		<!-- <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=uCfRKGGyT37VtYzkMx5qKY8Wgzlxsoaj&s=1"></script> -->
 	</head>
 	<body>
 		<header id="head">
@@ -69,7 +70,7 @@
 
 						<div class="zd">
 							<span id="" style="color:#333333;font-size: 0.2rem;">当前位置:</span>
-							<input type="text" name="address" style="width: 1.8rem; border: 0px;outline:none;cursor: pointer;" id="txtposition" value="正在定位..." readonly="readonly"/><br />
+							<input type="text" name="address" style="width: 1.8rem; border: 0px;outline:none;cursor: pointer;" id="txtposition" value="<?php echo $info['address']; ?>" readonly="readonly"/><br />
 							<input type="checkbox" class="now" value="1" name="is_group" />同步群组定价
 							<input type="text" name="detail_address" style="width: 1.8rem; border: 0px;outline:none;cursor: pointer;margin-top: 0.1rem;margin-left: 5%;" id="txtposition" value="" placeholder="补全位置" /><br />
 							

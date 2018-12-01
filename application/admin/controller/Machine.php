@@ -170,6 +170,7 @@ class Machine extends Base
 
 		if(IS_GET) {
 			$act = I('get.act');
+
 			if ($act == '_EDIT_') {
 				$id = I('get.id');
 				
@@ -221,6 +222,7 @@ class Machine extends Base
 
 		$act = I('post.act');
 		$data = I('post.');
+
 		if ($act == '_ADD_') {
 			// $user = array(
 			// 	'nickname' => $data['nickname'],
@@ -242,34 +244,63 @@ class Machine extends Base
 			// 	$user_id = DB::name('users')->add($user);
 				
 			// }
+			$add['sn'] = $data['sn'];
+	        $error = DB::name('machine')->where(['sn'=>$data['sn']])->find();
+	        if ($error) {
+	          $this->error('重复添加');
+	        }elseif($data['sn']==""){
+	          $this->error("sn为空");
+	        }elseif($data['access_token'] == ""){
+	          $this->error("缺少参数");
+	        }
+	        $add['access_token'] = $data['access_token'];//设备token
+	        $add['version_id'] = $data['version'];
+	        $add['px'] = $data['bili'];
+	        $add['type_id'] = $data['type'];
+	        if($data['type'] == 1){
+	            $add['type_name'] = "口红机";
+	          }elseif($data['type'] == 2){
+	            $add['type_name'] = "福袋机";
+	          }elseif($data['type'] == 3){
+	            $add['type_name'] = "售币机";
+	          }elseif($data['type'] == 4){
+	            $add['type_name'] = "彩票机";
+	          }else{
+	            $add['type_name'] = "娃娃机";
+	          }
+	          $time = time();
+	          $add['machine_name'] = $add['type_name'];
+	          $add['uuid'] = md5($time . $add);
+	          $add['addtime'] = time();
+			$r = DB::name('machine')->add($add);
 
-			$sql = DB::name('machine')->where(['sn'=>$data['sn']])->find();
-			if ($sql) {
-				$this->error('SN已存在 请勿重复添加');
+			if($r){
+				$this->success('操作成功',U('Admin/Machine/index'));
+			}else{
+				$this->error('连接服务器失败');
 			}
+			// $info = array(
+			// 	'machine_name' => $data['machine_name'],
+			// 	'type_id' => intval($data['type_id']),
+			// 	'province_id' => $data['province'],
+			// 	'city_id' => $data['city'],
+			// 	'district_id' => $data['district'],
+			// 	// 'machine_admin' => $data['machine_admin'],//机台管理员
+			// 	'partner_id' => $data['partner_id'],//机台配货人员
+			// 	'addtime' => time(),
+			// 	'sn' => $data['sn'],
+			// 	);//贩卖机信息
 
-			$info = array(
-				'machine_name' => $data['machine_name'],
-				'type_id' => intval($data['type_id']),
-				'province_id' => $data['province'],
-				'city_id' => $data['city'],
-				'district_id' => $data['district'],
-				// 'machine_admin' => $data['machine_admin'],//机台管理员
-				'partner_id' => $data['partner_id'],//机台配货人员
-				'addtime' => time(),
-				'sn' => $data['sn'],
-				);//贩卖机信息
-
-			if($info['type_id'] == 0 || is_null($info['type_id'])){
-				$this->error('未选择种类');
-			}
-			//根据类型将初始配置写入贩卖机库存
-			$machine_conf = M('machine_type_conf')->field('goods_id,goods_num')->where('type_id',$info['type_id'])->select();
-			// if (empty($machine_conf)) {
-			
-			// 	$this->error('尚未配置此类型');
+			// if($info['type_id'] == 0 || is_null($info['type_id'])){
+			// 	$this->error('未选择种类');
 			// }
-			$r = DB::name('machine')->add($info);
+			// //根据类型将初始配置写入贩卖机库存
+			// $machine_conf = M('machine_type_conf')->field('goods_id,goods_num')->where('type_id',$info['type_id'])->select();
+			// // if (empty($machine_conf)) {
+			
+			// // 	$this->error('尚未配置此类型');
+			// // }
+			// $r = DB::name('machine')->add($info);
 			// $sql = "INSERT IGNORE INTO __PREFIX__machine_stock (`machine_id`,`goods_id`,`stock_num`) VALUES ";
 			// //将记录存入库存表中
 			// foreach ($machine_conf as $conf) {
@@ -287,11 +318,11 @@ class Machine extends Base
 			// 	$this->error("链接服务器失败");
 			// }
 			// 
-			if ($r) {
-				$this->success("操作成功", U('Admin/Machine/index'));
-			}else{
-				$this->error("链接服务器失败");
-			}
+			// if ($r) {
+			// 	$this->success("操作成功", U('Admin/Machine/index'));
+			// }else{
+			// 	$this->error("链接服务器失败");
+			// }
 		}
 
 
@@ -303,7 +334,10 @@ class Machine extends Base
 				'machine_name' => $data['machine_name'],
 				'sn' => $data['sn'],
 				'access_token' => $data['access_token'],
-				'uuid' => $data['uuiid'],
+				'type_id' = $data['type'],
+		        'version_id' = $data['version'];
+		        'px' = $data['bili'];
+				// 'uuid' => $data['uuiid'],
 				// 'type_id' => $data['type_id'],
 				// 'machine_admin' => $data['machine_admin'],
 				// 'partner_id' => $data['partner_id'],

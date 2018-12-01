@@ -407,5 +407,29 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 		}
 	}
 
-	public function 
+	public function together(){
+		// $urlObj["appid"] = $this->appid;
+		$urlObj["appid"] = "zichuandeappid";
+        $urlObj["redirect_uri"] = "$redirectUrl";
+        $urlObj["response_type"] = "code";
+        $urlObj["scope"] = "snsapi_base";
+        $urlObj["state"] = "STATE"."#wechat_redirect";
+        $bizString = $this->ToUrlParams($urlObj);
+        $together = "https://open.weixin.qq.com/connect/oauth2/authorize?".$bizString;
+        dump($together);die;
+	}
+
+	public function ToUrlParams($urlObj){
+		$buff = "";
+		foreach ($urlObj as $key => $value) {
+			if ($key != "sign") {
+				$buff .= $key . "=" . $value . "&";//
+
+			}
+		
+		}
+		$buff = trim($buff,"&");
+		// $buff = trim($buff,-1);
+		return $buff;
+	}
 }

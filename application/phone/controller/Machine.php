@@ -306,6 +306,7 @@ class Machine extends Base{
 		        ->where(['a.machine_id'=>$machine_id])
 		        ->field('a.address,a.machine_name,b.group_name,a.group_id,a.machine_id')
 		        ->find();
+
 		    //$info['group_name'] = $info['group_name']?$info['group_name']:'无群组';
 		    $store = Db::name('machine_group')->where(['user_id'=>$admin_id])->field('group_name,id')->select();
             $this->assign('store',$store);
@@ -850,7 +851,7 @@ class Machine extends Base{
 			$end = $start+60*60*24-1;
 			//销售日志
         	$machine_id = I('get.machine_id');
-        	$machine_id = 1;
+        	// $machine_id = 1;
         	//总营收
 			$all_count = DB::name('sell_log')->where("machine_id = $machine_id && sell_time between $start and $end")->getField("sum(amount) as all_count");
 			$data['all_count'] = sprintf("%.2f", $all_count);
@@ -933,7 +934,7 @@ class Machine extends Base{
 	            $six,$five,$four,$three,$two,$one
 	            );
 	        $charts = json_encode($rate,true);
-
+	       
 			//前七天的日期
 			$checkdate = $_SESSION['think']['checkdate'];
 			$this->assign('machine_id',$machine_id);
@@ -948,6 +949,7 @@ class Machine extends Base{
 	public function statistics_list(){
 
 			$machine_id = I('get.machine_id');
+		
 			$statistics = DB::name('machine_day_statistics')->where("machine_id = $machine_id")->order('statistics_date')->select();
 			foreach ($statistics as $key => $value) {
 				// $value['statistics_date'] = date('Y-m-d',$value['statistics_date']);
@@ -955,6 +957,7 @@ class Machine extends Base{
 				$data[$key]['statistics_date'] = $value['statistics_date']; 
 				
 			}
+			
 			$this->assign('machine_id',$machine_id);
 			$this->assign('data',$data);
 			return $this->fetch();
