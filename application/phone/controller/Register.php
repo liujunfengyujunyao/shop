@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Phone\controller;
+namespace app\phone\controller;
 use think\Controller;
 use think\Db;
 use think\Session;
@@ -17,6 +17,7 @@ class Register extends Controller{
     	if(IS_POST){
     		 $number = input('phone');//input助手函数	获取输入数据 支持默认值和过滤
              $phone = M('admin')->where(['phone'=>$number])->find();
+             // halt(2113132);
              if(count($phone)>0){
                return json(['info' => '已注册', 'error_code' => '1']);//返回已注册手机
              }  

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/logina\login.html";i:1543570504;s:37:"./template/phone/new/public\tion.html";i:1540012757;}*/ ?>
-=======
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/logina\login.html";i:1543569466;s:37:"./template/phone/new/public\tion.html";i:1537152658;}*/ ?>
->>>>>>> cd1e049f93c62ce178b73c205c23d03c5c8b733d
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/logina\login.html";i:1543648685;s:37:"./template/phone/new/public\tion.html";i:1537152658;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>

@@ -1,5 +1,5 @@
 <?php
-namespace app\Sever\controller;
+namespace app\sever\controller;
 use app\common\logic\JssdkLogic;
 use think\Controller;
 use think\Db;
@@ -9,17 +9,16 @@ header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 class Index extends Controller {
 	public function index(){//被动请求的接口
-		$params = $GLOBALS['HTTP_RAW_POST_DATA'];
-		// return "sssss";
+		// $params = $GLOBALS['HTTP_RAW_POST_DATA'];
+		$params = file_get_contents('php://input');
+		// $params = I('post.');
+		
 		//写入日志
 		$newLog ='log_time:'.date('Y-m-d H:i:s').$params;
 		file_put_contents('./sever_log.txt', $newLog.PHP_EOL, FILE_APPEND);
-		$params = json_decode($params,true);
-
 		
-	
 
-
+		$params = json_decode($params,true);
 		if($params['msgtype'] == 'receive_message'){//链接服务器转发的设备请求
 			$type = $params['msg']['msgtype'] ? $params['msg']['msgtype'] : "";
 
@@ -83,6 +82,12 @@ class Index extends Controller {
 		   		break;
 		   	case 'machine_mode'://修改设备模式
 		   		echo $this->machine_mode($parmas);
+		   		break;
+		   	case 'recharge':
+		   		echo $this->recharge($params);//设备端补货
+		   		break;
+		   	case 'output_error':
+		   		echo $this->output_error($params);//出货错误
 		   		break;
 			default:
 				$data = array(
@@ -514,6 +519,28 @@ class Index extends Controller {
 		}
 	}
 
+
+	//设备端补货
+	public function recharge($params){
+		$msg = $params['msg'];
+		if ($msg['isrealtime'] == 1) {//实时消息 
+
+			foreach ($msg['rooms'] as $key => $value) {
+				DB::name('client_machine_conf')->where(['location'=>$value['roomid']])->save(['goods_num'=>$value['stocks'],'edittime'=>$msg['localtime']]);
+			}	
+		}
+		
+	}
+
+	//出货错误
+	public function output_error($params){
+		$msg = $params['msg'];
+		$error = array(
+			'businesstype' => $msg['businesstype'],
+			'logid' => $msg['logid'],
+			
+			);
+	}
 
 
 

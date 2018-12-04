@@ -4,7 +4,7 @@
 机台扫码注册激活控制器
 */
 
-namespace app\Phone\controller;
+namespace app\phone\controller;
 use think\Controller;
 use app\common\logic\app\Jssdk;
 use think\Page;

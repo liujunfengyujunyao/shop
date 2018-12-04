@@ -4,7 +4,7 @@
 构造方法.权限集成
 */
 
-namespace app\Phone\controller;
+namespace app\phone\controller;
 use think\Controller;
 use think\Page;
 use think\Request;
@@ -13,8 +13,6 @@ use app\common\logic\CartLogic;
 use think\Session;
 
 use app\common\logic\UsersLogic;
-
-
 class Base extends controller{
 	 // public $weixin_id = 0;
 	//构造方法  每次登陆都会自行进行判断

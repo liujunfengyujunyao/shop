@@ -272,6 +272,7 @@ class Machine extends Base
 	          $add['machine_name'] = $add['type_name'];
 	          $add['uuid'] = md5($time . $add);
 	          $add['addtime'] = time();
+
 			$r = DB::name('machine')->add($add);
 
 			if($r){
@@ -334,10 +335,10 @@ class Machine extends Base
 				'machine_name' => $data['machine_name'],
 				'sn' => $data['sn'],
 				'access_token' => $data['access_token'],
-				'type_id' = $data['type'],
-		        'version_id' = $data['version'];
-		        'px' = $data['bili'];
-				// 'uuid' => $data['uuiid'],
+				'type_id' => $data['type'],
+		        'version_id' => $data['version'],
+		        'px' => $data['bili'],
+				// 'uuid' => $data['uiid'],
 				// 'type_id' => $data['type_id'],
 				// 'machine_admin' => $data['machine_admin'],
 				// 'partner_id' => $data['partner_id'],

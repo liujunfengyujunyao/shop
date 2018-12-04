@@ -5,16 +5,17 @@ use think\Db;
 class Msg extends Base{
 		public function index(){
 			$client_id = $_SESSION['think']['client_id'];
+
 			$machineid = DB::name('machine')->where(['client_id'=>$client_id])->getField('machine_id',true);
 			$machineids = implode(',',$machineid);
+			$msg = DB::name('error')->where("machine_id in ($machineids)")->select();
 			$msg = DB::name('error')
 				->alias('t1')
 				->field('t1.*,t2.machine_name')
 				->join("__MACHINE__ t2","t2.machine_id = t1.machine_id",'LEFT')
 				->where("t1.machine_id in ($machineids)")
-				->order('t1.time DESC')
+				// ->order('t1.time DESC')
 				->select();
-				// halt($msg);
 			foreach ($msg as $key => &$value) {
 				if ($value['errid'] == 1) {
 					$value['errtype'] = "设备";
@@ -22,7 +23,7 @@ class Msg extends Base{
 					$value['errtype'] = "库存";
 				}
 			}
-			// halt($msg);
+
 			$this->assign('msg',$msg);
 			DB::name('error')->where("machine_id in ($machineids) and status = 0")->save(['status'=>1]);
 			return $this->fetch();
