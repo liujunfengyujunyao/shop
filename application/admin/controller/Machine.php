@@ -1218,15 +1218,28 @@ imagepng($image);
 
     //批量生成二维码 根据传入的生成数量和所生成设备
     public function piliang(){
-    	$number = 100;//生成二维码的数量
+//        $user_id = $user_id;//老板的ID
+//        $auth = DB::name('machine')->where(['client_id'=>$user_id,'type_id'=>2])->find();
+//        if (!$auth){
+//            $result = "luck_machine_null";//名下没有福袋机
+//            return json($result);
+//        }
+    	$number = 1000;//生成二维码的数量
     	$machine_id = 2;//生成二维码的机器  **必须已经被绑定client_id**
+
+
     	$client_id = DB::name('machine')->where(['machine_id'=>$machine_id])->getField("client_id");
+
     	// halt($client_id);
     	if(is_null($client_id)){
     		$this->error('此设备尚未被绑定');
     	}
     	$res = DB::name('client_luck_key')->where(['client_id'=>$client_id])->find();
     	$phone = DB::name('admin')->where(['admin_id'=>$client_id])->getField('phone');
+
+    	/**/
+
+    	/**/
     	if ($res) {
     		$start = DB::name('client_luck_key')->where(['client_id'=>$client_id])->max('key_id');
     		$start = $start+1;
@@ -1236,6 +1249,7 @@ imagepng($image);
     	    	
 
     	for ($i=$start; $i <$number+$start ; $i++) { 
+//    		$this->pin($phone,$i);//生成的编号和所属人
     		$this->pin($phone,$i);//生成的编号和所属人
     	}
     	echo "完成";

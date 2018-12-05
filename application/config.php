@@ -157,7 +157,7 @@ return [
     // 错误显示信息,非调试模式有效
     'error_message'          => '页面错误！请稍后再试～',
     // 显示错误信息
-    'show_error_msg'         => false,
+    'show_error_msg'         => true,
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
 
@@ -429,4 +429,13 @@ return [
     'private_key_path'   => '', //移动端生成的私有key文件存放于服务器的 绝对路径 如果为MD5加密方式；此项可为空 (移动支付专用)
     'public_key_path'    => '', //移动端生成的公共key文件存放于服务器的 绝对路径 如果为MD5加密方式；此项可为空 (移动支付专用)
     ),
+
+
+        'EMAIL_FROM_NAME'        => '金兄弟',   // 发件人
+        'EMAIL_SMTP'             => 'smtp.163.com',   // smtp
+        'EMAIL_USERNAME'         => 'yuanyuanii123',   // 账号
+        'EMAIL_PASSWORD'         => 'yuanyuan222',   // 密码  注意: 163和QQ邮箱是授权码；不是登录的密码
+        'EMAIL_SMTP_SECURE'      => '',   // 链接方式 如果使用QQ邮箱；需要把此项改为  ssl
+        'EMAIL_PORT'             => '25', // 端口 如果使用QQ邮箱；需要把此项改为  465
+
 ];

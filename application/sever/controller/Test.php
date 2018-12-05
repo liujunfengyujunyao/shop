@@ -432,4 +432,25 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 		// $buff = trim($buff,-1);
 		return $buff;
 	}
+
+	public function server(){
+		$data = $_SERVER['HTTP_HOST'];
+		$self = $_SERVER['PHP_SELF'];
+		$params = "";
+		$all = "http://".$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		$a = urldecode($all);
+		$b = urlencode($all);
+		$c = urldecode($b);
+		dump($a);
+		dump($b);
+		halt($c);
+	}
+
+	public function baocuo(){
+	    $add = array(
+            "machine_name" => '111',
+
+        );
+	    DB::name('error')->add($add);
+    }
 }

@@ -186,4 +186,36 @@ class Luck extends Base
         public function confList(){
             
         }
+
+    /*拉起公众号支付页面*/
+        public function weixinpay()
+        {
+            vendor('weixinpay.Jsapi');
+            $time = time();
+            $client_id = $_SESSION['think']['client_id'];
+            $amount = 10;
+            $mchid = '1457705302';          //微信支付商户号 PartnerID 通过微信支付商户资料审核后邮件发送
+            $appid = 'wx9e8c63f03cbd36aa';  //微信支付申请对应的公众号的APPID
+            $appKey = 'aa30b7860f3247a789fff62b08681b7e';   //微信支付申请对应的公众号的APP Key
+            $apiKey = 'ede449b5c872ada3365d8f91563dd8b6';
+            $wxPay = new \WxpayService($mchid,$appid,$appKey,$apiKey);
+
+            $openId = $wxPay->GetOpenid();  halt($openId);
+            if (!$openId) exit('获取openid失败');
+            $outTradeNo = strval(rand(100000,999999).$time);
+            $payAmount = $amount/100;
+            $orderName = 'goldenbrother';
+            $notifyUrl = 'http://www.12202.com.cn/tp/index.php/Home/Index/notify';
+            $payTime = $time;
+            $order = array(
+                'timestamp' => $time,
+                'client_id' => $client_id,
+                'out_trade_no' => $outTradeNo,
+            );
+            $res = DB::name('luckpay_log')->add($order);
+            $jsApiParameters = $wxPay->createJsBizPackage($openId,$payAmount,$outTradeNo,$orderName,$notifyUrl,$payTime);
+            $jsApiParameters = json_encode($jsApiParameters);
+            $this->assign('data',$jsApiParameters);
+            $this->display();
+        }
 }

@@ -924,3 +924,108 @@ log_time:2018-12-03 16:15:32{"msgtype":"receive_message","msg":{"msgtype":"room_
 0,0,0,0,0,0,0,0,0,13,14,15,16,17,18,0,0,0,19,20,21,22,23,24,0,0,0,25,26,27,28,29,30,0,0,0,31,32,33,34,35,36,0,0,0,37,38,39,40,41,42,0,0,0,0,0,0,0
 ,0,0,0]},"machinesn":11}
 log_time:2018-12-03 17:15:10{"msgtype":"receive_message","msg":{"msgtype":"room_config","roomlist":[0,1,2,3,4,5,0,0,0,0,6,7,8,9,10,0,0,0,0,11,12,13,14,15,0,0,0,0,16,17,18,19,20,0,0,0,0,21,22,23,24,25,0,0,0,0,26,27,28,29,30,0,0,0,0,31,32,33,34,35,0,0,0,0,36,37,38,39,40,0,0,0,0,41,42,43,44,45,0,0,0,0]},"machinesn":12345678}
+log_time:2018-12-04 13:44:35{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
+log_time:2018-12-04 13:45:05{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
+log_time:2018-12-04 13:51:18{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
+log_time:2018-12-04 13:57:58{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
+log_time:2018-12-04 13:58:34{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
+log_time:2018-12-04 13:58:57{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
+log_time:2018-12-04 13:59:53{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
+log_time:2018-12-04 14:00:24{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
+log_time:2018-12-04 14:01:04{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
+log_time:2018-12-04 14:01:22{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
+log_time:2018-12-04 17:09:58{"msgtype":"receive_message","msg":{"msgtype":"login","sn":1234567,"timestamp":1543914532,"access_token":null,"poslong":"39.91488908","poslat":"116.40387397","version":"","signature":"0C263AD7B93976786F86360DCA68320BDD594D24"},"machinesn":12345678}
+log_time:2018-12-04 19:25:12{"msgtype":"receive_message","msg":{"msgtype":"rooms_status","rooms":[{"roomid":"1","status":1,"stocks":5},{"roomid":"2","status":1,"stocks":5},{"roomid":"3","status":1,"stocks":5},{"roomid":"4","status":1,"stocks":5},{"roomid":"5","status":1,"stocks":5},{"roomid":"6","status":1,"stocks":5},{"roomid":"7","status":1,"stocks":5},{"roomid":"8","status":1,"stocks":5},{"roomid":"9","status":1,"stocks":5},{"roomid":"10","status":1,"stocks":5},{"roomid":"11","status":1,"stocks":5},{"roomid":"12","status":1,"stocks":5},{"roomid":"13","status":1,"stocks":5},{"roomid":"14","status":1,"stocks":5},{"roomid":"15","status":1,"stocks":5},{"roomid":"16","status":1,"stocks":0},{"roomid":"17","status":1,"stocks":0},{"roomid":"18","status":1,"stocks":0},{"roomid":"19","status":1,"stocks":0},{"roomid":"20","status":1,"stocks":0},{"roomid":"21","status":1,"stocks":0},{"roomid":"22","status":1,"stocks":0},{"roomid":"23","status":1,"stocks":0},{"roomid":"24","status":1,"stocks":0},{"roomid":"25","status":1,"stocks":0},{"roomid":"26","status":1,"stocks":0},{"roomid":"27","status":1,"stocks":0},{"roomid":"28","status":1,"stocks":0},{"roomid":"29","status":1,"stocks":0},{"roomid":"30","status":1,"stocks":0}]},"machinesn":123456789}
+log_time:2018-12-04 19:26:29
+log_time:2018-12-04 19:27:56{"msgtype":"receive_message","msg":{"msgtype":"rooms_status","rooms":[{"roomid":"1","status":1,"stocks":5},{"roomid":"2","status":1,"stocks":5},{"roomid":"3","status":1,"stocks":5},{"roomid":"4","status":1,"stocks":5},{"roomid":"5","status":1,"stocks":5},{"roomid":"6","status":1,"stocks":5},{"roomid":"7","status":1,"stocks":5},{"roomid":"8","status":1,"stocks":5},{"roomid":"9","status":1,"stocks":5},{"roomid":"10","status":1,"stocks":5},{"roomid":"11","status":1,"stocks":5},{"roomid":"12","status":1,"stocks":5},{"roomid":"13","status":1,"stocks":5},{"roomid":"14","status":1,"stocks":5},{"roomid":"15","status":1,"stocks":5},{"roomid":"16","status":1,"stocks":0},{"roomid":"17","status":1,"stocks":0},{"roomid":"18","status":1,"stocks":0},{"roomid":"19","status":1,"stocks":0},{"roomid":"20","status":1,"stocks":0},{"roomid":"21","status":1,"stocks":0},{"roomid":"22","status":1,"stocks":0},{"roomid":"23","status":1,"stocks":0},{"roomid":"24","status":1,"stocks":0},{"roomid":"25","status":1,"stocks":0},{"roomid":"26","status":1,"stocks":0},{"roomid":"27","status":1,"stocks":0},{"roomid":"28","status":1,"stocks":0},{"roomid":"29","status":1,"stocks":0},{"roomid":"30","status":1,"stocks":0}]},"machinesn":12345678}
+log_time:2018-12-04 19:48:06{"msgtype":"receive_message","msg":{"msgtype":"price_strategy","userid":0,"localtime":1543923969,"isrealtime":0,"pric
+es":[{"roomid":"1","goodsprice":0.0},{"roomid":"2","goodsprice":0.0},{"roomid":"3","goodsprice":0.0},{"roomid":"4","goodsprice":0.0},{"roomid":"5
+","goodsprice":0.0},{"roomid":"6","goodsprice":0.0},{"roomid":"7","goodsprice":0.0},{"roomid":"8","goodsprice":0.0},{"roomid":"9","goodsprice":0.
+0},{"roomid":"10","goodsprice":0.0},{"roomid":"11","goodsprice":0.0},{"roomid":"12","goodsprice":0.0},{"roomid":"13","goodsprice":0.0},{"roomid":
+"14","goodsprice":0.0},{"roomid":"15","goodsprice":0.0},{"roomid":"16","goodsprice":0.0},{"roomid":"17","goodsprice":0.0},{"roomid":"18","goodspr
+ice":0.0},{"roomid":"19","goodsprice":0.0},{"roomid":"20","goodsprice":0.0},{"roomid":"21","goodsprice":0.0},{"roomid":"22","goodsprice":0.0},{"r
+oomid":"23","goodsprice":0.0},{"roomid":"24","goodsprice":0.0},{"roomid":"25","goodsprice":0.0},{"roomid":"26","goodsprice":0.0},{"roomid":"27","
+goodsprice":0.0},{"roomid":"28","goodsprice":0.0},{"roomid":"29","goodsprice":0.0},{"roomid":"30","goodsprice":0.0},{"roomid":"31","goodsprice":0
+.0},{"roomid":"32","goodsprice":0.0},{"roomid":"33","goodsprice":0.0},{"roomid":"34","goodsprice":0.0},{"roomid":"35","goodsprice":0.0}]},"machin
+esn":123456789}
+log_time:2018-12-04 19:52:23{"msgtype":"receive_message","msg":{"msgtype":"price_strategy","userid":0,"localtime":1543923969,"isrealtime":0,"pric
+es":[{"roomid":"1","goodsprice":0.0},{"roomid":"2","goodsprice":0.0},{"roomid":"3","goodsprice":0.0},{"roomid":"4","goodsprice":0.0},{"roomid":"5
+","goodsprice":0.0},{"roomid":"6","goodsprice":0.0},{"roomid":"7","goodsprice":0.0},{"roomid":"8","goodsprice":0.0},{"roomid":"9","goodsprice":0.
+0},{"roomid":"10","goodsprice":0.0},{"roomid":"11","goodsprice":0.0},{"roomid":"12","goodsprice":0.0},{"roomid":"13","goodsprice":0.0},{"roomid":
+"14","goodsprice":0.0},{"roomid":"15","goodsprice":0.0},{"roomid":"16","goodsprice":0.0},{"roomid":"17","goodsprice":0.0},{"roomid":"18","goodspr
+ice":0.0},{"roomid":"19","goodsprice":0.0},{"roomid":"20","goodsprice":0.0},{"roomid":"21","goodsprice":0.0},{"roomid":"22","goodsprice":0.0},{"r
+oomid":"23","goodsprice":0.0},{"roomid":"24","goodsprice":0.0},{"roomid":"25","goodsprice":0.0},{"roomid":"26","goodsprice":0.0},{"roomid":"27","
+goodsprice":0.0},{"roomid":"28","goodsprice":0.0},{"roomid":"29","goodsprice":0.0},{"roomid":"30","goodsprice":0.0},{"roomid":"31","goodsprice":0
+.0},{"roomid":"32","goodsprice":0.0},{"roomid":"33","goodsprice":0.0},{"roomid":"34","goodsprice":0.0},{"roomid":"35","goodsprice":0.0}]},"machin
+esn":123456789}
+log_time:2018-12-04 19:52:32{"msgtype":"receive_message","msg":{"msgtype":"price_strategy","userid":0,"localtime":1543923969,"isrealtime":0,"pric
+es":[{"roomid":"1","goodsprice":0.0},{"roomid":"2","goodsprice":0.0},{"roomid":"3","goodsprice":0.0},{"roomid":"4","goodsprice":0.0},{"roomid":"5
+","goodsprice":0.0},{"roomid":"6","goodsprice":0.0},{"roomid":"7","goodsprice":0.0},{"roomid":"8","goodsprice":0.0},{"roomid":"9","goodsprice":0.
+0},{"roomid":"10","goodsprice":0.0},{"roomid":"11","goodsprice":0.0},{"roomid":"12","goodsprice":0.0},{"roomid":"13","goodsprice":0.0},{"roomid":
+"14","goodsprice":0.0},{"roomid":"15","goodsprice":0.0},{"roomid":"16","goodsprice":0.0},{"roomid":"17","goodsprice":0.0},{"roomid":"18","goodspr
+ice":0.0},{"roomid":"19","goodsprice":0.0},{"roomid":"20","goodsprice":0.0},{"roomid":"21","goodsprice":0.0},{"roomid":"22","goodsprice":0.0},{"r
+oomid":"23","goodsprice":0.0},{"roomid":"24","goodsprice":0.0},{"roomid":"25","goodsprice":0.0},{"roomid":"26","goodsprice":0.0},{"roomid":"27","
+goodsprice":0.0},{"roomid":"28","goodsprice":0.0},{"roomid":"29","goodsprice":0.0},{"roomid":"30","goodsprice":0.0},{"roomid":"31","goodsprice":0
+.0},{"roomid":"32","goodsprice":0.0},{"roomid":"33","goodsprice":0.0},{"roomid":"34","goodsprice":0.0},{"roomid":"35","goodsprice":0.0}]},"machin
+esn":123456789}
+log_time:2018-12-04 20:02:17{"msgtype":"receive_message","msg":{"msgtype":"price_strategy","userid":0,"localtime":1543923969,"isrealtime":0,"pric
+es":[{"roomid":"1","goodsprice":0.0},{"roomid":"2","goodsprice":0.0},{"roomid":"3","goodsprice":0.0},{"roomid":"4","goodsprice":0.0},{"roomid":"5
+","goodsprice":0.0},{"roomid":"6","goodsprice":0.0},{"roomid":"7","goodsprice":0.0},{"roomid":"8","goodsprice":0.0},{"roomid":"9","goodsprice":0.
+0},{"roomid":"10","goodsprice":0.0},{"roomid":"11","goodsprice":0.0},{"roomid":"12","goodsprice":0.0},{"roomid":"13","goodsprice":0.0},{"roomid":
+"14","goodsprice":0.0},{"roomid":"15","goodsprice":0.0},{"roomid":"16","goodsprice":0.0},{"roomid":"17","goodsprice":0.0},{"roomid":"18","goodspr
+ice":0.0},{"roomid":"19","goodsprice":0.0},{"roomid":"20","goodsprice":0.0},{"roomid":"21","goodsprice":0.0},{"roomid":"22","goodsprice":0.0},{"r
+oomid":"23","goodsprice":0.0},{"roomid":"24","goodsprice":0.0},{"roomid":"25","goodsprice":0.0},{"roomid":"26","goodsprice":0.0},{"roomid":"27","
+goodsprice":0.0},{"roomid":"28","goodsprice":0.0},{"roomid":"29","goodsprice":0.0},{"roomid":"30","goodsprice":0.0},{"roomid":"31","goodsprice":0
+.0},{"roomid":"32","goodsprice":0.0},{"roomid":"33","goodsprice":0.0},{"roomid":"34","goodsprice":0.0},{"roomid":"35","goodsprice":0.0}]},"machin
+esn":123456789}
+log_time:2018-12-04 20:07:12{"msgtype":"receive_message","msg":{"msgtype":"price_strategy","userid":0,"localtime":1543923969,"isrealtime":0,"pric
+es":[{"roomid":"1","goodsprice":0.0},{"roomid":"2","goodsprice":0.0},{"roomid":"3","goodsprice":0.0},{"roomid":"4","goodsprice":0.0},{"roomid":"5
+","goodsprice":0.0},{"roomid":"6","goodsprice":0.0},{"roomid":"7","goodsprice":0.0},{"roomid":"8","goodsprice":0.0},{"roomid":"9","goodsprice":0.
+0},{"roomid":"10","goodsprice":0.0},{"roomid":"11","goodsprice":0.0},{"roomid":"12","goodsprice":0.0},{"roomid":"13","goodsprice":0.0},{"roomid":
+"14","goodsprice":0.0},{"roomid":"15","goodsprice":0.0},{"roomid":"16","goodsprice":0.0},{"roomid":"17","goodsprice":0.0},{"roomid":"18","goodspr
+ice":0.0},{"roomid":"19","goodsprice":0.0},{"roomid":"20","goodsprice":0.0},{"roomid":"21","goodsprice":0.0},{"roomid":"22","goodsprice":0.0},{"r
+oomid":"23","goodsprice":0.0},{"roomid":"24","goodsprice":0.0},{"roomid":"25","goodsprice":0.0},{"roomid":"26","goodsprice":0.0},{"roomid":"27","
+goodsprice":0.0},{"roomid":"28","goodsprice":0.0},{"roomid":"29","goodsprice":0.0},{"roomid":"30","goodsprice":0.0},{"roomid":"31","goodsprice":0
+.0},{"roomid":"32","goodsprice":0.0},{"roomid":"33","goodsprice":0.0},{"roomid":"34","goodsprice":0.0},{"roomid":"35","goodsprice":0.0}]},"machin
+esn":123456789}
+log_time:2018-12-04 20:12:19{"msgtype":"receive_message","msg":{"msgtype":"price_strategy","userid":0,"localtime":1543923969,"isrealtime":0,"pric
+es":[{"roomid":"1","goodsprice":0.0},{"roomid":"2","goodsprice":0.0},{"roomid":"3","goodsprice":0.0},{"roomid":"4","goodsprice":0.0},{"roomid":"5
+","goodsprice":0.0},{"roomid":"6","goodsprice":0.0},{"roomid":"7","goodsprice":0.0},{"roomid":"8","goodsprice":0.0},{"roomid":"9","goodsprice":0.
+0},{"roomid":"10","goodsprice":0.0},{"roomid":"11","goodsprice":0.0},{"roomid":"12","goodsprice":0.0},{"roomid":"13","goodsprice":0.0},{"roomid":
+"14","goodsprice":0.0},{"roomid":"15","goodsprice":0.0},{"roomid":"16","goodsprice":0.0},{"roomid":"17","goodsprice":0.0},{"roomid":"18","goodspr
+ice":0.0},{"roomid":"19","goodsprice":0.0},{"roomid":"20","goodsprice":0.0},{"roomid":"21","goodsprice":0.0},{"roomid":"22","goodsprice":0.0},{"r
+oomid":"23","goodsprice":0.0},{"roomid":"24","goodsprice":0.0},{"roomid":"25","goodsprice":0.0},{"roomid":"26","goodsprice":0.0},{"roomid":"27","
+goodsprice":0.0},{"roomid":"28","goodsprice":0.0},{"roomid":"29","goodsprice":0.0},{"roomid":"30","goodsprice":0.0},{"roomid":"31","goodsprice":0
+.0},{"roomid":"32","goodsprice":0.0},{"roomid":"33","goodsprice":0.0},{"roomid":"34","goodsprice":0.0},{"roomid":"35","goodsprice":0.0}]},"machin
+esn":123456789}
+log_time:2018-12-05 11:00:53{"msgtype":"output_error","businesstype":"2","logid":"12/5/2018","roomid":3,"failednumber":5}
+log_time:2018-12-05 11:01:39{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":1234567}
+log_time:2018-12-05 14:12:44{"msgtype":"receive_message","msg":{"msgtype":"login","sn":1234567,"timestamp":1543988778,"access_token":null,"poslong":"39.91488908","poslat":"116.40387397","version":"","signature":"EF4921732045F423872298B6CBCE188D4B4FCBB0"},"machinesn":1234567}
+log_time:2018-12-05 14:53:08{"msgtype":"receive_message","msg":{"msgtype":"price_strategy","userid":0,"localtime":1543988778,"isrealtime":0,"prices":[{"roomid":"1","goodsprice":30},{"roomid":"2","goodsprice":30},{"roomid":"3","goodsprice":30},{"roomid":"4","goodsprice":30},{"roomid":"5","goodsprice":30},{"roomid":"6","goodsprice":30},{"roomid":"7","goodsprice":30},{"roomid":"8","goodsprice":30},{"roomid":"9","goodsprice":30},{"roomid":"10","goodsprice":30},{"roomid":"11","goodsprice":30},{"roomid":"12","goodsprice":30},{"roomid":"13","goodsprice":30},{"roomid":"14","goodsprice":30},{"roomid":"15","goodsprice":30},{"roomid":"16","goodsprice":30},{"roomid":"17","goodsprice":30},{"roomid":"18","goodsprice":30},{"roomid":"19","goodsprice":30},{"roomid":"20","goodsprice":30},{"roomid":"21","goodsprice":30},{"roomid":"22","goodsprice":30},{"roomid":"23","goodsprice":30},{"roomid":"24","goodsprice":30},{"roomid":"25","goodsprice":30},{"roomid":"26","goodsprice":30},{"roomid":"27","goodsprice":30},{"roomid":"28","goodsprice":30},{"roomid":"29","goodsprice":30},{"roomid":"30","goodsprice":30},{"roomid":"31","goodsprice":30},{"roomid":"32","goodsprice":30},{"roomid":"33","goodsprice":30},{"roomid":"34","goodsprice":30},{"roomid":"35","goodsprice":30},{"roomid":"36","goodsprice":30},{"roomid":"37","goodsprice":30},{"roomid":"38","goodsprice":30},{"roomid":"39","goodsprice":30},{"roomid":"40","goodsprice":30},{"roomid":"41","goodsprice":30},{"roomid":"42","goodsprice":30},{"roomid":"43","goodsprice":0},{"roomid":"44","goodsprice":0},{"roomid":"45","goodsprice":0}]},"machinesn":1234567}
+log_time:2018-12-05 14:54:15{"msgtype":"receive_message","msg":{"msgtype":"login","sn":1234567,"timestamp":1543988778,"access_token":null,"poslong":"39.91488908","poslat":"116.40387397","version":"","signature":"EF4921732045F423872298B6CBCE188D4B4FCBB0"},"machinesn":1234567}
+log_time:2018-12-05 14:54:37{"msgtype":"receive_message","msg":{"msgtype":"rooms_status","rooms":[{"roomid":"1","status":1,"stocks":5},{"roomid":"2","status":1,"stocks":5},{"roomid":"3","status":1,"stocks":5},{"roomid":"4","status":1,"stocks":5},{"roomid":"5","status":1,"stocks":5},{"roomid":"6","status":1,"stocks":5},{"roomid":"7","status":1,"stocks":5},{"roomid":"8","status":1,"stocks":5},{"roomid":"9","status":1,"stocks":5},{"roomid":"10","status":1,"stocks":5},{"roomid":"11","status":1,"stocks":5},{"roomid":"12","status":1,"stocks":5},{"roomid":"13","status":1,"stocks":5},{"roomid":"14","status":1,"stocks":5},{"roomid":"15","status":1,"stocks":5},{"roomid":"16","status":1,"stocks":5},{"roomid":"17","status":1,"stocks":5},{"roomid":"18","status":1,"stocks":5},{"roomid":"19","status":1,"stocks":5},{"roomid":"20","status":1,"stocks":5},{"roomid":"21","status":1,"stocks":5},{"roomid":"22","status":1,"stocks":5},{"roomid":"23","status":1,"stocks":5},{"roomid":"24","status":1,"stocks":5},{"roomid":"25","status":1,"stocks":5},{"roomid":"26","status":1,"stocks":5},{"roomid":"27","status":1,"stocks":5},{"roomid":"28","status":1,"stocks":5},{"roomid":"29","status":1,"stocks":5},{"roomid":"30","status":1,"stocks":5},{"roomid":"31","status":1,"stocks":5},{"roomid":"32","status":1,"stocks":5},{"roomid":"33","status":1,"stocks":5},{"roomid":"34","status":1,"stocks":5},{"roomid":"35","status":1,"stocks":5},{"roomid":"36","status":1,"stocks":5},{"roomid":"37","status":1,"stocks":5},{"roomid":"38","status":1,"stocks":5},{"roomid":"39","status":1,"stocks":5},{"roomid":"40","status":1,"stocks":5},{"roomid":"41","status":1,"stocks":5},{"roomid":"42","status":1,"stocks":5},{"roomid":"43","status":1,"stocks":5},{"roomid":"44","status":1,"stocks":5},{"roomid":"45","status":1,"stocks":5}]},"machinesn":1234567}
+log_time:2018-12-05 19:02:43{"msgtype":"receive_message","msg":{"msgtype":"room_config","roomlist":[0,1,2,3,4,5,0,0,0,0,6,7,8,9,10,0,0,0,0,11,12,1
+3,14,15,0,0,0,0,16,17,18,19,20,0,0,0,0,21,22,23,24,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"machinesn":1234567}
+log_time:2018-12-05 19:03:33{"msgtype":"receive_message","msg":{"msgtype":"room_config","roomlist":[0,1,2,3,4,5,0,0,0,0,6,7,8,9,10,0,0,0,0,11,12,1
+3,14,15,0,0,0,0,16,17,18,19,20,0,0,0,0,21,22,23,24,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"machinesn":1234567}
+log_time:2018-12-05 19:05:35{
+	"msgtype": "receive_message",
+	"msg": {
+		"msgtype": "room_config",
+		"roomlist": [0, 1, 2, 3, 4, 5, 0, 0, 0, 0, 6, 7, 8, 9, 10, 0, 0, 0, 0, 11, 12, 13, 14, 15, 0, 0, 0, 0, 16, 17, 18, 19, 20, 0, 0, 0, 0, 21, 22, 23, 24, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+	},
+	"machinesn": 1234567
+}
+log_time:2018-12-05 19:15:24{"msgtype":"receive_message","msg":{"msgtype":"room_config","roomlist":[0,1,2,3,4,5,0,0,0,0,6,7,8,9,10,0,0,0,0,11,12,13,14,15,0,0,0,0,16,17,18,19,20,0,0,0,0,21,22,23,24,25,0,0,0,0,26,27,28,29,30,0,0,0,0,31,32,33,34,35,0,0,0,0,36,37,38,39,40,0,0,0,0,41,42,43,44,45,0,0,0,0]},"machinesn
+":1234567}
+
+log_time:2018-12-05 19:16:31{"msgtype":"receive_message","msg":{"msgtype":"room_config","roomlist":[0,1,2,3,4,5,0,0,0,0,6,7,8,9,10,0,0,0,0,11,12,13,14,15,0,0,0,0,16,17,18,19,20,0,0,0,0,21,22,23,24,25,0,0,0,0,26,27,28,29,30,0,0,0,0,31,32,33,34,35,0,0,0,0,36,37,38,39,40,0,0,0,0,41,42,43,44,45,0,0,0,0]},"machinesn
+":1234567}
+
+log_time:2018-12-05 19:16:45{"msgtype":"receive_message","msg":{"msgtype":"room_config","roomlist":[0,1,2,3,4,5,0,0,0,0,6,7,8,9,10,0,0,0,0,11,12,13,14,15,0,0,0,0,16,17,18,19,20,0,0,0,0,21,22,23,24,25,0,0,0,0,26,27,28,29,30,0,0,0,0,31,32,33,34,35,0,0,0,0,36,37,38,39,40,0,0,0,0,41,42,43,44,45,0,0,0,0]},"machinesn
+":1234567}
+
+log_time:2018-12-05 19:31:11{"msgtype":"receive_message","msg":{"msgtype":"room_config","roomlist":[0,1,2,3,4,5,0,0,0,0,6,7,8,9,10,0,0,0,0,11,12,13,14,15,0,0,0,0,16,17,18,19,20,0,0,0,0,21,22,23,24,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"machinesn":1234567}
+log_time:2018-12-05 19:31:36{"msgtype":"receive_message","msg":{"msgtype":"room_config","roomlist":[0,1,2,3,4,5,0,0,0,0,6,7,8,9,10,0,0,0,0,11,12,13,14,15,0,0,0,0,16,17,18,19,20,0,0,0,0,21,22,23,24,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"machinesn":1234567}
+log_time:2018-12-05 19:31:55{"msgtype":"receive_message","msg":{"msgtype":"room_config","roomlist":[0,1,2,3,4,5,0,0,0,0,6,7,8,9,10,0,0,0,0,11,12,13,14,15,0,0,0,0,16,17,18,19,20,0,0,0,0,21,22,23,24,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"machinesn":1234567}
+log_time:2018-12-05 19:40:28{"msgtype":"receive_message","msg":{"msgtype":"room_config","roomlist":[0,1,2,3,4,5,0,0,0,0,6,7,8,9,10,0,0,0,0,11,12,13,14,15,0,0,0,0,16,17,18,19,20,0,0,0,0,21,22,23,24,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"machinesn":1234567}

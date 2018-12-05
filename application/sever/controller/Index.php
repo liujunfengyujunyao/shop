@@ -7,18 +7,35 @@ use think\Session;
 use plugins\weixinpay\weixinpay\example\Wxpay_MicroPay;
 header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+header("Content-Type: text/html;charset=utf-8");
 class Index extends Controller {
 	public function index(){//被动请求的接口
 		// $params = $GLOBALS['HTTP_RAW_POST_DATA'];
 		$params = file_get_contents('php://input');
-		// $params = I('post.');
-		
+		halt(json_decode($params,true));
+
+        $params = $this->trimall($params);
+
 		//写入日志
 		$newLog ='log_time:'.date('Y-m-d H:i:s').$params;
 		file_put_contents('./sever_log.txt', $newLog.PHP_EOL, FILE_APPEND);
 		
 
 		$params = json_decode($params,true);
+		if(is_null($params)){
+            $msg = array(
+                'errid' => 10000,
+                'errmsg' => 'json layout error',
+            );
+            $data = array(
+                'msg' => $msg,
+                'machinesn' => intval($params['machinesn']),
+            );
+
+            $data = json_encode($data,JSON_UNESCAPED_UNICODE);
+            echo $data;die;
+        }
+
 		if($params['msgtype'] == 'receive_message'){//链接服务器转发的设备请求
 			$type = $params['msg']['msgtype'] ? $params['msg']['msgtype'] : "";
 
@@ -78,16 +95,16 @@ class Index extends Controller {
 		    	echo $this->room_config($params);
 		    	break;
 		   	case 'leave_factory_mode'://设备出场
-		   		echo $this->leave_factory_mode($parmas);
+		   		echo $this->leave_factory_mode($params);
 		   		break;
 		   	case 'machine_mode'://修改设备模式
-		   		echo $this->machine_mode($parmas);
+		   		echo $this->machine_mode($params);
 		   		break;
-		   	case 'recharge':
-		   		echo $this->recharge($params);//设备端补货
+		   	case 'recharge'://设备端补货
+		   		echo $this->recharge($params);
 		   		break;
-		   	case 'output_error':
-		   		echo $this->output_error($params);//出货错误
+		   	case 'output_error'://出货错误
+		   		echo $this->output_error($params);
 		   		break;
 			default:
 				$data = array(
@@ -120,9 +137,13 @@ class Index extends Controller {
 		// 	echo $data;
 		// }
 		else{
+		    $msgtype = array(
+		        'errid' => 20000,
+                'errmsg' => "msgtype error",
+            );
 			$data = array(
-				'errid' => 20000,
-				'msgtype' => "msgtype error",
+				'msg' => $msgtype,
+				'machinesn' => $params['machinesn'],
 				);
 			$data = json_encode($data,JSON_UNESCAPED_UNICODE);
 			echo $data;
@@ -195,11 +216,38 @@ class Index extends Controller {
 		}
 		$rooms = $data['rooms'];
 		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
+//		if ($machine['type_id']==1){
+//		    foreach($rooms as $key => $value){
+//                $res = DB::name('client_machine_conf')->where(['machine_id'=>$machine['machine_id'],'location'=>$value['roomid']])->save(['status'=>$value['status']]);
+//            }
+//        }else{
+            foreach ($rooms as $key => $value) {
+
+                $res = DB::name('client_machine_conf')->where(['machine_id'=>$machine['machine_id'],'location'=>$value['roomid']])->save(['status'=>$value['status'],'goods_num'=>$value['stocks']]);
+            }
+//        }
 		// return json_encode($machine['machine_id'],JSON_UNESCAPED_UNICODE);
-		foreach ($rooms as $key => $value) {
-			
-			DB::name('client_machine_conf')->where(['machine_id'=>$machine['machine_id'],'location'=>$value['roomid']])->save(['status'=>$value['status'],'goods_num'=>$value['stocks']]);
-		}
+
+//		if ($res !== false){
+//            $msg = array(
+//                'msgtype' => "OK",
+//
+//            );
+//
+//        }else{
+//		    $msg = array(
+//		        'msgtype' => "rooms_status error",
+//            );
+//        }
+        $msgtype = array(
+            'msgtype' => "OK",
+        );
+        $msg = array(
+            'msg' => $msgtype,
+//            "msgtype" => "OK",
+            'machinesn' => intval($params['machinesn']),
+        );
+        return json_encode($msg,JSON_UNESCAPED_UNICODE);
 
 
 	}
@@ -212,6 +260,7 @@ class Index extends Controller {
 		// 这个协议会在3种情况下发送：登录成功后(机台['priority']为1 {发送} |  机台['priority']为0 {接收})、改变了价格设置决定权(机台['priority']由0变1)后{发送}  和修改了价格政策后(机台['priority']为1时 {发送})。
 		$data = $params['msg'];//客户端发送的数据
 		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
+		$machine_type = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('type_id');
 		$priority = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('priority');
 		$game_price = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('game_price');
 		if($priority == 1){//为1执行平台策略
@@ -244,8 +293,10 @@ class Index extends Controller {
 		//当切换经营模式直接读取offline_machine_conf数据
 		//存在添加.不存在修改
 		if ($offline_machine) {//修改
+                if ($machine_type == 1){
+                    DB::name('machine')->where(['machine_id'=>$machine_id])->save(['game_price'=>$data['gameprice']]);
+                }
 
-				DB::name('machine')->where(['machine_id'=>$machine_id])->save(['game_price'=>$data['gameprice']]);	
 
 			foreach ($price as $key => $value) {
 		
@@ -271,7 +322,7 @@ class Index extends Controller {
 		//     $add = DB::name('offline_machine_conf')->insertAll($new);
 		// }
 		// return json_encode($data,JSON_UNESCAPED_UNICODE);
-		DB::name('machine')->where(['machine_id'=>$machine_id])->save(['offline_odds'=>$data['singleodds'],'offline_game_price'=>$data['gameprice'],'offline_goods_prices'=>$data['singleprice']]);
+//		DB::name('machine')->where(['machine_id'=>$machine_id])->save(['offline_odds'=>$data['singleodds'],'offline_game_price'=>$data['gameprice'],'offline_goods_prices'=>$data['singleprice']]);
 
 		$msg = array(
 			'msgtype' => 'OK',
@@ -467,6 +518,7 @@ class Index extends Controller {
 			DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->delete();
 		}
 		$layout_arr = array_filter($layout);
+
 		$layout = implode(',',$layout_arr);
 		if ($type_id == 1) {
 			//口红机max_stock==1
@@ -487,14 +539,27 @@ class Index extends Controller {
 		
 		$x = DB::name('client_machine_conf')->insertAll($add);
 		// halt($x);
-		//
+		
 		
 		$res = DB::name('machine')->where(['machine_id'=>$machine_id])->save(['location'=>$layout,'model'=>2]);//修改设备的布局和模式为中间模式 工厂模式->中间模式
 		if($res !== false){
-			echo 'OK';
+		    $msgtype = array(
+		        'msgtype' => 'ok',
+            );
+			$msg = array(
+			    'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+            );
 		}else{
-			echo 'error';
+		    $msgtype = array(
+		        'msgtype' => "update error",
+            );
+ 			$msg = array(
+			    'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+            );
 		}
+        return json_encode($msg,JSON_UNESCAPED_UNICODE);
 	}
 
 
@@ -502,10 +567,23 @@ class Index extends Controller {
 	public function leave_factory_mode($params){
 		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->save(['model'=>2]);//0默认预生产  1工厂模式 2工厂模式 3中间模式 4运营模式
 		if($machine !== false){
-			echo 'OK';
+		    $msgtype = array(
+		        'msgtype' => "OK",
+            );
+			$msg = array(
+				'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+				);
 		}else{
-			echo 'error';
+		    $msgtype = array(
+		        'msgtype' => "leave_factory_mode error",
+            );
+			$msg = array(
+                'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+				);
 		}
+		return json_encode($msg,JSON_UNESCAPED_UNICODE);
 	}
 
 	//修改设备模式
@@ -513,10 +591,23 @@ class Index extends Controller {
 		$msg = $params['msg'];
 		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->save(['model'=>$msg['mode']]);
 		if ($machine !== false) {
-			echo 'OK';
+		    $msgtype = array(
+		        'msgtype' => "OK",
+            );
+			$msg = array(
+			    'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+            );
 		}else{
-			echo 'error';
+		    $msgtype = array(
+		        'msgtype' => "machine_mode error",
+            );
+			$msg = array(
+			    'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+            );
 		}
+        return json_encode($msg,JSON_UNESCAPED_UNICODE);
 	}
 
 
@@ -535,14 +626,41 @@ class Index extends Controller {
 	//出货错误
 	public function output_error($params){
 		$msg = $params['msg'];
+
 		$error = array(
-			'businesstype' => $msg['businesstype'],
-			'logid' => $msg['logid'],
-			
+			'businesstype' => $msg['businesstype'],//业务类型  1:游戏 2:销售
+			'logid' => $msg['logid'],//本地日志ID
+			'roomid' => $msg['roomid'],//格子/货道ID
+			'failednumber' => $msg['failednumber']//未出商品列表
 			);
+		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
+		$add = array(
+			'machine_id' => $machine['machine_id'],
+			'errid' => 1,//错误类型 只读/跳转  1读 2跳
+            'status' => 0,
+			'errmsg' => $error['roomid']."号仓位故障未出".$error['failednumber']."件商品",//拼接错误信息
+			'time' => time(),
+			);
+		$res = DB::name('error')->add($add);
+		$update = DB::name('client_machine_conf')->where(['machine_id'=>$machine['machine_id'],'location'=>$error['roomid']])->save(['status'=>-1]);
+		if($res && $update !== false){
+		    $msgtype = array(
+		        'msgtype' => "OK",
+            );
+			$msg = array(
+				'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+				);
+		}else{
+			$msg = array(
+				'msgtype' => "putput_error error",
+                'machinesn' => intval($params['machinesn']),
+				);
+		}
+		return json_encode($msg,JSON_UNESCAPED_UNICODE);
 	}
-
-
+		//{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3}
+		//{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
 
 	//可以请求登陆的白名单
 	public function white_list($ip){ 
@@ -553,6 +671,7 @@ class Index extends Controller {
 			'2222',
 			'3333',
 			);
+
 		if(in_array($ip,$list)){
 			return 1;
 		}else{
@@ -605,5 +724,14 @@ class Index extends Controller {
      	$data = json_encode($data,JSON_UNESCAPED_UNICODE);
      	halt($data);
      }
+
+    public function trimall($str)//删除空格
+    {
+        $oldchar=array(" ","　","\t","\n","\r");
+        $newchar=array("","","","","");
+        return str_replace($oldchar,$newchar,$str);
+    }
+
+
      // {"msgtype":"receive_message","msg":{"roomlist":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,0,50,0,51,0,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78],"msgtype":"room_config"},"machinesn":12}
 }

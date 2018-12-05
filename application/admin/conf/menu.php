@@ -235,4 +235,12 @@ return	array(
 				array('name'=>'配货单', 'act'=>'invoice', 'op'=>'Partner')
 			)),
 	)),
+
+//	'advertising' => array('name'=>'广告','child'=>array(
+//		array('name'=>'基础管理','child' => array(
+//			 array('name'=>'广告列表','act'=>'adList','op'=>'Advertising'),
+//			 array('name'=>'广告位置','act'=>'ad_location','op'=>'Advertising'),
+//			)),
+//		)),
+
 );
