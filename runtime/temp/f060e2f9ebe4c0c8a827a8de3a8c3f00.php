@@ -1,4 +1,5 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/logina\login.html";i:1543648685;s:37:"./template/phone/new/public\tion.html";i:1537152658;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:38:"./template/phone/new/logina\login.html";i:1544184270;s:37:"./template/phone/new/public\tion.html";i:1537152658;}*/ ?>
+<link rel="stylesheet" href="../../../../public/css/csss/login.css">
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -20,7 +21,7 @@
 	<link rel="stylesheet" href="__PUBLIC__/css/csss/alert.css">
 <body>
 	<header>
-		<img src="__PUBLIC__/images/logo.jpg" alt="">
+		<img src="__PUBLIC__/images/logoa.png" style="width:260px;height: 250px;" alt="">
 		
 	</header>
 	<form action="<?php echo U('Phone/Logina/index'); ?>" id="body" method="post">

@@ -1384,7 +1384,7 @@ s .lastbar #gtt {
 }
 
 .ifm_content .ifm_cont ul li {
-	height: 0.4rem;
+	height: 0.5rem;
 	background-color: #FFFFFF;
 	margin-top: 0.18rem;
 }
@@ -1395,6 +1395,7 @@ s .lastbar #gtt {
 	float: left;
 	/* margin-left: 1%; */
 	margin-top: -1.5%;
+
 }
 
 .ifm_content .ifm_cont ul li #if_pic1 img {
@@ -1404,25 +1405,27 @@ s .lastbar #gtt {
 
 .ifm_content .ifm_cont ul li #if_ct1 {
 	margin-left: 6%;
-	width: 0.8rem;
-	height: 0.3rem;
+	width: 0.5rem;
+	height: 0.4rem;
 	float: left;
-}
-
-.ifm_content .ifm_cont ul li #if_ct1 span {
 	font-size: 0.18rem;
 	color: #000000;
 	text-align: center;
-	line-height: 0.4rem;
+	line-height: 0.5rem;
 }
+
 
 .ifm_content .ifm_cont ul li #if_ct2 {
 	float: left;
-	width: 1.9rem;
-	height: 0.3rem;
+	width: 1rem;
+	height: 0.5rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
+	font-size: 0.12rem;
+	color: #A9A9A9;
+	text-align: center;
+	line-height: 0.5rem;
+	margin-right: 5px;
 }
 
 .ifm_content .ifm_cont ul li .if_pro {
@@ -1437,16 +1440,10 @@ s .lastbar #gtt {
 	height: 0.1rem;
 }
 
-.ifm_content .ifm_cont ul li #if_ct2 span {
-	font-size: 0.13rem;
-	color: #A9A9A9;
-	text-align: center;
-	line-height: 0.4rem;
-}
 
 .ifm_content .ifm_cont ul li #if_pic2 {
-	width: 0.25rem;
-	height: 0.25rem;
+	width: 0.15rem;
+	height: 0.35rem;
 	float: right;
 	margin-right: 1%;
 	margin-top: 2%;

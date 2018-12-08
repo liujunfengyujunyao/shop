@@ -12,7 +12,7 @@ class Index extends Controller {
 	public function index(){//被动请求的接口
 		// $params = $GLOBALS['HTTP_RAW_POST_DATA'];
 		$params = file_get_contents('php://input');
-		halt(json_decode($params,true));
+		
 
         $params = $this->trimall($params);
 
@@ -67,9 +67,12 @@ class Index extends Controller {
 		// }
 				echo $this->login($params);
 				break;
-			case 'disconnect'://断开连接
-		        echo $this->disconnect($params);
+			case 'firmware_info'://补全设备信息  type_id等
+		        echo $this->firmware_info($params);
 		        break;
+            case 'disconnect'://断开连接
+                echo $this->disconnect($params);
+                break;
 		    case 'rooms_status'://仓位状态汇报
 		        echo $this->rooms_status($params);
 		        break;
@@ -508,9 +511,21 @@ class Index extends Controller {
 		$msg = $params['msg'];
 
 		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
+
 		$layout = $msg['roomlist'];
 		$conf = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->find();
+
 		$type_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('type_id');
+		if($type_id != 1 && $type_id !=2){
+            $msgtype = array(
+                'msgtype' => "type_id error",
+            );
+            $msg = array(
+                'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+            );
+            return json_encode($msg,JSON_UNESCAPED_UNICODE);
+        }
 		if(!$layout){
 			echo "roomlist is null";die;
 		}
@@ -520,12 +535,13 @@ class Index extends Controller {
 		$layout_arr = array_filter($layout);
 
 		$layout = implode(',',$layout_arr);
+//		halt($layout);
 		if ($type_id == 1) {
 			//口红机max_stock==1
 			$max_stock = 1;
 		}elseif($type_id == 2){
 			//福袋机max_stock==2
-			$max_stock = 4;
+			$max_stock = 5;
 		}
 		//测试用
 		foreach ($layout_arr as $key => $value) {
@@ -536,9 +552,9 @@ class Index extends Controller {
 			$add[$key]['location'] = $value;
 			$add[$key]['max_stock'] = $max_stock;
 		}
-		
+
 		$x = DB::name('client_machine_conf')->insertAll($add);
-		// halt($x);
+
 		
 		
 		$res = DB::name('machine')->where(['machine_id'=>$machine_id])->save(['location'=>$layout,'model'=>2]);//修改设备的布局和模式为中间模式 工厂模式->中间模式
@@ -614,11 +630,39 @@ class Index extends Controller {
 	//设备端补货
 	public function recharge($params){
 		$msg = $params['msg'];
+		$type = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('type_id');
+		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
+
 		if ($msg['isrealtime'] == 1) {//实时消息 
 
-			foreach ($msg['rooms'] as $key => $value) {
-				DB::name('client_machine_conf')->where(['location'=>$value['roomid']])->save(['goods_num'=>$value['stocks'],'edittime'=>$msg['localtime']]);
-			}	
+            if($type == 2){
+                foreach ($msg['rooms'] as $key => $value){
+//                    halt($value);
+                    $res = DB::name('client_machine_conf')->where(['location'=>$value['roomid'],'machine_id'=>$machine_id])->save(['goods_num'=>$value['stocks'],'edittime'=>$msg['localtime'],'max_stock'=>$value['max_stocks']]);
+
+                }
+
+
+            }else{
+                foreach ($msg['rooms'] as $key => $value) {
+
+                 $res = DB::name('client_machine_conf')->where(['location'=>$value['roomid'],'machine_id'=>$machine_id])->save(['goods_num'=>$value['stocks'],'edittime'=>$msg['localtime']]);
+            }
+
+
+			}
+
+			if($res !== false){
+                $msgtype = array(
+                    'msgtype' => "OK",
+                );
+                $msg = array(
+                    'msg' => $msgtype,
+                    'machinesn' => intval($params['machinesn']),
+                );
+            }
+            return json_encode($msg,JSON_UNESCAPED_UNICODE);
+
 		}
 		
 	}
@@ -661,6 +705,49 @@ class Index extends Controller {
 	}
 		//{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3}
 		//{"msgtype":"receive_message","msg":{"msgtype":"output_error","businesstype":"2","logid":"12/4/2018","roomid":2,"failednumber":3},"machinesn":12345678}
+
+    public function firmware_info($params){
+	    $msg = $params['msg'];
+	    $machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
+	    //检测如果已经补全过设备信息 返回错误
+        if ($machine['type_id']){//如果已经补全过设备信息 不能重复修改UUID
+            $msgtype = array(
+                'errid' => 10000,
+                'errmsg' => 'firmware_info error',
+            );
+            $result = array(
+                'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+            );
+            return json_encode($result,JSON_UNESCAPED_UNICODE);
+        }
+        $time = time();
+        $uuid = sha1("sn=".$params['machinesn']."&type=".$msg['type']."&px=".$msg['px']);//添加设备的加密长字符串  用来扫码绑定设备
+
+	    $save = array(
+	        'type_id' => $msg['type'],
+            'px' => $msg['px'],
+            'version_id' => $msg['version'],
+            'uuid' => $uuid,
+            'addtime' => $time,
+        );
+	    $res = DB::name('machine')->where(['sn'=>$params['machinesn']])->save($save);
+	    if ($res !== false){
+            $msgtype = array(
+                'msgtype' => 'OK',
+            );
+            $result = array(
+                'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+            );
+            return json_encode($result,JSON_UNESCAPED_UNICODE);
+        }
+
+    }
+
+
+
+
 
 	//可以请求登陆的白名单
 	public function white_list($ip){ 

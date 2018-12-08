@@ -16,6 +16,11 @@ class Scan extends Base{
 	public function index(){
 		if(IS_POST){
 			$id = session('client_id');
+            $belong_id = DB::name('admin')->where(['admin_id'=>$id])->getField('belong_id');
+            if ($belong_id){
+                //not boss
+                $id = $belong_id;
+            }
 			$data = I('post.');
 			$machine = M('machine')->where(['uuid'=>$data['sn']])->find();
 			
@@ -58,7 +63,11 @@ class Scan extends Base{
 	public function add(){
 		if(IS_POST){
 			$id = $_SESSION['think']['client_id'];
-		
+		    $belong_id = DB::name('admin')->where(['admin_id'=>$id])->getField('belong_id');
+		    if ($belong_id){
+		        //not boss
+                $id = $belong_id;
+            }
 			$data = I('post.');
 			if($data['sn'] == NULL){
 				$this->error('sn是机台识别不能为空');

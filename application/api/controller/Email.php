@@ -132,9 +132,10 @@ class Email extends Controller{
         dump($result);die;
     }
 
-    public function email(){
-        vendor('phpmailer.class.phpmailer.php');
-        vendor('phpmailer.class.smtp.php');
+    public function send_email($address,$subject,$content){
+//    public function send_email(){
+        vendor('phpmailer.class#phpmailer');
+        vendor('phpmailer.class#smtp');
         $email_smtp=C('EMAIL_SMTP');
         $email_username=C('EMAIL_USERNAME');
         $email_password=C('EMAIL_PASSWORD');
@@ -147,7 +148,9 @@ class Email extends Controller{
 //        require_once './ThinkPHP/Library/Org/Nx/class.phpmailer.php';
 //        require_once './ThinkPHP/Library/Org/Nx/class.smtp.php';
         $phpmailer=new \Phpmailer();
-        halt($phpmailer);
+//        halt($phpmailer);
+//        $phpmailer->Addattachment('a.png','test.png');
+//    halt($phpmailer->Timeout());
         // 设置PHPMailer使用SMTP服务器发送Email
         $phpmailer->IsSMTP();
         // 设置设置smtp_secure
@@ -170,6 +173,8 @@ class Email extends Controller{
         $phpmailer->From=$email_username;
         // 设置发件人名字
         $phpmailer->FromName=$email_from_name;
+        $phpmailer->AddAttachment('D:\WWW\shop\application\api\code.rar','test.rar');
+
         // 添加收件人地址，可以多次使用来添加多个收件人
         if(is_array($address)){
             foreach($address as $addressv){
@@ -182,6 +187,8 @@ class Email extends Controller{
         $phpmailer->Subject=$subject;
         // 设置邮件正文
         $phpmailer->Body=$content;
+
+
         // 发送邮件。
         if(!$phpmailer->Send()) {
             $phpmailererror=$phpmailer->ErrorInfo;
@@ -190,4 +197,68 @@ class Email extends Controller{
             return array("error"=>0);
         }
     }
+
+
+    public function test_email(){
+        $res = $this->send_email('qukaliujun@163.com','测试邮件','皮');
+        halt($res);
+
+    }
+
+    function addFileToZip($path,$zip){
+        $handler=opendir($path); //打开当前文件夹由$path指定。
+        while(($filename=readdir($handler))!==false){
+            if($filename != "." && $filename != ".."){//文件夹文件名字为'.'和‘..’，不要对他们进行操作
+                if(is_dir($path."/".$filename)){// 如果读取的某个对象是文件夹，则递归
+                    $this->addFileToZip($path."/".$filename, $zip);
+                }else{ //将文件加入zip对象
+                    $zip->addFile($path."/".$filename);
+                }
+            }
+        }halt($filename);
+        @closedir($path);
+    }
+
+
+
+public function test_yasuo(){
+    $zip=new \ZipArchive();
+$ce = $zip->open('images.zip', \ZipArchive::OVERWRITE);dump($ce);
+    if ($ce === TRUE){
+        halt(1);
+    }else{
+        halt(2);
+    }
+    if($zip->open('imagess.zip', \ZipArchive::OVERWRITE)=== TRUE){
+       $x = $this->addFileToZip('code/', $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
+
+        $zip->close(); //关闭处理的zip文件
+    }
+    halt($zip->open('images.zip', \ZipArchive::OVERWRITE));
+}
+
+public function tuozhan(){
+    phpinfo();
+}
+    public function sha(){
+        $params = array(
+            'machinesn' => 10004,
+
+        );
+        $msg = array(
+            'type' => 2,
+            'px' => 2,
+
+        );
+        $sn = sha1("sn=".$params['machinesn']."&type=".$msg['type']."&px=".$msg['px']);
+        halt($sn);
+    }
+
+
+
+
+
+
+
+
 }

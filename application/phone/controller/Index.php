@@ -10,7 +10,15 @@ class Index extends Base {
     public function index(){
         //微信登陆 自动获取用户ID;
         $manager_info= $_SESSION['think']['manager_info'];
-        
+        $belong_id = DB::name('admin')->where(['admin_id'=>$manager_info['admin_id']])->getField('belong_id');
+        if($belong_id){
+            //员工 : 查找所属群组内的机器IDS集合
+            $client_ids = DB::name('admin')->alias('a')->join("__MACHINE_GROUP__ g","a.group_id = g.id",'LEFT')->where(['a.admin_id'=>$manager_info['admin_id']])->getField('g.group_machine');
+        }else{
+            $client_arr = DB::name('machine')->where(['client_id'=>$manager_info['admin_id']])->getField('machine_id',true);
+
+            $client_ids = implode($client_arr,',');
+        }
         $y = date("Y");
         $m = date("m");
         $d = date("d");
@@ -22,9 +30,7 @@ class Index extends Base {
         $end =  $morningTime+60*60*24;
 
 
-        $client_arr = DB::name('machine')->where(['client_id'=>$manager_info['admin_id']])->getField('machine_id',true);    
 
-        $client_ids = implode($client_arr,',');
         if ($client_ids == "") {
             $client_ids = "-1";
         }
