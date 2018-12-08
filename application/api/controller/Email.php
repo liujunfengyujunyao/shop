@@ -15,18 +15,26 @@ class Email extends Controller{
     //批量生成二维码 根据传入的生成数量和所生成设备
     public function piliang()
     {
-        $params = file_get_contents('php://input');file_put_contents('email.txt',$params);
-
+        $params = file_get_contents('php://input');
+        $newLog ='log_time:'.date('Y-m-d H:i:s').$params;
+        file_put_contents('./email.txt', $newLog.PHP_EOL, FILE_APPEND);
         $params = json_decode($params, true);
-
+        $email = $params['email'];
         $client_id = $params['client_id'];
+        $out_trade_no = $params['out_trade_no'];
+        $push = DB::name('luckpay_log')->where(['out_trade_no'=>$out_trade_no])->getField('is_push');
+
+        if ($push == 1){
+            //已经发送过email
+            return fasle;
+        }
 //        $user_id = $user_id;//老板的ID
         /* $auth = DB::name('machine')->where(['client_id'=>$user_id,'type_id'=>2])->find();
          if (!$auth){
              $result = "luck_machine_null";//名下没有福袋机
              return json($result);
          }*/
-        $number = 100;//生成二维码的数量
+        $number = 10;//生成二维码的数量
 //        $machine_id = 2;//生成二维码的机器  **必须已经被绑定client_id**
 
 
@@ -51,11 +59,23 @@ class Email extends Controller{
     		$this->pin($phone,$i);//生成的编号和所属人电话
 //            $this->pin($email, $i);//生成的编号和所属人邮箱
         }
+        //调用完成 -> 压缩这个文件夹 $datalist  &   压缩后的放置路径$filename
+        $datalist = $_SERVER['DOCUMENT_ROOT'] . '/public/upload/qr_code/' . date("Y-m-d ") . "-" . $phone . '/';
+        $datalist = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone . "/";
+        $filename = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone .".zip";
+        $this->yasuo($datalist,$filename);//压缩这文件夹
+//        $this->send_email('qukaliujun@163.com','测试邮件','抽奖二维码',$filename);//发送压缩包
+        $this->send_email($email,'测试邮件','抽奖二维码',$filename);//发送压缩包
+
+        delDirAndFile($datalist);//递归删除文件夹
+        unlink($filename);//删除压缩文件
+        DB::name('luckpay_log')->where(['out_trade_no'=>$out_trade_no])->save(['is_push'=>1]);
         echo "完成";
         return json("ok");
 
     }
 
+    /*拼接二维码*/
     public function pin($phone, $i)
     {
         //生成人员的账号
@@ -73,7 +93,8 @@ class Email extends Controller{
 
         $url = urldecode($url);
 
-        $qr_code_path = $_SERVER['DOCUMENT_ROOT'] . '/public/upload/qr_code/' . date("Y-m-d") . "-" . $phone . '/';
+        //文件夹的存放地址
+        $qr_code_path = $_SERVER['DOCUMENT_ROOT'] . '/public/upload/qr_code/' . date("Y-m-d ") ."-". $phone . '/';
 
 
         if (!file_exists($qr_code_path)) {
@@ -132,7 +153,7 @@ class Email extends Controller{
         dump($result);die;
     }
 
-    public function send_email($address,$subject,$content){
+    public function send_email($address,$subject,$content,$zip){
 //    public function send_email(){
         vendor('phpmailer.class#phpmailer');
         vendor('phpmailer.class#smtp');
@@ -173,7 +194,10 @@ class Email extends Controller{
         $phpmailer->From=$email_username;
         // 设置发件人名字
         $phpmailer->FromName=$email_from_name;
-        $phpmailer->AddAttachment('D:\WWW\shop\application\api\code.rar','test.rar');
+//        $phpmailer->AddAttachment('D:\WWW\shop\application\api\code.rar','test.rar');
+//        $phpmailer->AddAttachment('./public/upload./qr_code./2018-12-05-13683141819.zip','test.rar');
+        $phpmailer->AddAttachment($zip,'qrcode.rar');
+//        D:\WWW\shop\public\upload\qr_code\2018-12-05-13683141819.zip
 
         // 添加收件人地址，可以多次使用来添加多个收件人
         if(is_array($address)){
@@ -200,7 +224,10 @@ class Email extends Controller{
 
 
     public function test_email(){
-        $res = $this->send_email('qukaliujun@163.com','测试邮件','皮');
+
+
+        $zip = "./public/upload./qr_code./2018-12-05-13683141819.zip";
+        $res = $this->send_email('qukaliujun@163.com','测试压缩邮件','抽奖二维码',$zip);
         halt($res);
 
     }
@@ -223,7 +250,9 @@ class Email extends Controller{
 
 public function test_yasuo(){
     $zip=new \ZipArchive();
-$ce = $zip->open('images.zip', \ZipArchive::OVERWRITE);dump($ce);
+
+
+    $ce = $zip->open('D:\WWW\shop\application\api\code\a.png', \ZipArchive::OVERWRITE);dump($ce);
     if ($ce === TRUE){
         halt(1);
     }else{
@@ -234,12 +263,61 @@ $ce = $zip->open('images.zip', \ZipArchive::OVERWRITE);dump($ce);
 
         $zip->close(); //关闭处理的zip文件
     }
-    halt($zip->open('images.zip', \ZipArchive::OVERWRITE));
+    halt($ce);
+//    halt($zip->open('images.zip', \ZipArchive::OVERWRITE));
 }
 
+
+    //需要添加 需要压缩文件的路径$datalist  &   压缩后的放置路径$filename
+    public function yasuo($datalist,$filename){
+        //获取列表
+        $datalist=list_dir($datalist);//需要压缩的文件夹路径
+//        $filename = "./public/upload/qr_code/2018-12-05-13683141819.zip"; //最终生成的文件名（含路径）
+        if(!file_exists($filename)){
+            //重新生成文件
+            $zip = new \ZipArchive();//使用本类，linux需开启zlib，windows需取消php_zip.dll前的注释
+            if ($zip->open($filename, \ZIPARCHIVE::CREATE)!==TRUE) {
+                exit('无法打开文件，或者文件创建失败');
+            }
+            foreach( $datalist as $val){
+                if(file_exists($val)){
+                    $zip->addFile( $val, basename($val));//第二个参数是放在压缩包中的文件名称，如果文件可能会有重复，就需要注意一下
+                }
+            }
+            $zip->close();//关闭
+        }
+        if(!file_exists($filename)){
+            exit("创建失败"); //即使创建，仍有可能失败。。。。
+        }
+
+    }
+
+    //测试压缩文件
 public function tuozhan(){
-    phpinfo();
+    $phone = 13683141819;
+    $datalist = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone . "/";
+
+    $filename = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone .".zip";
+    $this->yasuo($datalist,$filename);
+    halt($data);
 }
+
+    //测试删除文件
+public function tuozhan1(){
+    $phone = 13683141819;
+    $datalist = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone . "/";
+//    $a = "./public/upload/qr_code/a";
+//    delDirAndFile($a);die;
+    $filename = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone .".zip";
+//    $test = "./public/upload/qr_code/2018-12-08 -13683141819.zip";
+    unlink($filename);
+//    unlink($datalist);
+//    delDirAndFile($datalist);
+//    delDirAndFile($filename);
+
+//    delFile($filename);
+}
+
     public function sha(){
         $params = array(
             'machinesn' => 10004,
