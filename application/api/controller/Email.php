@@ -6,7 +6,8 @@ use app\common\logic\JssdkLogic;
 use think\Controller;
 use think\Db;
 use think\Session;
-
+set_time_limit(0);
+ini_set('memory_limit', '128M');
 header('Content-type:text/html; Charset=utf-8');
 header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
@@ -15,27 +16,33 @@ class Email extends Controller{
     //批量生成二维码 根据传入的生成数量和所生成设备
     public function piliang()
     {
-        $params = file_get_contents('php://input');
-        $newLog ='log_time:'.date('Y-m-d H:i:s').$params;
-        file_put_contents('./email.txt', $newLog.PHP_EOL, FILE_APPEND);
-        $params = json_decode($params, true);
-        $email = $params['email'];
-        $client_id = $params['client_id'];
-        $out_trade_no = $params['out_trade_no'];
-        $push = DB::name('luckpay_log')->where(['out_trade_no'=>$out_trade_no])->getField('is_push');
 
-        if ($push == 1){
-            //已经发送过email
-            return fasle;
-        }
+        $params = file_get_contents('php://input');
+//        $newLog ='log_time:'.date('Y-m-d H:i:s').$params;
+//        file_put_contents('./email.txt', $newLog.PHP_EOL, FILE_APPEND);
+        $params = json_decode($params, true);
+//        $email = $params['email'];
+//        $client_id = $params['client_id'];
+        $out_trade_no = $params['out_trade_no'];
+        $timestamp = time();
+        $push = DB::name('luckpay_log')->where(['out_trade_no'=>$out_trade_no])->getField('is_push');
+        $info = DB::name('luckpay_log')->where(['out_trade_no'=>$out_trade_no])->find();
+
+        DB::name('luckpay_log')->where(['out_trade_no'=>$out_trade_no])->save(['status'=>1]);//修改支付状态
+        $email = $info['email'];
+//        if ($push == 1){
+//            //已经发送过email
+//            return fasle;die;
+//        }
 //        $user_id = $user_id;//老板的ID
         /* $auth = DB::name('machine')->where(['client_id'=>$user_id,'type_id'=>2])->find();
          if (!$auth){
              $result = "luck_machine_null";//名下没有福袋机
              return json($result);
          }*/
-        $number = 10;//生成二维码的数量
-//        $machine_id = 2;//生成二维码的机器  **必须已经被绑定client_id**
+//        $number = 1000;//生成二维码的数量
+        $number = $params['number'];
+//        $machine_id = 2;//生成二维码的机器  **必须已经被绑 定client_id**
 
 
 //        $client_id = DB::name('machine')->where(['machine_id'=>$machine_id])->getField("client_id");
@@ -43,40 +50,59 @@ class Email extends Controller{
 //        if(is_null($client_id)){
 //            $this->error('此设备尚未被绑定');
 //        }
-        $res = DB::name('client_luck_key')->where(['client_id' => $client_id])->find();
-        $phone = DB::name('admin')->where(['admin_id' => $client_id])->getField('phone');
+//        $res = DB::name('client_luck_key')->where(['client_id' => $client_id])->find();
+        $res = DB::name('client_luck_key')->where(['client_id' => $info['client_id']])->find();
+
+//        $phone = DB::name('admin')->where(['admin_id' => $client_id])->getField('phone');
+        $phone = DB::name('admin')->where(['admin_id' => $info['client_id']])->getField('phone');
 
 
         if ($res) {
-            $start = DB::name('client_luck_key')->where(['client_id' => $client_id])->max('key_id');
+//            $start = DB::name('client_luck_key')->where(['client_id' => $client_id])->max('key_id');
+            $start = DB::name('client_luck_key')->where(['client_id' => $info['client_id']])->max('key_id');
             $start = $start + 1;
         } else {
             $start = 1;//第一次插入
         }
 
 
+
         for ($i = $start; $i < $number + $start; $i++) {
-    		$this->pin($phone,$i);//生成的编号和所属人电话
+    		$this->pin($phone,$i,$timestamp);//生成的编号和所属人电话
 //            $this->pin($email, $i);//生成的编号和所属人邮箱
         }
         //调用完成 -> 压缩这个文件夹 $datalist  &   压缩后的放置路径$filename
-        $datalist = $_SERVER['DOCUMENT_ROOT'] . '/public/upload/qr_code/' . date("Y-m-d ") . "-" . $phone . '/';
-        $datalist = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone . "/";
-        $filename = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone .".zip";
+//        $datalist = $_SERVER['DOCUMENT_ROOT'] . '/public/upload/qr_code/' . date("Y-m-d ") . "-" . $phone . '/';
+//        $datalist = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone . "/";
+        $datalist = "./public/upload/qr_code/" . $timestamp . "-" . $phone . "/";
+//        $filename = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone .".zip";
+        $filename = "./public/upload/qr_code/" . $timestamp . "-" . $phone .".zip";
         $this->yasuo($datalist,$filename);//压缩这文件夹
 //        $this->send_email('qukaliujun@163.com','测试邮件','抽奖二维码',$filename);//发送压缩包
-        $this->send_email($email,'测试邮件','抽奖二维码',$filename);//发送压缩包
+        $email_result = $this->send_email($email,'测试邮件','抽奖二维码',$filename);//发送压缩包
+        if($email_result['error'] == 0){
+            delDirAndFile($datalist);//递归删除文件夹
+            unlink($filename);//删除压缩文件
+            DB::name('luckpay_log')->where(['out_trade_no'=>$out_trade_no])->save(['is_push'=>1]);
+            //存入error表
+            $add = array(
+                'errid' => 3,
+                'client_id' => $info['client_id'],
+                'time' => time(),
+                'errmsg' => "抽奖码邮件已发送",
+            );
+            DB::name('error')->add($add);
+            echo "完成";
+        }else{
+            halt($email_result);
+        }
+//
 
-        delDirAndFile($datalist);//递归删除文件夹
-        unlink($filename);//删除压缩文件
-        DB::name('luckpay_log')->where(['out_trade_no'=>$out_trade_no])->save(['is_push'=>1]);
-        echo "完成";
-        return json("ok");
 
     }
 
     /*拼接二维码*/
-    public function pin($phone, $i)
+    public function pin($phone, $i,$timestamp)
     {
         //生成人员的账号
         vendor('topthink.think-image.src.Image');
@@ -89,12 +115,14 @@ class Email extends Controller{
         $vam = $i;
         // $url = "http://".$_SERVER['HTTP_HOST']."/home/luck/index?device_secret=".$key;
         // $url = "http://192.168.1.133/home/lottery/index?device_secret=".$key;
-        $url = "http://www.12202.com.cn/tp/index.php/home/Luck/login?device_secret=" . $key;
+//        $url = "http://www.12202.com.cn/tp/index.php/home/Luck/login?device_secret=" . $key;
+        $url = "http://www.goldenbrother.cn/index.php/choujiang/Luck/login?device_secret=" . $key;
 
         $url = urldecode($url);
 
         //文件夹的存放地址
-        $qr_code_path = $_SERVER['DOCUMENT_ROOT'] . '/public/upload/qr_code/' . date("Y-m-d ") ."-". $phone . '/';
+//        $qr_code_path = $_SERVER['DOCUMENT_ROOT'] . '/public/upload/qr_code/' . date("Y-m-d ") ."-". $phone . '/';
+        $qr_code_path = $_SERVER['DOCUMENT_ROOT'] . '/public/upload/qr_code/' . $timestamp ."-". $phone . '/';
 
 
         if (!file_exists($qr_code_path)) {
@@ -132,7 +160,8 @@ class Email extends Controller{
         // $image = $fun($background); // 调用方法处理
 
         /**/
-        $font = ROOT_PATH.'public/static/fonts/msyh.ttf'; // 字体文件
+//        $font = ROOT_PATH.'public/static/fonts/MSYH.TTF'; // 字体文件
+        $font = $_SERVER['DOCUMENT_ROOT'].'/public/static/fonts/MSYH.TTF'; // 字体文件
         $color = imagecolorallocate($image,0,0,0); // 文字颜色
         imagettftext($image, 15, 0, 85,212, $color, $font, $text); // 创建文字
         // imagettftext($image, 20, 0, 80, 292, $color, $font, $code); // 创建文字
@@ -194,6 +223,7 @@ class Email extends Controller{
         $phpmailer->From=$email_username;
         // 设置发件人名字
         $phpmailer->FromName=$email_from_name;
+        $phpmailer->SMTPSecure = 'ssl';
 //        $phpmailer->AddAttachment('D:\WWW\shop\application\api\code.rar','test.rar');
 //        $phpmailer->AddAttachment('./public/upload./qr_code./2018-12-05-13683141819.zip','test.rar');
         $phpmailer->AddAttachment($zip,'qrcode.rar');
@@ -224,10 +254,12 @@ class Email extends Controller{
 
 
     public function test_email(){
+        $phone = 13683141819;
+        $filename = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone .".zip";
+        halt($filename);
+//        $zip = "./public/upload./qr_code./2018-12-05-13683141819.zip";
+        $res = $this->send_email('qukaliujun@163.com','测试压缩邮件','抽奖二维码',$filename);
 
-
-        $zip = "./public/upload./qr_code./2018-12-05-13683141819.zip";
-        $res = $this->send_email('qukaliujun@163.com','测试压缩邮件','抽奖二维码',$zip);
         halt($res);
 
     }
@@ -331,6 +363,61 @@ public function tuozhan1(){
         $sn = sha1("sn=".$params['machinesn']."&type=".$msg['type']."&px=".$msg['px']);
         halt($sn);
     }
+
+    public function j(){
+        $data = array(
+            'email' => 'qukalijun@163.com',
+            'out_trade_no' => "abc",
+            'client_id' => 11,
+        );
+        halt(json_encode($data,JSON_UNESCAPED_UNICODE));
+    }
+    public function font(){
+        $msgtype = array(
+            'msgtype' => "machine_mode error",
+        );
+        $msg = array(
+            'msg' => $msgtype,
+            'machinesn' => 666,
+        );
+
+halt(json_encode($msg,JSON_UNESCAPED_UNICODE));
+    }
+
+    public function add(){
+        $data = array(
+            'machine_id' => 13,
+            'game_id' => 1,
+            'start_time' => 1544846080,
+            'end_time' => 1544846089,
+            'result' => 0,
+            'goods_name' => "",
+            'location' => '18',
+            'game_log_id' => 'fb337ec8',
+
+        );
+        M('game_log')->add($data);
+    }
+    public function sell_log(){
+        s
+    }
+    public function mb4(){
+        $data = array(
+            'openid' => "abcd",
+            'nick' => base64_encode("哈哈哈哈哈hahahah"),
+            'addtime' => time(),
+        );
+        $en = "D、";
+        $en = base64_encode($en);
+        $en = base64_decode($en);
+        halt($en);
+        $res = M('wx_luck_user')->find(6);
+        $nick = base64_decode($res['nick']);
+        halt($nick);
+    }
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1543648685;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:37:"./template/phone/new/index\index.html";i:1545041516;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -32,10 +32,10 @@
 			<li class="foo_item"><span>霸屏收入</span><span>0元</span></li>
 		</ul>
 
-		<div class="lastbar">
-			<div href="#"><span>礼品消耗</span><!-- <img src="img/gift.png" id="gt" > --><span><?php echo $data['machine_count']; ?>台，<?php echo $data['gift_out_number']; ?>只</span></div>
-			<div href="#"><span>出奖率</span><p id="sp1"><?php echo $data['rate']; ?>%</p></div>
-		</div>
+		<!--<div class="lastbar">-->
+			<!--<div href="#"><span>礼品消耗</span>&lt;!&ndash; <img src="img/gift.png" id="gt" > &ndash;&gt;<span><?php echo $data['machine_count']; ?>台，<?php echo $data['gift_out_number']; ?>只</span></div>-->
+			<!--<div href="#"><span>出奖率</span><p id="sp1"><?php echo $data['rate']; ?>%</p></div>-->
+		<!--</div>-->
 	</a>
 	</header>
 	<section id="body">
@@ -119,6 +119,48 @@
 // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
 		</script>
+		<!--种类收入支出-->
+		<div class="zlsr">
+			<div class="zl_left">
+				<div class="zl_lf_pic">
+					<img src="__NEW__/img2/kouhong.png" >
+				</div>
+				<div class="zl_lf_txt">
+					<ul>
+						<li>
+							<img src="__NEW__/img2/shou.png" >
+							<span class="lf1"><?php echo $data['lipstick_count']; ?>元</span>
+						</li>
+						<li>
+							<img src="__NEW__/img2/zhi.png" >
+							<span class="lf1"><?php echo $data['lipstick_sell_number']; ?>只</span>
+						</li>
+						<li>
+							<img src="__NEW__/img2/bfh.png" >
+							<span class="lf1"><?php echo $data['rate']; ?>%</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="zl_line"></div>
+			<div class="zl_right">
+				<div class="zl_rt_pic">
+					<img src="__NEW__/img2/fudai.png" >
+				</div>
+				<div class="zl_rt_txt">
+					<ul>
+						<li>
+							<img src="__NEW__/img2/shou.png" >
+							<span class="rt1"><?php echo $data['luck_count']; ?>元</span>
+						</li>
+						<li>
+							<img src="__NEW__/img2/zhi.png" >
+							<span class="rt1"><?php echo $data['luck_sell_number']; ?>只</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
 		<!--监控-->
 		<div class="control">
 			<ul>

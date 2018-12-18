@@ -89,8 +89,9 @@ class Machine extends Base
 		$count = DB::name('machine')->count();
 		// halt($count);
 		$Page = new AjaxPage($count,10);
-		$show = $Page->show();
 
+		$show = $Page->show();
+//halt($show);
 		// $list = DB::name('machine')
 		// 	->alias('m')
 		// 	->field("m.*,mt.type_name")

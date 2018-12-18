@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1543637181;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1545039160;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -187,7 +187,7 @@
               <div style="text-align: left; width: 30px;" class="">ID</div>
             </th>
             <th align="left" abbr="store_name" axis="col3" class="">
-              <div style="text-align: left; width: 200px;" class="">贩卖机名称</div>
+              <div style="text-align: left; width: 230px;" class="">贩卖机名称</div>
             </th>
            <!--  <th align="left" abbr="user_money" axis="col3" class="">
               <div style="text-align: left; width: 100px;" class="">账户余额</div>
@@ -202,8 +202,11 @@
               <div style="text-align: left; width: 100px;" class="">合伙人</div>
             </th> -->
             <th align="left" abbr="type_name" axis="col4" class="">
-              <div style="text-align: left; width: 150px;" class="">类型</div>
+              <div style="text-align: left; width: 75px;" class="">类型</div>
             </th>
+              <th align="left" abbr="sn" axis="col4" class="">
+                  <div style="text-align: left; width: 75px;" class="">sn</div>
+              </th>
             <th align="center" abbr="phone" axis="col5" class="">
               <div style="text-align: left; width: 100px;" class="">在线状态</div>
             </th>

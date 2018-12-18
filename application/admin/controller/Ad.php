@@ -61,7 +61,8 @@ class Ad extends Base{
         		$list[] = $val;
         	}
         }
-                                     
+
+
         $ad_position_list = M('AdPosition')->getField("position_id,position_name,is_open");                        
         $this->assign('ad_position_list',$ad_position_list);//广告位 
         $show = $Page->show();// 分页显示输出

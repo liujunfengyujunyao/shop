@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:35:"./template/phone/new/msg\index.html";i:1544153232;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:35:"./template/phone/new/msg\index.html";i:1545101343;}*/ ?>
 <!DOCTYPE html>
 <html lang="en" id="rootHTML">
 <head>
@@ -40,7 +40,7 @@
 		<ul>
 			<?php if(is_array($msg) || $msg instanceof \think\Collection || $msg instanceof \think\Paginator): if( count($msg)==0 ) : echo "" ;else: foreach($msg as $key=>$v): if($v['errid']==2): ?>
 					<li class="do">
-						<a href="<?php echo U('Phone/Goods/stock_list'); ?>">
+						<a href="<?php echo U('Phone/Machine/stock_list'); ?>">
 							<div id="if_pic1">
 								<img src="__NEW__/img/ui16.png" id="">
 							</div>

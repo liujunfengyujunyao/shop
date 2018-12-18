@@ -22,8 +22,13 @@ class Statistics extends Base {
           $machine_ids = DB::name('admin')->alias('a')->join("__MACHINE_GROUP__ g","a.group_id = g.id",'LEFT')->where(['a.admin_id'=>$manager_info['admin_id']])->select();
 
             if($belong_id){
+                $group_ids = M('admin')->where(['admin_id'=>$manager_info['admin_id']])->getField('group_id');
+//                $group_ids = implode(',',$group_ids);
+                $machine_arr = M('machine')->where("group_id in  ($group_ids)")->getField('machine_id',true);
+                $machine_ids = implode(',',$machine_arr);
                 //员工 : 查找所属群组内的机器IDS集合
-                $machine_ids = DB::name('admin')->alias('a')->join("__MACHINE_GROUP__ g","a.group_id = g.id",'LEFT')->where(['a.admin_id'=>$manager_info['admin_id']])->getField('g.group_machine');
+//                $machine_ids = DB::name('admin')->alias('a')->join("__MACHINE_GROUP__ g","a.group_id = g.id",'LEFT')->where(['a.admin_id'=>$manager_info['admin_id']])->getField('g.group_machine');
+
 
             }else{
 //                $client_arr = DB::name('machine')->where(['client_id'=>$manager_info['admin_id']])->getField('machine_id',true);
@@ -73,6 +78,7 @@ class Statistics extends Base {
 				$data['rate'] = 0;
 			}else{
 				$data['rate'] = $data['success_number']/$data['game_count']*100;
+                $data['rate'] = sprintf("%.2f", $data['rate']);
 			}
 
 			
@@ -86,7 +92,7 @@ class Statistics extends Base {
 			
 			$date = date('Y-m-d',time());
 			$this->assign('date',$date);
-			// halt($data);
+
 			//线型图
 			$charts = $_SESSION['think']['history'];
 			//前七天的日期
@@ -101,7 +107,7 @@ class Statistics extends Base {
 		public function list_index(){
 
 			$client_id = $_SESSION['think']['client_id'];
-			$statistics = DB::name('client_day_statistics')->where("client_id = $client_id")->order("statistics_date")->select();
+			$statistics = DB::name('client_day_statistics')->where("client_id = $client_id")->order("statistics_date desc")->select();
 			foreach ($statistics as $key => $value) {
 				// $value['statistics_date'] = date('Y-m-d',$value['statistics_date']);
 				$data[$key]['count'] = $value['online_count'] + $value['money_count'];

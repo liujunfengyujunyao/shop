@@ -922,5 +922,133 @@ function deldir($path){
     }
 }
 
+///**
+// * 字符串截取，支持中文和其他编码
+// */
+//function msubstr($str, $start = 0, $length, $charset = "utf-8", $suffix = '...') {
+//    if (function_exists("mb_substr")){
+//        $slice = mb_substr($str, $start, $length, $charset);
+//    } else if (function_exists('iconv_substr')) {
+//        $slice = iconv_substr($str, $start, $length, $charset);
+//        if (false === $slice) {
+//            $slice = '';
+//        }
+//    } else {
+//        $re['utf-8'] = "/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xff][\x80-\xbf]{3}/";
+//        $re['gb2312'] = "/[\x01-\x7f]|[\xb0-\xf7][\xa0-\xfe]/";
+//        $re['gbk'] = "/[\x01-\x7f]|[\x81-\xfe][\x40-\xfe]/";
+//        $re['big5'] = "/[\x01-\x7f]|[\x81-\xfe]([\x40-\x7e]|\xa1-\xfe])/";
+//        preg_match_all($re[$charset], $str, $match);
+//        $slice = join("", array_slice($match[0], $start, $length));
+//    }
+//    if($slice == $str){
+//        return $slice;
+//    }else{
+//        return $suffix ? $slice . $suffix : $slice;
+//    }
+//}
+
+/**
+ * 必填项检测
+
+ * @param  String $keys      "key,name,code"
+ * @return Array
+ */
+//function require_check($keys){
+//    $request = array();
+//    $keys = explode(",",$keys);
+//    foreach($keys as $key){
+//        $value = I($key);
+//        if(stripos($key,"/")) $key = substr($key,0,stripos($key,"/"));
+//        if(empty($value)){
+//            err("缺少必填项:".$key);
+//        }else{
+//            $request[$key] = $value;
+//        }
+//    }
+//    return $request;
+//}
+/**
+ * 必填项检测
+
+ * @param  String $keys      "key,name,code"
+ * @param  array $params      接收到的数组
+ * @return Array
+ */
+function require_check($keys,$params,$machinesn){
+    $request = array();
+    $keys = explode(",",$keys);
+    foreach($keys as $key){
+        $value = $params[$key];
+        if(stripos($key,"/")) $key = substr($key,0,stripos($key,"/"));
+        if(is_null($value)){
+            err("Parameters are missing:".$key,$machinesn);
+        }else{
+            $request[$key] = $value;
+        }
+    }
+    return $request;
+}
+/**
+ * JSON 返回数据
+ * @param  string $msg       提示信息
+ * @param  string $code      状态码
+ * @param  array $result     返回数据
+ */
+function return_json($msg = '', $code = "SUCCESS",$machinesn, $result = ""){
+    if(empty($msg)) $msg = $code == "SUCCESS" ? "返回成功" : "返回失败";
+    $response = array(
+        "msg"   => array(
+            'msgtype'=>$msg,
+            'machinesn' => $machinesn,
+        ),
+    );
+    $result && $response["result"] = $result;
+    // echo "<pre>";
+    // print_r($response);
+    // echo "</pre>";
+    echo json_encode($response);
+    exit();
+}
+
+/**
+ * JSON 返回数据
+ * @param  string $msg       提示信息
+ * @param  string $code      状态码
+ * @param  array $result     返回数据
+ */
+//function return_json($msg = '', $code = "SUCCESS", $result = ""){
+//    if(empty($msg)) $msg = $code == "SUCCESS" ? "返回成功" : "返回失败";
+//    $response = array(
+//        "returnMsg"   => $msg,
+//        "returnCode"  => $code,
+//    );
+//    $result && $response["result"] = $result;
+//    // echo "<pre>";
+//    // print_r($response);
+//    // echo "</pre>";
+//    echo json_encode($response);
+//    exit();
+//}
+
+/**
+ * JSON 返回成功数据
+ * @param  string $param1    提示信息
+ * @param  string $param2    返回数据
+ */
+function succ($param1 = "", $param2 = ""){
+    if(is_array($param1)){
+        return_json("", "SUCCESS", $param1);
+    }else{
+        return_json($param1, "SUCCESS", $param2);
+    }
+}
+/**
+ * JSON 返回失败数据
+ */
+function err($msg = "",$machinesn){
+    return_json($msg, "FAIL",$machinesn);
+}
+
 
 ?>

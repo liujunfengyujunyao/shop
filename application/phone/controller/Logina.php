@@ -29,7 +29,8 @@ class Logina extends Controller{
 			session('client_id',$id);
 			session("manager_info",$info);
 			Db::name('admin')->where(['phone'=>$data['tel']])->setField('last_login',time());
-			$this->success('登录成功',U('Phone/Index/index'));
+//			$this->success('登录成功',U('Phone/Index/index'));
+            $this->redirect('Phone/Index/index');
 		}else{
 			$this->error("用户名密码错误或者账号未激活");
 		}

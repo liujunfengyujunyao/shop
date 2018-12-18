@@ -12,20 +12,20 @@ class Index extends Controller {
 	public function index(){//被动请求的接口
 		// $params = $GLOBALS['HTTP_RAW_POST_DATA'];
 		$params = file_get_contents('php://input');
-		
 
         $params = $this->trimall($params);
 
 		//写入日志
 		$newLog ='log_time:'.date('Y-m-d H:i:s').$params;
 		file_put_contents('./sever_log.txt', $newLog.PHP_EOL, FILE_APPEND);
-		
 
 		$params = json_decode($params,true);
+
+
 		if(is_null($params)){
             $msg = array(
                 'errid' => 10000,
-                'errmsg' => 'json layout error',
+                'errmsg' => 'Data is empty',
             );
             $data = array(
                 'msg' => $msg,
@@ -38,6 +38,9 @@ class Index extends Controller {
 
 		if($params['msgtype'] == 'receive_message'){//链接服务器转发的设备请求
 			$type = $params['msg']['msgtype'] ? $params['msg']['msgtype'] : "";
+
+
+
 
 
 		// $ip = $params['ip'];
@@ -68,12 +71,14 @@ class Index extends Controller {
 				echo $this->login($params);
 				break;
 			case 'firmware_info'://补全设备信息  type_id等
+//                require_check('',$params,intval($params['machinesn']));
 		        echo $this->firmware_info($params);
 		        break;
             case 'disconnect'://断开连接
                 echo $this->disconnect($params);
                 break;
 		    case 'rooms_status'://仓位状态汇报
+                require_check('rooms',$params['msg'],intval($params['machinesn']));
 		        echo $this->rooms_status($params);
 		        break;
 		    case 'change_priority'://改变价格设置
@@ -83,9 +88,11 @@ class Index extends Controller {
 		        echo $this->price_strategy($params);
 		        break;
 		    case 'game_log'://本地游戏日志
+                require_check('gameid,isrealtime,starttime,endtime,result,roomid',$params['msg'],intval($params['machinesn']));
 		        echo $this->game_log($params);
 		        break;
 		    case 'sell_log'://本地销售日志
+                require_check('roomid,isrealtime,amount',$params['msg'],intval($params['machinesn']));
 		        echo $this->sell_log($params);
 		        break;
 		    case 'pay_cancel'://退款
@@ -104,16 +111,28 @@ class Index extends Controller {
 		   		echo $this->machine_mode($params);
 		   		break;
 		   	case 'recharge'://设备端补货
+                require_check('rooms,isrealtime',$params['msg'],intval($params['machinesn']));
 		   		echo $this->recharge($params);
 		   		break;
 		   	case 'output_error'://出货错误
+                require_check('failednumber,businesstype',$params['msg'],intval($params['machinesn']));
 		   		echo $this->output_error($params);
 		   		break;
+            case 'local_income'://本地投币
+                require_check('isrealtime,value,type',$params['msg'],intval($params['machinesn']));
+                echo $this->local_income($params);
+                break;
+            case 'fatal_error'://致命错误
+                echo $this->fatal_error($params);
+                break;
+            case 'update_result'://升级结果
+                echo $this->update_result($params);
+                break;
 			default:
 				$data = array(
 					'msgtype' => 'error',
 					'params' => array(
-						'errid' => 403,
+						'errid' => 4003,
 						'errmsg' => 'msgtype error',
 						),
 					);
@@ -174,7 +193,7 @@ class Index extends Controller {
 			//更新设备的经纬度
 			DB::name('machine')
 				->where(['sn'=>$data['sn']])
-				->save(['position_lng'=>$data['poslong'],'position_lat'=>$data['poslat'],'is_online'=>1]);
+				->save(['position_lng'=>$data['poslong'],'position_lat'=>$data['poslat'],'is_online'=>1,'version_id'=>$data['version']]);
 			if($machine['priority'] == 1){
 				$result = array(
 				'msg' => array(
@@ -370,65 +389,140 @@ class Index extends Controller {
 		$add = array(
 			'machine_id' => $machine_id,
 			'game_id' => $data['gameid'],//见缝插针 game_id为0
-			// 'game_log_id' => $data['gamelogid'],
+			'isrealtime' => $data['isrealtime'],
 			'start_time' => $data['starttime'],
 			'end_time' => $data['endtime'],
-			'result' => $data['result'],
+			'result' => $data['result'],//0失败1成功
 			'goods_name' => $data['goodsname'],
 			'location' => $data['roomid'], 
-			'li_online' => 0,
+//			'is_online' => 0,
 			'game_log_id' => $this->get_log_id(),
 			);
-		if($data['result'] == 1){//游戏成功 ,减库存 client_machine_stock
+		if($data['result'] == 1 && $data['isrealtime'] == 1){//游戏成功&在线信息 ,减库存 client_machine_stock
+
+            $data['roomid'] = intval($data['roomid']);
 			DB::name('client_machine_conf')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
 
 		}
 		
-		DB::name('game_log')->add($add);
+		$res = DB::name('game_log')->add($add);
+        if($res){
+            $msg = array(
+                'msgtype' => 'OK',
+            );
+            $result = array(
+                'msg' => $msg,
+                'machinesn' => intval($params['machinesn']),
+            );
+            return json_encode($result,JSON_UNESCAPED_UNICODE);
+        }
 	}
 
 	//本地售卖日志(7.2)
 	public function sell_log($params){
 		$data = $params['msg'];
-		$type = is_array($data['roomid']);
-		if($type !== false){
-			$location = implode(',',$data['roomid']);
-		}else{
-			$location = $data['roomid'];
-		}
-		// halt($location);
-		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
-		// halt($machine_id);
-		$add = array(
-			'machine_id' => $machine_id,
-			'goods_name' => $data['goodsname'],
-			// 'location' => $data['roomid'],
-			'location' => $location,
-			'sell_time' => $data['selltime'],
-			'paytype' => $data['paytype'],//0为现金,1为网络支付
-			'amount' => $data['amount'],
-			'paysn' => $data['paysn'],
-			'usetype' => $data['usetype'],//0为游戏 1为售卖
-			'sell_log_id' => $this->get_log_id(),//生成logid
-			);
+        $machine_id = DB::name('machine')->where(['sn' => $params['machinesn']])->getField('machine_id');
 
-		if ($data['usetype'] == 1) {
+		if($data['isrealtime'] === 0){//离线消息
+            $add = array(
+                'machine_id' => $machine_id,
+                'goodsname' => $data['goodsname'],
+                'location' => intval($data['roomid']),
+                'sell_time' => $data['selltime'],
+                'paytype' => $data['paytype'],//0为现金 1为网络
+                'amount' => $data['amount'],
+                'paysn' => $data['paysn'],
+                'usetype' => $data['usetype'],
+                'sell_log_id' => $this->get_log_id(),
+            );
+            $res = DB::name('offline_sell_log')->add($add);
+//
+            $y = date("Y");
+            $m = date("m");
+            $d = date("d");
+            $start = mktime(0,0,0,$m,$d,$y);//当天0点的时间
+
+                if($data['selltime'] > $start){//
+                    //直接计入sell_log表中
+                    $add = array(
+                        'machine_id' => $machine_id,
+                        'goods_name' => $data['goodsname'],
+                        'location' => intval($data['roomid']),
+                        'sell_time' => $data['selltime'],
+                        'paytype' => $data['paytype'],//0位现金 1为网络
+                        'amount' => $data['amount'],
+                        'paysn' => $data['paysn'],
+                        'usetype' => $data['usetype'],
+                        'sell_log_id' => $this->get_log_id(),
+                        'isrealtime' => 0,//离线消息
+                    );
+
+                    $res = DB::name("sell_log")->add($add);//不修改库存 (离线登陆后发送的离线消息  会汇报仓位的stock 不用更改库存)
+
+                }
+            if($res){
+                $msg = array(
+                    'msgtype' => 'OK',
+                );
+                $result = array(
+                    'msg' => $msg,
+                    'machinesn' => intval($params['machinesn']),
+                );
+                return json_encode($result,JSON_UNESCAPED_UNICODE);
+            }
+
+        }else {
 
 
-		
-		$count = count($data['roomid']);
-		// halt($count);
-		if ($count == 1) {//单独购买
-			$res = DB::name('client_machine_conf')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
-		}else{//批量购买
-			foreach ($data['roomid'] as $key => $value) {
-			$res = DB::name('client_machine_conf')->where(['location'=>$value,'machine_id'=>$machine_id])->setDec('goods_num',1);
-			}
-		}
+            $type = is_array($data['roomid']);
+            if ($type !== false) {
+                $location = implode(',', $data['roomid']);
+            } else {
+                $location = $data['roomid'];
+            }
+            // halt($location);
 
-			// DB::name('client_machine_conf')->where(['location'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
-		}
-		DB::name('sell_log')->add($add);
+            // halt($machine_id);
+            $add = array(
+                'machine_id' => $machine_id,
+                'goods_name' => $data['goodsname'],
+                // 'location' => $data['roomid'],
+                'location' => intval($location),
+                'sell_time' => $data['selltime'],
+                'paytype' => $data['paytype'],//0为现金,1为网络支付
+                'amount' => $data['amount'],
+                'paysn' => $data['paysn'],
+                'usetype' => $data['usetype'],//0为游戏 1为售卖
+                'sell_log_id' => $this->get_log_id(),//生成logid
+                'isrealtime' => 1,
+            );
+
+            if ($data['usetype'] == 1) {
+
+
+                $count = count($data['roomid']);
+                // halt($count);
+                if ($count == 1) {//单独购买
+                    $res = DB::name('client_machine_conf')->where(['location' => $data['roomid'], 'machine_id' => $machine_id])->setDec('goods_num', 1);
+                } else {//批量购买
+                    foreach ($data['roomid'] as $key => $value) {
+                        $res = DB::name('client_machine_conf')->where(['location' => $value, 'machine_id' => $machine_id])->setDec('goods_num', 1);
+                    }
+                }
+
+                // DB::name('client_machine_conf')->where(['locati on'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
+            }
+            DB::name('sell_log')->add($add);
+            $msg = array(
+                'msgtype' => 'OK',
+            );
+            $result = array(
+                'msg' => $msg,
+                'machinesn' => intval($params['machinesn']),
+            );
+
+            return json_encode($result,JSON_UNESCAPED_UNICODE);
+        }
 	}
 
 
@@ -633,7 +727,7 @@ class Index extends Controller {
 		$type = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('type_id');
 		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
 
-		if ($msg['isrealtime'] == 1) {//实时消息 
+		if ($msg['isrealtime']  == 1) {//实时消息 实时消息需要修改库存
 
             if($type == 2){
                 foreach ($msg['rooms'] as $key => $value){
@@ -663,7 +757,25 @@ class Index extends Controller {
             }
             return json_encode($msg,JSON_UNESCAPED_UNICODE);
 
-		}
+		}else{//离线消息  设备登陆之后会发送room_status 里面包含stocks库存信息
+
+		    $data = array(
+		        'machine_id' => $machine_id,
+		        'timestamp' => $msg['localtime'],
+                'rooms' => serialize($msg['rooms']),//序列化
+            );
+		    $res = DB::name('offline_recharge_log')->add($data);
+            if($res !== false){
+                $msgtype = array(
+                    'msgtype' => "OK",
+                );
+                $msg = array(
+                    'msg' => $msgtype,
+                    'machinesn' => intval($params['machinesn']),
+                );
+            }
+            return json_encode($msg,JSON_UNESCAPED_UNICODE);
+        }
 		
 	}
 
@@ -678,12 +790,14 @@ class Index extends Controller {
 			'failednumber' => $msg['failednumber']//未出商品列表
 			);
 		$machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
+
 		$add = array(
 			'machine_id' => $machine['machine_id'],
 			'errid' => 1,//错误类型 只读/跳转  1读 2跳
             'status' => 0,
 			'errmsg' => $error['roomid']."号仓位故障未出".$error['failednumber']."件商品",//拼接错误信息
 			'time' => time(),
+//            'client_id' => $machine['client_id']
 			);
 		$res = DB::name('error')->add($add);
 		$update = DB::name('client_machine_conf')->where(['machine_id'=>$machine['machine_id'],'location'=>$error['roomid']])->save(['status'=>-1]);
@@ -745,12 +859,115 @@ class Index extends Controller {
 
     }
 
+    //本地投币
+    public function local_income($params){
+        $msg = $params['msg'];
+        $machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
+        if ($msg['isrealtime']==1){
+            //实时消息(不发送localtime)
+            $data = array(
+                'addtime' => time(),
+                'machine_id' => $machine['machine_id'],
+                'value' => $msg['value'],
+                'type' => $msg['type'],//目前只有0  区分不出来线下投币还是线上投币
+            );
+            $res = DB::name('machine_local_income')->add($data);
+
+        }else{
+            if ($msg['localtime'] == ""){
+                $msgtype = array(
+                    'msgtype' => 'localtime error',
+                );
+                $result = array(
+                    'msg' => $msgtype,
+                    'machinesn' => intval($params['machinesn']),
+                );
+                return json_encode($result,JSON_UNESCAPED_UNICODE);
+            }
+            $data = array(
+                'addtime' => $msg['localtime'],
+                'machine_id' => $machine['machine_id'],
+                'value' => $msg['value'],
+                'type' => $msg['type'],//目前只有0  区分不出来线下投币还是线上投币
+            );
+            $res = DB::name('machine_local_income')->add($data);
+        }
+            if ($res){
+                $msgtype = array(
+                    'msgtype' => 'OK',
+                );
+                $result = array(
+                    'msg' => $msgtype,
+                    'machinesn' => intval($params['machinesn']),
+                );
+                return json_encode($result,JSON_UNESCAPED_UNICODE);
+            }
+
+    }
+
+    //致命错误
+    public function fatal_error($params)
+    {
+        $msg = $params['msg'];
+        $machine = DB::name('machine')->where(['sn' => $params['machinesn']])->find();
+        $data = array(
+            'machine_id' => $machine['machine_id'],
+            'msgtype' => 1,
+            'recv_time' => date('Y-m-d H:i:s', time()),
+            'message' => $msg['decription'],
+        );
+        $res = DB::name('machine_msg')->add($data);
+        if ($res) {
+            $msgtype = array(
+                'msgtype' => 'OK',
+            );
+            $result = array(
+                'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+            );
+            return json_encode($result, JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    //升级结果
+    public function update_result($params){
+        $msg = $params['msg'];
+        $machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
+        $commandid = $msg['commandid'];
+        $log = DB::name('upgrade_log')->where(['id'=>$commandid])->find();//失败的次数
+
+        if($msg['result'] == 1) {//成功
+
+            $failed_date = $log['failed_date'];//失败时间
+            $success_date = time();//成功时间
+            $failed_reason = $log['failed_reason'];//最后一次失败原因
+            $failed_times = $log['failed_times'];//失败次数
+        }else{//失败
+
+            $failed_date = time();//最后一次失败时间
+            $success_date = "";//成功时间,失败为空
+            $failed_reason = $msg['errno'] . ":" . $msg['decription'];//错误代码:错误描述拼接
+            $failed_times = intval($log['failed_times'] + 1);//失败次数
+        }
+        $data = array(
+            'machine_id' => $machine['machine_id'],
+            'original_version' => $msg['from'],//起始版本
+            'upgrade_version' => $msg['to'],//目标版本
+            'status' => 1,//是否返回OK
+            'failed_date' => $failed_date,//最后一次失败时间
+            'success_date' => $success_date,//成功时间  如果失败为空
+            'failed_reason' => $failed_reason,
+            'failed_times' => $failed_times,
+        );
+        $res = DB::name('upgrade_log')->where(['id'=>$commandid])->save($data);
+    }
+
 
 
 
 
 	//可以请求登陆的白名单
-	public function white_list($ip){ 
+	public function white_list($ip){
 		//白名单列表
 		$list = array(
 			'43.254.90.98:53560',
@@ -764,14 +981,14 @@ class Index extends Controller {
 		}else{
 			return 2;
 		}
-		
+
 	}
 
 
-	
 
 
-	    function get_log_id( $length = 8 ) 
+
+	    function get_log_id( $length = 8 )
     {
         $str = substr(md5(time()), 0, $length);//md5加密，time()当前时间戳
         return $str;
@@ -780,18 +997,18 @@ class Index extends Controller {
     public function test(){
 
     	$msg = array(
-    		'msgtype' => 'login',
-    		'sn' => 12,
-    		'poslong' => '',
-    		'poslat' => '',
-    		'version' => '',
-    		'timestamp' => time(),
+    		'msgtype' => 'local_income',
+    		'isrealtime' => 0,
+//    		'localtime' => time(),
+    		'value' => 10,
+            'type' => 0,
     		);
     	$data = array(
     		'msgtype' => 'receive_message',
     		'msg' => $msg,
+            'machinesn' =>12,
     		);
-    	$url = "http://192.168.1.164/Sever";
+    	$url = "http://192.168.1.144/Sever";
     	$result = json_curl($url,$data);
     	halt($result);
     }
@@ -818,6 +1035,7 @@ class Index extends Controller {
         $newchar=array("","","","","");
         return str_replace($oldchar,$newchar,$str);
     }
+
 
 
      // {"msgtype":"receive_message","msg":{"roomlist":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,0,50,0,51,0,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78],"msgtype":"room_config"},"machinesn":12}

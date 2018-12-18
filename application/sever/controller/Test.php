@@ -453,4 +453,15 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
         );
 	    DB::name('error')->add($add);
     }
+
+    public function fatal_error(){
+	    $data = array(
+	      'msgtype' => 'fatal_error',
+           'decription' => "qfqfqqfqfqfqfqfqfqfqfdsfwdfef",
+
+        );
+	    halt(json_encode($data,JSON_UNESCAPED_UNICODE));
+//	    $url = "http://192.168.1.144/Sever";
+//	    $res = json_curl($url,$data)
+    }
 }
