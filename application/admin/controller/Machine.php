@@ -690,9 +690,9 @@ class Machine extends Base
 				->where(['machine_id'=>$id])
 				->find();
 				// halt($data);
-		
+
 		//查询这个贩卖机下的商品分类
-	    $GoodsLogic = new GoodsLogic();        
+	    $GoodsLogic = new GoodsLogic();
         $brandList = $GoodsLogic->getSortBrands();
         $categoryList = $GoodsLogic->getSortCategory();
         $this->assign('categoryList',$categoryList);
@@ -1257,12 +1257,74 @@ imagepng($image);
    
 }
 
-	public function aaa(){
-			$res = DB::name('client_luck_key')->select();
-			$a = 1+5+20+50+100+149+180+210+185;
-			halt($a);
-			halt($res);
+	public function detail(){
+			$machine_id = I('get.id');
+			$machine = DB::name('machine')->where(['machine_id'=>$machine_id])->find();
+			if($machine['type_id']==1){
+			    $machine['type_name'] = "口红机";
+            }elseif($machine['type_id']==2){
+			    $machine['type_name'] = "福袋机";
+            }
+            $room_count = DB::name('client_machine_conf')->where(['machine_id'=>$machine_id])->count();
+
+            $phone = DB::name('admin')->where(['admin_id'=>$machine['client_id']])->getField('phone');
+            $this->assign('room_count',$room_count);
+            $this->assign('phone',$phone);
+			$this->assign('data',$machine);
+			return $this->fetch();
+
 	}
+
+	public function api(){
+        $act = I('get.act');
+
+        if ($act == '_ROOM_') {
+            if(IS_POST){
+                $data = I('post.');//仓位状态信息
+
+            }else{
+                return $this->fetch('room');//room_config仓位配置
+            }
+
+
+
+        }else{
+            if(IS_POST){
+                $data = I('post.');
+                $machine = DB::name('machine')->where(['sn'=>$data['sn']])->find();
+                if ($machine['type_id']){
+                    //已经发送过此协议
+                    $this->error("通讯协议已被执行  请勿重复提交");
+                }elseif($machine == ""){
+                    $this->error("SN匹配失败");
+                }
+                $msg = array(
+                    'msgtype' => "firmware_info",
+                    'type' => intval($data['type']),//设备类型，1:口红，2:福袋
+                    'px' => intval($data['bili']),//显示器类型，1:1024x768，2:1080x1920
+                    'version' => $data['version'],//固件版本
+                );
+                $post = array(
+                    'msgtype' => "receive_message",
+                    'msg' => $msg,
+                    'machinesn' => intval($machine['sn']),
+                );
+                $url = "http://192.168.1.144/Sever";
+//                $url = "http://www.goldenbrother.cn/index.php/sever/index";
+                $res = json_curl($url,$post);
+                $res = json_decode($res,true);
+                if ($res['msg']['msgtype'] == "OK"){
+                    $this->success('发送成功','Admin/Machine/index');
+                }else{
+                    $this->error("接口调用失败");
+                }
+
+            }else{
+                return $this->fetch('info');//firmware_info配置信息
+            }
+
+        }
+    }
 
 
 	

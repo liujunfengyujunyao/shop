@@ -633,19 +633,28 @@ class Index extends Controller {
 		if ($type_id == 1) {
 			//口红机max_stock==1
 			$max_stock = 1;
+            foreach ($layout_arr as $key => $value) {
+                $add[$key]['goods_price'] = 300;
+                $add[$key]['machine_id'] = $machine_id;
+                $add[$key]['game_odds'] = 30;
+                $add[$key]['addtime'] = time();
+                $add[$key]['location'] = $value;
+                $add[$key]['max_stock'] = $max_stock;
+            }
 		}elseif($type_id == 2){
 			//福袋机max_stock==2
 			$max_stock = 5;
+            foreach ($layout_arr as $key => $value) {
+                $add[$key]['goods_price'] = 30;
+                $add[$key]['machine_id'] = $machine_id;
+                $add[$key]['game_odds'] = 0;
+                $add[$key]['addtime'] = time();
+                $add[$key]['location'] = $value;
+                $add[$key]['max_stock'] = $max_stock;
+            }
 		}
 		//测试用
-		foreach ($layout_arr as $key => $value) {
-			$add[$key]['goods_price'] = 300;
-			$add[$key]['machine_id'] = $machine_id;
-			$add[$key]['game_odds'] = 30;
-			$add[$key]['addtime'] = time();
-			$add[$key]['location'] = $value;
-			$add[$key]['max_stock'] = $max_stock;
-		}
+
 
 		$x = DB::name('client_machine_conf')->insertAll($add);
 

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1545039160;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1545202507;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -228,9 +228,21 @@
             <span><i class="fa fa-plus"></i>注册设备</span>
           </div>
         </a> </div>
+          <div class="fbutton"> <a href="<?php echo U('Machine/api',array('act'=>'_INFO_')); ?>">
+              <div class="add" title="firmware_info协议未发补救">
+                  <span><i class="fa fa-plus"></i>注册协议</span>
+              </div>
+          </a> </div>
+          <div class="fbutton"> <a href="<?php echo U('Machine/api',array('act'=>'_ROOM_')); ?>">
+              <div class="add" title="room_config协议未发补救">
+                  <span><i class="fa fa-plus"></i>布局协议</span>
+              </div>
+          </a> </div>
       </div>
       <div style="clear:both"></div>
+
     </div>
+
     <!--ajaxMachineList-->
     <div class="bDiv" style="height: auto;" id="ajax_return">
       

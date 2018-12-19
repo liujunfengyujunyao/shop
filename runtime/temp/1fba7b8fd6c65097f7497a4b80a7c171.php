@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:54:"./application/admin/view2/machine\ajaxMachineList.html";i:1545039126;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:54:"./application/admin/view2/machine\ajaxMachineList.html";i:1545197434;}*/ ?>
 <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
     <table width="100%">
         <tbody>
@@ -8,7 +8,14 @@
                     <div style="width: 24px;"><i class="ico-check"></i></div>
                 </td>
                 <td align="left" class="">
-                    <div style="text-align: left; width: 50px;"><?php echo $vo['machine_id']; ?></div>
+
+                    <div style="text-align: left; width: 50px;">
+                        <a href="<?php echo U('Machine/detail',array('id'=>$vo['machine_id'])); ?>"
+                           class="btn blue">
+                        <?php echo $vo['machine_id']; ?>
+                        </a>
+                    </div>
+
                 </td>
                 <td align="left" class="">
                     <div style="text-align: left; width: 200px;"><?php echo $vo['machine_name']; ?></div>
