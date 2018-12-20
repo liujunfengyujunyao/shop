@@ -1,11 +1,13 @@
-<include file="public/layout" />
+<include file="public/layout"/>
 <body style="background-color: #FFF; overflow: auto;">
-<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="toolTipLayer"
+     style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
 <div id="append_parent"></div>
 <div id="ajaxwaitid"></div>
 <div class="page">
     <div class="fixed-bar">
-        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i
+                class="fa fa-arrow-circle-o-left"></i></a>
             <div class="subject">
                 <h3>贩卖机管理 - 贩卖机详情</h3>
                 <h5>贩卖机详情</h5>
@@ -22,7 +24,8 @@
                     <label for="sn">设备名称</label>
                 </dt>
                 <dd class="opt">
-                    <input type="text" name="" value="{$data.machine_name}" id="machine_name" class="input-txt" disabled="disabled">
+                    <input type="text" name="" value="{$data.machine_name}" id="machine_name" class="input-txt"
+                           disabled="disabled">
                 </dd>
             </dl>
             <dl class="row">
@@ -38,7 +41,8 @@
                     <label for="sn">设备类型</label>
                 </dt>
                 <dd class="opt">
-                    <input type="text" name="" value="{$data.type_name}" id="type_id" class="input-txt" disabled="disabled">
+                    <input type="text" name="" value="{$data.type_name}" id="type_id" class="input-txt"
+                           disabled="disabled">
                 </dd>
             </dl>
             <dl class="row">
@@ -46,7 +50,8 @@
                     <label for="sn">设备类型</label>
                 </dt>
                 <dd class="opt">
-                    <input type="text" name="" value="{$data.version_id}" id="type_id" class="input-txt" disabled="disabled">
+                    <input type="text" name="" value="{$data.version_id}" id="type_id" class="input-txt"
+                           disabled="disabled">
                 </dd>
             </dl>
             <dl class="row">
@@ -75,40 +80,39 @@
             </dl>
 
 
-
             <!--<div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>-->
         </div>
     </form>
 </div>
 <script type="text/javascript">
-//    function verifyForm(){
-//        var type_name = $.trim($('input[name="machine_name"]').val());
-//        var sn = $.trim($('input[name="sn"]').val());
-//        var nickname = $.trim($('input[name="nickname"]').val());
-//        var mobile = $('input[name="mobile"]').val();
-//        //var password = $('input[name="password"]').val();
-//        var error ='';
-//        // if(type_name == ''){
-//        //     error += "设备名称不能为空\n";
-//        // }
-//        if(sn == ''){
-//            error += "SN不能为空\n";
-//        }
-//        // if(password == ''){
-//        //     error += "密码不能为空\n";
-//        // }
-//        // if(password.length<6 || password.length>16){
-//        //     error += "密码长度不正确\n";
-//        // }
-//        // if(!checkMobile(mobile) && mobile != ''){
-//        //     error += "手机号码填写有误\n";
-//        // }
-//        if(error){
-//            layer.alert(error, {icon: 2});  //alert(error);
-//            return false;
-//        }
-//        $('#machine').submit();
-//    }
+    //    function verifyForm(){
+    //        var type_name = $.trim($('input[name="machine_name"]').val());
+    //        var sn = $.trim($('input[name="sn"]').val());
+    //        var nickname = $.trim($('input[name="nickname"]').val());
+    //        var mobile = $('input[name="mobile"]').val();
+    //        //var password = $('input[name="password"]').val();
+    //        var error ='';
+    //        // if(type_name == ''){
+    //        //     error += "设备名称不能为空\n";
+    //        // }
+    //        if(sn == ''){
+    //            error += "SN不能为空\n";
+    //        }
+    //        // if(password == ''){
+    //        //     error += "密码不能为空\n";
+    //        // }
+    //        // if(password.length<6 || password.length>16){
+    //        //     error += "密码长度不正确\n";
+    //        // }
+    //        // if(!checkMobile(mobile) && mobile != ''){
+    //        //     error += "手机号码填写有误\n";
+    //        // }
+    //        if(error){
+    //            layer.alert(error, {icon: 2});  //alert(error);
+    //            return false;
+    //        }
+    //        $('#machine').submit();
+    //    }
 </script>
 </body>
 </html>

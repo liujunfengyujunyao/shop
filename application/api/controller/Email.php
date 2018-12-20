@@ -331,7 +331,7 @@ public function tuozhan(){
 
     $filename = "./public/upload/qr_code/" . date("Y-m-d ") . "-" . $phone .".zip";
     $this->yasuo($datalist,$filename);
-    halt($data);
+//    halt($data);
 }
 
     //测试删除文件
@@ -399,7 +399,7 @@ halt(json_encode($msg,JSON_UNESCAPED_UNICODE));
         M('game_log')->add($data);
     }
     public function sell_log(){
-        s
+
     }
     public function mb4(){
         $data = array(
