@@ -138,6 +138,7 @@ class Machine extends Base
             ->join('__ADMIN__ a', 'a.admin_id = m.client_id', 'LEFT')
             ->where($machine_where)
             ->select();
+
         $test = array();
         foreach ($list as $key => &$value) {
             if ($value['model'] == 1) {
@@ -148,6 +149,7 @@ class Machine extends Base
                 $value['model'] = "运营模式";
             }
         }
+
 
         // halt($list);
         $this->assign('list', $list);
@@ -1299,8 +1301,12 @@ class Machine extends Base
         if ($act == '_ROOM_') {
             if (IS_POST) {
                 $post = I('post.');//仓位状态信息
-                $machine = DB::name('machien')->where(['machine_id' => $post['machine_id']])->find();
-                $roomlist = $post['list'];
+
+                $machine = DB::name('machine')->where(['sn' => $post['sn']])->find();
+                $roomlist = $post['roomlist'];
+//                foreach ($roomlist as $key => &$value) {
+//                    $value = intval($value);
+//                }
                 if (!$machine) {
                     $this->error('SN输入错误');
                 } else {
@@ -1310,14 +1316,17 @@ class Machine extends Base
                     );
 
                     $url = "http://192.168.1.144/sever";
+//                    $url = "http://www.goldenbrother.cn/index.php/sever/index";
                     $data = array(
                         'msgtype' => 'receive_message',
                         'msg' => $msg,
                         'machinesn' => $machine['sn'],
                     );
+//                    halt(json_encode($data,JSON_UNESCAPED_UNICODE));
                     $res = json_curl($url, $data);
                     $res = json_decode($res, true);
-                    if ($res['msg']['msgtype'] == "OK") {
+//                    halt($res);
+                    if ($res['msg']['msgtype'] == "ok") {
                         $this->success('发送成功', 'Admin/Machine/index');
                     } else {
                         $this->error("接口调用失败");
@@ -1350,8 +1359,8 @@ class Machine extends Base
                     'msg' => $msg,
                     'machinesn' => intval($machine['sn']),
                 );
-                $url = "http://192.168.1.144/Sever";
-//                $url = "http://www.goldenbrother.cn/index.php/sever/index";
+//                $url = "http://192.168.1.144/Sever";
+                $url = "http://www.goldenbrother.cn/index.php/sever/index";
                 $res = json_curl($url, $post);
                 $res = json_decode($res, true);
                 if ($res['msg']['msgtype'] == "OK") {

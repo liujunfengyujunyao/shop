@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:54:"./application/admin/view2/machine\ajaxMachineList.html";i:1545197434;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:54:"./application/admin/view2/machine\ajaxMachineList.html";i:1545470719;}*/ ?>
 <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
     <table width="100%">
         <tbody>
@@ -9,7 +9,7 @@
                 </td>
                 <td align="left" class="">
 
-                    <div style="text-align: left; width: 50px;">
+                    <div style="text-align: left; width: 55px;">
                         <a href="<?php echo U('Machine/detail',array('id'=>$vo['machine_id'])); ?>"
                            class="btn blue">
                         <?php echo $vo['machine_id']; ?>
@@ -33,7 +33,7 @@
                     <div style="text-align: left; width: 100px;"><?php echo $vo['partner']; ?></div>
                 </td> -->
                 <td align="left" class="">
-                    <div style="text-align: left; width: 75px;"><?php echo $vo['type_name']; ?></div>
+                    <div style="text-align: left; width: 75px;"><?php echo $vo['type_id']; ?></div>
                 </td>
                 <td align="left" class="">
                     <div style="text-align: left; width: 75px;"><?php echo $vo['sn']; ?></div>

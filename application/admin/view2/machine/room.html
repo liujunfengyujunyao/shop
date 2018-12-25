@@ -1,5 +1,31 @@
 <include file="public/layout"/>
 <body style="background-color: #FFF; overflow: auto;">
+<style>
+    /*最外层容器*/
+    #tableContainer{
+        width: 400px;
+        height: 400px;
+        margin: 20px auto;
+        list-style: none;
+    }
+    .li {
+        width: 10%;
+        height: 10%;
+        box-sizing: border-box;
+        float:left;
+        text-align: center;
+        margin: 0 ;
+        padding: 0;
+    }
+    .static {
+        border: 1px solid green;
+        /*background: red;*/
+    }
+    /*.active {
+        border: 1px solid red;
+        background: red;
+    }*/
+</style>
 <div id="toolTipLayer"
      style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
 <div id="append_parent"></div>
@@ -72,8 +98,58 @@
             layer.alert(error, {icon: 2});  //alert(error);
             return false;
         }
+        $("input[name='roomlist[]']").attr('checked','checked');
         $('#machine').submit();
     }
+    $(function(){
+
+
+        var row = 10;
+        var column = 10;
+//        var titleColumn = ['Z','A','B','C','D','E','F','G','H','I'];
+        var titleColumn = [0,1,2,3,4,5,6,7,8,9];
+        var titleRow = [0,1,2,3,4,5,6,7,8,9];
+        var value = 0;
+        for(var i = 0; i < row; i++){
+            for(var k = 0; k < column;k++){
+                var $li = $('<input  type="text" name="allSelect[]" disabled class="li static">');
+
+                if(i == 0 && k != 0){
+
+                    $li.val(titleRow[k])
+                }
+                if(k == 0 && i !=0){
+
+                    $li.val(titleColumn[i]);
+                }
+                if(i != 0 && k!=0)
+                {
+                    var $li = $('<input  type="checkbox" name="roomlist[]" class="li static">');
+
+                }
+                if(i != 0 && k != 0 )
+                {
+                    (function(i,k){
+                        value++;
+                        $li.click(function(){
+                            $(':checked').removeAttr('checked');
+                            var last = $("input[name='roomlist[]']").last().val();
+                            console.log(Math.ceil(last/9));
+                            if(last%9==1){$("input[name='allSelect[]']").last().remove();}
+                            $("input[name='roomlist[]']").last().remove();
+                        });
+                        // console.log($(this).attr('location'));
+                        $li.val(value);
+                        console.log($li.val());
+                    })(i,k)
+
+                }
+
+                // console.log(123)
+                $('#tableContainer').append($li);
+            }
+        }
+    })
 </script>
 </body>
 </html>

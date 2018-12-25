@@ -1049,6 +1049,16 @@ function succ($param1 = "", $param2 = ""){
 function err($msg = "",$machinesn){
     return_json($msg, "FAIL",$machinesn);
 }
+function show($status, $message ,$data = [] ,$httpCode = 200)
+{
+    $data =  [
+        'status' => $status,
+        'message' => $message,
+        'data' =>$data
+    ];
 
+    return json($data, $httpCode);
+
+}
 
 ?>

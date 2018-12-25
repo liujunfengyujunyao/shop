@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1545202507;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/machine\index.html";i:1545299538;s:44:"./application/admin/view2/public\layout.html";i:1536395974;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -236,6 +236,11 @@
           <div class="fbutton"> <a href="<?php echo U('Machine/api',array('act'=>'_ROOM_')); ?>">
               <div class="add" title="room_config协议未发补救">
                   <span><i class="fa fa-plus"></i>布局协议</span>
+              </div>
+          </a> </div>
+          <div class="fbutton"> <a href="<?php echo U('Machine/update_machine',array('act'=>'_ADD_')); ?>">
+              <div class="add" title="room_config协议未发补救">
+                  <span><i class="fa fa-plus"></i>更新设备</span>
               </div>
           </a> </div>
       </div>

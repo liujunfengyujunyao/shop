@@ -12,7 +12,7 @@ return	array(
 						array('name'=>'友情链接','act'=>'linkList','op'=>'Article'),
 						array('name'=>'清除缓存','act'=>'cleanCache','op'=>'System'),
 						array('name'=>'自提点','act'=>'index','op'=>'Pickup'),
-                        array('name'=>'自体柜','act'=>'index','op'=>'Sark'), //增加后台美人柜菜单 @author:Ly @date:2017-7-15
+                        array('name'=>'自体柜','act'=>'index','op'=>'Sark'), //增加后台自提柜菜单 @author:Ly @date:2017-7-15
 				)),
 				array('name' => '会员','child'=>array(
 						array('name'=>'会员列表','act'=>'index','op'=>'User'),
@@ -206,7 +206,7 @@ return	array(
 	*/
 	'client'=>array('name'=>'人员','child'=>array(
 			array('name'=>'基础管理','child'=>array(
-				array('name'=>'人员列表','act'=>'index','op'=>'Client'),
+				array('name'=>'人员列表','act'=>'index','op'=>'client'),
 				array('name'=>'权限列表','act'=>'role','op'=>'client'),
 				)),
 

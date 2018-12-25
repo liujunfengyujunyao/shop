@@ -464,4 +464,9 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
 //	    $url = "http://192.168.1.144/Sever";
 //	    $res = json_curl($url,$data)
     }
+
+    public function in(){
+        $data = intval(NULL);
+        halt($data);
+    }
 }

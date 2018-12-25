@@ -98,9 +98,12 @@ class Index extends Controller {
 		    case 'pay_cancel'://退款
 		        echo $this->pay_cancel($params);
 		        break;
-		    case 'OK'://退款
+		    case 'OK'://返回command
 		        echo $this->change_priority($params);
 		        break;
+            case 'UPDATE_OK'://退款
+                echo $this->update_ok($params);
+                break;
 		    case 'room_config'://工厂配置布局
 		    	echo $this->room_config($params);
 		    	break;
@@ -179,6 +182,9 @@ class Index extends Controller {
 	public function login($params){
 		$data = $params['msg'];//打包过来的JSON数据
 		$machine = DB::name('machine')->where(['sn'=>$data['sn']])->find();
+		if($machine['type_id'] != 2){
+		    $this->auto_update($machine['sn'],$machine['version_id']);
+        }
 			// return json_encode($machine,JSON_UNESCAPED_UNICODE);
 		$prices = DB::name('client_machine_conf')
 				->field('location as roomid,goods_name as goodsid,game_odds as gameodds,goods_price as goodsprice')//位置,名称,
@@ -193,7 +199,7 @@ class Index extends Controller {
 			//更新设备的经纬度
 			DB::name('machine')
 				->where(['sn'=>$data['sn']])
-				->save(['position_lng'=>$data['poslong'],'position_lat'=>$data['poslat'],'is_online'=>1,'version_id'=>$data['version']]);
+				->save(['position_lng'=>$data['poslong'],'position_lat'=>$data['poslat'],'is_online'=>1,'version_id'=>$data['version'],'adress'=>$data['adress']]);
 			if($machine['priority'] == 1){
 				$result = array(
 				'msg' => array(
@@ -366,6 +372,13 @@ class Index extends Controller {
 
 	}
 
+	public function update_ok($params){
+	    $commandid = $params['msg']['commandid'];
+	    $time = time();
+	    DB::name('upgrade_log')->where(['id'=>$commandid])->save(['status'=>1]);
+
+    }
+
 
 	//设备断开连接(5.4)
 	public function disconnect($params){
@@ -386,6 +399,16 @@ class Index extends Controller {
 		
 		$data = $params['msg'];
 		$machine_id = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('machine_id');
+        if(!$machine_id){
+            $msgtype = array(
+                'msgtype' => "machinesn error",
+            );
+            $msg = array(
+                'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+            );
+            return json_encode($msg,JSON_UNESCAPED_UNICODE);
+        }
 		$add = array(
 			'machine_id' => $machine_id,
 			'game_id' => $data['gameid'],//见缝插针 game_id为0
@@ -422,7 +445,16 @@ class Index extends Controller {
 	public function sell_log($params){
 		$data = $params['msg'];
         $machine_id = DB::name('machine')->where(['sn' => $params['machinesn']])->getField('machine_id');
-
+        if(!$machine_id){
+            $msgtype = array(
+                'msgtype' => "machinesn error",
+            );
+            $msg = array(
+                'msg' => $msgtype,
+                'machinesn' => intval($params['machinesn']),
+            );
+            return json_encode($msg,JSON_UNESCAPED_UNICODE);
+        }
 		if($data['isrealtime'] === 0){//离线消息
             $add = array(
                 'machine_id' => $machine_id,
@@ -512,6 +544,8 @@ class Index extends Controller {
 
                 // DB::name('client_machine_conf')->where(['locati on'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
             }
+//
+//            $add['qdinfqoinqo'] = "qwfqfq"
             DB::name('sell_log')->add($add);
             $msg = array(
                 'msgtype' => 'OK',
@@ -1045,6 +1079,61 @@ class Index extends Controller {
         return str_replace($oldchar,$newchar,$str);
     }
 
+    public function auto_update($machinesn,$machine_version){
+        $machine = Db::name('machine')->where(['sn'=>$machinesn])->field('px,type_id,auto_update')->find();
+        if(!empty($machine['auto_update']) && $machine['type_id'] != 2){//老版福袋机不能自动更新
+            $auto_update = json_decode($machine['auto_update'],true);//机器自动更新信息
+            //halt($machine);
+            if($auto_update['type_id'] == $machine['type_id'] && $auto_update['px'] == $machine['px']){
+                //机器类型和屏幕类型与更新包匹配，比较版本号
+                $res = strnatcmp($auto_update['version'], $machine_version);
+
+                if($res > 0){ //更新包版本号大于机器当前版本号，发送更新协议
+                    //halt($machine);
+                    $command = Db::name('upgrade_log')
+                        ->where(['machine_id'=>$machinesn,'original_version'=>$machine_version,'upgrade_version'=>$auto_update['version'],'auto'=>1])
+                        ->field('id,failed_date')
+                        ->find();//是否之前有该版本更新记录
+
+                    if(!$command){//无更新记录，新添加一条
+                        $log = array(
+                            'machine_id'=>$machinesn,
+                            'original_version'=>$machine_version,
+                            'upgrade_version'=>$auto_update['version'],
+                            'add_date'=>time(),
+                            'status'=>0,
+                            'failed_times'=>0,
+                            'auto'=>1,//自动更新
+                        );
+                        $commandid = Db::name('upgrade_log')->add($log);
+                    }else{//有更新记录
+                        $time = date('Y.m.d',$command['failed_date']);
+                        if(date('Y.m.d') != $time){//比较最近一次失败时间是否为今天，不是今天则发送更新协议,一天只自动发送一次
+                            $commandid = $command['id'];
+                            Db::name('upgrade_log')->where(['id'=>$commandid])->setField('status',0);//设备回复状态重置为0
+                        }
+                    }
+                    if(!empty($commandid)){//发送更新协议
+                        $data = array(
+                            'msgtype'=>$auto_update['msgtype'],
+                            'commandid'=>intval($commandid),
+                            'version'=>$auto_update['version'],
+                            'dladdr'=>$auto_update['dladdr'],
+                            'MD5'=>$auto_update['md5']
+                        );
+                        $msg = array(
+                            'msg'=>$data,
+                            'msgtype'=>'send_message',
+                            'machinesn'=>intval($machinesn),
+                        );
+                        //halt($msg);
+                        $url = 'https://www.goldenbrother.cn:23232/account_server';
+                        $res = post_curls($url,$msg);
+                    }
+                }
+            }
+        }
+    }
 
 
      // {"msgtype":"receive_message","msg":{"roomlist":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,0,50,0,51,0,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78],"msgtype":"room_config"},"machinesn":12}

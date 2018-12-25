@@ -7,10 +7,14 @@
       <div class="subject">
         <h3> 广告详情</h3>
         <h5>广告添加与管理</h5>
+
+
       </div>
     </div>
   </div>
   <!--表单数据-->
+
+
   <form method="post" id="handleposition" action="{:U('Admin/Ad/adHandle')}">
     <div class="ncap-form-default">
       <dl class="row">
@@ -23,6 +27,20 @@
           <p class="notic"></p>
         </dd>
       </dl>
+      <!--<dl class="row">-->
+        <!--<dt class="tit" colspan="2">-->
+          <!--<label>广告类型：</label>-->
+        <!--</dt>-->
+        <!--<dd class="opt">-->
+          <!--<div id="gcategory">-->
+            <!--<select name="media_type" class="input-sm" class="form-control">-->
+              <!--<option value="1">a.	连续日期时间段</option>-->
+              <!--<option value="2">b.	连续日期周期时间段</option>-->
+              <!--<option value="3">c.	特定日期周期时间段</option>-->
+            <!--</select>-->
+          <!--</div>-->
+        <!--</dd>-->
+      <!--</dl>-->
       <dl class="row">
         <dt class="tit" colspan="2">
           <label>广告类型：</label>
@@ -38,18 +56,47 @@
       </dl>
       <dl class="row">
         <dt class="tit" colspan="2">
-          <label>广告位置：</label>
+          <label>是否独占：</label>
         </dt>
         <dd class="opt">
-          <div>
-            <select name="pid" class="input-sm" class="form-control">
-              <volist name="position" id="item">
-                <option value="{$item.position_id}" <if condition="$info[pid] eq $item[position_id]">selected</if>>{$item.position_name}</option>
-              </volist>
+          <div id="monopoly">
+            <select name="monopoly" class="input-sm" class="form-control">
+              <option value="0">非独占</option>
+              <option value="1">独占</option>
             </select>
           </div>
         </dd>
       </dl>
+
+      <!--<ul class="tab-base nc-row">-->
+        <!--<li><a data-href="#daytimeperiod" class="current tab" data-id=""><span>a.连续日期时间段</span></a></li>-->
+        <!--<li><a data-href="#daycycle" class=" tab"><span>b.连续日期周期时间段</span></a></li>-->
+        <!--<li><a data-href="#datecycle" class=" tab"><span>c.特定日期周期时间段</span></a></li>-->
+        <!--&lt;!&ndash;li><a data-href="#tab_function" class="tab"><span>功能插件</span></a></li &ndash;&gt;-->
+        <!--&lt;!&ndash; li><a href="http://www.tp-shop.cn/articleList_cat_id_30.html" target="_blank"><span>云插件</span></a></li &ndash;&gt;-->
+      <!--</ul>-->
+      <!--<dl class="row">-->
+        <!--<dt class="tit" colspan="2">-->
+          <!--<label>广告位置：</label>-->
+        <!--</dt>-->
+        <!--<dd class="opt">-->
+          <!--<div>-->
+            <!--<select name="pid" class="input-sm" class="form-control">-->
+              <!--<volist name="position" id="item">-->
+                <!--<option value="{$item.position_id}" <if condition="$info[pid] eq $item[position_id]">selected</if>>{$item.position_name}</option>-->
+              <!--</volist>-->
+            <!--</select>-->
+          <!--</div>-->
+        <!--</dd>-->
+      <!--</dl>-->
+      <ul class="tab-base nc-row">
+        <li><a data-href="#daytimeperiod" class="current tab" data-id=""><span>a.连续日期时间段</span></a></li>
+        <li><a data-href="#daycycle" class=" tab"><span>b.连续日期周期时间段</span></a></li>
+        <li><a data-href="#datecycle" class=" tab"><span>c.特定日期周期时间段</span></a></li>
+        <!--li><a data-href="#tab_function" class="tab"><span>功能插件</span></a></li -->
+        <!-- li><a href="http://www.tp-shop.cn/articleList_cat_id_30.html" target="_blank"><span>云插件</span></a></li -->
+      </ul>
+      <div class="bDiv" id="daytimeperiod" style="height: auto;">
       <dl class="row">
         <dt class="tit">
           <label>开始日期：</label>
@@ -68,16 +115,124 @@
           <span class="err"></span>
         </dd>
       </dl>
-      <dl class="row">
-        <dt class="tit">
-          <label><em>*</em>广告链接：</label>
-        </dt>
-        <dd class="opt">
-          <input type="text" placeholder="广告链接" class="input-txt" name="ad_link" value="{$info.ad_link}">
-          <span class="err" id="err_ad_link" style="color:#F00; display:none;"></span>
-          <p class="notic"></p>
-        </dd>
-      </dl>
+      </div>
+
+
+      <!--b-->
+      <div class="bDiv" id="daycycle" style="height: auto;display:none;">
+        <dl class="row">
+          <dt class="tit">
+            <label>开始日期：</label>
+          </dt>
+          <dd class="opt">
+            <input type="text" class="input-txt" id="start_time2" name="begin"  value="{$info.start_time|default='2016-01-01'}"/>
+            <span class="err"></span>
+          </dd>
+        </dl>
+        <dl class="row">
+          <dt class="tit">
+            <label>结束时间：</label>
+          </dt>
+          <dd class="opt">
+            <input type="text" class="input-txt" id="end_time2" name="end"  value="{$info.end_time|default='2019-01-01'}"/>
+            <span class="err"></span>
+          </dd>
+        </dl>
+        <dl class="row">
+          <dt class="tit" colspan="2">
+            <label>开始播放时间：</label>
+          </dt>
+          <dd class="opt">
+            <div id="begin">
+              <select name="begin" class="input-sm" class="form-control">
+                <option value="1">01:00</option>
+                <option value="2">02:00</option>
+                <option value="3">03:00</option>
+                <option value="4">04:00</option>
+                <option value="5">05:00</option>
+                <option value="6">06:00</option>
+                <option value="7">07:00</option>
+                <option value="8">08:00</option>
+                <option value="9">09:00</option>
+                <option value="10">10:00</option>
+                <option value="11">11:00</option>
+                <option value="12">12:00</option>
+                <option value="13">13:00</option>
+                <option value="14">14:00</option>
+                <option value="15">15:00</option>
+                <option value="16">16:00</option>
+                <option value="17">17:00</option>
+                <option value="18">18:00</option>
+                <option value="19">19:00</option>
+                <option value="20">20:00</option>
+                <option value="21">21:00</option>
+                <option value="22">22:00</option>
+                <option value="23">23:00</option>
+                <option value="24">24:00</option>
+
+              </select>
+            </div>
+          </dd>
+        </dl>
+        <dl class="row">
+          <dt class="tit" colspan="2">
+            <label>结束播放时间：</label>
+          </dt>
+          <dd class="opt">
+            <div id="end">
+              <select name="end" class="input-sm" class="form-control">
+                <option value="1">01:00</option>
+                <option value="2">02:00</option>
+                <option value="3">03:00</option>
+                <option value="4">04:00</option>
+                <option value="5">05:00</option>
+                <option value="6">06:00</option>
+                <option value="7">07:00</option>
+                <option value="8">08:00</option>
+                <option value="9">09:00</option>
+                <option value="10">10:00</option>
+                <option value="11">11:00</option>
+                <option value="12">12:00</option>
+                <option value="13">13:00</option>
+                <option value="14">14:00</option>
+                <option value="15">15:00</option>
+                <option value="16">16:00</option>
+                <option value="17">17:00</option>
+                <option value="18">18:00</option>
+                <option value="19">19:00</option>
+                <option value="20">20:00</option>
+                <option value="21">21:00</option>
+                <option value="22">22:00</option>
+                <option value="23">23:00</option>
+                <option value="24">24:00</option>
+              </select>
+            </div>
+          </dd>
+        </dl>
+      </div>
+
+
+      <!--c-->
+      <div class="bDiv" id="datecycle" style="height: auto;display:none;">
+        <dl class="row">
+          <dt class="tit">
+            <label>开始日期：</label>
+          </dt>
+          <dd class="opt">
+            <input type="text" class="input-txt" id="start_time3" name="begin"  value="{$info.start_time|default='2016-01-01'}"/>
+            <span class="err"></span>
+          </dd>
+        </dl>
+        <dl class="row">
+          <dt class="tit">
+            <label>结束时间：</label>
+          </dt>
+          <dd class="opt">
+            <input type="text" class="input-txt" id="end_time3" name="end"  value="{$info.end_time|default='2019-01-01'}"/>
+            <span class="err"></span>
+          </dd>
+        </dl>
+      </div>
       <dl class="row">
         <dt class="tit">
           <label>广告图片</label>
@@ -99,22 +254,33 @@
           <p class="notic">请上传图片格式文件</p>
         </dd>
       </dl>
+    </div>
+      <!--<dl class="row">-->
+        <!--<dt class="tit">-->
+          <!--<label><em>*</em>背景颜色：</label>-->
+        <!--</dt>-->
+        <!--<dd class="opt">-->
+          <!--<input type="color" placeholder="背景颜色：" class="input-txt" name="bgcolor" value="{$info.bgcolor}"  />-->
+          <!--<span class="err" id="err_bgcolor" style="color:#F00; display:none;"></span>-->
+          <!--<p class="notic"></p>-->
+        <!--</dd>-->
+      <!--</dl>-->
+      <!--<dl class="row">-->
+        <!--<dt class="tit">-->
+          <!--<label>默认排序：</label>-->
+        <!--</dt>-->
+        <!--<dd class="opt">-->
+          <!--<input type="text" placeholder="排序" name="orderby" value="{$info.orderby}" class="input-txt">-->
+          <!--<span class="err"></span>-->
+          <!--<p class="notic"></p>-->
+        <!--</dd>-->
+      <!--</dl>-->
       <dl class="row">
         <dt class="tit">
-          <label><em>*</em>背景颜色：</label>
+          <label>播放次数：</label>
         </dt>
         <dd class="opt">
-          <input type="color" placeholder="背景颜色：" class="input-txt" name="bgcolor" value="{$info.bgcolor}"  />
-          <span class="err" id="err_bgcolor" style="color:#F00; display:none;"></span>
-          <p class="notic"></p>
-        </dd>
-      </dl>
-      <dl class="row">
-        <dt class="tit">
-          <label>默认排序：</label>
-        </dt>
-        <dd class="opt">
-          <input type="text" placeholder="排序" name="orderby" value="{$info.orderby}" class="input-txt">
+          <input type="text" placeholder="播放次数" name="plays" value="{$info.plays}" class="input-txt">
           <span class="err"></span>
           <p class="notic"></p>
         </dd>
@@ -125,6 +291,14 @@
     <input type="hidden" name="ad_id" value="{$info.ad_id}">
   </form>
 </div>
+<!--</div>-->
+
+
+
+
+
+
+
 <script>
   function adsubmit(){
     $('#handleposition').submit();
@@ -133,13 +307,50 @@
   $(document).ready(function(){
     $('#start_time').layDate();
     $('#end_time').layDate();
+  })
+  $(document).ready(function(){
+      $('#start_time2').layDate();
+      $('#end_time2').layDate();
   });
+//  $(document).ready(function(){
+//      $('#start_time3').layDate();
+//      $('#end_time3').layDate();
+//  });
   function img_call_back(fileurl_tmp)
   {
     $("#ad_code").val(fileurl_tmp);
     $("#img_a").attr('href', fileurl_tmp);
     $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
   }
+
+  $(document).ready(function(){
+      // 表格行点击选中切换
+      $('#flexigrid > table>tbody >tr').click(function(){
+          $(this).toggleClass('trSelected');
+      });
+      //插件切换列表
+      $('.tab-base').find('.tab').click(function(){
+          $('.tab-base').find('.tab').each(function(){
+              $(this).removeClass('current');
+          });
+          $(this).addClass('current');
+          $('.bDiv').hide();
+          var id = $(this).attr('data-href');
+          $(id).show();
+          if(id=='#datecycle'){
+              $('.tDiv').show();
+          }else{
+              $('.tDiv').hide();
+          }
+      });
+
+
+      // 点击刷新数据
+      $('.fa-refresh').click(function(){
+          location.href = location.href;
+      });
+
+  });
 </script>
 </body>
 </html>
