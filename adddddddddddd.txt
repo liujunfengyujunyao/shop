@@ -1,0 +1,1 @@
+{"adid":null,"adurl":"http:\/\/www.goldenbrother.cn\/public\/upload\/ad\/2018\/12-25\/e0574bc92e10d119306beb81fec1e7a8.jpg","admd5":"f175c8b5c0da0da2dc0d52ea46eb849c","adtype":"1","repeattimes":"99","monopoly":null,"daycycle":"2016-01-21 00:00:00-2019-01-22 00:00:00","timecycle":"01:00-07:00","daytimeperiod":null,"datecycle":null}

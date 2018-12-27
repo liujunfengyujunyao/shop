@@ -56,7 +56,7 @@
                 <div style="text-align: left; width: 50px;" class="">广告id</div>
               </th>
               <th align="left" abbr="ac_id" axis="col4" class="">
-                <div style="text-align: left; width: 200px;" class="">广告位置</div>
+                <div style="text-align: left; width: 200px;" class="">广告类型</div>
               </th>
               <th align="center" abbr="article_show" axis="col5" class="">
                 <div style="text-align: center; width: 100px;" class="">广告名称</div>
@@ -65,7 +65,7 @@
                 <div style="text-align: center; width: 100px;" class="">广告图片</div>
               </th>     
               <th align="center" abbr="article_time" axis="col6" class="">
-                <div style="text-align: center; width: 100px;" class="">广告链接</div>
+                <div style="text-align: center; width: 100px;" class="">是否执行</div>
               </th>     
               <!--<th align="center" abbr="article_time" axis="col6" class="">-->
                 <!--<div style="text-align: center; width: 50px;" class="">新窗口</div>-->
@@ -116,8 +116,11 @@
                   <td align="left" class="">
                     <div style="text-align: left; width: 50px;">{$vo[ad_id]}</div>
                   </td>
+                  <!--<td align="left" class="">-->
+                    <!--<div style="text-align: left; width: 200px;">{$ad_position_list[$vo[pid]][position_name]}</div>-->
+                  <!--</td>-->
                   <td align="left" class="">
-                    <div style="text-align: left; width: 200px;">{$ad_position_list[$vo[pid]][position_name]}</div>
+                    <div style="text-align: left; width: 200px;">{$vo.media_type}</div>
                   </td>
                   <td align="left" class="">
                     <div style="text-align: left; width: 100px;">{$vo.ad_name}</div>

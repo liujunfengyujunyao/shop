@@ -511,6 +511,7 @@ class Index extends Controller {
                 $location = implode(',', $data['roomid']);
             } else {
                 $location = $data['roomid'];
+
             }
             // halt($location);
 
@@ -533,19 +534,32 @@ class Index extends Controller {
 
 
                 $count = count($data['roomid']);
-                // halt($count);
-                if ($count == 1) {//单独购买
-                    $res = DB::name('client_machine_conf')->where(['location' => $data['roomid'], 'machine_id' => $machine_id])->setDec('goods_num', 1);
-                } else {//批量购买
-                    foreach ($data['roomid'] as $key => $value) {
-                        $res = DB::name('client_machine_conf')->where(['location' => $value, 'machine_id' => $machine_id])->setDec('goods_num', 1);
-                    }
-                }
+//                halt($count);
 
+                if ($count == 1) {//单独购买
+                    if(is_array($data['roomid'])){
+                        $res = DB::name('client_machine_conf')->where(['location' => $data['roomid'][0], 'machine_id' => $machine_id])->setDec('goods_num', 1);
+                    }else{
+                        $res = DB::name('client_machine_conf')->where(['location' => $data['roomid'], 'machine_id' => $machine_id])->setDec('goods_num', 1);
+                    }
+
+                } else {//批量购买
+
+//                    $room = array_unique($data['roomid']);//去重复值
+                    $room = array_count_values($data['roomid']);
+
+//                    foreach ($data['roomid'] as $key => $value) {
+//                        $res = DB::name('client_machine_conf')->where(['location' => $value, 'machine_id' => $machine_id])->setDec('goods_num', 1);
+//                    }
+                    foreach($room as $key => $value){
+                        $res = DB::name('client_machine_conf')->where(['location'=>$key,'machine_id'=>$machine_id])->setDec('goods_num',$value);
+                    }
+                    $add['location'] = implode(",",$data['roomid']);
+                }
+//            halt($add);
                 // DB::name('client_machine_conf')->where(['locati on'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
             }
-//
-//            $add['qdinfqoinqo'] = "qwfqfq"
+
             DB::name('sell_log')->add($add);
             $msg = array(
                 'msgtype' => 'OK',
@@ -1132,6 +1146,27 @@ class Index extends Controller {
                     }
                 }
             }
+        }
+    }
+
+
+    //照片上传
+    public function upload_photo(){
+        if(IS_POST){
+
+            $photo = request()->file('picture');
+            if($photo){
+                $info = $photo->validate(['size'=>102400,'ext'=>'jpg'])->move(ROOT_PATH . 'public' . DS . 'upload'. DS . 'photo','');
+                if(!$info){
+                    return "success";
+                }else{
+                    return "error";
+                }
+            }else{
+                return "no photo";
+            }
+        }else{
+            return fasle;
         }
     }
 
