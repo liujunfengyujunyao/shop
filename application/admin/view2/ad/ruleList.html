@@ -76,7 +76,7 @@
         <div class="tDiv">
             <div class="tDiv2">
                 <div class="fbutton"><a href="{:U('Admin/Ad/rule')}"><div class="add" title="新增规则"><span><i class="fa fa-plus"></i>新增规则</span></div></a></div>
-                <div class="fbutton"><a onClick="getCheck"><div class="add" title="发放设备"><span><i class="fa fa-plus"></i>发放设备</span></div></a></div>
+                <div class="fbutton"><a id="sendRule"><div class="add" title="发放设备"><span><i class="fa fa-plus"></i>发放设备</span></div></a></div>
             </div>
             <div style="clear:both"></div>
         </div>
@@ -170,24 +170,23 @@
             location.href = location.href;
         });
 
-        function getCheck(){
-            var chk_value =[];
+        $('#sendRule').click(function(){
+            var chk_value ='';
             $('input[name="checks"]:checked').each(function(){
-                chk_value.push($(this).val());
-            });
-            if(chk_value){
-                $.ajax({
-                    type : 'post',
-                    url : "{:U('Admin/Ad/rule')}",
-                    data : {ids:chk_value},
-                    dataType : 'json',
-                    success : function(data){
+                chk_value += $(this).val() + ",";
 
-                    }
-                });
+            });
+            chk_value = chk_value.substr(0,chk_value.length-1);
+            console.log(chk_value);
+            if(chk_value==''){
+                alert('请至少选择一条规则！');
+
+            }else{
+                var url = "{:U('Admin/Ad/api')}";
+                location.href = url + "?ids=" +chk_value;
             }
 
-        }
+        });
 
     });
 

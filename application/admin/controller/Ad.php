@@ -399,65 +399,103 @@ class Ad extends Base
      * */
     public function api(){
         if(IS_POST){
-            $machine_id = I("post.machine_ids");
-            $rule_id = I('post.rule_id');//hidden将rule_id传过来
-            $rule = DB::name('ad_rule')->where(['id'=>$rule_id])->find();
-            if ($rule['time_type'] == 0){//a
-
-                $add = array(
-                    'machine_id' => $machine_id,
-//                    'domain_start' => $rule['']
-                );
-                DB::name('time_domain')->add();
+//            $machine_id = I("post.machine");
+//            $rule_id = I('post.rule_ids');//hidden将rule_id传过来
+            halt(I('post.'));
+            $rule = DB::name('ad_rule')->alias('t1')->field("t1.*,t2.ad_code,t2.media_type")->join("__AD__ t2","t1.ad_id = t2.ad_id","LEFT")->where("t1.id in ($rule_id)")->select();
+            /*发送协议*/
+halt($rule);
+            $adlist = [];
+            foreach($rule as $k => $val){
+                $adlist[$k]['adid'] = $val['ad_id'];
+                $adlist[$k]['adurl'] = $val['ad_code'];
+                $adlist[$k]['admd5'] = md5($val['ad_code']);
+                $adlist[$k]['adtype'] = $val['media_type'];
+                $adlist[$k]['repeattimes'] = $val['repeattimes'];
+                $adlist[$k]['daytimeperiod'] = $val['daytimeperiod'];
+                $adlist[$k]['datecycle'] = $val['datecycle'];
+                $adlist[$k]['daycycle'] = $val['daycycle'];
+                $adlist[$k]['timecycle'] = $val['timecycle'];
+                $adlist[$k]['monopoly'] = $val['monopoly'];
             }
+
+
+
+            $post = array(
+                'msgtype' => 'ad_list',
+                'commandid' => 8,
+                'adlistid' => 1,
+//                'adlisturl' => ,
+            );
+//            if ($rule['time_type'] == 0){//a
+//
+//                $add = array(
+//                    'machine_id' => $machine_id,
+////                    'domain_start' => $rule['']
+//                );
+//                DB::name('time_domain')->add();
+//            }
 
         }else{
-            $id = I('get.id');
-            $rule = DB::name('ad_rule')->where(['id'=>$id])->find();
+//            $id = I('get.id');
+            $get = I('get.');
+            $machine = DB::name('machine')->select();
+//            $rule = DB::name('ad_rule')->where(['id'=>$id])->find();
 
-            $time_type = $rule['time_type'];
-            if ($time_type == 0){
-                $daytimeperiod = explode('-',$rule['daytimeperiod']);
-                $start = array(
-                  $daytimeperiod[0],
-                  $daytimeperiod[1],
-                  $daytimeperiod[2],
-                );
-                $start = implode('-',$start);
-                $end = array(
-                    $daytimeperiod[3],
-                    $daytimeperiod[4],
-                    $daytimeperiod[5],
-                );
-                $end = implode('-',$end);
-                $start_time = strtotime($start);
-                $end_time = strtotime($end);//$start_time - $end_time 为此条规则的时间域
-
-//                $test =$this->is_time_cross(1545843448,1545926248,1545879448,1545883048);//34在12区间内返回true
-//                $test =$this->is_time_cross(1545843448,1545926248,NULL,NULL);//34不在12区间返回false
-//                halt($test);
-                $domain = DB::name('ad_time_domain')->select();
-                foreach($domain as $key => $value){
+//            $time_type = $rule['time_type'];
+//            if ($time_type == 0){
+//                $daytimeperiod = explode('-',$rule['daytimeperiod']);
+//                $start = array(
+//                  $daytimeperiod[0],
+//                  $daytimeperiod[1],
+//                  $daytimeperiod[2],
+//                );
+//                $start = implode('-',$start);
+//                $end = array(
+//                    $daytimeperiod[3],
+//                    $daytimeperiod[4],
+//                    $daytimeperiod[5],
+//                );
+//                $end = implode('-',$end);
+//                $start_time = strtotime($start);
+//                $end_time = strtotime($end);//$start_time - $end_time 为此条规则的时间域
 //
-                        if($this->is_time_cross($start_time,$end_time,$value['doamin_start'],$value['domain_end'])===false){
-                            $machine_ids[$key] = $value['machine_id'];
-                        }
+////                $test =$this->is_time_cross(1545843448,1545926248,1545879448,1545883048);//34在12区间内返回true
+////                $test =$this->is_time_cross(1545843448,1545926248,NULL,NULL);//34不在12区间返回false
+////                halt($test);
+//                $domain = DB::name('ad_time_domain')->select();
+//                foreach($domain as $key => $value){
+////
+//                        if($this->is_time_cross($start_time,$end_time,$value['doamin_start'],$value['domain_end'])===false){
+//                            $machine_ids[$key] = $value['machine_id'];
+//                        }
+////
+//                }
+//                $machine_ids = implode(',',$machine_ids);
+//                $machine = DB::name('machine')->field('machine_id,is_online')->where("machine_id in ($machine_ids)")->select();
 //
-                }
-                $machine_ids = implode(',',$machine_ids);
-                $machine = DB::name('machine')->field('machine_id,is_online')->where("machine_id in ($machine_ids)")->select();
+//            }elseif($time_type == 1){
+//
+//            }else{
+//
+//            }
 
-            }elseif($time_type == 1){
 
-            }else{
 
-            }
+
+
+
+
+
+
 //            $where = array(
 //                'is_online' => 1,
 //            );
 //            $machine = DB::name('machine')->where($where)->select();
 
             //每一条被分配的规则计入ad_time_domain
+
+            $this->assign('rule_ids',$get['ids']);
             $this->assign('list',$machine);
             return $this->fetch();
         }

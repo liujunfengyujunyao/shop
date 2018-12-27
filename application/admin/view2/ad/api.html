@@ -13,7 +13,20 @@
         </div>
     </div>
     <!--表单数据-->
-
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+    <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+    <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+    </div>
+    <ul>
+    <li>仅显示当前在线设备</li>
+    <li>红色名称的设备已经设定过广告播放规则</li>
+    <li style="color:red">重复发放给红色名称设备会以当前的规则执行,废弃之前执行政策</li>
+    <li></li>
+    <li style="color:red">{$error}</li>
+    </ul>
+    </div>
 
     <form method="post" id="handleposition" action="{:U('Admin/Ad/api')}">
         <div class="ncap-form-default">
@@ -24,9 +37,9 @@
                         <label>设备：</label>
                     </dt>
                     <dd class="opt">
-                        <div id="week">
+                        <div id="machine">
                             <foreach name="list" item="vo" key="k" >
-                            <input name="week[]" type="checkbox" value="{$vo.machine_id}" />{$vo.machine_id}
+                            <input name="machine[]" type="checkbox" value="{$vo.machine_id}" />{$vo.machine_id}
                             </foreach>
                         </div>
                     </dd>
@@ -90,6 +103,7 @@
         <!--</div>-->
         <input type="hidden" name="act" value="{$act}">
         <!--<input type="hidden" name="ad_id" value="{$info.ad_id}">-->
+        <input type="hidden" name="rule_ids" value="{$rule_ids}">
         <input type="hidden" name="time_type" value="a">
     </form>
 </div>
