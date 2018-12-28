@@ -26,6 +26,7 @@ class Ad extends Base
         $ad_info = array();
         if ($ad_id) {
             $ad_info = D('ad')->where('ad_id', $ad_id)->find();
+//            halt($ad_info);
             $ad_info['start_time'] = date('Y-m-d', $ad_info['start_time']);
             $ad_info['end_time'] = date('Y-m-d', $ad_info['end_time']);
         }
@@ -399,47 +400,125 @@ class Ad extends Base
      * */
     public function api(){
         if(IS_POST){
-//            $machine_id = I("post.machine");
-//            $rule_id = I('post.rule_ids');//hidden将rule_id传过来
-            halt(I('post.'));
+            $machine_id = I("post.machine/a");//machine_id是数组
+//$machine_id=[12];
+            $rule_id = I('post.rule_ids');//hidden将rule_id传过来
+
             $rule = DB::name('ad_rule')->alias('t1')->field("t1.*,t2.ad_code,t2.media_type")->join("__AD__ t2","t1.ad_id = t2.ad_id","LEFT")->where("t1.id in ($rule_id)")->select();
             /*发送协议*/
-halt($rule);
+
             $adlist = [];
             foreach($rule as $k => $val){
-                $adlist[$k]['adid'] = $val['ad_id'];
+                $adlist[$k]['adid'] = intval($val['ad_id']);
                 $adlist[$k]['adurl'] = $val['ad_code'];
                 $adlist[$k]['admd5'] = md5($val['ad_code']);
-                $adlist[$k]['adtype'] = $val['media_type'];
-                $adlist[$k]['repeattimes'] = $val['repeattimes'];
-                $adlist[$k]['daytimeperiod'] = $val['daytimeperiod'];
-                $adlist[$k]['datecycle'] = $val['datecycle'];
-                $adlist[$k]['daycycle'] = $val['daycycle'];
-                $adlist[$k]['timecycle'] = $val['timecycle'];
-                $adlist[$k]['monopoly'] = $val['monopoly'];
+                if($val['media_type'] == 0){
+                    $adlist[$k]['adtype'] = 1;
+                }else{
+                    $adlist[$k]['adtype'] = 2;
+                }
+
+                if(!is_null($val['repeattimes'])){
+                    $adlist[$k]['repeattimes'] = intval($val['repeattimes']);
+                }
+                if(!is_null($val['daytimeperiod'])){
+                    $adlist[$k]['daytimeperiod'] = $val['daytimeperiod'];
+                }
+                if(!is_null($val['datecycle'])){
+                    $adlist[$k]['datecycle'] = explode(",",$val['datecycle']);
+                }
+                if(!is_null($val['daycycle'])){
+                    $adlist[$k]['daycycle'] = $val['daycycle'];
+                }
+                if(!is_null($val['timecycle'])){
+                    $adlist[$k]['timecycle'] = $val['timecycle'];
+                }
+
+
+                $adlist[$k]['monopoly'] = intval($val['monopoly']);
+            }
+
+            $add = array(
+                'machine_id' => implode(',',$machine_id),
+                'adlist' => serialize($adlist),
+            );
+
+            $adlistid = DB::name('adlist')->add($add);
+
+            $json = array(
+                'adlistid' => intval($adlistid),
+                'adnumber' => intval(count($rule)),
+                'adlist' => $adlist,
+            );
+            $txt = json_encode($json,JSON_UNESCAPED_UNICODE);
+            $time = time();
+            $filename = "./public/adjson/" . $time .".txt";
+            file_put_contents($filename,$txt);
+//            $post = array(
+//                'msgtype' => 'ad_list',
+//                'commandid' => "",
+//                'adlistid' => $adlistid,
+//                'adlisturl' => "http://www.goldenbrother.cn/public/adjson/".$time.".txt",
+////
+//            );
+
+
+            foreach($machine_id as $v){
+                $machinesn = DB::name('machine')->where(['machine_id'=>$v])->getField('sn');
+                //发送给所有设备
+                $add_command = array(
+                    'machine_id' => $v,
+                    'msgtype' => 'ad_list',
+                    'send_time' => time(),
+                    'content' => json_encode($json,JSON_UNESCAPED_UNICODE),
+                );
+
+                $number = DB::name('command')->add($add_command);
+
+                $msg = array(
+                    'msgtype' => 'ad_list',
+                    'commandid' => intval($number),
+                    'adlistid' => intval($adlistid),
+//                    'adlisturl' => "http://www.goldenbrother.cn/public/adjson/".$time.".txt",
+                    'adlisturl' => "http://192.168.1.144/public/adjson/".$time.".txt",
+                );
+                $post = array(
+                    'msg'=>$msg,
+                    'msgtype'=>'send_message',
+                    'machinesn'=>intval($machinesn),
+                );
+                $url = 'https://www.goldenbrother.cn:23232/account_server';
+                $res = post_curls($url,$post);
             }
 
 
 
-            $post = array(
-                'msgtype' => 'ad_list',
-                'commandid' => 8,
-                'adlistid' => 1,
-//                'adlisturl' => ,
-            );
-//            if ($rule['time_type'] == 0){//a
-//
-//                $add = array(
-//                    'machine_id' => $machine_id,
-////                    'domain_start' => $rule['']
-//                );
-//                DB::name('time_domain')->add();
-//            }
-
         }else{
 //            $id = I('get.id');
             $get = I('get.');
-            $machine = DB::name('machine')->select();
+            $rule_ids = $get['ids'];
+            $rule = DB::name('ad_rule')->where("id in ($rule_ids)")->select();
+            $monopoly = DB::name('ad_rule')->where("id in ($rule_ids) and monopoly = 1")->select();
+            $count = count($monopoly);
+            if($count > 1){//独占大于两个要检查时间冲突
+                $type2 = DB::name('ad_rule')->where("id in ($rule_ids) and monopoly = 1 and time_type = 2")->select();
+                $type1 = DB::name('ad_rule')->where("id in ($rule_ids) and monopoly = 1 and time_type = 1")->select();
+                $type0 = DB::name('ad_rule')->where("id in ($rule_ids) and monopoly = 1 and time_type = 0")->select();
+                if(count($type2) > 1){//检查同为执行规则c独占广告的星期是否重合
+                    $week = [];
+                    foreach ($type2 as $key => $value){
+                        $week[$key] = explode(',',$value['datecycle']);
+                    }
+                    $n = $this->getRepeat($week);
+
+                }
+            }
+            foreach ($rule as $key => $value){
+                if($value['monopoly'] == 1){//1独占  2非独占
+
+                }
+            }
+            $machine = DB::name('machine')->where(['is_online'=>1])->select();
 //            $rule = DB::name('ad_rule')->where(['id'=>$id])->find();
 
 //            $time_type = $rule['time_type'];
@@ -495,7 +574,7 @@ halt($rule);
 
             //每一条被分配的规则计入ad_time_domain
 
-            $this->assign('rule_ids',$get['ids']);
+            $this->assign('rule_ids',$rule_ids);
             $this->assign('list',$machine);
             return $this->fetch();
         }
@@ -532,6 +611,20 @@ halt($rule);
             }
         }
     }
+
+    public function getRepeat($arr) {
+
+    // 获取去掉重复数据的数组
+    $unique_arr = array_unique ( $arr );
+    return $unique_arr;
+    // 获取重复数据的数组
+    $repeat_arr = array_diff_assoc ( $arr, $unique_arr );
+
+    return $repeat_arr;
+}
+
+
+
 
 
 }

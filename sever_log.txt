@@ -1256,3 +1256,4 @@ log_time:2018-12-27 11:22:06{"msgtype":"receive_message","msg":{"msgtype":"sell_
 log_time:2018-12-27 11:22:27{"msgtype":"receive_message","msg":{"msgtype":"sell_log","usetype":1,"roomid":[1,1,1],"goodsname":null,"selltime":1545798551,"selllogid":0,"paytype":1,"amount":120.0,"paymenttype":0,"paymentamount":0,"paysn":"1545798548O120","isrealtime":1},"machinesn":11}
 log_time:2018-12-27 11:22:34{"msgtype":"receive_message","msg":{"msgtype":"sell_log","usetype":1,"roomid":[1,1,1],"goodsname":null,"selltime":1545798551,"selllogid":0,"paytype":1,"amount":120.0,"paymenttype":0,"paymentamount":0,"paysn":"1545798548O120","isrealtime":1},"machinesn":11}
 log_time:2018-12-27 11:22:57{"msgtype":"receive_message","msg":{"msgtype":"sell_log","usetype":1,"roomid":[1,1,1],"goodsname":null,"selltime":1545798551,"selllogid":0,"paytype":1,"amount":120.0,"paymenttype":0,"paymentamount":0,"paysn":"1545798548O120","isrealtime":1},"machinesn":11}
+log_time:2018-12-27 18:00:18
