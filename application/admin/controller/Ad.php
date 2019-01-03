@@ -109,8 +109,12 @@ class Ad extends Base
 //        $data['start_time'] = strtotime($data['begin']);
 //        $data['end_time'] = strtotime($data['end']);
         $data['create_time'] = time();
-
         if ($data['act'] == 'add') {
+            if($data['media_type'] == 1){//如果是视频就是ad_vidoe
+                $data['ad_code'] = $data['ad_video'];
+                unset($data['ad_video']);
+            }
+
             $r = D('ad')->add($data);
         }
         if ($data['act'] == 'edit') {
@@ -412,6 +416,13 @@ class Ad extends Base
                 $adlist[$k]['adid'] = intval($val['ad_id']);
                 $adlist[$k]['adurl'] = $val['ad_code'];
                 $adlist[$k]['admd5'] = md5($val['ad_code']);
+                if($val['time_type'] == 0){
+                    $adlist[$k]['time_type'] = "a";
+                }elseif($val['time_type'] == 1){
+                    $adlist[$k]['time_type'] = "b";
+                }else{
+                    $adlist[$k]['time_type'] = "c";
+                }
                 if($val['media_type'] == 0){
                     $adlist[$k]['adtype'] = 1;
                 }else{
@@ -422,13 +433,39 @@ class Ad extends Base
                     $adlist[$k]['repeattimes'] = intval($val['repeattimes']);
                 }
                 if(!is_null($val['daytimeperiod'])){
-                    $adlist[$k]['daytimeperiod'] = $val['daytimeperiod'];
+//                    $adlist[$k]['daytimeperiod'] = $val['daytimeperiod'];
+                    $six = explode("-",$val['daytimeperiod']);
+                    $start[0] = $six[0];
+                    $start[1] = $six[1];
+                    $start[2] = $six[2];
+                    $start = implode('-',$start);
+                    $start = strtotime($start);
+                    $end[0] = $six[3];
+                    $end[1] = $six[4];
+                    $end[2] = $six[5];
+                    $end = implode('-',$end);
+                    $end = strtotime($end);
+//                    $adlist[$k]['daytimeperiod'] = explode("-",$val['daytimeperiod']);
+                    $adlist[$k]['daytimeperiod'] = $start . "-" . $end;
                 }
                 if(!is_null($val['datecycle'])){
                     $adlist[$k]['datecycle'] = explode(",",$val['datecycle']);
                 }
                 if(!is_null($val['daycycle'])){
-                    $adlist[$k]['daycycle'] = $val['daycycle'];
+//                    $adlist[$k]['daycycle'] = $val['daycycle'];
+                    $six1 = explode("-",$val['daycycle']);
+                    $start1[0] = $six1[0];
+                    $start1[1] = $six1[1];
+                    $start1[2] = $six1[2];
+                    $start1 = implode('-',$start1);
+                    $start1 = strtotime($start1);
+                    $end1[0] = $six1[3];
+                    $end1[1] = $six1[4];
+                    $end1[2] = $six1[5];
+                    $end1 = implode('-',$end1);
+                    $end1 = strtotime($end1);
+//                    $adlist[$k]['daytimeperiod'] = explode("-",$val['daytimeperiod']);
+                    $adlist[$k]['daycycle'] = $start . "-" . $end;
                 }
                 if(!is_null($val['timecycle'])){
                     $adlist[$k]['timecycle'] = $val['timecycle'];
@@ -437,6 +474,7 @@ class Ad extends Base
 
                 $adlist[$k]['monopoly'] = intval($val['monopoly']);
             }
+//            halt($adlist);
 
             $add = array(
                 'machine_id' => implode(',',$machine_id),
@@ -497,28 +535,42 @@ class Ad extends Base
 //            $id = I('get.id');
             $get = I('get.');
             $rule_ids = $get['ids'];
+            if($rule_ids == ""){
+                $rule_ids = $get['id'];
+            }
             $rule = DB::name('ad_rule')->where("id in ($rule_ids)")->select();
+//            halt($rule);
             $monopoly = DB::name('ad_rule')->where("id in ($rule_ids) and monopoly = 1")->select();
             $count = count($monopoly);
             if($count > 1){//独占大于两个要检查时间冲突
                 $type2 = DB::name('ad_rule')->where("id in ($rule_ids) and monopoly = 1 and time_type = 2")->select();
                 $type1 = DB::name('ad_rule')->where("id in ($rule_ids) and monopoly = 1 and time_type = 1")->select();
                 $type0 = DB::name('ad_rule')->where("id in ($rule_ids) and monopoly = 1 and time_type = 0")->select();
+                $error1 = "检测到".$count."个独占规则存在";
+                $error2 = "其中连续日期时间段存在:".count($type0)."个";
+                $error3 = "连续日期周期时间段:".count($type1)."个";
+                $error4 = "特定日期周期时间段:".count($type2)."个";
+//                $error = [$error1,$error2,$error3,$error4];
+
+
                 if(count($type2) > 1){//检查同为执行规则c独占广告的星期是否重合
                     $week = [];
                     foreach ($type2 as $key => $value){
                         $week[$key] = explode(',',$value['datecycle']);
+
                     }
-                    $n = $this->getRepeat($week);
+
+
 
                 }
             }
             foreach ($rule as $key => $value){
                 if($value['monopoly'] == 1){//1独占  2非独占
-
                 }
             }
+
             $machine = DB::name('machine')->where(['is_online'=>1])->select();
+//
 //            $rule = DB::name('ad_rule')->where(['id'=>$id])->find();
 
 //            $time_type = $rule['time_type'];
@@ -573,7 +625,10 @@ class Ad extends Base
 //            $machine = DB::name('machine')->where($where)->select();
 
             //每一条被分配的规则计入ad_time_domain
-
+            $this->assign('error1',$error1);
+            $this->assign('error2',$error2);
+            $this->assign('error3',$error3);
+            $this->assign('error4',$error4);
             $this->assign('rule_ids',$rule_ids);
             $this->assign('list',$machine);
             return $this->fetch();
@@ -621,6 +676,19 @@ class Ad extends Base
     $repeat_arr = array_diff_assoc ( $arr, $unique_arr );
 
     return $repeat_arr;
+}
+
+public function score(){
+//       $time = strtotime(date());
+//    date_default_timezone_set('UTC');//'Asia/Shanghai' 亚洲/上海
+        $time = strtotime("now");
+        $date = gmdate("Y-m-d H:i:s",$time);
+        halt($date);
+        $time = $this->gmtime();
+        halt($time);
+}
+public function gmtime(){
+    return (time() - date('Z'));
 }
 
 

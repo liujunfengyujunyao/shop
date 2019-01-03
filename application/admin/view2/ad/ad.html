@@ -1,6 +1,34 @@
 <include file="public/layout" />
 <script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
-<script src="__ROOT__/public/static/js/plupload/jquery.ui.plupload.js"></script>
+<style>
+  .video {
+    float:right;
+    display: block;
+    background: #E6E6E6;
+    border: 0;
+    border-radius: 0 3px 3px 0;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #555;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+  }
+  .video input {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+  }
+  .video:hover {
+    background: #2CBCA3;
+
+    color: #fff;
+    text-decoration: none;
+  }
+
+
+</style>
 <body style="background-color: #FFF; overflow: auto;">
 <div class="page">
   <div class="fixed-bar">
@@ -16,7 +44,7 @@
   <!--表单数据-->
 
 
-  <form method="post" id="handleposition" action="{:U('Admin/Ad/adHandle')}">
+  <form method="post" id="handleposition" action="{:U('Admin/Ad/adHandle')}" enctype="multipart/form-data">
     <div class="ncap-form-default">
       <dl class="row">
         <dt class="tit">
@@ -28,11 +56,6 @@
           <p class="notic"></p>
         </dd>
       </dl>
-
-      <p>
-        <button id="browse">选择文件</button>
-        <button id="start_upload">开始上传</button>
-      </p>
       <!--<dl class="row">-->
       <!--<dt class="tit" colspan="2">-->
       <!--<label>广告类型：</label>-->
@@ -53,262 +76,14 @@
         </dt>
         <dd class="opt">
           <div id="gcategory">
-            <select name="media_type" class="input-sm" class="form-control">
+            <select id="adtype" name="media_type" class="input-sm" class="form-control adtype">
               <option value="0">图片</option>
               <option value="1">flash</option>
             </select>
           </div>
         </dd>
       </dl>
-      <!--<dl class="row">-->
-        <!--<dt class="tit" colspan="2">-->
-          <!--<label>是否独占：</label>-->
-        <!--</dt>-->
-        <!--<dd class="opt">-->
-          <!--<div id="monopoly">-->
-            <!--<select name="monopoly" class="input-sm isonly" class="form-control">-->
-              <!--<option value="2">非独占</option>-->
-              <!--<option value="1">独占</option>-->
-            <!--</select>-->
-          <!--</div>-->
-        <!--</dd>-->
-      <!--</dl>-->
-
-      <!--<ul class="tab-base nc-row">-->
-      <!--<li><a data-href="#daytimeperiod" class="current tab" data-id=""><span>a.连续日期时间段</span></a></li>-->
-      <!--<li><a data-href="#daycycle" class=" tab"><span>b.连续日期周期时间段</span></a></li>-->
-      <!--<li><a data-href="#datecycle" class=" tab"><span>c.特定日期周期时间段</span></a></li>-->
-      <!--&lt;!&ndash;li><a data-href="#tab_function" class="tab"><span>功能插件</span></a></li &ndash;&gt;-->
-      <!--&lt;!&ndash; li><a href="http://www.tp-shop.cn/articleList_cat_id_30.html" target="_blank"><span>云插件</span></a></li &ndash;&gt;-->
-      <!--</ul>-->
-      <!--<dl class="row">-->
-      <!--<dt class="tit" colspan="2">-->
-      <!--<label>广告位置：</label>-->
-      <!--</dt>-->
-      <!--<dd class="opt">-->
-      <!--<div>-->
-      <!--<select name="pid" class="input-sm" class="form-control">-->
-      <!--<volist name="position" id="item">-->
-      <!--<option value="{$item.position_id}" <if condition="$info[pid] eq $item[position_id]">selected</if>>{$item.position_name}</option>-->
-      <!--</volist>-->
-      <!--</select>-->
-      <!--</div>-->
-      <!--</dd>-->
-      <!--</dl>-->
-      <!--<ul class="tab-base nc-row">-->
-        <!--<li><a data-href="#daytimeperiod" class="current tab" data-id="a"><span>a.连续日期时间段</span></a></li>-->
-        <!--<li><a data-href="#daycycle" class=" tab" data-id="b"><span>b.连续日期周期时间段</span></a></li>-->
-        <!--<li><a data-href="#datecycle" class=" tab" data-id="c"><span>c.特定日期周期时间段</span></a></li>-->
-        <!--&lt;!&ndash;li><a data-href="#tab_function" class="tab"><span>功能插件</span></a></li &ndash;&gt;-->
-        <!--&lt;!&ndash; li><a href="http://www.tp-shop.cn/articleList_cat_id_30.html" target="_blank"><span>云插件</span></a></li &ndash;&gt;-->
-      <!--</ul>-->
-      <!--<div class="bDiv" id="daytimeperiod" style="height: auto;">-->
-        <!--<dl class="row">-->
-          <!--<dt class="tit">-->
-            <!--<label>开始日期：</label>-->
-          <!--</dt>-->
-          <!--<dd class="opt">-->
-            <!--<input type="text" class="input-txt" id="start_time" name="begin1"  value="{$info.start_time|default='2016-01-01'}"/>-->
-            <!--<span class="err"></span>-->
-          <!--</dd>-->
-        <!--</dl>-->
-        <!--<dl class="row">-->
-          <!--<dt class="tit">-->
-            <!--<label>结束时间：</label>-->
-          <!--</dt>-->
-          <!--<dd class="opt">-->
-            <!--<input type="text" class="input-txt" id="end_time" name="end1"  value="{$info.end_time|default='2019-01-01'}"/>-->
-            <!--<span class="err"></span>-->
-          <!--</dd>-->
-        <!--</dl>-->
-      <!--</div>-->
-
-
-      <!--&lt;!&ndash;b&ndash;&gt;-->
-      <!--<div class="bDiv" id="daycycle" style="height: auto;display:none;">-->
-        <!--<dl class="row">-->
-          <!--<dt class="tit">-->
-            <!--<label>开始日期：</label>-->
-          <!--</dt>-->
-          <!--<dd class="opt">-->
-            <!--<input type="text" class="input-txt" id="start_time2" name="begin2"  value="{$info.start_time|default='2016-01-01'}"/>-->
-            <!--<span class="err"></span>-->
-          <!--</dd>-->
-        <!--</dl>-->
-        <!--<dl class="row">-->
-          <!--<dt class="tit">-->
-            <!--<label>结束时间：</label>-->
-          <!--</dt>-->
-          <!--<dd class="opt">-->
-            <!--<input type="text" class="input-txt" id="end_time2" name="end2"  value="{$info.end_time|default='2019-01-01'}"/>-->
-            <!--<span class="err"></span>-->
-          <!--</dd>-->
-        <!--</dl>-->
-        <!--<dl class="row">-->
-          <!--<dt class="tit" colspan="2">-->
-            <!--<label>开始播放时间：</label>-->
-          <!--</dt>-->
-          <!--<dd class="opt">-->
-            <!--<div id="begin">-->
-              <!--<select name="begin-hour2" class="input-sm" class="form-control">-->
-                <!--<option value="01:00">01:00</option>-->
-                <!--<option value="02:00">02:00</option>-->
-                <!--<option value="03:00">03:00</option>-->
-                <!--<option value="04:00">04:00</option>-->
-                <!--<option value="05:00">05:00</option>-->
-                <!--<option value="06:00">06:00</option>-->
-                <!--<option value="07:00">07:00</option>-->
-                <!--<option value="08:00">08:00</option>-->
-                <!--<option value="09:00">09:00</option>-->
-                <!--<option value="10:00">10:00</option>-->
-                <!--<option value="11:00">11:00</option>-->
-                <!--<option value="12:00">12:00</option>-->
-                <!--<option value="13:00">13:00</option>-->
-                <!--<option value="14:00">14:00</option>-->
-                <!--<option value="15:00">15:00</option>-->
-                <!--<option value="16:00">16:00</option>-->
-                <!--<option value="17:00">17:00</option>-->
-                <!--<option value="18:00">18:00</option>-->
-                <!--<option value="19:00">19:00</option>-->
-                <!--<option value="20:00">20:00</option>-->
-                <!--<option value="21:00">21:00</option>-->
-                <!--<option value="22:00">22:00</option>-->
-                <!--<option value="23:00">23:00</option>-->
-                <!--<option value="24:00">24:00</option>-->
-
-              <!--</select>-->
-            <!--</div>-->
-          <!--</dd>-->
-        <!--</dl>-->
-        <!--<dl class="row">-->
-          <!--<dt class="tit" colspan="2">-->
-            <!--<label>结束播放时间：</label>-->
-          <!--</dt>-->
-          <!--<dd class="opt">-->
-            <!--<div id="end">-->
-              <!--<select name="end-hour2" class="input-sm" class="form-control">-->
-                <!--<option value="01:00">01:00</option>-->
-                <!--<option value="02:00">02:00</option>-->
-                <!--<option value="03:00">03:00</option>-->
-                <!--<option value="04:00">04:00</option>-->
-                <!--<option value="05:00">05:00</option>-->
-                <!--<option value="06:00">06:00</option>-->
-                <!--<option value="07:00">07:00</option>-->
-                <!--<option value="08:00">08:00</option>-->
-                <!--<option value="09:00">09:00</option>-->
-                <!--<option value="10:00">10:00</option>-->
-                <!--<option value="11:00">11:00</option>-->
-                <!--<option value="12:00">12:00</option>-->
-                <!--<option value="13:00">13:00</option>-->
-                <!--<option value="14:00">14:00</option>-->
-                <!--<option value="15:00">15:00</option>-->
-                <!--<option value="16:00">16:00</option>-->
-                <!--<option value="17:00">17:00</option>-->
-                <!--<option value="18:00">18:00</option>-->
-                <!--<option value="19:00">19:00</option>-->
-                <!--<option value="20:00">20:00</option>-->
-                <!--<option value="21:00">21:00</option>-->
-                <!--<option value="22:00">22:00</option>-->
-                <!--<option value="23:00">23:00</option>-->
-                <!--<option value="24:00">24:00</option>-->
-              <!--</select>-->
-            <!--</div>-->
-          <!--</dd>-->
-        <!--</dl>-->
-      <!--</div>-->
-
-
-      <!--&lt;!&ndash;c&ndash;&gt;-->
-      <!--<div class="bDiv" id="datecycle" style="height: auto;display:none;">-->
-        <!--<dl class="row">-->
-          <!--<dt class="tit" colspan="2">-->
-            <!--<label>开始播放时间：</label>-->
-          <!--</dt>-->
-          <!--<dd class="opt">-->
-            <!--<div id="begin">-->
-              <!--<select name="begin-hour3" class="input-sm" class="form-control">-->
-                <!--<option value="01:00">01:00</option>-->
-                <!--<option value="02:00">02:00</option>-->
-                <!--<option value="03:00">03:00</option>-->
-                <!--<option value="04:00">04:00</option>-->
-                <!--<option value="05:00">05:00</option>-->
-                <!--<option value="06:00">06:00</option>-->
-                <!--<option value="07:00">07:00</option>-->
-                <!--<option value="08:00">08:00</option>-->
-                <!--<option value="09:00">09:00</option>-->
-                <!--<option value="10:00">10:00</option>-->
-                <!--<option value="11:00">11:00</option>-->
-                <!--<option value="12:00">12:00</option>-->
-                <!--<option value="13:00">13:00</option>-->
-                <!--<option value="14:00">14:00</option>-->
-                <!--<option value="15:00">15:00</option>-->
-                <!--<option value="16:00">16:00</option>-->
-                <!--<option value="17:00">17:00</option>-->
-                <!--<option value="18:00">18:00</option>-->
-                <!--<option value="19:00">19:00</option>-->
-                <!--<option value="20:00">20:00</option>-->
-                <!--<option value="21:00">21:00</option>-->
-                <!--<option value="22:00">22:00</option>-->
-                <!--<option value="23:00">23:00</option>-->
-                <!--<option value="24:00">24:00</option>-->
-
-              <!--</select>-->
-            <!--</div>-->
-          <!--</dd>-->
-        <!--</dl>-->
-        <!--<dl class="row">-->
-          <!--<dt class="tit" colspan="2">-->
-            <!--<label>结束播放时间：</label>-->
-          <!--</dt>-->
-          <!--<dd class="opt">-->
-            <!--<div id="end">-->
-              <!--<select name="end-hour3" class="input-sm" class="form-control">-->
-                <!--<option value="01:00">01:00</option>-->
-                <!--<option value="02:00">02:00</option>-->
-                <!--<option value="03:00">03:00</option>-->
-                <!--<option value="04:00">04:00</option>-->
-                <!--<option value="05:00">05:00</option>-->
-                <!--<option value="06:00">06:00</option>-->
-                <!--<option value="07:00">07:00</option>-->
-                <!--<option value="08:00">08:00</option>-->
-                <!--<option value="09:00">09:00</option>-->
-                <!--<option value="10:00">10:00</option>-->
-                <!--<option value="11:00">11:00</option>-->
-                <!--<option value="12:00">12:00</option>-->
-                <!--<option value="13:00">13:00</option>-->
-                <!--<option value="14:00">14:00</option>-->
-                <!--<option value="15:00">15:00</option>-->
-                <!--<option value="16:00">16:00</option>-->
-                <!--<option value="17:00">17:00</option>-->
-                <!--<option value="18:00">18:00</option>-->
-                <!--<option value="19:00">19:00</option>-->
-                <!--<option value="20:00">20:00</option>-->
-                <!--<option value="21:00">21:00</option>-->
-                <!--<option value="22:00">22:00</option>-->
-                <!--<option value="23:00">23:00</option>-->
-                <!--<option value="24:00">24:00</option>-->
-              <!--</select>-->
-            <!--</div>-->
-          <!--</dd>-->
-        <!--</dl>-->
-        <!--<dl class="row">-->
-          <!--<dt class="tit" colspan="2">-->
-            <!--<label>星期：</label>-->
-          <!--</dt>-->
-          <!--<dd class="opt">-->
-            <!--<div id="week">-->
-              <!--<input name="week[]" type="checkbox" value="1" />周一-->
-              <!--<input name="week[]" type="checkbox" value="2" />周二-->
-              <!--<input name="week[]" type="checkbox" value="3" />周三-->
-              <!--<input name="week[]" type="checkbox" value="4" />周四-->
-              <!--<input name="week[]" type="checkbox" value="5" />周五-->
-              <!--<input name="week[]" type="checkbox" value="6" />周六-->
-              <!--<input name="week[]" type="checkbox" value="7" />周天-->
-            <!--</div>-->
-          <!--</dd>-->
-        <!--</dl>-->
-      <!--</div>-->
-      <dl class="row">
+      <dl class="row adimg">
         <dt class="tit">
           <label>广告图片</label>
         </dt>
@@ -323,47 +98,31 @@
                             <input type="text" id="ad_code" name="ad_code" value="{$info.ad_code}" class="type-file-text">
                             <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
                             <input class="type-file-file" onClick="GetUploadify(1,'','ad','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
-                            <!--<input class="type-file-file" onClick="GetUploadify(1,'','ad','media')" size="30000" hidefocus="true" nc_type="change_site_logo"  accept="video/*" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">-->
                         </span>
           </div>
           <span class="err"></span>
           <p class="notic">请上传图片格式文件</p>
         </dd>
       </dl>
+      <dl class="row advideo">
+        <dt class="tit">
+          <label>广告视频</label>
+        </dt>
+        <dd class="opt">
+          <div class="input-file-show" style="padding-left:2px;">
+
+            <span class="type-file-box">
+                            <input type="text" id="ad_video" name="ad_video" value="{$info.ad_video}" class="type-file-text">
+                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUpVideo(1,'','ad','video_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+          </div>
+          <span class="err"></span>
+          <p class="notic">请上传视频格式文件</p>
+        </dd>
+      </dl>
 
 
-
-
-      <!--<dl class="row">-->
-      <!--<dt class="tit">-->
-      <!--<label><em>*</em>背景颜色：</label>-->
-      <!--</dt>-->
-      <!--<dd class="opt">-->
-      <!--<input type="color" placeholder="背景颜色：" class="input-txt" name="bgcolor" value="{$info.bgcolor}"  />-->
-      <!--<span class="err" id="err_bgcolor" style="color:#F00; display:none;"></span>-->
-      <!--<p class="notic"></p>-->
-      <!--</dd>-->
-      <!--</dl>-->
-      <!--<dl class="row">-->
-      <!--<dt class="tit">-->
-      <!--<label>默认排序：</label>-->
-      <!--</dt>-->
-      <!--<dd class="opt">-->
-      <!--<input type="text" placeholder="排序" name="orderby" value="{$info.orderby}" class="input-txt">-->
-      <!--<span class="err"></span>-->
-      <!--<p class="notic"></p>-->
-      <!--</dd>-->
-      <!--</dl>-->
-      <!--<dl class="row ishidden">-->
-        <!--<dt class="tit">-->
-          <!--<label>播放次数：</label>-->
-        <!--</dt>-->
-        <!--<dd class="opt">-->
-          <!--<input type="text" placeholder="播放次数" name="plays" value="{$info.plays}" class="input-txt">-->
-          <!--<span class="err"></span>-->
-          <!--<p class="notic"></p>-->
-        <!--</dd>-->
-      <!--</dl>-->
 
       <div class="bot"><a href="JavaScript:void(0);" onclick="adsubmit()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
     </div>
@@ -382,6 +141,24 @@
 
 
 <script>
+    $(".advideo").hide();
+    $(".adimg").show();
+    $('#adtype').change(function(){
+
+        if($(this).val()==0){
+            $(".advideo").hide();
+            $(".adimg").show();
+        }else if($(this).val()==1){
+            $(".advideo").show();
+            $(".adimg").hide();
+        }
+    });
+    $("input[name='video']").change(function(){
+        var filePath=$(this).val();
+        var arr=filePath.split('\\');
+        var fileName=arr[arr.length-1];
+        $("#ad_video").val(fileName);
+    });
     function adsubmit(){
         $('#handleposition').submit();
     }
@@ -403,6 +180,11 @@
         $("#ad_code").val(fileurl_tmp);
         $("#img_a").attr('href', fileurl_tmp);
         $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    function video_call_back(fileurl_tmp)
+    {
+        $("#ad_video").val(fileurl_tmp);
+
     }
 
     $(document).ready(function(){
@@ -428,49 +210,12 @@
             }
         });
 
-
         // 点击刷新数据
         $('.fa-refresh').click(function(){
             location.href = location.href;
         });
-        $('.isonly').change(function(){
-            if($(this).val()==1){
-                $(".ishidden").hide();
-            }else if($(this).val()==0){
-                $(".ishidden").show();
-            }
-        });
+
     });
-
-
-    //实例化一个plupload上传对象
-    var uploader = new plupload.Uploader({
-        browse_button : 'browse', //触发文件选择对话框的按钮，为那个元素id
-        url : 'upload.php', //服务器端的上传页面地址
-        flash_swf_url : 'js/Moxie.swf', //swf文件，当需要使用swf方式进行上传时需要配置该参数
-        silverlight_xap_url : 'js/Moxie.xap' //silverlight文件，当需要使用silverlight方式进行上传时需要配置该参数
-    });
-
-    //在实例对象上调用init()方法进行初始化
-    uploader.init();
-
-    //绑定各种事件，并在事件监听函数中做你想做的事
-    uploader.bind('FilesAdded',function(uploader,files){
-        //每个事件监听函数都会传入一些很有用的参数，
-        //我们可以利用这些参数提供的信息来做比如更新UI，提示上传进度等操作
-    });
-    uploader.bind('UploadProgress',function(uploader,file){
-        //每个事件监听函数都会传入一些很有用的参数，
-        //我们可以利用这些参数提供的信息来做比如更新UI，提示上传进度等操作
-    });
-    //......
-    //......
-
-    //最后给"开始上传"按钮注册事件
-    document.getElementById('start_upload').onclick = function(){
-        uploader.start(); //调用实例对象的start()方法开始上传文件，当然你也可以在其他地方调用该方法
-    }
-
 </script>
 </body>
 </html>

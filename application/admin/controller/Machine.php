@@ -81,7 +81,7 @@ class Machine extends Base
             $machine_where['m.district'] = $district_id;
         }
         if (!empty($key_word)) {
-            $machine_where['m.machine_name'] = array('like', "%key_word");
+            $machine_where['m.machine_name'] = array('like', "%$key_word%");
         }
         $machine_where['m.status'] = 1;
 
@@ -138,7 +138,7 @@ class Machine extends Base
             ->join('__ADMIN__ a', 'a.admin_id = m.client_id', 'LEFT')
             ->where($machine_where)
             ->select();
-
+//halt($machine_where);
         $test = array();
         foreach ($list as $key => &$value) {
             if ($value['model'] == 1) {

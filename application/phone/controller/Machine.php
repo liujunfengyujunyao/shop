@@ -309,6 +309,7 @@ class Machine extends Base{
 
 		    //$info['group_name'] = $info['group_name']?$info['group_name']:'无群组';
 		    $store = Db::name('machine_group')->where(['user_id'=>$admin_id])->field('group_name,id')->select();
+		    halt($info);
             $this->assign('store',$store);
 			$this->assign('info',$info);
 			//halt($info);

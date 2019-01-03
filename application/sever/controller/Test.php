@@ -466,7 +466,23 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
     }
 
     public function in(){
-        $data = intval(NULL);
-        halt($data);
+        $params['machinesn'] = 10087;
+        $msg['type'] = 2;
+        $msg['px'] = 2;
+        $uuid = sha1("sn=".$params['machinesn']."&type=".$msg['type']."&px=".$msg['px']);
+        halt($uuid);
+
+    }
+
+    public function adlist(){
+        $machine_id = 3;
+        $data = DB::name('adlist')->field('adlist')->where("machine_id = $machine_id")->select();
+        foreach($data as $key => &$value){
+            $value['adlist'] = unserialize($value['adlist']);
+
+        }
+        dump($data);
+        $json = json_encode($data,JSON_UNESCAPED_UNICODE);
+        halt($json);
     }
 }

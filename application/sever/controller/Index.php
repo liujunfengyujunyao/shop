@@ -199,7 +199,7 @@ class Index extends Controller {
 			//更新设备的经纬度
 			DB::name('machine')
 				->where(['sn'=>$data['sn']])
-				->save(['position_lng'=>$data['poslong'],'position_lat'=>$data['poslat'],'is_online'=>1,'version_id'=>$data['version'],'adress'=>$data['adress']]);
+				->save(['position_lng'=>$data['poslong'],'position_lat'=>$data['poslat'],'is_online'=>1,'version_id'=>$data['version'],'adress'=>$data['adress'],'machine_location'=>$data['machine_location']]);
 			if($machine['priority'] == 1){
 				$result = array(
 				'msg' => array(
@@ -976,7 +976,7 @@ class Index extends Controller {
         $res = DB::name('machine_msg')->add($data);
         if ($res) {
             $msgtype = array(
-                'msgtype' => 'OK',
+                'msgtype' => 'PASS',
             );
             $result = array(
                 'msg' => $msgtype,
