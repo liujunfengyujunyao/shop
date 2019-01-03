@@ -509,6 +509,7 @@ class Index extends Controller {
             $type = is_array($data['roomid']);
             if ($type !== false) {
                 $location = implode(',', $data['roomid']);
+
             } else {
                 $location = $data['roomid'];
 

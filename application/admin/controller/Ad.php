@@ -9,7 +9,7 @@
  * 不允许对程序代码以任何形式任何目的的再发布。
  * 采用TP5助手函数可实现单字母函数M D U等,也可db::name方式,可双向兼容
  * ============================================================================
- * Author: 当燃      
+ * Author: 当燃
  * Date: 2015-09-21
  */
 
@@ -32,6 +32,10 @@ class Ad extends Base
         }
         if ($act == 'add')
             $ad_info['pid'] = $this->request->param('pid');
+        if($ad_info['media_type']==1){
+            $ad_info['ad_video'] =$ad_info['ad_code'];
+            unset($ad_info['ad_code']);
+        }
         $position = D('ad_position')->select();
         $this->assign('info', $ad_info);
         $this->assign('act', $act);
@@ -292,7 +296,7 @@ class Ad extends Base
         $count = $Ad->where($where)->count();// 查询满足要求的总记录数
         $Page = $pager = new Page($count, 10);// 实例化分页类 传入总记录数和每页显示的记录数
 //        $res = $Ad->where($where)->limit($Page->firstRow . ',' . $Page->listRows)->select();
-        $res = $Ad->alias('t1')->field('t1.*,t2.ad_code')->join("__AD__ t2","t1.ad_id = t2.ad_id")->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $res = $Ad->alias('t1')->field('t1.*,t2.ad_code,t2.ad_id')->join("__AD__ t2","t1.ad_id = t2.ad_id")->limit($Page->firstRow . ',' . $Page->listRows)->select();
         $list = array();
 //        halt($res);
         if ($res) {
@@ -323,6 +327,17 @@ class Ad extends Base
         $this->assign('ad',$ad);
         $this->assign('act', $act);
         return $this->fetch();
+    }
+
+    public function ruledel(){
+        $id = I('get.del_id');
+
+        $r = DB::name('ad_rule')->where(['id'=>$id])->delete();
+        if ($r) {
+            $this->ajaxReturn(['status' => 1, 'msg' => "操作成功", 'url' => U('Admin/Ad/ruleList')]);
+        } else {
+            $this->ajaxReturn(['status' => -1, 'msg' => "操作失败"]);
+        }
     }
 
     public function ruleHandle()
@@ -384,7 +399,7 @@ class Ad extends Base
                     $this->ajaxReturn(['status' => -1, 'msg' => "操作失败"]);
                 }
             }
-        $referurl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : U('Admin/Ad/ruleList');
+            $referurl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : U('Admin/Ad/ruleList');
 //        // 不管是添加还是修改广告 都清除一下缓存
 //        delFile(RUNTIME_PATH.'html'); // 先清除缓存, 否则不好预览
 //        \think\Cache::clear();
@@ -435,18 +450,18 @@ class Ad extends Base
                 if(!is_null($val['daytimeperiod'])){
 //                    $adlist[$k]['daytimeperiod'] = $val['daytimeperiod'];
                     $six = explode("-",$val['daytimeperiod']);
-                    $start[0] = $six[0];
-                    $start[1] = $six[1];
-                    $start[2] = $six[2];
-                    $start = implode('-',$start);
-                    $start = strtotime($start);
-                    $end[0] = $six[3];
-                    $end[1] = $six[4];
-                    $end[2] = $six[5];
-                    $end = implode('-',$end);
-                    $end = strtotime($end);
+                    $start[$k][0] = $six[0];
+                    $start[$k][1] = $six[1];
+                    $start[$k][2] = $six[2];
+                    $start[$k] = implode('-',$start[$k]);
+                    $start[$k] = strtotime($start[$k]);
+                    $end[$k][0] = $six[3];
+                    $end[$k][1] = $six[4];
+                    $end[$k][2] = $six[5];
+                    $end[$k] = implode('-',$end[$k]);
+                    $end[$k] = strtotime($end[$k]);
 //                    $adlist[$k]['daytimeperiod'] = explode("-",$val['daytimeperiod']);
-                    $adlist[$k]['daytimeperiod'] = $start . "-" . $end;
+                    $adlist[$k]['daytimeperiod'] = $start[$k] . "-" . $end[$k];
                 }
                 if(!is_null($val['datecycle'])){
                     $adlist[$k]['datecycle'] = explode(",",$val['datecycle']);
@@ -454,18 +469,18 @@ class Ad extends Base
                 if(!is_null($val['daycycle'])){
 //                    $adlist[$k]['daycycle'] = $val['daycycle'];
                     $six1 = explode("-",$val['daycycle']);
-                    $start1[0] = $six1[0];
-                    $start1[1] = $six1[1];
-                    $start1[2] = $six1[2];
-                    $start1 = implode('-',$start1);
-                    $start1 = strtotime($start1);
-                    $end1[0] = $six1[3];
-                    $end1[1] = $six1[4];
-                    $end1[2] = $six1[5];
-                    $end1 = implode('-',$end1);
-                    $end1 = strtotime($end1);
+                    $start1[$k][0] = $six1[$k][0];
+                    $start1[$key][1] = $six1[$k][1];
+                    $start1[$k][2] = $six1[$k][2];
+                    $start1[$k] = implode('-',$start1[$k]);
+                    $start1[$k] = strtotime($start1[$k]);
+                    $end1[$k][0] = $six1[$k][3];
+                    $end1[$k][1] = $six1[$k][4];
+                    $end1[$k][2] = $six1[$k][5];
+                    $end1[$k] = implode('-',$end1[$k]);
+                    $end1[$k] = strtotime($end1[$k]);
 //                    $adlist[$k]['daytimeperiod'] = explode("-",$val['daytimeperiod']);
-                    $adlist[$k]['daycycle'] = $start . "-" . $end;
+                    $adlist[$k]['daycycle'] = $start1[$k] . "-" . $end1[$k];
                 }
                 if(!is_null($val['timecycle'])){
                     $adlist[$k]['timecycle'] = $val['timecycle'];
@@ -479,6 +494,7 @@ class Ad extends Base
             $add = array(
                 'machine_id' => implode(',',$machine_id),
                 'adlist' => serialize($adlist),
+                'rule_id' => $rule_id,
             );
 
             $adlistid = DB::name('adlist')->add($add);
@@ -529,7 +545,7 @@ class Ad extends Base
                 $res = post_curls($url,$post);
             }
 
-
+            $this->success('操作成功',U('Admin/ad/ruleList'));
 
         }else{
 //            $id = I('get.id');
@@ -569,7 +585,27 @@ class Ad extends Base
                 }
             }
 
-            $machine = DB::name('machine')->where(['is_online'=>1])->select();
+            $machine = DB::name('machine')->field('machine_id,machine_name')->where(['is_online'=>1])->select();
+
+            foreach ($machine as $key => &$value) {
+//                $data = DB::name('adlist')->where(['machine_id' => $value['machine_id']])->getField('adlist',true);
+//                $rule_ids = DB::name('adlist')->where(['machine_id'=>$value['machine_id']])->getField('rule_id',true);
+                $rule_id = DB::name('adlist')->where(['machine_id'=>$value['machine_id']])->getField('rule_id',true);
+                $rule_ids1 = implode($rule_id,',');
+//
+                if($rule_ids1){
+                    $value['ad_rule'] = DB::name('adlist')->alias('t1')->field('t2.*,t3.media_type')->join("__AD_RULE__ t2", "t2.id in ({$rule_ids1})")->join("__AD__ t3","t3.ad_id = t2.ad_id")->where(['machine_id' => $value['machine_id']])->select();
+                }
+//                        $data[$value['machine_id']][$k]['monopoly'] = DB::name('adlist')->alias('t1')->join("__AD_RULE__ t2", "t2.id in ({$v['rule_id']})")->where(['machine_id' => $v['machine_id']])->getField('t2.monopoly');
+//                        $data[$value['machine_id']][$k]['repeattimes'] = DB::name('adlist')->alias('t1')->join("__AD_RULE__ t2", "t2.id in ({$v['rule_id']})")->where(['machine_id' => $v['machine_id']])->getField('t2.repeattimes');
+//                        $data[$value['machine_id']][$k]['daytimeperiod'] = DB::name('adlist')->alias('t1')->join("__AD_RULE__ t2", "t2.id in ({$v['rule_id']})")->where(['machine_id' => $v['machine_id']])->getField('t2.daytimeperiod');
+//                        $data[$value['machine_id']][$k]['ad_id'] = DB::name('adlist')->alias('t1')->join("__AD_RULE__ t2", "t2.id in ({$v['rule_id']})")->where(['machine_id' => $v['machine_id']])->getField('t2.ad_id');
+
+
+            }
+
+
+
 //
 //            $rule = DB::name('ad_rule')->where(['id'=>$id])->find();
 
@@ -669,16 +705,16 @@ class Ad extends Base
 
     public function getRepeat($arr) {
 
-    // 获取去掉重复数据的数组
-    $unique_arr = array_unique ( $arr );
-    return $unique_arr;
-    // 获取重复数据的数组
-    $repeat_arr = array_diff_assoc ( $arr, $unique_arr );
+        // 获取去掉重复数据的数组
+        $unique_arr = array_unique ( $arr );
+        return $unique_arr;
+        // 获取重复数据的数组
+        $repeat_arr = array_diff_assoc ( $arr, $unique_arr );
 
-    return $repeat_arr;
-}
+        return $repeat_arr;
+    }
 
-public function score(){
+    public function score(){
 //       $time = strtotime(date());
 //    date_default_timezone_set('UTC');//'Asia/Shanghai' 亚洲/上海
         $time = strtotime("now");
@@ -686,10 +722,10 @@ public function score(){
         halt($date);
         $time = $this->gmtime();
         halt($time);
-}
-public function gmtime(){
-    return (time() - date('Z'));
-}
+    }
+    public function gmtime(){
+        return (time() - date('Z'));
+    }
 
 
 

@@ -77,8 +77,8 @@
         <dd class="opt">
           <div id="gcategory">
             <select id="adtype" name="media_type" class="input-sm" class="form-control adtype">
-              <option value="0">图片</option>
-              <option value="1">flash</option>
+              <option value="0" <if condition="$info['media_type']==0">selected</if> >图片</option>
+              <option value="1" <if condition="$info['media_type']==1">selected</if> >flash</option>
             </select>
           </div>
         </dd>
@@ -114,7 +114,7 @@
             <span class="type-file-box">
                             <input type="text" id="ad_video" name="ad_video" value="{$info.ad_video}" class="type-file-text">
                             <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
-                            <input class="type-file-file" onClick="GetUpVideo(1,'','ad','video_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                            <input class="type-file-file" onClick="GetUpVideo(1,'','ad','video_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击按钮选择文件并提交表单后上传生效">
                         </span>
           </div>
           <span class="err"></span>
@@ -141,8 +141,13 @@
 
 
 <script>
-    $(".advideo").hide();
-    $(".adimg").show();
+     if($('#adtype').val()==0){
+            $(".advideo").hide();
+            $(".adimg").show();
+        }else if($('#adtype').val()==1){
+            $(".advideo").show();
+            $(".adimg").hide();
+        }
     $('#adtype').change(function(){
 
         if($(this).val()==0){

@@ -475,13 +475,14 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
     }
 
     public function adlist(){
-        $machine_id = 3;
-        $data = DB::name('adlist')->field('adlist')->where("machine_id = $machine_id")->select();
+        $machine_id = 1;
+        $data = DB::name('adlist')->where("machine_id = $machine_id")->find();
+    halt(unserialize($data['adlist']));
         foreach($data as $key => &$value){
-            $value['adlist'] = unserialize($value['adlist']);
+            $value = unserialize($value);
 
         }
-        dump($data);
+        dump($data);die;
         $json = json_encode($data,JSON_UNESCAPED_UNICODE);
         halt($json);
     }
