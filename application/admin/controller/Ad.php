@@ -608,7 +608,25 @@ class Ad extends Base
 //
                 if($rule_ids1){
                     $value['ad_rule'] = DB::name('adlist')->alias('t1')->field('t2.*,t3.media_type')->join("__AD_RULE__ t2", "t2.id in ({$rule_ids1})")->join("__AD__ t3","t3.ad_id = t2.ad_id")->where(['machine_id' => $value['machine_id']])->select();
+
+                    foreach($value['ad_rule'] as $ke => &$val){
+
+                        if(!is_numeric($rule_ids)){
+                            $ids = explode(',',$rule_ids);
+                        }
+
+                        if($val['id'] == $rule_ids || in_array($val['id'],$ids)){
+
+                            $val['dob'] = 1;
+                        }else{
+
+                            $val['dob'] = 0;
+                        }
+                    }
+
                 }
+
+
 //                        $data[$value['machine_id']][$k]['monopoly'] = DB::name('adlist')->alias('t1')->join("__AD_RULE__ t2", "t2.id in ({$v['rule_id']})")->where(['machine_id' => $v['machine_id']])->getField('t2.monopoly');
 //                        $data[$value['machine_id']][$k]['repeattimes'] = DB::name('adlist')->alias('t1')->join("__AD_RULE__ t2", "t2.id in ({$v['rule_id']})")->where(['machine_id' => $v['machine_id']])->getField('t2.repeattimes');
 //                        $data[$value['machine_id']][$k]['daytimeperiod'] = DB::name('adlist')->alias('t1')->join("__AD_RULE__ t2", "t2.id in ({$v['rule_id']})")->where(['machine_id' => $v['machine_id']])->getField('t2.daytimeperiod');

@@ -85,26 +85,29 @@
                                 </thead>
                                 <tbody>
                                 <volist name="$val['ad_rule']" id="v">
-                                    <tr>
+
+
+                                    <if condition = " $v.dob = 1 ">
+                                    <tr style="color:red">
                                         <td align="left" class="">
-                                            <div style="text-align: center; width: 50px;">{$v.id}</div>
+                                            <div style="text-align: center; width: 50px; color:red;">{$v.id}</div>
                                         </td>
                                         <td align="left" class="">
-                                            <div style="text-align: center; width: 100px;">{$v.rule_name}</div>
+                                            <div style="text-align: center; width: 100px; color:red;">{$v.rule_name}</div>
                                         </td>
 
                                         <td align="left" class="">
-                                            <div style="text-align: center; width: 100px;">{$v.time_type}</div>
+                                            <div style="text-align: center; width: 100px; color:red;">{$v.time_type}</div>
                                         </td>
                                         <td align="left" class="">
                                             <if condition = " $v.media_type = 1 ">
-                                            <div style="text-align: center; width: 50px;">视频</div>
+                                            <div style="text-align: center; width: 50px; color:red;">视频</div>
                                                 <else />
-                                                <div style="text-align: center; width: 50px;">图片</div>
+                                                <div style="text-align: center; width: 50px; color:red;">图片</div>
                                             </if>
                                         </td>
                                         <td align="left" class="">
-                                        <div style="text-align: left; width: 400px;">
+                                        <div style="text-align: left; width: 400px; color:red;">
                                             <if condition="$v[time_type] eq 0">
                                                 {$v.daytimeperiod}
                                             <elseif condition="$v[time_type] eq 1">
@@ -115,6 +118,41 @@
                                         </div>
                                         </td>
                                     </tr>
+                                    <else />
+                                        <tr style="color:red">
+                                            <td align="left" class="">
+                                                <div style="text-align: center; width: 50px;">{$v.id}</div>
+                                            </td>
+                                            <td align="left" class="">
+                                                <div style="text-align: center; width: 100px;">{$v.rule_name}</div>
+                                            </td>
+
+                                            <td align="left" class="">
+                                                <div style="text-align: center; width: 100px;">{$v.time_type}</div>
+                                            </td>
+                                            <td align="left" class="">
+                                                <if condition = " $v.media_type = 1 ">
+                                                    <div style="text-align: center; width: 50px;">视频</div>
+                                                    <else />
+                                                    <div style="text-align: center; width: 50px;">图片</div>
+                                                </if>
+                                            </td>
+                                            <td align="left" class="">
+                                                <div style="text-align: left; width: 400px;">
+                                                    <if condition="$v[time_type] eq 0">
+                                                        {$v.daytimeperiod}
+                                                        <elseif condition="$v[time_type] eq 1">
+                                                            {$v.daycycle}的{$v.timecycle}
+                                                            <else />
+                                                            周{$v.datecycle}的{$v.timecycle}
+                                                    </if>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </if>
+
+
                                 </volist>
                                 </tbody>
                             </table>
