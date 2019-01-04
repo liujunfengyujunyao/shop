@@ -294,9 +294,21 @@ class Ad extends Base
             $where['rule_name'] = array('like', '%' . $keywords . '%');
         }
         $count = $Ad->where($where)->count();// 查询满足要求的总记录数
-        $Page = $pager = new Page($count, 10);// 实例化分页类 传入总记录数和每页显示的记录数
+        $Page = $pager = new Page($count, 30);// 实例化分页类 传入总记录数和每页显示的记录数
 //        $res = $Ad->where($where)->limit($Page->firstRow . ',' . $Page->listRows)->select();
         $res = $Ad->alias('t1')->field('t1.*,t2.ad_code,t2.ad_id')->join("__AD__ t2","t1.ad_id = t2.ad_id")->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $adlist = DB::name('adlist')->getField('rule_id',true);
+        $adlist_ids = implode(',',$adlist);
+        $adlist_arr = explode(',',$adlist_ids);
+
+        foreach($res as $k => &$v){
+            if(in_array($v['id'],$adlist_arr)){
+                $v['use'] = 1;
+            }else{
+                $v['use'] = 0;
+            }
+        }
+
         $list = array();
 //        halt($res);
         if ($res) {
@@ -468,9 +480,9 @@ class Ad extends Base
                 }
                 if(!is_null($val['daycycle'])){
 //                    $adlist[$k]['daycycle'] = $val['daycycle'];
-                    $six1 = explode("-",$val['daycycle']);
+                    $six1[$k] = explode("-",$val['daycycle']);
                     $start1[$k][0] = $six1[$k][0];
-                    $start1[$key][1] = $six1[$k][1];
+                    $start1[$k][1] = $six1[$k][1];
                     $start1[$k][2] = $six1[$k][2];
                     $start1[$k] = implode('-',$start1[$k]);
                     $start1[$k] = strtotime($start1[$k]);
@@ -490,6 +502,7 @@ class Ad extends Base
                 $adlist[$k]['monopoly'] = intval($val['monopoly']);
             }
 //            halt($adlist);
+
 
             $add = array(
                 'machine_id' => implode(',',$machine_id),
@@ -603,6 +616,7 @@ class Ad extends Base
 
 
             }
+//            halt($machine);
 
 
 
@@ -670,6 +684,13 @@ class Ad extends Base
             return $this->fetch();
         }
 
+
+    }
+
+        /*
+         * 执行列表
+         * */
+    public function performList(){
 
     }
 

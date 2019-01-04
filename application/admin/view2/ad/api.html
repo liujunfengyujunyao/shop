@@ -92,11 +92,16 @@
                                         <td align="left" class="">
                                             <div style="text-align: center; width: 100px;">{$v.rule_name}</div>
                                         </td>
+
                                         <td align="left" class="">
                                             <div style="text-align: center; width: 100px;">{$v.time_type}</div>
                                         </td>
-                                        <td align="left" class=""><!--库存预警-->
-                                            <div style="text-align: center; width: 50px;">{$v.media_type}</div>
+                                        <td align="left" class="">
+                                            <if condition = " $v.media_type = 1 ">
+                                            <div style="text-align: center; width: 50px;">视频</div>
+                                                <else />
+                                                <div style="text-align: center; width: 50px;">图片</div>
+                                            </if>
                                         </td>
                                         <td align="left" class="">
                                         <div style="text-align: left; width: 400px;">

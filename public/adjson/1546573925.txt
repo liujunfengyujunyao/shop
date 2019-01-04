@@ -1,0 +1,1 @@
+{"adlistid":5,"adnumber":1,"adlist":[{"adid":62,"adurl":"\/public\/upload\/ad\/video\/2019\/01-02\/f56af48f96f340f95a13db89251df0e7.mp4","admd5":"8d1b2849f54675ffe798ef5e84adb153","time_type":"b","adtype":2,"repeattimes":0,"daycycle":"1546573229-1547654400","timecycle":"02:00-12:00","monopoly":1}]}

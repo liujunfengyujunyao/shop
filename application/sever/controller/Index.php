@@ -684,7 +684,7 @@ class Index extends Controller {
 			$max_stock = 1;
             foreach ($layout_arr as $key => $value) {
                 $add[$key]['goods_price'] = 300;
-                $add[$key]['machine_id'] = $machine_id;
+                $add[$key]['machine_id'] =  $machine_id;
                 $add[$key]['game_odds'] = 30;
                 $add[$key]['addtime'] = time();
                 $add[$key]['location'] = $value;
