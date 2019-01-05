@@ -296,7 +296,7 @@ class Ad extends Base
         $count = $Ad->where($where)->count();// 查询满足要求的总记录数
         $Page = $pager = new Page($count, 30);// 实例化分页类 传入总记录数和每页显示的记录数
 //        $res = $Ad->where($where)->limit($Page->firstRow . ',' . $Page->listRows)->select();
-        $res = $Ad->alias('t1')->field('t1.*,t2.ad_code,t2.ad_id')->join("__AD__ t2","t1.ad_id = t2.ad_id")->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $res = $Ad->alias('t1')->field('t1.*,t2.ad_code,t2.ad_id')->join("__AD__ t2","t1.ad_id = t2.ad_id")->limit($Page->firstRow . ',' . $Page->listRows)->order('t1.id')->select();
         $adlist = DB::name('adlist')->getField('rule_id',true);
         $adlist_ids = implode(',',$adlist);
         $adlist_arr = explode(',',$adlist_ids);
@@ -431,11 +431,25 @@ class Ad extends Base
      * */
     public function api(){
         if(IS_POST){
-            $machine_id = I("post.machine/a");//machine_id是数组
-//$machine_id=[12];
-            $rule_id = I('post.rule_ids');//hidden将rule_id传过来
+            $machine_id = I("post.machine/a");//machine_id是数组(修改为只能发送给一台设备)
 
-            $rule = DB::name('ad_rule')->alias('t1')->field("t1.*,t2.ad_code,t2.media_type")->join("__AD__ t2","t1.ad_id = t2.ad_id","LEFT")->where("t1.id in ($rule_id)")->select();
+            $rule_id = I('post.rule_ids');//hidden将rule_id传过来
+//            halt(explode(',',$rule_id));
+            $old_rule_ids = DB::name('adlist')->where(['machine_id'=>$machine_id[0]])->getField('rule_id');
+            $old_rule_arr = explode(',',$old_rule_ids);
+            if(array_intersect(explode(',',$rule_id),$old_rule_arr)){
+                $new = array_merge(explode(',',$rule_id),$old_rule_arr);//合并两个数组
+                $new = array_unique($new);//去除重复值
+//                halt(1);
+            }else{
+                $new = array_merge(explode(',',$rule_id),$old_rule_arr);//合并两个数组
+                $new = array_filter($new);//去除数组中的空值
+//                halt(2);
+            }
+            //$new为新创建的rule_id集合(数组)
+            $new_id = implode(',',$new);
+//            $rule = DB::name('ad_rule')->alias('t1')->field("t1.*,t2.ad_code,t2.media_type")->join("__AD__ t2","t1.ad_id = t2.ad_id","LEFT")->where("t1.id in ($rule_id)")->select();
+            $rule = DB::name('ad_rule')->alias('t1')->field("t1.*,t2.ad_code,t2.media_type")->join("__AD__ t2","t1.ad_id = t2.ad_id","LEFT")->where("t1.id in ($new_id)")->select();
             /*发送协议*/
 
             $adlist = [];
@@ -507,8 +521,16 @@ class Ad extends Base
             $add = array(
                 'machine_id' => implode(',',$machine_id),
                 'adlist' => serialize($adlist),
-                'rule_id' => $rule_id,
+//                'rule_id' => $rule_id,
+                'rule_id' => $new_id,
             );
+
+            //将adlist表中这台设备原来执行的政策删除
+//            $del = DB::name('adlist')->where(['machine_id'=>$machine_id])->delete();
+
+            $del = DB::name('adlist')->where(['machine_id'=>$machine_id[0]])->delete();
+
+
 
             $adlistid = DB::name('adlist')->add($add);
 
@@ -612,10 +634,11 @@ class Ad extends Base
                     foreach($value['ad_rule'] as $ke => &$val){
 
                         if(!is_numeric($rule_ids)){
+
                             $ids = explode(',',$rule_ids);
                         }
 
-                        if($val['id'] == $rule_ids || in_array($val['id'],$ids)){
+                        if($val['id'] == $rule_ids || @in_array($val['id'],$ids)){
 
                             $val['dob'] = 1;
                         }else{

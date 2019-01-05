@@ -1,12 +1,12 @@
 <include file="public/layout" />
 <style>
-.flexigrid .bDiv {min-height: 10px}
-.ui-accordion .ui-accordion-header {height: 30px; line-height: 30px;}
-.ui-state-default {background: #f5f5f5; border: 1px solid #ddd;}
-.ui-state-default span {color: #222; font-weight: bold;}
-.ui-state-active a:link {color: #555;}
-.ui-state-default a {float: right; margin-right: 5em; background: #fff; border: 1px solid #f5f5f5; border-radius: 4px; padding: 0px 15px; font-size: 14px; }
-.ui-state-default a.red:hover {background-color: rgba(196, 24, 45, 0.8); border-color: rgba(196, 24, 45, 0.8); color: #fff;}
+    .flexigrid .bDiv {min-height: 10px}
+    .ui-accordion .ui-accordion-header {height: 30px; line-height: 30px;}
+    .ui-state-default {background: #f5f5f5; border: 1px solid #ddd;}
+    .ui-state-default span {color: #222; font-weight: bold;}
+    .ui-state-active a:link {color: #555;}
+    .ui-state-default a {float: right; margin-right: 5em; background: #fff; border: 1px solid #f5f5f5; border-radius: 4px; padding: 0px 15px; font-size: 14px; }
+    .ui-state-default a.red:hover {background-color: rgba(196, 24, 45, 0.8); border-color: rgba(196, 24, 45, 0.8); color: #fff;}
 </style>
 <body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
 <div id="append_parent"></div>
@@ -15,7 +15,7 @@
     <div class="fixed-bar">
         <div class="item-title">
             <div class="subject">
-                 <h3> 设备列表</h3>
+                <h3> 设备列表</h3>
                 <h5>发送广告协议</h5>
             </div>
         </div>
@@ -40,159 +40,157 @@
         </ul>
     </div>
     <form method="post" id="handleposition" action="{:U('Admin/Ad/api')}">
-    <div class="flexigrid">
-        <div class="mDiv">
-            <div class="ftitle">
-                <h3>设备列表</h3>
-                <h5>(共{$pager->totalRows}条记录)</h5>
+        <div class="flexigrid">
+            <div class="mDiv">
+                <div class="ftitle">
+                    <h3>设备列表</h3>
+                    <h5>(共{$pager->totalRows}条记录)</h5>
+                </div>
+                <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+                <div class="sDiv2">
+                    <input class="btn" value="确定提交" type="submit">
+                </div>
             </div>
-            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
-            <div class="sDiv2">
-                <input class="btn" value="确定提交" type="submit">
-            </div>
-        </div>
-        <div id="accordion">
-            <volist name='list' id='val'>
-            
-                <h3>
-                    
-                    <span>{$val.machine_name}</span>
-                    
-                </h3>
-                <div style="overflow: hidden;">
-                <div style="float: left;"><input type="checkbox" value="{$val.machine_id}" name="machine[]"></div>
-                    <div class="hDiv" style="float: left;clear: none;">
-                        <div class="hDivBox">
-                            <table cellspacing="0" cellpadding="0" width="100%">
-                                <thead>
-                                <tr>
-                                    <th align="center" abbr="article_title" axis="col3" class="">
-                                        <div style="text-align: center; width: 50px;" class="">规则ID</div>
-                                    </th>
-                                    <th align="center" abbr="article_title" axis="col3" class="">
-                                        <div style="text-align: center; width: 100px;" class="">规则名称</div>
-                                    </th>
-                                    <th align="center" abbr="article_time" axis="col3" class="">
-                                        <div style="text-align: center; width:100px;" class="">播放类型</div>
-                                    </th>
-                                    <th align="center" abbr="article_time" axis="col3" class="">
-                                        <div style="text-align: center; width: 50px;" class="">广告类型</div>
-                                    </th>
-                                    <th align="center" abbr="article_time" axis="col8" class="">
-                                        <div style="text-align: center; width:200px;" class="">规则描述</div>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <volist name="$val['ad_rule']" id="v">
+            <div id="accordion">
+                <volist name='list' id='val'>
 
+                    <h3>
 
-                                    <if condition = " $v.dob = 1 ">
-                                    <tr style="color:red">
-                                        <td align="left" class="">
-                                            <div style="text-align: center; width: 50px; color:red;">{$v.id}</div>
-                                        </td>
-                                        <td align="left" class="">
-                                            <div style="text-align: center; width: 100px; color:red;">{$v.rule_name}</div>
-                                        </td>
+                        <span>{$val.machine_name}</span>
 
-                                        <td align="left" class="">
-                                            <div style="text-align: center; width: 100px; color:red;">{$v.time_type}</div>
-                                        </td>
-                                        <td align="left" class="">
-                                            <if condition = " $v.media_type = 1 ">
-                                            <div style="text-align: center; width: 50px; color:red;">视频</div>
-                                                <else />
-                                                <div style="text-align: center; width: 50px; color:red;">图片</div>
-                                            </if>
-                                        </td>
-                                        <td align="left" class="">
-                                        <div style="text-align: left; width: 400px; color:red;">
-                                            <if condition="$v[time_type] eq 0">
-                                                {$v.daytimeperiod}
-                                            <elseif condition="$v[time_type] eq 1">
-                                                {$v.daycycle}的{$v.timecycle}
-                                            <else />
-                                                周{$v.datecycle}的{$v.timecycle}
-                                            </if>
-                                        </div>
-                                        </td>
+                    </h3>
+                    <div style="overflow: hidden;">
+                        <div style="float: left;"><input type="radio" value="{$val.machine_id}" name="machine"></div>
+                        <div class="hDiv" style="float: left;clear: none;">
+                            <div class="hDivBox">
+                                <table cellspacing="0" cellpadding="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th align="center" abbr="article_title" axis="col3" class="">
+                                            <div style="text-align: center; width: 50px;" class="">规则ID</div>
+                                        </th>
+                                        <th align="center" abbr="article_title" axis="col3" class="">
+                                            <div style="text-align: center; width: 100px;" class="">规则名称</div>
+                                        </th>
+                                        <th align="center" abbr="article_time" axis="col3" class="">
+                                            <div style="text-align: center; width:100px;" class="">播放类型</div>
+                                        </th>
+                                        <th align="center" abbr="article_time" axis="col3" class="">
+                                            <div style="text-align: center; width: 50px;" class="">广告类型</div>
+                                        </th>
+                                        <th align="center" abbr="article_time" axis="col8" class="">
+                                            <div style="text-align: center; width:200px;" class="">规则描述</div>
+                                        </th>
                                     </tr>
-                                    <else />
-                                        <tr style="color:red">
-                                            <td align="left" class="">
-                                                <div style="text-align: center; width: 50px;">{$v.id}</div>
-                                            </td>
-                                            <td align="left" class="">
-                                                <div style="text-align: center; width: 100px;">{$v.rule_name}</div>
-                                            </td>
+                                    </thead>
+                                    <tbody>
+                                    <volist name="$val['ad_rule']" id="v">
+                                        <if condition = " $v.dob == 1 ">
+                                            <tr style="color:red">
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 50px; color:red;">{$v.id}</div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 100px; color:red;">{$v.rule_name}</div>
+                                                </td>
 
-                                            <td align="left" class="">
-                                                <div style="text-align: center; width: 100px;">{$v.time_type}</div>
-                                            </td>
-                                            <td align="left" class="">
-                                                <if condition = " $v.media_type = 1 ">
-                                                    <div style="text-align: center; width: 50px;">视频</div>
-                                                    <else />
-                                                    <div style="text-align: center; width: 50px;">图片</div>
-                                                </if>
-                                            </td>
-                                            <td align="left" class="">
-                                                <div style="text-align: left; width: 400px;">
-                                                    <if condition="$v[time_type] eq 0">
-                                                        {$v.daytimeperiod}
-                                                        <elseif condition="$v[time_type] eq 1">
-                                                            {$v.daycycle}的{$v.timecycle}
-                                                            <else />
-                                                            周{$v.datecycle}的{$v.timecycle}
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 100px; color:red;">{$v.time_type}</div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <if condition = " $v.media_type = 1 ">
+                                                        <div style="text-align: center; width: 50px; color:red;">视频</div>
+                                                        <else />
+                                                        <div style="text-align: center; width: 50px; color:red;">图片</div>
                                                     </if>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: left; width: 400px; color:red;">
+                                                        <if condition="$v[time_type] eq 0">
+                                                            {$v.daytimeperiod}
+                                                            <elseif condition="$v[time_type] eq 1">
+                                                                {$v.daycycle}的{$v.timecycle}
+                                                                <else />
+                                                                周{$v.datecycle}的{$v.timecycle}
+                                                        </if>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <else />
+                                            <tr>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 50px;">{$v.id}</div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 100px;">{$v.rule_name}</div>
+                                                </td>
 
-                                    </if>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 100px;">{$v.time_type}</div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <if condition = " $v.media_type = 1 ">
+                                                        <div style="text-align: center; width: 50px;">视频</div>
+                                                        <else />
+                                                        <div style="text-align: center; width: 50px;">图片</div>
+                                                    </if>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: left; width: 400px;">
+                                                        <if condition="$v[time_type] eq 0">
+                                                            {$v.daytimeperiod}
+                                                            <elseif condition="$v[time_type] eq 1">
+                                                                {$v.daycycle}的{$v.timecycle}
+                                                                <else />
+                                                                周{$v.datecycle}的{$v.timecycle}
+                                                        </if>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        </if>
 
 
-                                </volist>
-                                </tbody>
-                            </table>
+                                    </volist>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </volist>
+                </volist>
+            </div>
+            <!--分页位置-->
+            {$page}
         </div>
-        <!--分页位置-->
-        {$page}
-    </div>
-     <!--</div>-->
+        <!--</div>-->
         <input type="hidden" name="act" value="{$act}">
         <!--<input type="hidden" name="ad_id" value="{$info.ad_id}">-->
         <input type="hidden" name="rule_ids" value="{$rule_ids}">
-        <input type="hidden" name="time_type" value="a"> 
+        <input type="hidden" name="time_type" value="a">
     </form>
 </div>
 <script>
-$(document).ready(function(){
-    // 点击刷新数据
-    $('.fa-refresh').click(function(){
-        location.href = location.href;
-    });
-    
-    $( "#accordion" ).accordion({
-        heightStyle: "content"
-    });
-});
+    $(document).ready(function(){
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
 
-// //补货操作
-// function delivery(id) {
-//  layer.open({
-//      type: 2,
-//      skin: 'layui-layer-rim',
-//      title: '补货',
-//      area: ['900px', '550px'],
-//      content: "/index.php?m=Admin&c=Partner&a=delivery&id="+id
-//  })
-// }
+        $( "#accordion" ).accordion({
+            heightStyle: "content"
+        });
+    });
+
+    // //补货操作
+    // function delivery(id) {
+    //  layer.open({
+    //      type: 2,
+    //      skin: 'layui-layer-rim',
+    //      title: '补货',
+    //      area: ['900px', '550px'],
+    //      content: "/index.php?m=Admin&c=Partner&a=delivery&id="+id
+    //  })
+    // }
 </script>
 </body>
 </html>
