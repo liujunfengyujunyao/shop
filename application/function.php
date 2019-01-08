@@ -1061,4 +1061,66 @@ function show($status, $message ,$data = [] ,$httpCode = 200)
 
 }
 
+
+function getCoverImages($fileUrl){
+        $result = array();
+
+       if(!empty($fileUrl)){
+        $filePath = str_replace("http://img.baidu.cn/", "/data/images/", $fileUrl);
+            if(is_file($filePath)){
+                           $result = execCommandLine($filePath);
+           }
+       }
+       return json_encode($result);
+   }
+
+    function execCommandLine($file){
+            $result = array();
+
+        $pathParts = pathinfo($file);
+        $filename = $pathParts['dirname']."/".$pathParts['filename']."_";
+       $times = array(1,2,3);
+       foreach ($times as $k => $v) {
+                    $destFilePath = $filename.$v.".jpg";
+            $command = "/usr/bin/ffmpeg -i {$file} -y -f image2 -ss {$v} -vframes 1 -s 640x360 {$destFilePath}";
+            exec($command);
+            //chmod($filename.$v."jpg",0644);
+            $destUrlPath = str_replace("/data/images/", "http://img.baidu.cn/", $destFilePath);
+           $selected = $k == 0 ? "1" : "0";//默认将第一张图片作为封面图
+           array_push($result,array($destUrlPath,$selected));
+        }
+
+        return $result;
+    }
+
+function UnixToGmt($format_string = "Y-m-d H:i:s" ,$UnixTime = 0)
+{
+    return @gmdate($format_string,$UnixTime);
+}
+
+function toTimeZone($src, $from_tz = 'America/Denver', $to_tz = 'Asia/Shanghai', $fm = 'Y-m-d 
+H:i:s') {
+    $datetime = new DateTime($src, new DateTimeZone($from_tz));
+    $datetime->setTimezone(new DateTimeZone($to_tz));
+    return $datetime->format($fm);
+}
+function GetRandStr($len=10){
+    $chars = array(
+        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
+        "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+        "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G",
+        "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
+        "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2",
+        "3", "4", "5", "6", "7", "8", "9"
+    );
+    $charsLen = count($chars) - 1;
+    shuffle($chars);
+    $output = "";
+    for ($i=0; $i<$len; $i++)
+    {
+        $output .= $chars[mt_rand(0, $charsLen)];
+    }
+    return $output;
+}
+
 ?>

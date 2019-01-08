@@ -7,6 +7,7 @@ use think\Session;
 use plugins\weixinpay\weixinpay\example\Wxpay_MicroPay;
 header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+//date_default_timezone_set('Asia/Shanghai');
 class Test extends Controller {//模拟中转服务器发送到管理服务器的测试数据
 
 		public function index(){
@@ -466,7 +467,7 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
     }
 
     public function in(){
-        $params['machinesn'] = 10087;
+        $params['machinesn'] = 10116;
         $msg['type'] = 2;
         $msg['px'] = 2;
         $uuid = sha1("sn=".$params['machinesn']."&type=".$msg['type']."&px=".$msg['px']);
@@ -485,5 +486,62 @@ class Test extends Controller {//模拟中转服务器发送到管理服务器�
         dump($data);die;
         $json = json_encode($data,JSON_UNESCAPED_UNICODE);
         halt($json);
+    }
+
+    public function jietu(){
+        $url = "http://192.168.1.144/public/upload/ad/video/2019/01-03/23efdc33066b0c3ca6f78b58699dc7a3.mp4";
+        $data = $this->get_video_orientation($url);
+        halt($data);
+    }
+
+    public function get_video_orientation($video_path) {
+        $cmd = "/usr/local/ffmpeg/bin/ffprobe " . $video_path . " -show_streams 2>/dev/null";
+        $result = shell_exec($cmd);
+
+        $orientation = 0;
+        if(strpos($result, 'TAG:rotate') !== FALSE) {
+            $result = explode("\n", $result);
+            foreach($result as $line) {
+                if(strpos($line, 'TAG:rotate') !== FALSE) {
+                    $stream_info = explode("=", $line);
+                    $orientation = $stream_info[1];
+                }
+            }
+        }
+        return $orientation;
+    }
+
+    public function gelin(){
+
+        $time = UnixToGmt("Y-m-dTH:i:s.BO",time());
+        halt($time);
+//        $time = UnixToGmt(time());
+//        halt($time);
+    }
+
+    public function wendang(){
+        $data = " { 
+
+  \"errorCode\": 0, 
+
+  \"message\": \"ok\", 
+
+  \"card\": { 
+
+    \"cardNum\": \"19903914\", 
+
+    \"state\": \"使用中\", 
+
+    \"bytime\": \"2116-07-31T14:52:08.000+0800\", 
+
+    \"cardType\": \"0002\", 
+
+    \"carrier\": \"900101161022000001\" 
+
+  } 
+
+}  ";
+        $data = json_decode($data,true);
+        halt($data);
     }
 }
