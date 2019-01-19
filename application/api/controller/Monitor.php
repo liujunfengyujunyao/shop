@@ -180,6 +180,7 @@ class Monitor extends Controller
     public function partner_pay_log(){
         $machinesn = I('get.machinesn');
         $amount = I('get.amount')*10;
+
         $this->assign('amount',$amount);
         $this->assign('machinesn',$machinesn);
         return $this->fetch();
@@ -187,9 +188,11 @@ class Monitor extends Controller
 
     public function pay_option(){
         $data = I('get.');
+//        halt($data);
         $le = $data['le'];
-        $ji = "http://www.goldenbrother.cn/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
-//        $ji = "http://192.168.1.144/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
+//        $ji = "http://www.goldenbrother.cn/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
+        $ji = "http://192.168.1.144/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
+//        halt($ji);
         $money = $data['money'];
         $jifen = $ji . "&amount=" . $money;
 //        halt($jifen);

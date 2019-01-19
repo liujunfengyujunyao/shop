@@ -16,73 +16,81 @@
         ul,li{
             list-style: none;
         }
+        /*修改css*/
         .container{
             overflow: hidden;
+            background: url("/public/static/images/bg.png") no-repeat;
+            background-size: cover;
+            height: 100vh;
         }
-        .icon_list{
-            padding: 30px 0;
-            border-top: 8px solid #d8d8d8;
-            border-bottom: 8px solid #d8d8d8;
-            overflow: hidden;
+        .score_content{
+            background:rgba(231,231,231,.9);
+            position: relative;
+            margin: 1rem .27rem 0 ;
+            overflow: hidden;;
+            border-radius:8px;
+            padding: .7rem .3rem .4rem;
         }
-        .icon_list ul li{
-            float: left;
-            width: 20%;
-            box-sizing: border-box;
-        }
-        .icon_list ul li img{
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin: 0 auto;
-            display: block;
-        }
-        h2.cz_title{text-align: center; font-size: .2rem; font-weight: bold; color: #000; margin: 20px 0;}
-        .form_list{
-            margin-top: 10px;
+        .score_content h2{
             text-align: center;
-        }
-        .txt{
-            width: 2.2rem;
-            height: .58rem;
-            border: 1px solid #a8a8a8;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: .5rem;
-            color: #a8a8a8;
-            padding-left: .2rem;
-        }
-        .btn_txt{
-            margin: .6rem auto 0;
-            display: block;
-            width: 2rem;
-            height: .85rem;
             font-size: .16rem;
-            background: #a8a8a8;
-            border-radius: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+        .form_list{
+            margin-top: .1rem;
+            overflow: hidden;
         }
         .form_item{
             overflow: hidden;
+            height: .27rem;
+            background: #f5f5f5;
+            border-radius: 12px;
+            line-height: .27rem;
+            margin-top: .12rem;
         }
         .form_list label{
-            font-size: .16rem;
-            color: #92108e;
-            font-weight: bold;;
-            margin-right: .16rem;
-
+            font-size: .12rem;
+            color: #333;
+            margin-left: .07rem;
+            letter-spacing: .06rem;
         }
-        .message{
+        .txt{
+            border: none;
+            height: 0;
+        }
+        .mobile{
+            border: none;
+            color: #000;
+            height: .27rem;
+            line-height: .27rem;
+        }
+        .btn_txt{
+            margin-top: .36rem;
+            display: block;
+            height: .29rem;
+            font-size: .12rem;
+            background: #d83751;
+            border-radius: 10px;
+            border: none;
+            width: 100%;
+            text-align: center;
+            color:#fff;
+        }
+        .score_des{
+            margin-top: .3rem;
             overflow: hidden;
-            margin: .6rem 0 0 .4rem;
-            font-size: .24rem;
-            color: #92108e;
-            font-weight: bold;
-            display: none;
         }
-        .message span{
-            font-size: .24rem;
-            color: #92108e;
-            font-weight: bold;
+        .score_des span{
+            font-size: .14rem;
+            color: #333;
+            display: block;
+            margin-bottom: .16rem;
+        }
+        .score_des p{
+            margin-top: .1rem;
+            font-size: .12rem;
+            color: #333;
         }
     </style>
     <script>
