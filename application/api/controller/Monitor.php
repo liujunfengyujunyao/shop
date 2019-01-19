@@ -7,19 +7,19 @@ use think\Session;
 header('Content-type:text/html; Charset=utf-8');
 header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-class Pc extends Controller
+class Monitor extends Controller
 {
     public function index()
     {//被动请求的接口
         // $params = $GLOBALS['HTTP_RAW_POST_DATA'];
         $params = file_get_contents('php://input');
-        $params = $this->trimall($params);
+//        $params = $this->trimall($params);
         //写入日志
         $newLog = 'log_time:' . date('Y-m-d H:i:s') . $params;
-        file_put_contents('./liujiang_log.txt', $newLog . PHP_EOL, FILE_APPEND);
+//        file_put_contents('./liujiang_log.txt', $newLog . PHP_EOL, FILE_APPEND);
 
         $params = json_decode($params, true);
-
+        $admin_id = $params['admin_id'];
 
         if (is_null($params)) {
             $msg = array(
@@ -38,19 +38,19 @@ class Pc extends Controller
 
             switch ($type) {
                 case 'top_five'://近30天top5设备
-                    echo $this->top_five();
+                    echo $this->top_five($admin_id);
                     break;
                 case 'deal_sum'://总交易额
-                    echo $this->deal_sum();
+                    echo $this->deal_sum($admin_id);
                     break;
                 case 'today_sum'://今日交易额
-                    echo $this->today_sum();
+                    echo $this->today_sum($admin_id);
                     break;
                 case 'charts'://设备日均消费额
-                    echo $this->charts();
+                    echo $this->charts($admin_id);
                     break;
                 case '设备数量'://
-                    echo $this->top_five();
+                    echo $this->top_five($admin_id);
                     break;
 
             }
@@ -59,7 +59,7 @@ class Pc extends Controller
 
 
     //近30天top5设备
-    private function top_five()
+    private function top_five($admin_id)
     {
         $time = time();
         $start_time = $time-60*60*24*30;//money_count+game_count
@@ -77,13 +77,13 @@ class Pc extends Controller
     }
 
     //设备量
-    public function machine_number()
+    public function machine_number($admin_id)
     {
 
     }
 
     //总交易额
-    private function deal_sum()
+    private function deal_sum($admin_id)
     {
         $y = date("Y");
         $m = date("m");
@@ -101,7 +101,7 @@ class Pc extends Controller
     }
 
     //当日交易额
-    private function today_sum()
+    private function today_sum($admin_id)
     {
         $y = date("Y");
         $m = date("m");
@@ -115,7 +115,7 @@ class Pc extends Controller
 
 
     //设备日均消费额
-    private function charts()
+    private function charts($admin_id)
     {
         $manager_info['admin_id'] = 12;
         $checkdate = array(
@@ -177,5 +177,25 @@ class Pc extends Controller
         return str_replace($oldchar,$newchar,$str);
     }
 
+    public function partner_pay_log(){
+        $machinesn = I('get.machinesn');
+        $amount = I('get.amount')*10;
+        $this->assign('amount',$amount);
+        $this->assign('machinesn',$machinesn);
+        return $this->fetch();
+    }
 
+    public function pay_option(){
+        $data = I('get.');
+        $le = $data['le'];
+        $ji = "http://www.goldenbrother.cn/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
+//        $ji = "http://192.168.1.144/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
+        $money = $data['money'];
+        $jifen = $ji . "&amount=" . $money;
+//        halt($jifen);
+//        $this->assign('money',$money);
+        $this->assign('le',$le);
+        $this->assign('ji',$jifen);
+        return $this->fetch();
+    }
 }

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en" id="rootHTML">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-size: .12rem;
+            list-style: none;
+        }
+        ul,li{
+            list-style: none;
+        }
+        .container{
+            overflow: hidden;
+        }
+        .icon_list{
+            padding: 30px 0;
+            border-top: 8px solid #d8d8d8;
+            border-bottom: 8px solid #d8d8d8;
+            overflow: hidden;
+        }
+        .icon_list ul li{
+            float: left;
+            width: 20%;
+            box-sizing: border-box;
+        }
+        .icon_list ul li img{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: block;
+        }
+        h2.cz_title{text-align: center; font-size: .2rem; font-weight: bold; color: #000; margin: 20px 0;}
+        .form_list{
+            margin-top: 10px;
+            text-align: center;
+        }
+        .txt{
+            width: 2.2rem;
+            height: .58rem;
+            border: 1px solid #a8a8a8;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: .5rem;
+            color: #a8a8a8;
+            padding-left: .2rem;
+        }
+        .btn_txt{
+            margin: .6rem auto 0;
+            display: block;
+            width: 2rem;
+            height: .85rem;
+            font-size: .16rem;
+            background: #a8a8a8;
+            border-radius: 10px;
+        }
+        .form_item{
+            overflow: hidden;
+        }
+        .form_list label{
+            font-size: .16rem;
+            color: #92108e;
+            font-weight: bold;;
+            margin-right: .16rem;
+
+        }
+        .message{
+            overflow: hidden;
+            margin: .6rem 0 0 .4rem;
+            font-size: .24rem;
+            color: #92108e;
+            font-weight: bold;
+            display: none;
+        }
+        .message span{
+            font-size: .24rem;
+            color: #92108e;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        var html = document.getElementsByTagName("html")[0];
+        var hWidth = html.getBoundingClientRect().width;
+        html.style.fontSize = hWidth * (100 / 360) + 'px';
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2 class="cz_title">充值</h2>
+    <div class="icon_list">
+        <ul>
+            <li data-id="1">
+                <a href=""><img src="https://gravatar.com/avatar/2c63b57d3c76ccaed06fcc34ba0e8d33?size=48"></a>
+            </li>
+            <li>
+                <img src="https://gravatar.com/avatar/2c63b57d3c76ccaed06fcc34ba0e8d33?size=48">
+            </li>
+            <li>
+                <img src="https://gravatar.com/avatar/2c63b57d3c76ccaed06fcc34ba0e8d33?size=48">
+            </li>
+            <li>
+                <img src="https://gravatar.com/avatar/2c63b57d3c76ccaed06fcc34ba0e8d33?size=48">
+            </li>
+            <li>
+                <img src="https://gravatar.com/avatar/2c63b57d3c76ccaed06fcc34ba0e8d33?size=48">
+            </li>
+        </ul>
+    </div>
+    <div class="message">
+        收到<span id="score"></span>积分抵扣<span id="qian"></span>元
+    </div>
+    <div class="form_list">
+        <div class="form_item">
+            <label>积分:</label><input type="text" id="money_txt" class="txt" placeholder="请输入冲值金额"  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"  value="{$amount}" id="money" disabled="disabled">
+        </div>
+        <div class="form_item">
+            <label>手机号:</label><input type="text" class="txt" placeholder="请输入手机号"  value="" id="mobile" onblur="checkMobile()">
+        </div>
+        <input type="button" value="提交" class="btn_txt" onclick="subForm()" id="btn_sub">
+    </div>
+</div>
+
+
+<script src="/template/phone/new/new/js/jquery-2.1.4.min.js"></script>
+<script src="/template/phone/js/layer.js"></script>
+<script>
+    $("#money_txt").keyup(function () {
+        var value=$(this).val();
+        var len=value.length;
+        if(len<=1){
+            $(".message").css('display','none');
+            return;
+        }
+        $(".message #score").html(value);
+        $(".message #qian").html(value/10);
+        $(".message").css('display','block');
+
+    })
+    function checkMoney(e) {
+        var re = /^\d+(?=\.{0,1}\d+$|$)/
+        if (e.value != "") {
+            if (!re.test(e.value)) {
+                alert("请输入正确的数字");
+                e.value = "";
+                e.focus();
+            }
+        }
+    }
+    //获取url参数
+    function GetUrlParam(paraName) {
+        var url = document.location.toString();
+        var arrObj = url.split("?");
+        if (arrObj.length > 1) {
+            var arrPara = arrObj[1].split("&");
+            var arr;
+            for (var i = 0; i < arrPara.length; i++) {
+                arr = arrPara[i].split("=");
+
+                if (arr != null && arr[0] == paraName) {
+                    return arr[1];
+                }
+            }
+            return "";
+        }
+        else {
+            return "";
+        }
+    }
+
+    function subForm() {
+        var postParam={'partner_id':1,'account':$("#mobile").val(),amount:$("#money_txt").val(),'machinesn':GetUrlParam('machinesn')}
+        $.ajax({
+//            url: "http://192.168.1.144/sever/Heading/test",
+            url: "http://www.goldenbrother.cn/index.php/sever/Heading/test",
+            method: "post",
+            data:JSON.stringify(postParam),
+            beforeSend: function () {
+                $("#btn_sub").attr({disabled:'disabled'})
+            },
+            dataType: "json",
+            success:function (data) {
+                if(data.msg=="user_error"){
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: '516px',
+                        skin: 'layui-layer-nobg', //没有背景色
+                        shadeClose: true,
+                        content: $('#tong')
+                    });
+                }
+                layer.alert(data.msg);
+                $("#btn_sub").removeAttr('disabled');
+
+            }
+        });
+    }
+    function checkMobile() {
+        var mobile=$("#mobile").val();
+        console.log(mobile);
+        if(!(/^1[34578]\d{9}$/.test(mobile))){
+            alert("手机号码有误，请重填");
+            return false;
+        }
+    }
+
+
+</script>
+</body>
+</html>

@@ -459,11 +459,13 @@ class WechatUtil
         if (is_string($openids)) {
             $openids = explode(',', $openids);
         }
-        
+
         if (count($openids) > 1) {
             $result = $this->sendMsgToMass($openids, $content);
         } else {
+
             $result = $this->sendMsgToOne($openids[0], $content);
+
         }        
         if ($result === false) {
             return false;

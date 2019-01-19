@@ -1341,7 +1341,9 @@ class Machine extends Base
         } else {
             if (IS_POST) {
                 $data = I('post.');
+
                 $machine = DB::name('machine')->where(['sn' => $data['sn']])->find();
+
                 if ($machine['type_id']) {
                     //已经发送过此协议
                     $this->error("通讯协议已被执行  请勿重复提交");
@@ -1350,8 +1352,8 @@ class Machine extends Base
                 }
                 $msg = array(
                     'msgtype' => "firmware_info",
-                    'type' => intval($data['type']),//设备类型，1:口红，2:福袋
-                    'px' => intval($data['bili']),//显示器类型，1:1024x768，2:1080x1920
+                    'type' => intval($data['type']),//设备类型，1:口红，2:福袋 4:新版福袋
+                    'px' => intval($data['bili']),//显示器类型，1:1024x768，2:1080x1920  3:768x1366
                     'version' => $data['version'],//固件版本
                 );
                 $post = array(
@@ -1359,10 +1361,11 @@ class Machine extends Base
                     'msg' => $msg,
                     'machinesn' => intval($machine['sn']),
                 );
-//                $url = "http://192.168.1.144/Sever";
-                $url = "http://www.goldenbrother.cn/index.php/sever/index";
+                $url = "http://192.168.1.144/Sever";
+//                $url = "http://www.goldenbrother.cn/index.php/sever/index";
                 $res = json_curl($url, $post);
                 $res = json_decode($res, true);
+
                 if ($res['msg']['msgtype'] == "OK") {
                     $this->success('发送成功', 'Admin/Machine/index');
                 } else {

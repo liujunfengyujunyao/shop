@@ -1093,16 +1093,18 @@ function getCoverImages($fileUrl){
         return $result;
     }
 
-function UnixToGmt($format_string = "Y-m-d H:i:s" ,$UnixTime = 0)
-{
-    return @gmdate($format_string,$UnixTime);
-}
+
 
 function toTimeZone($src, $from_tz = 'America/Denver', $to_tz = 'Asia/Shanghai', $fm = 'Y-m-d 
 H:i:s') {
     $datetime = new DateTime($src, new DateTimeZone($from_tz));
     $datetime->setTimezone(new DateTimeZone($to_tz));
     return $datetime->format($fm);
+}
+function UnixToGmt($format_string = "" ,$UnixTime = 0)
+{
+    date_default_timezone_set('Asia/Shanghai');
+    return @gmdate($format_string,$UnixTime);
 }
 function GetRandStr($len=10){
     $chars = array(
@@ -1122,5 +1124,70 @@ function GetRandStr($len=10){
     }
     return $output;
 }
+
+
+//该公共方法获取和全局缓存基本接口需要使用的access_token(该access_token为基本接口使用的access_token)
+function getAccessToken(){
+    //我们将access_token全局缓存在文件中,每次获取的时候,先判断是否过期,如果过期重新获取再全局缓存
+    //我们缓存的在文件中的数据，包括access_token和该access_token的过期时间戳.
+    //获取缓存的access_token
+    $access_token_data = json_decode(F('access_token'),true);
+
+    //判断缓存的access_token是否存在和过期，如果不存在和过期则重新获取.
+    if($access_token_data !== null && $access_token_data['access_token'] && $access_token_data['expires_in'] > time()){
+
+        return $access_token_data['access_token'];
+
+    }else{
+        //重新获取access_token,并全局缓存
+        $curl = curl_init();
+        var_dump($curl);
+        curl_setopt($curl,CURLOPT_URL,'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='
+            ."wx9e8c63f03cbd36aa".'&secret='."aa30b7860f3247a789fff62b08681b7e");
+
+        curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
+
+        //获取access_token
+        $data = json_decode(curl_exec($curl),true);
+        var_dump($data);
+        if($data != null && $data['access_token']){
+            //设置access_token的过期时间,有效期是7200s
+            $data['expires_in'] = $data['expires_in'] + time();
+
+            //将access_token全局缓存，快速缓存到文件中.
+            F('access_token',json_encode($data));
+
+            //返回access_token
+            return $data['access_token'];
+
+        }else{
+            exit('微信获取access_token失败');
+        }
+    }
+}
+
+//curl使用post方式请求url,参数为$arr是post方式传送的数据,为数组类型,$url为需要请求的url
+function curl_post($arr,$url){
+    //初始化
+    $curl = curl_init();
+    //设置抓取的url
+    curl_setopt($curl, CURLOPT_URL, $url);
+    //设置头文件的信息作为数据流输出
+    curl_setopt($curl, CURLOPT_HEADER, 1);
+    //设置获取的信息以文件流的形式返回，而不是直接输出。
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    //设置post方式提交
+    curl_setopt($curl, CURLOPT_POST, 1);
+    //设置post数据
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($arr));
+    //执行命令
+    $data = curl_exec($curl);
+    //关闭URL请求
+    curl_close($curl);
+    //显示获得的数据
+    print_r($data);
+}
+
+
 
 ?>

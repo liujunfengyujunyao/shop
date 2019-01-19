@@ -159,9 +159,9 @@ class Count extends Controller {//入库存储过程
 	       	}
 	       
 	       	$statistics = DB::name("machine_day_statistics")->insertAll($all9);
-	       	echo "操作已完成 请关闭页面";
+//	       	echo "操作已完成 请关闭页面";
 	       	flush();
-	       	
+	       	exit();
 
 		}
 

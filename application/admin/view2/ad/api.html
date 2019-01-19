@@ -81,6 +81,9 @@
                                         <th align="center" abbr="article_time" axis="col8" class="">
                                             <div style="text-align: center; width:200px;" class="">规则描述</div>
                                         </th>
+                                        <th align="center" abbr="article_time" axis="col8" class="">
+                                            <div style="text-align: center; width:50px;" class="">操作</div>
+                                        </th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -115,6 +118,9 @@
                                                         </if>
                                                     </div>
                                                 </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 50px;"><a onclick="del('{$v.id}','{$val.machine_id}',this)" >删除</a></div>
+                                                </td>
                                             </tr>
                                             <else />
                                             <tr>
@@ -145,6 +151,9 @@
                                                                 周{$v.datecycle}的{$v.timecycle}
                                                         </if>
                                                     </div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 50px;"><a onclick="del('{$v.id}','{$val.machine_id}',this)" >删除</a></div>
                                                 </td>
                                             </tr>
 
@@ -181,16 +190,34 @@
         });
     });
 
-    // //补货操作
-    // function delivery(id) {
-    //  layer.open({
-    //      type: 2,
-    //      skin: 'layui-layer-rim',
-    //      title: '补货',
-    //      area: ['900px', '550px'],
-    //      content: "/index.php?m=Admin&c=Partner&a=delivery&id="+id
-    //  })
-    // }
+    //删除规则
+    function del(rid,mid,obj){
+        layer.confirm('确认删除？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                // 确定
+                $.ajax({
+                    type : 'post',
+                    url : '{:U("Ad/delrule")}',
+                    data : {rid:rid,mid:mid},
+                    dataType : 'json',
+                    success : function(data){
+                        console.log(data);
+                        layer.closeAll();
+                        if(data.status==1){
+                            layer.msg(data.msg, {icon: 1});
+                            $(obj).parent().parent().parent('tr').remove();
+                        }else{
+                            layer.msg(data.msg, {icon: 2,time: 2000});
+                        }
+//                          layer.closeAll();
+                    }
+                })
+            }, function(index){
+                layer.close('网络连接失败，请稍后再试！');
+            }
+        );
+    }
 </script>
 </body>
 </html>

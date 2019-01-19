@@ -432,7 +432,9 @@ class Ad extends Base
     public function api(){
         if(IS_POST){
             $machine_id = I("post.machine/a");//machine_id是数组(修改为只能发送给一台设备)
-
+            if(!$machine_id){
+                $this->error('未选择设备');
+            }
             $rule_id = I('post.rule_ids');//hidden将rule_id传过来
 //            halt(explode(',',$rule_id));
             $old_rule_ids = DB::name('adlist')->where(['machine_id'=>$machine_id[0]])->getField('rule_id');
@@ -727,10 +729,41 @@ class Ad extends Base
 
 
     }
+    /*
+        * 删除已分配规则
+        * */
+    public function delrule(){
+        $rule_id = I('post.rid');
+        $machine_id = I('post.mid');
+        $adlist = DB::name('adlist')->where(['machine_id'=>$machine_id])->find();
+        $rule_count = explode(',',$adlist['rule_id']);
 
-        /*
-         * 执行列表
-         * */
+        if(count($rule_count) > 1){//如果adlist下machine_id为$machine_id的数据中rule_id存在多条
+            $key = array_search($rule_id, $rule_count);
+            array_splice($rule_count,$key,1);
+            $save['rule_id'] = implode(',',$rule_count);
+            $res = DB::name('adlist')->where(['machine_id'=>$machine_id])->save($save);
+        }else{
+            $res = DB::name('adlist')->where(['machine_id'=>$machine_id])->delete();//只有一条删除
+        }
+
+        if($rule_id&&$machine_id&&$res !== false){
+            $data = array(
+                'status'=>1,
+                'msg'=>'删除成功',
+            );
+        }else{
+            $data = array(
+                'status'=>0,
+                'msg'=>'删除失败',
+            );
+        }
+        $this->ajaxReturn($data);
+
+    }
+    /*
+     * 执行列表
+     * */
     public function performList(){
 
     }

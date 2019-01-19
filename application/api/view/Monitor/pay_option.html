@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{margin:0;padding:0;outline:none;}
+        body,html{width:100%;height:100%;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+        body{font-family:'Microsoft Yahei','微软雅黑',Arial,Helvetica,sans-serif;font-size:14px;color:#666;background:#F0F0F0;-webkit-text-size-adjust:none;min-width:310px;}
+        img{border:0;}
+        ul,li{list-style-type:none;}
+        a{color:#333;text-decoration:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+        button,input,select,textarea{font-size:14px;font-family:'Microsoft Yahei','Simsun','微软雅黑';vertical-align:middle;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+        header,footer,article,section,nav,menu,hgroup,time{display:block;clear:both;}
+        input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;}
+        input::placeholder{color:#999;}
+        input{-webkit-appearance:none;}
+        h1,h2,h3,h4,h5,h6{font-size:16px;font-weight:400;}
+        i,em{font-style:normal;}
+        b{font-weight:400;}
+        table{width:100%;border-collapse:collapse;}
+        .pay_header{ background: url("/public/static/images/header_topBg.png") no-repeat; height: .575rem; background-size: contain;}
+        .pay_header h1{ font-size: .22rem; color: #fff;text-align: center; line-height: .575rem;}
+
+
+
+        /*新加的*/
+        .net_pay{ background: url("/public/static/images/wangluo_iconBg.png") no-repeat;background-size:contain; height: .52rem;}
+        .pay_con{ overflow: hidden; text-align: center; margin: .5rem 0;display: flex;justify-content: center;}
+        .pay_btn{background: url("/public/static/images/wx_btnBg.png") no-repeat;display:block; text-indent: -9999em; cursor: pointer; background-size: contain; height: .52rem; width: 1.77rem; border: none;}
+        .score_pay{ background: url("/public/static/images/jifen_payIconBg.png") no-repeat;background-size:contain; height: .52rem;}
+        .pay_btnList{text-align: center; display: flex;justify-content: center;}
+        .pay_xxxBtn{ background: url("/public/static/images/wanke_btbBg.png") no-repeat;background-size:contain; height: .52rem; width: 1.79rem; border: none; margin-top: .5rem;
+            font-size: .24rem; color: #fff; padding-left: .24re;display: block; line-height: .52rem;}
+    </style>
+    <script>
+        var html = document.getElementsByTagName("html")[0];
+        var hWidth = html.getBoundingClientRect().width;
+        html.style.fontSize = hWidth * (100 / 360) + 'px';
+    </script>
+</head>
+<body style="background: #fff4ec;">
+<header class="pay_header">
+    <h1>支付</h1>
+</header>
+<div class="net_pay">
+
+</div>
+<div class="pay_con">
+    <a href="{$le}" class="pay_btn">支付</a>
+</div>
+<div class="score_pay">
+
+</div>
+<div class="pay_btnList">
+    <a href="{$ji}" class="pay_xxxBtn">上海七宝万科</a>
+
+</div>
+<input type="button" onclick="ajax_get_table()" style="width: 50px;">
+<a href="weixin://profile/gh_b73367577b2a">微江门</a>
+</body>
+<script src="/template/phone/new/new/js/jquery-2.1.4.min.js"></script>
+<script>
+    function ajax_get_table(){
+
+        $.ajax({
+            type : "POST",
+            url:"http://192.168.1.144/sever/test/cs",
+//            data : $('#'+form).serialize(),// 你的formid
+            async : false, //同步请求
+            data : "",// 你的formid
+            success: function(data){
+                console.log(data);
+                $("#flexigrid").html('');
+                $("#flexigrid").append(data);
+            }
+        });
+    }
+</script>
+
+</html>

@@ -46,7 +46,7 @@ class Scan extends Base{
 						$add = array(
 							'client_id' => $id,
 							);
-						for ($i=0; $i <9 ; $i++) { 
+						for ($i=0; $i <12 ; $i++) {
 							DB::name('client_luck_conf')->add($add);
 						}
 					}
