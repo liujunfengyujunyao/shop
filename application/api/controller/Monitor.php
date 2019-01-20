@@ -190,8 +190,9 @@ class Monitor extends Controller
         $data = I('get.');
 //        halt($data);
         $le = $data['le'];
-//        $ji = "http://www.goldenbrother.cn/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
-        $ji = "http://192.168.1.144/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
+       $ji = "http://www.goldenbrother.cn/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
+        // $ji = "http://192.168.1.144/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
+        // $ji = "http://192.168.3.1/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
 //        halt($ji);
         $money = $data['money'];
         $jifen = $ji . "&amount=" . $money;

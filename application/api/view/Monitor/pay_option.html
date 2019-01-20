@@ -1,4 +1,5 @@
 <!doctype html>
+<html lang="<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,20 +22,34 @@
         h1,h2,h3,h4,h5,h6{font-size:16px;font-weight:400;}
         i,em{font-style:normal;}
         b{font-weight:400;}
-        table{width:100%;border-collapse:collapse;}
-        .pay_header{ background: url("/public/static/images/header_topBg.png") no-repeat; height: .575rem; background-size: contain;}
-        .pay_header h1{ font-size: .22rem; color: #fff;text-align: center; line-height: .575rem;}
-
-
-
-        /*新加的*/
-        .net_pay{ background: url("/public/static/images/wangluo_iconBg.png") no-repeat;background-size:contain; height: .52rem;}
-        .pay_con{ overflow: hidden; text-align: center; margin: .5rem 0;display: flex;justify-content: center;}
-        .pay_btn{background: url("/public/static/images/wx_btnBg.png") no-repeat;display:block; text-indent: -9999em; cursor: pointer; background-size: contain; height: .52rem; width: 1.77rem; border: none;}
-        .score_pay{ background: url("/public/static/images/jifen_payIconBg.png") no-repeat;background-size:contain; height: .52rem;}
-        .pay_btnList{text-align: center; display: flex;justify-content: center;}
-        .pay_xxxBtn{ background: url("/public/static/images/wanke_btbBg.png") no-repeat;background-size:contain; height: .52rem; width: 1.79rem; border: none; margin-top: .5rem;
-            font-size: .24rem; color: #fff; padding-left: .24re;display: block; line-height: .52rem;}
+        .container{
+            overflow: hidden;
+            background: url("/public/static/images/pay_bg.png") no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+        .pay_con{
+            margin-top: 1.2rem;
+            margin-left: 1rem;
+            overflow: hidden;
+        }
+        .pay_btn,.score_btn{
+            display: block; text-indent: -9999em; cursor: pointer;
+           height: 1.7rem; width: 1.7rem; }
+        .score_pay{
+            margin-top: .4rem;
+            margin-left: 1rem;
+            overflow: hidden;
+        }
+        .reg_con{
+            margin-top: .5rem;
+            margin-left: 1.2rem;
+            overflow: hidden;
+        }
+        .reg_btn{
+            display: block; text-indent: -9999em; cursor: pointer;
+            height: .58rem; width: 1.3rem;
+        }
     </style>
     <script>
         var html = document.getElementsByTagName("html")[0];
@@ -42,43 +57,17 @@
         html.style.fontSize = hWidth * (100 / 360) + 'px';
     </script>
 </head>
-<body style="background: #fff4ec;">
-<header class="pay_header">
-    <h1>支付</h1>
-</header>
-<div class="net_pay">
-
+<body >
+<div class="container">
+    <div class="pay_con">
+        <a href="{$le}" class="pay_btn">支付宝或微信支付</a>
+    </div>
+    <div class="score_pay">
+        <a href="{$ji}" class="score_btn">积分支付</a>
+    </div>
+    <div class="reg_con">
+        <a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUwOTQzMDY0NQ==&scene=126&bizpsid=0#wechat_redirect" class="reg_btn">注册会员</a>
+    </div>
 </div>
-<div class="pay_con">
-    <a href="{$le}" class="pay_btn">支付</a>
-</div>
-<div class="score_pay">
-
-</div>
-<div class="pay_btnList">
-    <a href="{$ji}" class="pay_xxxBtn">上海七宝万科</a>
-
-</div>
-<input type="button" onclick="ajax_get_table()" style="width: 50px;">
-<a href="weixin://profile/gh_b73367577b2a">微江门</a>
 </body>
-<script src="/template/phone/new/new/js/jquery-2.1.4.min.js"></script>
-<script>
-    function ajax_get_table(){
-
-        $.ajax({
-            type : "POST",
-            url:"http://192.168.1.144/sever/test/cs",
-//            data : $('#'+form).serialize(),// 你的formid
-            async : false, //同步请求
-            data : "",// 你的formid
-            success: function(data){
-                console.log(data);
-                $("#flexigrid").html('');
-                $("#flexigrid").append(data);
-            }
-        });
-    }
-</script>
-
 </html>

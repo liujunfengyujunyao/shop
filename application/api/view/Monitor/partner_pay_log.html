@@ -57,7 +57,7 @@
         }
         .txt{
             border: none;
-            height: 0;
+            height: 100%;
         }
         .mobile{
             border: none;
@@ -99,42 +99,28 @@
         html.style.fontSize = hWidth * (100 / 360) + 'px';
     </script>
 </head>
-<body>
+<body >
 <div class="container">
-    <h2 class="cz_title">充值</h2>
-    <div class="icon_list">
-        <ul>
-            <li data-id="1">
-                <a href=""><img src="https://gravatar.com/avatar/2c63b57d3c76ccaed06fcc34ba0e8d33?size=48"></a>
-            </li>
-            <li>
-                <img src="https://gravatar.com/avatar/2c63b57d3c76ccaed06fcc34ba0e8d33?size=48">
-            </li>
-            <li>
-                <img src="https://gravatar.com/avatar/2c63b57d3c76ccaed06fcc34ba0e8d33?size=48">
-            </li>
-            <li>
-                <img src="https://gravatar.com/avatar/2c63b57d3c76ccaed06fcc34ba0e8d33?size=48">
-            </li>
-            <li>
-                <img src="https://gravatar.com/avatar/2c63b57d3c76ccaed06fcc34ba0e8d33?size=48">
-            </li>
-        </ul>
-    </div>
-    <div class="message">
-        收到<span id="score"></span>积分抵扣<span id="qian"></span>元
-    </div>
-    <div class="form_list">
-        <div class="form_item">
-            <label>积分:</label><input type="text" id="money_txt" class="txt" placeholder="请输入冲值金额"  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"  value="{$amount}" id="money" disabled="disabled">
+    <div class="score_content">
+        <h2>积分兑换</h2>
+        <div class="form_list">
+            <div class="form_item">
+                <label>积分:</label><input type="text" class="txt" value="{$amount}" disabled="disabled" id="money" >
+            </div>
+            <div class="form_item">
+                <label>手机号:</label><input type="text" class="mobile" placeholder=""  value="" id="mobile" onblur="checkMobile()">
+            </div>
+            <input type="button" value="提交" class="btn_txt" onclick="subForm()" id="btn_sub">
+            <div class="score_des">
+                <span>积分兑换使用说明:</span>
+                <p>213424234</p>
+                <p>213424234</p>
+                <p>213424234</p>
+                <p>213424234</p>
+            </div>
         </div>
-        <div class="form_item">
-            <label>手机号:</label><input type="text" class="txt" placeholder="请输入手机号"  value="" id="mobile" onblur="checkMobile()">
-        </div>
-        <input type="button" value="提交" class="btn_txt" onclick="subForm()" id="btn_sub">
     </div>
 </div>
-
 
 <script src="/template/phone/new/new/js/jquery-2.1.4.min.js"></script>
 <script src="/template/phone/js/layer.js"></script>
@@ -151,16 +137,7 @@
         $(".message").css('display','block');
 
     })
-    function checkMoney(e) {
-        var re = /^\d+(?=\.{0,1}\d+$|$)/
-        if (e.value != "") {
-            if (!re.test(e.value)) {
-                alert("请输入正确的数字");
-                e.value = "";
-                e.focus();
-            }
-        }
-    }
+
     //获取url参数
     function GetUrlParam(paraName) {
         var url = document.location.toString();
@@ -183,9 +160,10 @@
     }
 
     function subForm() {
-        var postParam={'partner_id':1,'account':$("#mobile").val(),amount:$("#money_txt").val(),'machinesn':GetUrlParam('machinesn')}
+        var postParam={'partner_id':1,'account':$("#mobile").val(),amount:$("#money").val(),'machinesn':GetUrlParam('machinesn')}
         $.ajax({
-//            url: "http://192.168.1.144/sever/Heading/test",
+            // url: "http://192.168.1.144/sever/Heading/test",
+            // url: "http://192.168.3.1/sever/Heading/test",
             url: "http://www.goldenbrother.cn/index.php/sever/Heading/test",
             method: "post",
             data:JSON.stringify(postParam),
@@ -194,16 +172,8 @@
             },
             dataType: "json",
             success:function (data) {
-                if(data.msg=="user_error"){
-                    layer.open({
-                        type: 1,
-                        title: false,
-                        closeBtn: 0,
-                        area: '516px',
-                        skin: 'layui-layer-nobg', //没有背景色
-                        shadeClose: true,
-                        content: $('#tong')
-                    });
+                if(data.msg=='user_error'){
+
                 }
                 layer.alert(data.msg);
                 $("#btn_sub").removeAttr('disabled');
