@@ -145,7 +145,7 @@ class Index extends Controller {
 
             }
         }elseif($params['msgtype'] == "connection_lost"){//链接服务器发送的通知设备下线通知
-            DB::name('machine')->where(['sn'=>$params['machinesn']])->save(['is_online'=>0]);
+            DB::name('machine')->where(['sn'=>$params['machinesn']])->save(['is_online'=>0,'last_offline'=>date('Y-m-d : H:i:s',time())]);
             $machine = DB::name('machine')->where(['sn'=>$params['machinesn']])->find();
             $add = array(
                 'machine_id' => $machine['machine_id'],
@@ -209,7 +209,7 @@ class Index extends Controller {
             //更新设备的经纬度
             DB::name('machine')
                 ->where(['sn'=>$data['sn']])
-                ->save(['position_lng'=>$data['poslong'],'position_lat'=>$data['poslat'],'is_online'=>1,'version_id'=>$data['version'],'machine_location'=>$data['adress']]);
+                ->save(['position_lng'=>$data['poslong'],'position_lat'=>$data['poslat'],'is_online'=>1,'version_id'=>$data['version'],'machine_location'=>$data['adress'],'last_online'=>date('Y-m-d : H:i:s',time())]);
             if($machine['priority'] == 1){
                 $result = array(
                     'msg' => array(
@@ -599,12 +599,16 @@ class Index extends Controller {
 //                        dump($total);dump($data_table_name);dump($stat_period);halt($machine_id);
 //                        $isTable = DB()->query("SHOW TABLES LIKE '$name'");//有个问题  如果是整点传输过来 有可能数据库还没有插入
             $hour_stat = DB::name($data_table_name)->where(['machine_id'=>$machine_id,'stat_period'=>$stat_period])->find();
-            $save['total_income'] = $hour_stat['total_income'] + $total;
-            $save['sell_income'] = $hour_stat['sell_income'] + $total;
-            $save['sell_count'] = $hour_stat['sell_count'] + 1;
-            DB::name($data_table_name)->where(['machine_id'=>$machine_id,'stat_period'=>$stat_period])->save($save);
+//            halt($hour_stat);
+            if($hour_stat){
+                $save['total_income'] = $hour_stat['total_income'] + $total;
+                $save['sell_income'] = $hour_stat['sell_income'] + $total;
+                $save['sell_count'] = $hour_stat['sell_count'] + 1;
+                DB::name($data_table_name)->where(['machine_id'=>$machine_id,'stat_period'=>$stat_period])->save($save);
 
-            DB::name('refresh_data')->add(['machine_id'=>$machine_id,'time'=>time(),'amount'=>$add['amount']]);
+                DB::name('refresh_data')->add(['machine_id'=>$machine_id,'time'=>time(),'amount'=>$add['amount']]);
+            }
+
 
 
 

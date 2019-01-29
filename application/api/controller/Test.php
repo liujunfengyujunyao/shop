@@ -42,4 +42,8 @@ class Test extends Controller{
 		$return = json_curl($url,$data);
 		halt($return);
 	}
+
+	public function api(){
+
+    }
 }

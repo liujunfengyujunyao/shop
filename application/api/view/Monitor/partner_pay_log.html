@@ -113,10 +113,11 @@
             <input type="button" value="提交" class="btn_txt" onclick="subForm()" id="btn_sub">
             <div class="score_des">
                 <span>积分兑换使用说明:</span>
-                <p>213424234</p>
-                <p>213424234</p>
-                <p>213424234</p>
-                <p>213424234</p>
+                <p>1、 积分兑换幸运盒子,每月数量仅为80,先到先得.</p>
+                <p>2、 300积分兑换1个幸运盒子(只能整兑).</p>
+                <p>3、 积分一经兑出,概不退换</p>
+                <p><a href="https://mp.weixin.qq.com/bizmall/activatemembercard?action=preshow&&encrypt_card_id=I4g%2FRTxq8MA8c3nNwG5hSX%2Fni3OkdcwczhgzJSQSnL66i99x0dUs5IkCNwG0Jr5y&outer_str=01&biz=MzUwOTQzMDY0NQ%3D%3D#wechat_redirect">4、 兑换服务为七宝万科广场会员专享，若还未成为会员请点此处</a></p>
+                <p style="color: #5C5C5C">本活动最终解释权归北京大牙park</p>
             </div>
         </div>
     </div>
@@ -162,7 +163,7 @@
     function subForm() {
         var postParam={'partner_id':1,'account':$("#mobile").val(),amount:$("#money").val(),'machinesn':GetUrlParam('machinesn')}
         $.ajax({
-            // url: "http://192.168.1.144/sever/Heading/test",
+//             url: "http://192.168.1.144/sever/Heading/test",
             // url: "http://192.168.3.1/sever/Heading/test",
             url: "http://www.goldenbrother.cn/index.php/sever/Heading/test",
             method: "post",

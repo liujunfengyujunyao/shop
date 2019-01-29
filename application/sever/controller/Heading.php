@@ -110,7 +110,18 @@ class Heading extends Controller{
         $params = file_get_contents('php://input');
 
         $params = json_decode($params, true);
-        $date = UnixToGmt("Y-m-d" ,time()).'T'.UnixToGmt("H:i:s.000 +0800" ,time());
+        $is_there = DB::name('cooperation_restrict')->where(['id'=>1])->find();
+        //使用次数 == 使用上限
+        if($is_there['use_number'] == $is_there['upper_number']){
+            $result = array(
+                'status' => 0,
+                'msg' => "对不起,本月积分兑换次数已满",
+            );
+            return json($result);
+        }
+
+        $date = UnixToGmt("Y-m-d" ,time()).'T'.UnixToGmt("H:i:s.000 +0800" ,time()+60*60*8);
+//        halt($date);
 //        echo $data;die;
         $add = array(
             'partner_id' => 1,
@@ -148,15 +159,16 @@ class Heading extends Controller{
                 'tranTime' => $date,
                 'account' => array(
                   'type' => "mobile",
-                    'id' => "13683141819",//获取到的数据
-//                    'id' => $add['account'],//获取到的数据
+//                    'id' => "13683141819",//获取到的数据
+                    'id' => $add['account'],//获取到的数据
                 ),
                 'scoreRec' => array(
                     'scoreType' => "-",
                     'scoreSubject' => "消费",
-//                    'score' => "-500",
-//                    'score' => "-".$add['amount'],
-                    'score' => $add['amount'],
+//
+//                    'score' => "-11920",
+//                    'score' => $add['amount'],
+                    'score' => "-".$add['amount'],
                 ),
                 'scoreSource' => "消费",
                 'remark' => "",
@@ -171,10 +183,14 @@ class Heading extends Controller{
             'content-type:application/json',
             'Authorization: Basic '.base64_encode("admin:www.hd123.com"),
         );
-        $url = "http://58.246.29.147:9002/jcrm-server-card/rest/score/adjustScore";
+        $url = "http://58.246.29.147:9002/jcrm-server-card/rest/score/adjustScore";//海鼎万科的地址
         $return = $this->curl_request($url,$array,$header);
         $return = json_decode($return,true);
         if($return['message'] == "ok"){//成功
+
+            //一个月限制80个
+            DB::name('cooperation_restrict')->where(['id'=>1])->setInc('use_number',1);
+
             $log_id = "";//发送给设备成功信息
             $result = array(
                 'status' => 1,
@@ -316,6 +332,11 @@ class Heading extends Controller{
         return $result;
     }
 
+
+    public function refresh_use_number(){
+        $data = DB::name('cooperation_restrict')->where("1=1")->save(['use_number'=>0]);
+//        DB::name('cooperation_restrict')->where(['id'=>1])->setInc('use_number',1);
+    }
 
     public function json(){
         $add = array(

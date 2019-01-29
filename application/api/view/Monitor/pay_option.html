@@ -35,7 +35,7 @@
         }
         .pay_btn,.score_btn{
             display: block; text-indent: -9999em; cursor: pointer;
-           height: 1.7rem; width: 1.7rem; }
+           height: 1.7rem; width: 1.7rem; background: none;border: none;}
         .score_pay{
             margin-top: .4rem;
             margin-left: 1rem;
@@ -60,14 +60,27 @@
 <body >
 <div class="container">
     <div class="pay_con">
-        <a href="{$le}" class="pay_btn">支付宝或微信支付</a>
+        <a href="{$le}" class="pay_btn">支付宝或微信支付{$number}</a>
     </div>
+    <if condition=" $number eq 800 ">
     <div class="score_pay">
-        <a href="{$ji}" class="score_btn">积分支付</a>
+        <input type="button" value="次数限制{$number}" class="score_btn" disabled="disabled"/>
+
     </div>
-    <div class="reg_con">
-        <a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUwOTQzMDY0NQ==&scene=126&bizpsid=0#wechat_redirect" class="reg_btn">注册会员</a>
-    </div>
+        <else/>
+        <div class="score_pay">
+            <input type="button" value="积分支付" class="score_btn" onclick="pay()"/>
+        </div>
+    </if>
+    <!--<div class="reg_con">-->
+        <!--&lt;!&ndash;<a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUwOTQzMDY0NQ==&scene=126&bizpsid=0#wechat_redirect" class="reg_btn">注册会员</a>&ndash;&gt;-->
+    <!--</div>-->
 </div>
 </body>
+<script>
+    function pay(){
+        window.location.href="{$ji}";
+    }
+
+</script>
 </html>

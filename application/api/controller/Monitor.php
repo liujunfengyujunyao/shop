@@ -188,16 +188,17 @@ class Monitor extends Controller
 
     public function pay_option(){
         $data = I('get.');
+        $number = DB::name('cooperation_restrict')->where(['id'=>1])->getField('use_number');
+//halt($number);
 //        halt($data);
         $le = $data['le'];
        $ji = "http://www.goldenbrother.cn/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
-        // $ji = "http://192.168.1.144/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
+//         $ji = "http://192.168.1.144/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
         // $ji = "http://192.168.3.1/index.php/api/Monitor/partner_pay_log?machinesn=".$data['machinesn'];
 //        halt($ji);
         $money = $data['money'];
         $jifen = $ji . "&amount=" . $money;
-//        halt($jifen);
-//        $this->assign('money',$money);
+        $this->assign('number',$number);
         $this->assign('le',$le);
         $this->assign('ji',$jifen);
         return $this->fetch();

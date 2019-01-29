@@ -522,7 +522,7 @@ class Test extends Controller
 
     public function in()
     {
-        $params['machinesn'] = 10119;
+        $params['machinesn'] = 10143;
         $msg['type'] = 4;
         $msg['px'] = 2;
         $uuid = sha1("sn=" . $params['machinesn'] . "&type=" . $msg['type'] . "&px=" . $msg['px']);
@@ -707,7 +707,9 @@ class Test extends Controller
         foreach ($result as $key => $value) {
             $lng = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('position_lng');
             $lat = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('position_lat');
-            $return[$key]['value'] = $lng . "," . $lat;
+//            $return[$key]['value'] = $lng . "," . $lat;
+            $return[$key]['lng'] = $lng;
+            $return[$key]['lat'] = $lng;
             $return[$key]['name'] = $value['amount'];
         }
         return json($return);
@@ -740,35 +742,43 @@ class Test extends Controller
 
     public function web()
     {
-//        @ini_set('implicit_flush',1);
-//
-//        ob_implicit_flush(1);
-//
-//        @ob_end_clean();
+        @ini_set('implicit_flush',1);
+
+        ob_implicit_flush(1);
+
+        @ob_end_clean();
         set_time_limit(0);
+        $limit = I('get.limit');
         $time = time() - 2000000;
         $result = DB::name('refresh_data')->where("time > $time")->select();
+//        $id = DB::name('refresh_data')->getField('id');
+//        halt($id);
 //        halt($result);
         foreach ($result as $key => $value) {
             $lng = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('position_lng');
-            $lat = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('position_lat');
-            $return[$key]['value'] = $lng . "," . $lat;
+            $lat = DB::name('machine')->where(['machine_id' =>  $value['machine_id']])->getField('position_lat');
+//            $id = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('id');
+//            $return[$key]['value'] = $lng . "," . $lat;
+            $return[$key]['value'] = [floatval($lat),floatval($lng)];
+//            $return[$key]['lat'] = $lat;
             $return[$key]['name'] = $value['amount'];
         }
-        return json($return);
+//        halt($return);
+//        return json($return);
 
-//        for($i=0; $i<count($return); $i++){
-//        for($i=0; $i<2; $i++){
+//        for($i=0; $i<3; $i++){
+        for($i=$limit * 3; $i<$limit * 3 + 3; $i++){
 
-//            echo json_encode($return[$i],JSON_UNESCAPED_UNICODE) . "!";
+            echo json_encode($return[$i],JSON_UNESCAPED_UNICODE) . ",";
 
-            //this is for the buffer achieve the minimum size in order to flush data
+//            this is for the buffer achieve the minimum size in order to flush data
 
-//            echo str_repeat(' ',1024*64);
+            echo str_repeat(' ',1024*64);
 
-//            sleep(1);
+            sleep(2.5);
 
-//        }
+        }
+//        DB::name('refresh_data')->where("1=1")->order("id asc")->limit(3)->delete();
 
 
     }
@@ -787,30 +797,30 @@ class Test extends Controller
         }
     }
 
-    public function cs(){
-        ob_end_flush();//关闭缓存
-        ob_implicit_flush(true);//每次缓存即时输出相当于每次输出后调用flush（）
-        $time = time() - 2000000;
+    public function cs()
+    {
+        $time = time();
+        $time = $time - 10;
         $result = DB::name('refresh_data')->where("time > $time")->select();
-//        halt($result);
         foreach ($result as $key => $value) {
             $lng = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('position_lng');
-            $lat = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('position_lat');
-            $return[$key]['value'] = $lng . "," . $lat;
+            $lat = DB::name('machine')->where(['machine_id' =>  $value['machine_id']])->getField('position_lat');
+//            $id = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('id');
+//            $return[$key]['value'] = $lng . "," . $lat;
+            $return[$key]['value'] = [floatval($lat),floatval($lng)];
+//            $return[$key]['lat'] = $lat;
             $return[$key]['name'] = $value['amount'];
-        }
+        } foreach ($result as $key => $value) {
+        $lng = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('position_lng');
+        $lat = DB::name('machine')->where(['machine_id' =>  $value['machine_id']])->getField('position_lat');
+//            $id = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('id');
+//            $return[$key]['value'] = $lng . "," . $lat;
+        $return[$key]['value'] = [floatval($lat),floatval($lng)];
+//            $return[$key]['lat'] = $lat;
+        $return[$key]['name'] = $value['amount'];
 
+    }
+        return json($return);
 
-        for($i=0; $i<count($return); $i++){
-
-            echo json_encode($return[$i],JSON_UNESCAPED_UNICODE);
-
-            //this is for the buffer achieve the minimum size in order to flush data
-
-            echo str_repeat(' ',1024*64);
-
-            sleep(1);
-
-        }
     }
 }
