@@ -85,7 +85,7 @@ class Logina extends Controller{
 
     //手机登录
 	public function index(){
-		// dump(sdfds);die;
+
 		if(IS_POST){
 			$data = I('post.');
 			// dump($data);die;
@@ -99,13 +99,30 @@ class Logina extends Controller{
 		if (empty($data['pass'])) {
 			$this->error('密码不能为空');
 		}
+
+            $remember = $data['remember'];
+
 		$data['pass'] = md5($data['pass']);
 		$info = M('admin')->where(['phone'=>$data['tel']])->find();
 		$id = $info['admin_id'];
 		if($data['pass'] == $info['password']){
+            if($remember == 1){
+                setcookie('tel',$data['tel'],time()+3600);
+                setcookie('pass',$_POST['pass'],time()+3600);
+                setcookie('remember',$remember,time()+3600);
+            }else{
+                setcookie('tel',$data['tel'],time()-3600);
+                setcookie('pass',$_POST['pass'],time()-3600);
+                setcookie('remember',$remember,time()-3600);
+            }
+
+
+
+
+
 			session('client_id',$id);
 			session("manager_info",$info);
-			Db::name('admin')->where(['phone'=>$data['tel']])->setField('last_login',time());
+			DB::name('admin')->where(['phone'=>$data['tel']])->setField('last_login',time());
 //			$this->success('登录成功',U('Phone/Index/index'));
             $this->redirect('Phone/Index/index');
 //            $this->redirect('Phone/Logina/login');微信登陆 获取用户的openid
@@ -115,15 +132,35 @@ class Logina extends Controller{
 	}else{
 		// $link = 'http://'.$_SERVER['HTTP_HOST'].'/Test/App/login';//微信登录链接
 		// $this->assign('link',$link);
-		// dump(小法师打发);die;
+//		if($_COOKIE['tel'] && $_COOKIE['pass'] != ""){
+//
+//            $info = M('admin')->where(['phone'=>$_COOKIE['tel']])->find();
+//            if(md5($_COOKIE['pass']) == $info['password']){
+//                $id = $info['admin_id'];
+//                session('client_id',$id);
+//                session("manager_info",$info);
+//                DB::name('admin')->where(['phone'=>$_COOKIE['tel']])->setField('last_login',time());
+//                $this->redirect('Phone/Index/index');
+//            }else{
+//                return $this->fetch('login');
+//            }
+//
+//        }
+
+
 		return $this->fetch('login');
 	}
 
 	}
 	//退出
 	public function logout(){
+
 	    	session(null);
-	    	$this->success('退出登录成功',U('phone/logina/index'));
+
+        setcookie("tel", null, time()-3600*24*365);
+        setcookie("pass", null, time()-3600*24*365);
+
+        $this->success('退出登录成功',U('phone/logina/index'));
 	}
 
 }

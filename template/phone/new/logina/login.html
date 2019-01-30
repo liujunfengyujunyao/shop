@@ -9,13 +9,17 @@
 	</header>
 	<form action="{:U('Phone/Logina/index')}" id="body" method="post">
 		<div class="form-group">
-			<input type="text" class="main form-control" name="tel">
+			<input type="text" class="main form-control" name="tel" value="<?php echo $_COOKIE['tel'];?>">
 			<label for="tel">手机号</label>
 		</div>
 		<div class="form-group">
-			<input type="password" class="main form-control"  name="pass">
+			<input type="password" class="main form-control"  name="pass" value="<?php echo $_COOKIE['pass'];?>">
 			<label for="pass">密码</label>
 		</div>
+		<tr>
+		<td>记住用户名和密码</td>
+		<td><?php if($_COOKIE['remember'] == 1){?><input type="checkbox" name="remember" value="1" checked><?php }else{($_COOKIE['remember'] == "")?><input type="checkbox" name="remember" value="1"><?php }?></td>
+		</tr>
 		<div class="forget">
 			<!-- <a href={$link}><img src="__PUBLIC__/images/we_chat.png" alt=""></a> -->
 			<a href="{:U('Phone/Register/verify')}" >忘记密码?</a>

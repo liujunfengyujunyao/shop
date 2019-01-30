@@ -62,7 +62,7 @@
     <div class="pay_con">
         <a href="{$le}" class="pay_btn">支付宝或微信支付{$number}</a>
     </div>
-    {if condition=" $number eq 800 "}
+    {if condition=" $number >= 80 "}
     <div class="score_pay">
         <input type="button" value="次数限制{$number}" class="score_btn" onclick="number_max()"/>
 
