@@ -106,6 +106,7 @@ class Logina extends Controller{
 		$info = M('admin')->where(['phone'=>$data['tel']])->find();
 		$id = $info['admin_id'];
 		if($data['pass'] == $info['password']){
+//		    halt($data);
             if($remember == 1){
                 setcookie('tel',$data['tel'],time()+3600);
                 setcookie('pass',$_POST['pass'],time()+3600);
@@ -155,7 +156,7 @@ class Logina extends Controller{
 	//退出
 	public function logout(){
 
-	    	session(null);
+        session(null);
 
         setcookie("tel", null, time()-3600*24*365);
         setcookie("pass", null, time()-3600*24*365);

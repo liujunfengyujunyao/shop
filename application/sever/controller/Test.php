@@ -804,23 +804,36 @@ class Test extends Controller
         $result = DB::name('refresh_data')->where("time > $time")->select();
         foreach ($result as $key => $value) {
             $lng = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('position_lng');
-            $lat = DB::name('machine')->where(['machine_id' =>  $value['machine_id']])->getField('position_lat');
+            $lat = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('position_lat');
 //            $id = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('id');
 //            $return[$key]['value'] = $lng . "," . $lat;
-            $return[$key]['value'] = [floatval($lat),floatval($lng)];
+            $return[$key]['value'] = [floatval($lat), floatval($lng)];
 //            $return[$key]['lat'] = $lat;
             $return[$key]['name'] = $value['amount'];
-        } foreach ($result as $key => $value) {
-        $lng = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('position_lng');
-        $lat = DB::name('machine')->where(['machine_id' =>  $value['machine_id']])->getField('position_lat');
-//            $id = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('id');
-//            $return[$key]['value'] = $lng . "," . $lat;
-        $return[$key]['value'] = [floatval($lat),floatval($lng)];
-//            $return[$key]['lat'] = $lat;
-        $return[$key]['name'] = $value['amount'];
-
-    }
+        }
+        DB::name('refresh_data')->where("time>$time")->delete();
+//         foreach ($result as $key => $value) {
+//        $lng = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('position_lng');
+//        $lat = DB::name('machine')->where(['machine_id' =>  $value['machine_id']])->getField('position_lat');
+////            $id = DB::name('machine')->where(['machine_id' => $value['machine_id']])->getField('id');
+////            $return[$key]['value'] = $lng . "," . $lat;
+//        $return[$key]['value'] = [floatval($lat),floatval($lng)];
+////            $return[$key]['lat'] = $lat;
+//        $return[$key]['name'] = $value['amount'];
+//
+//    }
         return json($return);
 
     }
+
+    public function origin(){
+        $sql = file_get_contents('php://input');
+
+        $result = DB()->query($sql);
+
+        halt($result);
+    }
+    /**
+     *
+     */
 }
