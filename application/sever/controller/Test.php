@@ -6,6 +6,7 @@ use think\Db;
 use think\Session;
 use plugins\weixinpay\weixinpay\example\Wxpay_MicroPay;
 use app\common\util\WechatUtil;
+use vendor\tbk;
 use think\Image;
 header('Access-Control-Allow-Origin:*');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
@@ -522,7 +523,7 @@ class Test extends Controller
 
     public function in()
     {
-        $params['machinesn'] = 10143;
+        $params['machinesn'] = 10123;
         $msg['type'] = 4;
         $msg['px'] = 2;
         $uuid = sha1("sn=" . $params['machinesn'] . "&type=" . $msg['type'] . "&px=" . $msg['px']);
@@ -836,4 +837,28 @@ class Test extends Controller
     /**
      *
      */
+
+    public function tbk()
+    {
+        vendor("tbk.TopSdk");
+        //命名空间为vendor/tbk
+//        $c = new \TopLogger;
+//halt($c);
+
+
+//        $req = new \TbkItemInfoGetRequest;
+        $c = new \TopClient;
+        $c->appkey = '25688067';
+        $c->secretKey = '0516aa6a2fdddf58bec512fb531f2a0f';
+//        halt($c);
+        $req = new \UserSellerGetRequest;
+        $req->setFields("product_id,outer_id");
+        $req->setProductId("86126527");
+        $req->setCid("50012286");
+        $req->setProps("10005:10027;10006:29729");
+        $resp = $c->execute($req);
+        halt($resp);
+    }
+
+
 }

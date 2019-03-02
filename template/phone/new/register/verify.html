@@ -52,13 +52,13 @@
 						// alert(123);
 						// setTimeout(function(){
 							$.ajax({
-								url:"{:U('Phone/Register/index')}",
+								url:"{:U('Phone/Register/again')}",
 								type:"post",
 								data:{phone:tel},
 								success:function(data){
 									console.log(data);
 									if(data.error_code ==  1){
-										alert("手机已注册请登录");
+										alert("次账号尚未注册");
 									}else if(data.error_code ==  2){
 										alert('验证码已发送');
 										var $el = $('.validate');

@@ -44,6 +44,7 @@ class Real extends Controller{
                   `game_income` int(11) default '0' COMMENT '游戏收入',
                   `game_win` int(11) default '0' COMMENT '游戏成功次数',
                   `sell_count` int(11) default '0' COMMENT '销售次数',
+//                  `sell_number` int(11) default '0' COMMENT '销售数量',
                   `sell_income` int(11) default '0' COMMENT '销售收入',
                   `refund` int(11) default '0' COMMENT '退款金额',
                   PRIMARY KEY  (`id`)
@@ -130,6 +131,7 @@ class Real extends Controller{
                             'game_income' => intval($value['game_income'] + $v['game_income']),
                             'game_win' => intval($value['game_win'] + $v['game_win']),
                             'sell_count' => intval($value['sell_count'] + $v['sell_count']),
+//                            'sell_number' => intval($value['sell_number'] + $v['sell_number']),
                             'sell_income' => intval($value['sell_income'] + $v['sell_income']),
                             'refund' => intval($value['refund'] + $v['refund']),
                         );
@@ -159,6 +161,7 @@ class Real extends Controller{
         foreach ($machine as $key => $value){
             $add[$key] = DB::name('machine_day_stat_2019_1')
                         ->field("sum(total_income) as total_income,sum(sell_count) as sell_count,sum(sell_income) as sell_income,sum(game_count) as game_count,sum(game_income) as game_income,sum(game_win) as game_win,sum(refund) as refund")
+//                        ->field("sum(total_income) as total_income,sum(sell_count) as sell_count,sum(sell_number) as sell_number,sum(sell_income) as sell_income,sum(game_count) as game_count,sum(game_income) as game_income,sum(game_win) as game_win,sum(refund) as refund")
                         ->where("stat_period < $stat_period && machine_id = $value")//缺少>条件
                         ->find();
             $add[$key]['machine_id'] = $value;
@@ -168,6 +171,7 @@ class Real extends Controller{
         foreach ($add as $k => &$v){
             $v['total_income'] = intval($v['total_income']);
             $v['sell_count'] = intval($v['sell_count']);
+//            $v['sell_number'] = intval($v['sell_number']);
             $v['sell_income'] = intval($v['sell_income']);
             $v['game_count'] = intval($v['game_count']);
             $v['game_income'] = intval($v['game_income']);
@@ -237,6 +241,7 @@ class Real extends Controller{
         $data = DB::name('machine_day_stat_2019_1')
                 ->alias('t1')
                 ->field('sum(t1.total_income) as total_income,sum(t1.game_count) as game_count,sum(t1.game_income) as game_income,sum(t1.game_win) as game_win,sum(t1.sell_count) as sell_count,sum(t1.sell_income) as sell_income,sum(t1.refund) as refund,t2.client_id,t1.stat_period')
+//                ->field('sum(t1.total_income) as total_income,sum(t1.game_count) as game_count,sum(t1.game_income) as game_income,sum(t1.game_win) as game_win,sum(t1.sell_count) as sell_count,sum(t1.sell_number) as sell_number,sum(t1.sell_income) as sell_income,sum(t1.refund) as refund,t2.client_id,t1.stat_period')
                 ->join("__MACHINE__ t2","t2.machine_id = t1.machine_id")
                 ->where("t2.client_id in ($client_ids) && stat_period = $stat_period")
                 ->group("t2.client_id")
@@ -259,7 +264,8 @@ class Real extends Controller{
                         'game_count' => intval($value['game_count'] + $v['game_count']),
                         'game_income' => intval($value['game_income'] + $v['game_income']),
                         'game_win' => intval($value['game_win'] + $v['game_win']),
-                        'sell_count' => intval($value['sell_coun t'] + $v['sell_count']),
+                        'sell_count' => intval($value['sell_count'] + $v['sell_count']),
+//                        'sell_number' => intval($value['sell_number'] + $v['sell_number']),
                         'sell_income' => intval($value['sell_income'] + $v['sell_income']),
                         'refund' => intval($value['refund'] + $v['refund']),
                     );
@@ -276,7 +282,7 @@ class Real extends Controller{
      *  月初创建商户月统计数据
      *
      * */
-    //$crontab = "2 0 1 * * wget --spider http://www.goldenbrother.cn/index.php/api/real/create_client_month"; 每月1号0点1分执行一次
+    //$crontab = "2 0 1 * * wget --spider http://www.goldenbrother.cn/index.php/api/real/create_client_month"; 每月1号0点2分执行一次
     public function create_client_month(){
         $time = date('Y-m',time());
         $stat_period = intval($this->findNum($time));

@@ -39,6 +39,21 @@ class Index extends Controller {
         if($params['msgtype'] == 'receive_message'){//链接服务器转发的设备请求
             $type = $params['msg']['msgtype'] ? $params['msg']['msgtype'] : "";
 
+            $is_online = DB::name('machine')->where(['sn'=>$params['machinesn']])->getField('is_online');
+            if($type!=="login" && $is_online==0){
+                $msg = array(
+                    'errid' => 10000,
+                    'errmsg' => 'relogin',
+                );
+                $data = array(
+                    'msg' => $msg,
+                    'machinesn' => intval($params['machinesn']),
+                    'cmd' => "disconnect",//发给中转服务器的cmd
+                );
+
+                $data = json_encode($data,JSON_UNESCAPED_UNICODE);
+                echo $data;die;
+            }
 
 
 
@@ -550,6 +565,7 @@ class Index extends Controller {
                 if ($count == 1) {//单独购买
                     if(is_array($data['roomid'])){
                         $res = DB::name('client_machine_conf')->where(['location' => $data['roomid'][0], 'machine_id' => $machine_id])->setDec('goods_num', 1);
+                        $sell_number = 1;
 //                        $total = DB::name('client_machine_conf')->where(['location'=>$data['roomid'][0]])->getField('goods_price');
 //                        $total = intval($total);
 //                        $total = intval($add['amount']);
@@ -570,13 +586,14 @@ class Index extends Controller {
 
                     }else{
                         $res = DB::name('client_machine_conf')->where(['location' => $data['roomid'], 'machine_id' => $machine_id])->setDec('goods_num', 1);
+                        $sell_number = 1;
                     }
 
                 } else {//批量购买
 
 //                    $room = array_unique($data['roomid']);//去重复值
                     $room = array_count_values($data['roomid']);
-
+                    $sell_number = count($room);
 //                    foreach ($data['roomid'] as $key => $value) {
 //                        $res = DB::name('client_machine_conf')->where(['location' => $value, 'machine_id' => $machine_id])->setDec('goods_num', 1);
 //                    }
@@ -588,6 +605,7 @@ class Index extends Controller {
 //            halt($add);
                 // DB::name('client_machine_conf')->where(['locati on'=>$data['roomid'],'machine_id'=>$machine_id])->setDec('goods_num',1);
             }
+
 
 
             $total = intval($add['amount']);
@@ -604,6 +622,7 @@ class Index extends Controller {
                 $save['total_income'] = $hour_stat['total_income'] + $total;
                 $save['sell_income'] = $hour_stat['sell_income'] + $total;
                 $save['sell_count'] = $hour_stat['sell_count'] + 1;
+//                $save['sell_number'] = $hour_stat['sell_number'] + $sell_number;
                 DB::name($data_table_name)->where(['machine_id'=>$machine_id,'stat_period'=>$stat_period])->save($save);
 
                 DB::name('refresh_data')->add(['machine_id'=>$machine_id,'time'=>time(),'amount'=>$add['amount']]);
@@ -1243,6 +1262,27 @@ class Index extends Controller {
             }
         }
         return $result;
+    }
+
+    //上传设备日志,machine控制器machine_log()触发
+    public function upload_log(){
+        if(IS_POST){
+            $log = request()->file('log');
+            $path = ROOT_PATH . 'public' . DS . 'upload'. DS . 'log';
+            !file_exists($path) && mkdir($path, 0777, true);
+            if($log){
+                $info = $log->validate(['size'=>102400,'ext'=>'txt'])->move($path,time());
+                if($info){
+                    return "success";
+                }else{
+                    return "error";
+                }
+            }else{
+                return "no log";
+            }
+        }else{
+            return fasle;
+        }
     }
 
 
