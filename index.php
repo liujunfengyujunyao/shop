@@ -15,7 +15,7 @@
 // [ 应用入口文件 ]
 // 应用入口文件
 if (extension_loaded('zlib')){
-    ob_end_clean();
+    // ob_end_clean();
     ob_start('ob_gzhandler');
 }
 // 检测PHP环境

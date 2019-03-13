@@ -11,4 +11,8 @@
  * ============================================================================
  * $Author: IT宇宙人 2015-08-10 $
  */
-return [];
+return [
+    'app\home\command\Test',
+//    'app\sever\controller\Jos',
+
+];

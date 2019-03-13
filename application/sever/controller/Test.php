@@ -861,4 +861,28 @@ class Test extends Controller
     }
 
 
+
+
+    public function getTime()
+    {
+//        include "__ROOT__/vendor/getID3-master/getid3/getid3.php";
+        vendor('getID3-master.getid3.getid3');
+        $path = 'D:/WWW/shop/public/upload/ad/video/2019/01-03/23efdc33066b0c3ca6f78b58699dc7a3.mp4';//不可用网络资源路径
+        $path = 'var/www/html/public/upload/ad/video/2019/01-03/23efdc33066b0c3ca6f78b58699dc7a3.mp4';//不可用网络资源路径
+        $getID3 = new \getID3();  //实例化类
+        $ThisFileInfo = $getID3->analyze($path); //分析文件，$path为音频文件的地址
+
+        $fileduration=$ThisFileInfo['playtime_seconds']; //这个获得的便是音频文件的时长
+
+        $time = (int)ceil($fileduration);
+        halt($time);
+
+    }
+
+
+
+
+
+
+
 }

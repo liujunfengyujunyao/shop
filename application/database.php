@@ -16,18 +16,22 @@ return [
     // 'hostname'       => '218.245.1.214',
       // 'hostname'       => 'localhost',
       'hostname'       => 'mysql.sql41.cdncenter.net',
-      
+//      'hostname'       => 'pipiyaode.mysql.rds.aliyuncs.com',
+
     // 数据库名
     // 'database'       => 'tfs',
     'database'       => 'sq_nugh123',
-   // 用户名
+//    'database'       => 'pipiyao',
+    // 用户名
     // 'username'       => 'root',
     'username'       => 'sq_nugh123',
+//    'username'       => 'root',
     // 'username' => "ljf"
     // 密码
     // 'password'       => '123456',
     // 'password'       => 'root',
     'password'       => 'k5487561',
+//    'password'       => 'Apple116165',
     // 'password'       => 'bjyxkf@2308',
     // 端口
     'hostport'       => '3306',

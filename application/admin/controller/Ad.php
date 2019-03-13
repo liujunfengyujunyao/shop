@@ -765,7 +765,75 @@ class Ad extends Base
      * 执行列表
      * */
     public function performList(){
+        vendor('getID3-master.getid3.getid3');
+        delFile(RUNTIME_PATH . 'html'); // 先清除缓存, 否则不好预览
+        $getID3 = new \getID3();  //实例化类
 
+        $ad_list = DB::name('ad')->where(['media_type' => 1])->select();
+        foreach($ad_list  as $key=>$value){
+            if(is_null($value['ad_length'])){
+//                $path = "D:/WWW/shop/" . $value['ad_code'];
+//                halt($path);
+                $path = "var/www/html/" . $value['ad_code'];
+                $ThisFileInfo = $getID3->analyze($path); //分析文件，$path为音频文件的地址
+                $fileduration=$ThisFileInfo['playtime_seconds']; //这个获得的便是音频文件的时长
+                $time = (int)ceil($fileduration);
+                DB::name('ad')->where(['ad_id'=>$value['ad_id']])->save(['ad_length'=>$time]);
+            }
+        }
+
+
+        $Ad = M('ad');
+        $pid = I('pid', 0);
+        if ($pid) {
+            $where['pid'] = $pid;
+            $this->assign('pid', I('pid'));
+        }
+        $keywords = I('keywords/s', false, 'trim');
+        if ($keywords) {
+            $where['machine_name'] = array('like', '%' . $keywords . '%');
+        }
+        $count = DB::name('machine')->where($where)->count();// 查询满足要求的总记录数
+        $Page = $pager = new Page($count, 10);// 实例化分页类 传入总记录数和每页显示的记录数
+//        $res = $Ad->where($where)->order('pid desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $list = DB::name('machine')->where($where)->order('machine_id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+//        $list = array();
+//        halt($list);
+//        if ($res) {
+////        	$media = array('图片','文字','flash');
+//            $media = array('图片', 'flash');
+//            foreach ($res as $val) {
+//                $val['media_type'] = $media[$val['media_type']];
+//                $list[] = $val;
+//            }
+//        }
+
+
+//        $ad_position_list = M('AdPosition')->getField("position_id,position_name,is_open");
+//        $this->assign('ad_position_list', $ad_position_list);//广告位
+        $show = $Page->show();// 分页显示输出
+        $this->assign('list', $list);// 赋值数据集
+        $this->assign('page', $show);// 赋值分页输出
+        $this->assign('pager', $pager);
+        return $this->fetch();
+
+    }
+
+    public function machine_ad()
+    {
+        $machine_id = I('get.machine_id');
+//        halt($machine_id);
+        $ad_list = DB::name('ad')->select();
+        $this->assign('ad_list',$ad_list);
+        $this->assign('machine_id',$machine_id);
+        return $this->fetch();
+
+    }
+
+    public function convey()
+    {
+        $data = I('');
+        halt($data);
     }
 
 

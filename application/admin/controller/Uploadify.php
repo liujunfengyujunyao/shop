@@ -35,7 +35,7 @@ class Uploadify extends Base{
         return $this->fetch();
     }
     public function upvideo(){
-        $func = I('func');
+        $func = I('func');//回调函数
         $path = I('path','temp');
         $video_upload_limit_size = 20;
         $info = array(
