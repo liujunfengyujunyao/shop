@@ -53,19 +53,31 @@
                             <div style="width: 24px;"><i class="ico-check"></i></div>
                         </th>
                         <th align="left" abbr="article_title" axis="col3" class="">
-                            <div style="text-align: left; width: 50px;" class="">设备id</div>
+                            <div style="text-align: left; width: 50px;" class="">ID</div>
                         </th>
                         <th align="left" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: left; width: 200px;" class="">设备类型</div>
+                            <div style="text-align: left; width: 100px;" class="">设备编号</div>
                         </th>
                         <th align="center" abbr="article_show" axis="col5" class="">
-                            <div style="text-align: center; width: 100px;" class="">设备名称</div>
+                            <div style="text-align: center; width: 200px;" class="">广告名称</div>
                         </th>
                         <th align="center" abbr="article_time" axis="col6" class="">
-                            <div style="text-align: center; width: 100px;" class="">剩余时间(秒)</div>
+                            <div style="text-align: center; width: 100px;" class="">广告内容</div>
                         </th>
                         <th align="center" abbr="article_time" axis="col6" class="">
-                            <div style="text-align: center; width: 100px;" class="">是否执行</div>
+                            <div style="text-align: center; width: 100px;" class="">广告长度</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">播放次数</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">起始时间</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">结束时间</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">审核状态</div>
                         </th>
                         <!--<th align="center" abbr="article_time" axis="col6" class="">-->
                         <!--<div style="text-align: center; width: 50px;" class="">新窗口</div>-->
@@ -114,30 +126,41 @@
                                     <div style="width: 24px;"><i class="ico-check"></i></div>
                                 </td>
                                 <td align="left" class="">
-                                    <div style="text-align: left; width: 50px;">{$vo[machine_id]}</div>
+                                    <div style="text-align: left; width: 50px;">{$vo[id]}</div>
                                 </td>
                                 <!--<td align="left" class="">-->
                                 <!--<div style="text-align: left; width: 200px;">{$ad_position_list[$vo[pid]][position_name]}</div>-->
                                 <!--</td>-->
                                 <td align="left" class="">
-                                    <div style="text-align: left; width: 200px;">{$vo.type_id}</div>
+                                    <div style="text-align: left; width: 100px;">{$vo.machine_id}</div>
                                 </td>
                                 <td align="left" class="">
-                                    <div style="text-align: left; width: 100px;">{$vo.machine_name}</div>
+                                    <div style="text-align: left; width: 200px;">{$vo.ad_name}</div>
                                 </td>
                                 <td align="center" class="">
-                                    <!--<div style="text-align: center; width: 100px;"><img src="{$vo.ad_code}" width="80px" height="45px"></div>-->
-                                    <div style="text-align: left; width: 100px;">{$vo.ad_rest}</div>
+                                    <if condition = " $vo.media_type == 0 ">
+                                    <div style="text-align: center; width: 100px;"><img src="{$vo.ad_code}" width="80px" height="45px"></div>
+                                    <else/>
+                                        <div style="text-align: center; width: 100px;">
+                                            <a href="{$vo.ad_code}">点击查看</a>
+                                        </div>
 
+                                    </if>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: left; width: 100px;">{$vo.ad_length}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: left; width: 100px;">{$vo.play_count}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: left; width: 150px;"> {:date('Y-m-d H:i',$vo['start_time'])}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: left; width: 150px;">{:date('Y-m-d H:i',$vo['end_time'])}</div>
                                 </td>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 100px;">
-                                        <if condition='$vo[target] eq 1'>
-                                            <span class="yes" onClick="changeTableVal('ad','ad_id','{$vo.ad_id}','target',this)"><i class="fa fa-check-circle"></i>是</span>
-                                            <else/>
-                                            <span class="no" onClick="changeTableVal('ad','ad_id','{$vo.ad_id}','target',this)"><i class="fa fa-ban"></i>否</span>
-                                        </if>
-                                    </div>
+                                    <div style="text-align: left; width: 100px;">{$vo.status}</div>
                                 </td>
                                 <!--<td align="center" class="">-->
                                 <!--<div style="text-align: center; width: 100px;">-->
@@ -156,9 +179,9 @@
                                 <!--</td>-->
                                 <td align="center" class="handle">
                                     <div style="text-align: center; width: 100px;">
-                                        <!--<a class="btn red" onClick="delfunc(this)" data-url="{:U(' ')}" data-id="{$vo.ad_id}"><i class="fa fa-trash-o"></i>删除</a>-->
-                                        <!--<a href="{:U('Ad/ad',array('act'=>'edit','ad_id'=>$vo['ad_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>-->
-                                        <a href="{:U('Ad/machine_ad',array('act'=>'edit','machine_id'=>$vo['machine_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>分配</a>
+                                        <a class="btn red" onClick="delfunc(this)" data-url="{:U('Ad/check')}" data-id="{$vo.id}"><i class="fa fa-trash-o"></i>拒绝</a>
+                                        <a class="btn blue" onClick="succfunc(this)" data-url="{:U('Ad/check')}" data-id="{$vo.id}"><i class="fa fa-trash-o"></i>通过</a>
+                                        <!--<a href="{:U('Ad/ad',array('act'=>'edit','ad_id'=>$vo['ad_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>通过</a>-->
                                     </div>
                                 </td>
                                 <td align="" class="" style="width: 100%;">
@@ -170,7 +193,8 @@
                     </tbody>
                 </table>
                 <!--分页位置-->
-                {$pager->show()} </div>
+
+                 </div>
         </div>
     </div>
 </div>
@@ -201,7 +225,36 @@
                         layer.closeAll();
                         if(data.status==1){
                             layer.msg(data.msg, {icon: 1});
-                            $(obj).parent().parent().parent('tr').remove();
+                            window.location.reload();
+//                            $(obj).parent().parent().parent('tr').remove();
+                        }else{
+                            layer.msg(data.msg, {icon: 2,time: 2000});
+                        }
+//   						layer.closeAll();
+                    }
+                })
+            }, function(index){
+                layer.close('网络连接失败，请稍后再试！');
+            }
+        );
+    }
+
+    function succfunc(obj){
+        layer.confirm('确认删除？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                // 确定
+                $.ajax({
+                    type : 'post',
+                    url : $(obj).attr('data-url'),
+                    data : {act:'succ',succ_id:$(obj).attr('data-id')},
+                    dataType : 'json',
+                    success : function(data){
+                        layer.closeAll();
+                        if(data.status==1){
+                            layer.msg(data.msg, {icon: 1});
+                            window.location.reload();
+//                            $(obj).parent().parent().parent('tr').remove();
                         }else{
                             layer.msg(data.msg, {icon: 2,time: 2000});
                         }

@@ -778,7 +778,7 @@ class Ad extends Base
                 $ThisFileInfo = $getID3->analyze($path); //分析文件，$path为音频文件的地址
                 $fileduration=$ThisFileInfo['playtime_seconds']; //这个获得的便是音频文件的时长
                 $time = (int)ceil($fileduration);
-                DB::name('ad')->where(['ad_id'=>$value['ad_id']])->save(['ad_length'=>$time]);
+                DB::name('ad')->where(['ad_id'=>$value['ad_id']])->save(['ad_length'=>$time]);//将广告视频时长保存
             }
         }
 
@@ -823,12 +823,73 @@ class Ad extends Base
     {
         $machine_id = I('get.machine_id');
 //        halt($machine_id);
-        $ad_list = DB::name('ad')->select();
+        $ad_list = DB::name('ad')->select();halt($ad_list);
         $this->assign('ad_list',$ad_list);
         $this->assign('machine_id',$machine_id);
         return $this->fetch();
 
     }
+
+
+    //广告审核列表
+    public function check_list()
+    {
+        $data = DB::name('ad_check')
+            ->alias("t1")
+            ->field("t1.*,t2.ad_code,t2.ad_length,t2.media_type,t2.ad_name")
+            ->join("__AD__ t2","t1.ad_id = t2.ad_id","LEFT")
+            ->where("t1.status != 1")
+            ->select();
+
+        $this->assign('list',$data);
+        return $this->fetch();
+    }
+
+    public function check()
+    {
+
+        $data = I('post.');
+//        halt($data);
+        if($data['act'] == "del"){
+            $id = intval($data['del_id']);
+            $res = DB::name('ad_check')
+                ->where(['id'=>$id])
+                ->save(['status'=>2]);
+            //缺少通知H5客户端逻辑(->付款->下发客户端)
+
+        }else{
+            $id= intval($data['succ_id']);
+            $res = DB::name('ad_check')
+                ->where(['id'=>$id])
+                ->save(['status'=>1]);
+            //缺少通知H5客户端逻辑(->付款->下发客户端)
+
+        }
+
+        if ($res !== false) {
+            $this->ajaxReturn(['status' => 1, 'msg' => "操作成功", 'url' => U('Admin/Ad/check_list')]);
+        } else {
+            $this->ajaxReturn(['status' => -1, 'msg' => "操作失败"]);
+        }
+
+
+
+
+
+        $referurl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : U('Admin/Ad/check_list');
+        // 不管是添加还是修改广告 都清除一下缓存
+        delFile(RUNTIME_PATH . 'html'); // 先清除缓存, 否则不好预览
+        \think\Cache::clear();
+        if ($res !== false) {
+            $this->success("操作成功", U('Admin/Ad/check_list'));
+        } else {
+            $this->error("操作失败", $referurl);
+        }
+
+
+    }
+
+
 
     public function convey()
     {

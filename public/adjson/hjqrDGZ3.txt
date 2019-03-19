@@ -1,0 +1,1 @@
+{"version_id":"11,12345678-2019031418","list":{"a_id":[63],"p_count":[27],"a_add":["\/public\/upload\/ad\/video\/2019\/01-03\/23efdc33066b0c3ca6f78b58699dc7a3.mp4"]},"p_type":[63],"s_t":1552579201,"e_t":1552838399}

@@ -69,8 +69,15 @@
         </div>
         <div class="tDiv">
             <div class="tDiv2">
-                <div class="fbutton"><a href="{:U('Admin/Ad/convey',array('act'=>'edit','machine_id'=>$machine_id))}"><div class="add" title="确认分配"><span><i class="fa fa-plus"></i>确认分配</span></div></a></div>
+                <div class="fbutton">
+                    <a href="{:U('Admin/Ad/convey',array('act'=>'edit','machine_id'=>$machine_id))}">
+                        <div class="add" title="确认分配"><span><i class="fa fa-plus"></i>确认分配</span></div></a></div>
             </div>
+            <!--<div class="tDiv2">-->
+                <!--<div class="fbutton" onclick="number()">-->
+                    <!--&lt;!&ndash;<a href="{:U('Admin/Ad/convey',array('act'=>'edit','machine_id'=>$machine_id))}">&ndash;&gt;-->
+                        <!--<div class="add" title="确认分配"><span><i class="fa fa-plus"></i>确认分配</span></div></a></div>-->
+            <!--</div>-->
             <div style="clear:both"></div>
         </div>
         <div class="bDiv" style="height: auto;">
@@ -101,9 +108,9 @@
                             <td align="center" class="">
                                 <div style="text-align: center; width: 50px;">
                                     <if condition='$vo[is_open] eq 1'>
-                                        <span class="yes" onClick="changeTableVal('ad_position','position_id','{$vo.position_id}','is_open',this)" ><i class="fa fa-check-circle"></i>是</span>
+                                        <span class="yes" onClick="changeTableVal('ad_position','position_id','{$vo.position_id}','is_open',this)"><i class="fa fa-check-circle"></i>是</span>
                                         <else />
-                                        <span class="no" onClick="changeTableVal('ad_position','position_id','{$vo.position_id}','is_open',this)" ><i class="fa fa-ban"></i>否</span>
+                                        <span class="no" onClick="changeTableVal('ad_position','position_id','{$vo.position_id}','is_open',this)"><i class="fa fa-ban"></i>否</span>
                                     </if>
                                 </div>
                             </td>
@@ -145,6 +152,9 @@
      * @param id  position_id
      * @param limit 条数
      */
+
+
+
     function copyToClipBoard(id, limit) {
         var advstr = "<adv pid='" + id + "' limit='" + limit + "' item='v'></adv";
         var contentdiv = '<div class="dialog_content" style="margin: 0px; padding: 0px;"><dl style="padding:10px 30px;line-height:30px"><dd>JavaScript:</dd>'

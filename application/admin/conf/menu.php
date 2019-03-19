@@ -28,6 +28,7 @@ return	array(
 						array('name'=>'广告位置','act'=>'positionList','op'=>'Ad'),
 						array('name'=>'播放规则','act'=>'ruleList','op'=>'Ad'),
 						array('name'=>'执行列表','act'=>'performList','op'=>'Ad'),
+						array('name'=>'审核列表','act'=>'check_list','op'=>'Ad'),
 				)),
 				array('name' => '文章','child'=>array(
 						array('name' => '文章列表', 'act'=>'articleList', 'op'=>'Article'),
